@@ -762,7 +762,7 @@ Printing the Whole Graph
 
 GNU Emacs集成环境的大部分都是用一种叫做Emacs Lisp的编程语言编写的。用这种编程语言编写的代码是软件，是一组指令，告诉计算机在你给它命令时应该做什么。Emacs被设计成可以用Emacs Lisp编写新代码，并轻松地将其安装为编辑器的扩展。
 
-(GNU Emacs有时被称为“可扩展编辑器”，但它的功能远不止提供编辑功能。更好地称Emacs为“可扩展计算环境”。然而，这个短语有点拗口。可以简单地将Emacs称为编辑器更容易。此外，在Emacs中的一切活动——如查找玛雅日期和月相、简化多项式、调试代码、管理文件、阅读信件、写书——都可以看作是一种最一般意义上的编辑。)
+(GNU Emacs有时被称为“可扩展编辑器”，但它的功能远不止提供编辑功能。更恰当的称呼是将Emacs视为“可扩展计算环境”。然而，这个短语有点拗口。简单地将Emacs称为编辑器更容易理解。此外，在Emacs中的一切活动，如查找玛雅日期和月相、简化多项式、调试代码、管理文件、阅读邮件、撰写书籍，都可以看作是一种最一般意义上的编辑。)
 
 @menu
 * Why::                         Why learn Emacs Lisp?
@@ -785,11 +785,11 @@ GNU Emacs集成环境的大部分都是用一种叫做Emacs Lisp的编程语言�
 @node On Reading this Text
 @unnumberedsec 关于阅读本文
 
-在本文档中，你会看到一些可以在Emacs中运行的小示例程序。如果你在GNU Emacs的Info模式中阅读本文，你可以按照示例中的说明来运行这些程序。（这很容易做到，当示例程序出现时会有解释。）或者，你可以在运行Emacs的计算机旁边阅读这本介绍性的书籍。（这是我喜欢的做法；我喜欢纸质书籍。）如果你旁边没有正在运行的Emacs，你仍然可以阅读这本书，但在这种情况下，最好将它视为一部小说或一本尚未拜访过的国家的旅行指南：虽然有趣，但不同于亲自体验。
+在本文中，您将看到一些可以在Emacs中运行的小示例程序。如果您正在使用GNU Emacs的Info模式阅读本文，您可以按照示例中的说明来运行这些程序（这很容易做到，当示例程序出现时会有解释）。或者，您可以在运行Emacs的计算机旁边阅读这本介绍性的书籍。（这是我个人偏好的方式；我喜欢纸质书籍。）如果您旁边没有正在运行的Emacs，您仍然可以阅读这本书，但在这种情况下，最好将其视为一部小说或一本尚未探索过的国家的旅行指南：虽然有趣，但不同于亲自实践。
 
-这个介绍的大部分内容都是关于GNU Emacs中的代码演练或代码导览。这些导览有两个目的：首先，使你熟悉真实的、可工作的代码（你每天使用的代码）；其次，使你熟悉Emacs的工作方式。看到一个工作环境是如何实现的是很有趣的。此外，我希望你会养成浏览源代码的习惯。你可以从中学习并汲取灵感。拥有GNU Emacs就像拥有一个充满宝藏的巨龙巢穴。
+这个介绍的大部分内容都是关于GNU Emacs中的代码演练和代码导览。这些导览有两个目的：首先，使您熟悉真实的、可工作的代码（您每天使用的代码）；其次，使您熟悉Emacs的工作方式。看到一个工作环境是如何实现的是非常有趣的。此外，我希望您会养成浏览源代码的习惯。您可以从中学习并获得灵感。拥有GNU Emacs就像拥有一个充满宝藏的巨龙巢穴。
 
-除了学习作为编辑器的Emacs和作为编程语言的Emacs Lisp，示例和导览还将让你有机会熟悉作为Lisp编程环境的Emacs。GNU Emacs支持编程，并提供了你希望熟练使用的工具，如@kbd{M-.}（调用@code{xref-find-definitions}命令的键）。你还将学习关于缓冲区和环境中的其他对象。学习这些Emacs的特性就像学习自己家乡的新路线一样。
+除了学习作为编辑器的Emacs和作为编程语言的Emacs Lisp，示例和导览还将让您有机会熟悉作为Lisp编程环境的Emacs。GNU Emacs支持编程，并提供了各种工具，如@kbd{M-.}（调用@code{xref-find-definitions}命令的键）。您还将学习关于缓冲区和环境中的其他对象的信息。学习这些Emacs的特性就像探索自己家乡的新路线一样。
 
 @ignore
 In addition, I have written several programs as extended examples.
@@ -800,7 +800,7 @@ just for teaching purposes; what you see is used.  This is a great
 advantage of Emacs Lisp: it is easy to learn to use it for work.
 @end ignore
 
-最后，我希望传授一些使用Emacs来学习你不了解的编程方面的技能。你通常可以使用Emacs来帮助你理解困扰你的事情或找出如何做一些新的东西。这种自力更生不仅是一种乐趣，还是一种优势。
+最后，我希望传授一些使用Emacs来学习您不了解的编程方面的技能。您通常可以使用Emacs来帮助您理解困扰您的事情或做一些新的东西。这种自力更生不仅是一种乐趣，还是一种优势。
 
 @node Who You Are
 @unnumberedsec 目标读者
@@ -819,9 +819,9 @@ advantage of Emacs Lisp: it is easy to learn to use it for work.
 
 首先，我尽量将每件事情都至少重复三次：首先是介绍它；其次是在上下文中展示它；第三是在不同的上下文中展示它，或者进行复习。
 
-其次，我几乎从不把有关某个主题的所有信息都放在一个地方，更不用说一个段落了。在我的思维方式中，这会给读者带来过重的负担。相反，我只会尝试在您需要了解的时候解释。（有时我会包含一些额外信息，以便稍后当额外信息正式介绍时，您不会觉得突然)。
+其次，我通常不会把有关某个主题的所有信息都集中在一个地方，更不用说一个段落了。根据我的思维方式，这会对读者造成过多的负担。相反，我只会尝试在您需要了解时提供解释。（有时我会包含一些额外信息，以便稍后当额外信息正式介绍时，您不会觉得突然)。
 
-当您阅读这篇文章时，您不必第一次就学会一切。通常，您只需要对提到的一些项目有一点了解。我希望我已经结构化了这篇文章并提供了足够的提示，以便您能够意识到什么是重要的，并专注于它。
+当您阅读这篇文章时，您不必一次性掌握所有内容。通常，您只需要对提到的一些项目有一点了解。我希望我已经结构化了这篇文章并提供了足够的提示，以便您能够意识到什么是重要的，并专注于它。
 
 您需要深入研究一些段落；别无他法。但我已经尽量减少这类段落的数量。这本书旨在作为一个平易近人的小山丘，而不是一个令人望而却步的高峰。
 
@@ -839,24 +839,24 @@ Emacs Lisp Reference Manual}.
 @unnumberedsec Lisp的历史
 @cindex Lisp history
 
-Lisp在20世纪50年代晚期在麻省理工学院为人工智能研究而开发。Lisp语言的强大之处使其在其他领域也表现出色，例如编写编辑器命令和集成环境。
+Lisp语言在20世纪50年代晚期由麻省理工学院为人工智能研究而开发。Lisp语言的强大之处使其在其他领域也表现出色，例如编写编辑器命令和集成环境。
 
 @cindex Maclisp
 @cindex Common Lisp
-GNU Emacs Lisp在很大程度上受到Maclisp的启发，Maclisp是在20世纪60年代由麻省理工学院编写的。它也在一定程度上受到Common Lisp的启发，Common Lisp在20世纪80年代成为了一种标准。然而，Emacs Lisp比Common Lisp简单得多。（标准的Emacs发行版包含一个可选的扩展文件@file{cl-lib.el}，它为Emacs Lisp添加了许多Common Lisp功能。）
+GNU Emacs Lisp在很大程度上受到Maclisp的启发，Maclisp是在20世纪60年代由麻省理工学院开发的。它也在一定程度上受到Common Lisp的启发，Common Lisp在20世纪80年代成为了一种标准。然而，Emacs Lisp比Common Lisp简单得多。（标准的Emacs发行版包含一个可选的扩展文件@file{cl-lib.el}，它为Emacs Lisp添加了许多Common Lisp功能。）
 
 @node Note for Novices
 @unnumberedsec 新手须知
 
-即使你不了解GNU Emacs，你仍然可以从本文中有所收获。但是，我建议你学习Emacs，即使只是为了学会在计算机屏幕上移动。你可以使用内置教程来自学如何使用Emacs。要使用它，输入@kbd{C-h t}。（这意味着你同时按下和释放@key{CTRL}键和@kbd{h}键，然后按下和释放@kbd{t}键。）
+即使您不了解GNU Emacs，您仍然可以从本文中有所收获。但是，我建议您学习Emacs，即使只是为了学会在计算机屏幕上移动。您可以使用内置教程来自学如何使用Emacs。要使用它，输入@kbd{C-h t}。（这意味着您同时按下和释放@key{CTRL}键和@kbd{h}键，然后按下和释放@kbd{t}键。）
 
-此外，我经常通过列出用于调用标准Emacs命令的按键，然后在括号中给出命令的名称来引用Emacs的标准命令之一，就像这样：@kbd{M-C-\}（@code{indent-region}）。这意味着@code{indent-region}命令通常是通过键入@kbd{M-C-\}来调用的。（如果你愿意，你可以更改用于调用命令的按键；这被称为@dfn{rebinding, 重新绑定}。@xref{Keymaps, , Keymaps}。）@kbd{M-C-\}的缩写意味着你需要同时按下@key{META}键、@key{CTRL}键和@kbd{\}键。在许多现代键盘上，@key{META}键帽上标着@key{ALT}。像这样的组合被称为组合键(keychord)。如果你的键盘没有@key{META}键，@key{ESC}键单击将代替它。在这种情况下，@kbd{M-C-\}意味着你按下并释放@key{ESC}键，然后同时按下@key{CTRL}键和@kbd{\}键。但通常@kbd{M-C-\}意味着同时按下标有@key{ALT}的键和@key{CTRL}键，同时再按@kbd{\}键。
+此外，我经常通过列出用于调用标准Emacs命令的按键，然后在括号中给出命令的名称，来引用Emacs的标准命令之一，就像这样：@kbd{M-C-\}（@code{indent-region}）。这意味着@code{indent-region}命令通常是通过键入@kbd{M-C-\}来调用的。（如果您愿意，您可以更改用于调用命令的按键；这被称为@dfn{rebinding, 重新绑定}。@xref{Keymaps, , Keymaps}。）@kbd{M-C-\}的缩写意味着你需要同时按下@key{META}键、@key{CTRL}键和@kbd{\}键。在许多现代键盘上，@key{META}键帽上标着@key{ALT}。像这样的组合被称为组合键(keychord)。如果你的键盘没有@key{META}键，单击@key{ESC}键来代替它。在这种情况下，@kbd{M-C-\}意味着您按下并释放@key{ESC}键，然后同时按下@key{CTRL}键和@kbd{\}键。但通常@kbd{M-C-\}意味着同时按下标有@key{ALT}的键和@key{CTRL}键，同时再按@kbd{\}键。
 
-除了长按单个组合键外，你还可以在你输入的内容前加上@kbd{C-u}，这被称为@dfn{通用参数}。@kbd{C-u}组合键会将参数传递给后续的命令。因此，要以6空格缩进一段纯文本的区域，标记该区域，然后输入@w{@kbd{C-u 6 M-C-\}}。（如果你不指定一个数字，Emacs将默认数字为4，或者以不同于其他情况的方式运行该命令。）@xref{Arguments, , Numeric Arguments, emacs, The GNU Emacs Manual}。
+除了长按单个组合键外，您还可以在你输入的内容前加上@kbd{C-u}，这被称为@dfn{通用参数}。@kbd{C-u}组合键会将参数传递给后续的命令。因此，要以6空格缩进一段纯文本的区域，首先标记该区域，然后输入@w{@kbd{C-u 6 M-C-\}}。（如果您不指定一个数字，Emacs将默认数字为4，或者以不同于其他情况的方式运行该命令。）@xref{Arguments, , Numeric Arguments, emacs, The GNU Emacs Manual}。
 
-如果你是在GNU Emacs中使用Info模式阅读这篇文章，你可以通过按下空格键@key{SPC}来浏览整个文档。（要了解Info，请输入@kbd{C-h i}，然后选择Info。）
+如果您是在GNU Emacs中使用Info模式阅读这篇文章，您可以通过按下空格键@key{SPC}来浏览整个文档。（要了解Info，请输入@kbd{C-h i}，然后选择Info。）
 
-关于术语的说明：当我单独使用Lisp这个词时，我经常是在指泛指各种Lisp方言，但当我谈到Emacs Lisp时，我指的是特定的GNU Emacs Lisp。
+关于术语的说明：当我单独使用Lisp这个词时，我通常是在泛指各种Lisp方言，但当我谈到Emacs Lisp时，我指的是特定的GNU Emacs Lisp。
 
 @node Thank You
 @unnumberedsec 致谢
