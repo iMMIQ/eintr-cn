@@ -907,16 +907,10 @@ bob@@gnu.org
 @end iftex
 
 @node List Processing
-@chapter List Processing
+@chapter 列表处理
 
-To the untutored eye, Lisp is a strange programming language.  In Lisp
-code there are parentheses everywhere.  Some people even claim that
-the name stands for ``Lots of Isolated Silly Parentheses''.  But the
-claim is unwarranted.  Lisp stands for LISt Processing, and the
-programming language handles @emph{lists} (and lists of lists) by
-putting them between parentheses.  The parentheses mark the boundaries
-of the list.  Sometimes a list is preceded by an apostrophe @samp{'},
-called a @dfn{single-quote} in Lisp.@footnote{A single-quote is an
+对于未经培训的人来说，Lisp 是一种奇怪的编程语言。在 Lisp 代码中，到处都是括号。甚至有人声称这个名字代表“Lots of Isolated Silly Parentheses”（很多孤立的愚蠢括号）。但这种说法是不准确的。Lisp 代表 LISt Processing，这种编程语言通过将@emph{列表}（以及列表的列表）放在括号中来处理它们。括号标志着列表的边界。有时候，列表前面会有一个撇号@samp{'}，称为 Lisp 中的@dfn{单引号}。
+@footnote{A single-quote is an
 abbreviation for the special form @code{quote}; you need not think
 about special forms now.
 @ifnottex
@@ -925,31 +919,27 @@ about special forms now.
 @iftex
 @xref{Lisp Interpreter}.
 @end iftex
-}  Lists are the basis
-of Lisp.
+}  列表是 Lisp 的基础。
 
 @menu
-* Lisp Lists::                  What are lists?
-* Run a Program::               Any list in Lisp is a program ready to run.
-* Making Errors::               Generating an error message.
-* Names & Definitions::         Names of symbols and function definitions.
-* Lisp Interpreter::            What the Lisp interpreter does.
-* Evaluation::                  Running a program.
-* Variables::                   Returning a value from a variable.
-* Arguments::                   Passing information to a function.
-* set & setq::                  Setting the value of a variable.
-* Summary::                     The major points.
+* Lisp Lists::                  什么是列表？
+* Run a Program::               Lisp中的任何列表都可以直接运行
+* Making Errors::               生成错误消息
+* Names & Definitions::         符号的名称和函数定义
+* Lisp Interpreter::            Lisp解释器的作用
+* Evaluation::                  运行程序
+* Variables::                   从变量返回值
+* Arguments::                   向函数传递信息
+* set & setq::                  设置变量的值
+* Summary::                     总结
 * Error Message Exercises::
 @end menu
 
 @node Lisp Lists
-@section Lisp Lists
+@section Lisp列表
 @cindex Lisp Lists
 
-In Lisp, a list looks like this: @code{'(rose violet daisy buttercup)}.
-This list is preceded by a single apostrophe.  It could just as well be
-written as follows, which looks more like the kind of list you are likely
-to be familiar with:
+在Lisp中，一个列表看起来像这样：@code{'(rose violet daisy buttercup)}。这个列表前面有一个单引号。它也可以写成如下形式，更像你可能熟悉的列表：
 
 @smallexample
 @group
@@ -961,116 +951,66 @@ to be familiar with:
 @end smallexample
 
 @noindent
-The elements of this list are the names of the four different flowers,
-separated from each other by whitespace and surrounded by parentheses,
-like flowers in a field with a stone wall around them.
-@cindex Flowers in a field
+这个列表的元素是四种不同花的名称，它们之间用空格分隔，被括号包围，就像在田野中有一堵石墙围绕着花朵一样。
+@cindex 田野中的花朵
 
 @menu
-* Numbers Lists::               List have numbers, other lists, in them.
-* Lisp Atoms::                  Elemental entities.
-* Whitespace in Lists::         Formatting lists to be readable.
-* Typing Lists::                How GNU Emacs helps you type lists.
+* Numbers Lists::               包含数字和其他列表的列表。
+* Lisp Atoms::                  基本实体。
+* Whitespace in Lists::         格式化使列表更易阅读。
+* Typing Lists::                GNU Emacs如何帮助您输入列表。
 @end menu
 
 @ifnottex
 @node Numbers Lists
-@unnumberedsubsec Numbers, Lists inside of Lists
+@unnumberedsubsec 列表中的数字与列表
 @end ifnottex
 
-Lists can also have numbers in them, as in this list: @code{(+ 2 2)}.
-This list has a plus-sign, @samp{+}, followed by two @samp{2}s, each
-separated by whitespace.
+列表也可以包含数值，就像这个列表一样：@code{(+ 2 2)}。
+这个列表包含一个加号符号，@samp{+}，后面跟着两个 @samp{2}，它们之间用空格分隔。
 
-In Lisp, both data and programs are represented the same way; that is,
-they are both lists of words, numbers, or other lists, separated by
-whitespace and surrounded by parentheses.  (Since a program looks like
-data, one program may easily serve as data for another; this is a very
-powerful feature of Lisp.)  (Incidentally, these two parenthetical
-remarks are @emph{not} Lisp lists, because they contain @samp{;} and
-@samp{.} as punctuation marks.)
+在Lisp中，数据和程序都以相同的方式表示；也就是说，它们都是由单词、数字或其他列表组成的，之间用空格分隔，括在括号中。 (由于程序看起来像数据，一个程序可以轻松地作为另一个程序的数据；这是Lisp的一个非常强大的特性。) (顺便说一下，这两个括号中的备注@emph{不是}Lisp列表，因为它们包含了分号 @samp{;} 和句点 @samp{.} 作为标点符号。)
 
 @need 1200
-Here is another list, this time with a list inside of it:
+这里还有一个列表，这次里面包含了一个列表：
 
 @smallexample
 '(this list has (a list inside of it))
 @end smallexample
 
-The components of this list are the words @samp{this}, @samp{list},
-@samp{has}, and the list @samp{(a list inside of it)}.  The interior
-list is made up of the words @samp{a}, @samp{list}, @samp{inside},
-@samp{of}, @samp{it}.
+这个列表的组成部分包括单词 @samp{this}, @samp{list},
+@samp{has}, 和列表 @samp{(a list inside of it)}.  内部列表由单词 @samp{a}, @samp{list}, @samp{inside},
+@samp{of}, @samp{it} 组成。
 
 @node Lisp Atoms
-@subsection Lisp Atoms
+@subsection Lisp原子
 @cindex Lisp Atoms
 
-In Lisp, what we have been calling words are called @dfn{atoms}.  This
-term comes from the historical meaning of the word atom, which means
-``indivisible''.  As far as Lisp is concerned, the words we have been
-using in the lists cannot be divided into any smaller parts and still
-mean the same thing as part of a program; likewise with numbers and
-single character symbols like @samp{+}.  On the other hand, unlike an
-ancient atom, a list can be split into parts.  (@xref{car cdr & cons,
+在Lisp中，我们一直称之为单词的东西被称为@dfn{原子}。这个术语来自于“原子”一词的历史含义，即“不可分割”。就Lisp而言，我们在列表中使用的单词不能再分割成更小的部分，仍然具有与程序的一部分相同的含义；数字和单字符符号（如@samp{+}）也是如此。然而，与古代的原子不同，列表可以被分割成部分。 (@xref{car cdr & cons,
 , @code{car} @code{cdr} & @code{cons} Fundamental Functions}.)
 
-In a list, atoms are separated from each other by whitespace.  They can be
-right next to a parenthesis.
+在列表中，原子之间由空格分隔。它们可以紧邻括号。
 
 @cindex @samp{empty list} defined
-Technically speaking, a list in Lisp consists of parentheses surrounding
-atoms separated by whitespace or surrounding other lists or surrounding
-both atoms and other lists.  A list can have just one atom in it or
-have nothing in it at all.  A list with nothing in it looks like this:
-@code{()}, and is called the @dfn{empty list}.  Unlike anything else, an
-empty list is considered both an atom and a list at the same time.
+从技术上讲，Lisp中的列表由括号括起，括号内部包含由空格分隔的原子，或者括号内部包含其他列表，或者同时包含原子和其他列表。一个列表可以只包含一个原子，也可以什么都不包含。一个什么都不包含的列表看起来像这样：@code{()}，称为@dfn{空列表}。与其他东西不同，空列表同时是原子和列表。
 
 @cindex Symbolic expressions, introduced
 @cindex @samp{expression} defined
 @cindex @samp{form} defined
-The printed representation of both atoms and lists are called
-@dfn{symbolic expressions} or, more concisely, @dfn{s-expressions}.
-The word @dfn{expression} by itself can refer to either the printed
-representation, or to the atom or list as it is held internally in the
-computer.  Often, people use the term @dfn{expression}
-indiscriminately.  (Also, in many texts, the word @dfn{form} is used
-as a synonym for expression.)
+原子和列表的打印表示被称为@dfn{符号表达式}，或更简洁地称为@dfn{s-表达式}。单词@dfn{表达式}自身可以指的是打印表示，也可以指的是计算机内部保存的原子或列表。通常，人们会不加区分地使用@dfn{表达式}。 (此外，许多文本中，@dfn{表单}也被用作表达式的同义词。)
 
 @c This and the next paragraph say ``kinds of atom'', but that is not
 @c a typo, just slightly ``old-fashioned wording which adds a fillip
 @c of interest to it'', and ``is more elegant writing'', according to
 @c RMS.
-Incidentally, the atoms that make up our universe were named such when
-they were thought to be indivisible; but it has been found that physical
-atoms are not indivisible.  Parts can split off an atom or it can
-fission into two parts of roughly equal size.  Physical atoms were named
-prematurely, before their truer nature was found.  In Lisp, certain
-kinds of atom, such as an array, can be separated into parts; but the
-mechanism for doing this is different from the mechanism for splitting a
-list.  As far as list operations are concerned, the atoms of a list are
-unsplittable.
+顺便提一下，构成我们宇宙的原子最初被认为是不可分割的。但后来发现实际原子并不是不可分割的。原子可以分裂成两个大致相等的部分，或者可以有部分组成从原子中分离出来。实际上原子在它们的真正性质被发现之前就被过早地命名了。在Lisp中，某些类型的原子，比如数组，可以被分成部分，但这个机制与分割列表的机制不同。就列表操作而言，列表的原子是不可分割的。
 
-As in English, the meanings of the component letters of a Lisp atom
-are different from the meaning the letters make as a word.  For
-example, the word for the South American sloth, the @samp{ai}, is
-completely different from the two words, @samp{a}, and @samp{i}.
+与英语一样，Lisp原子的组成字母的含义与字母组成的单词的含义不同。例如，南美树懒的单词，"@samp{ai}"，与两个单词，"@samp{a}" 和 "@samp{i}"，完全不同。
 
-There are many kinds of atom in nature but only a few in Lisp: for
-example, @dfn{numbers}, such as 37, 511, or 1729, and @dfn{symbols}, such
-as @samp{+}, @samp{foo}, or @samp{forward-line}.  The words we have
-listed in the examples above are all symbols.  In everyday Lisp
-conversation, the word ``atom'' is not often used, because programmers
-usually try to be more specific about what kind of atom they are dealing
-with.  Lisp programming is mostly about symbols (and sometimes numbers)
-within lists.  (Incidentally, the preceding three word parenthetical
-remark is a proper list in Lisp, since it consists of atoms, which in
-this case are symbols, separated by whitespace and enclosed by
-parentheses, without any non-Lisp punctuation.)
+自然界中有许多种类的原子，但在Lisp中只有少数几种：例如，@dfn{数字}，比如37、511或1729，以及@dfn{符号}，比如@samp{+}、@samp{foo}或@samp{forward-line}。我们在上面的示例中列出的单词都是符号。在日常的Lisp对话中，“原子”一词很少使用，因为程序员通常会尽量明确他们正在处理哪种类型的原子。Lisp编程主要涉及列表中的符号（有时还涉及数字）。(顺便一提，前文的三个词的括号注释是Lisp中的一个合法列表，因为它由原子组成，而在这种情况下，这些原子是符号，它们被空格分隔并用括号括起，没有任何非Lisp标点符号。)
 
 @need 1250
-Text between double quotation marks---even sentences or
-paragraphs---is also an atom.  Here is an example:
+双引号括起的文本，即使是句子或段落，也是一个原子。这是一个例子：
 @cindex Text between double quotation marks
 
 @smallexample
@@ -1079,20 +1019,14 @@ paragraphs---is also an atom.  Here is an example:
 
 @cindex @samp{string} defined
 @noindent
-In Lisp, all of the quoted text including the punctuation mark and the
-blank spaces is a single atom.  This kind of atom is called a
-@dfn{string} (for ``string of characters'') and is the sort of thing that
-is used for messages that a computer can print for a human to read.
-Strings are a different kind of atom than numbers or symbols and are
-used differently.
+在Lisp中，所有引号括起的文本，包括标点符号和空格，都是一个单独的原子。这种类型的原子被称为@dfn{字符串}(string)，通常用于计算机以打印供人阅读的消息。字符串与数字或符号是不同类型的原子，使用方式也不同。
 
 @node Whitespace in Lists
-@subsection Whitespace in Lists
+@subsection 列表中的空格
 @cindex Whitespace in lists
 
 @need 1200
-The amount of whitespace in a list does not matter.  From the point of view
-of the Lisp language,
+列表中的空格数量并不重要。从Lisp语言的角度来看，
 
 @smallexample
 @group
@@ -1103,50 +1037,26 @@ of the Lisp language,
 
 @need 800
 @noindent
-is exactly the same as this:
+与这个表达式完全相同：
 
 @smallexample
 '(this list looks like this)
 @end smallexample
 
-Both examples show what to Lisp is the same list, the list made up of
-the symbols @samp{this}, @samp{list}, @samp{looks}, @samp{like}, and
-@samp{this} in that order.
+这两个示例展示了对Lisp来说相同的列表，由这些符号 @samp{this}、@samp{list}、@samp{looks}、@samp{like} 和 @samp{this} 按顺序组成。
 
-Extra whitespace and newlines are designed to make a list more readable
-by humans.  When Lisp reads the expression, it gets rid of all the extra
-whitespace (but it needs to have at least one space between atoms in
-order to tell them apart.)
+额外的空格和换行符是为了让人更容易阅读列表。当Lisp读取表达式时，会去掉所有额外的空格（但需要在原子之间至少有一个空格以区分它们）。
 
-Odd as it seems, the examples we have seen cover almost all of what Lisp
-lists look like!  Every other list in Lisp looks more or less like one
-of these examples, except that the list may be longer and more complex.
-In brief, a list is between parentheses, a string is between quotation
-marks, a symbol looks like a word, and a number looks like a number.
-(For certain situations, square brackets, dots and a few other special
-characters may be used; however, we will go quite far without them.)
+尽管看起来很奇怪，但我们已经涵盖了几乎所有Lisp列表的情况！Lisp中的每个其他列表都或多或少与这些示例之一相似，只是列表可能更长和更复杂。简而言之，列表在括号之间，字符串在引号之间，符号看起来像一个单词，数字看起来像一个数字。（对于某些情况，可能会使用方括号、点号和一些其他特殊字符；但是，即使没有它们，我们也可以走得很远。）
 
 @node Typing Lists
-@subsection GNU Emacs Helps You Type Lists
+@subsection GNU Emacs帮助您输入列表
 @cindex Help typing lists
 @cindex Formatting help
 
-When you type a Lisp expression in GNU Emacs using either Lisp
-Interaction mode or Emacs Lisp mode, you have available to you several
-commands to format the Lisp expression so it is easy to read.  For
-example, pressing the @key{TAB} key automatically indents the line the
-cursor is on by the right amount.  A command to properly indent the
-code in a region is customarily bound to @kbd{M-C-\}.  Indentation is
-designed so that you can see which elements of a list belong to which
-list---elements of a sub-list are indented more than the elements of
-the enclosing list.
+在GNU Emacs中，当您使用Lisp交互模式或Lisp模式输入Lisp表达式时，您可以使用几个命令来格式化Lisp表达式，以便阅读。例如，按下@key{TAB}键会自动适当缩进光标所在的行。通常，用于正确缩进区域中的代码的命令绑定为@kbd{M-C-\}。缩进可以让您看出列表的哪些元素属于哪个列表---子列表的元素比包含列表的元素缩进更多。
 
-In addition, when you type a closing parenthesis, Emacs momentarily
-jumps the cursor back to the matching opening parenthesis, so you can
-see which one it is.  This is very useful, since every list you type
-in Lisp must have its closing parenthesis match its opening
-parenthesis.  (@xref{Major Modes, , Major Modes, emacs, The GNU Emacs
-Manual}, for more information about Emacs's modes.)
+此外，当您键入右括号时，Emacs会短暂地将光标跳回到匹配的左括号，以便您可以看到与哪个匹配。这非常有用，因为在Lisp中，您键入的每个列表都必须有右括号与其左括号匹配。（有关Emacs模式的更多信息，@xref{Major Modes, , Major Modes, emacs, The GNU Emacs Manual}）
 
 @node Run a Program
 @section Run a Program
