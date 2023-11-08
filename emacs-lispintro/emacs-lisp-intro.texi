@@ -1059,72 +1059,44 @@ about special forms now.
 此外，当您键入右括号时，Emacs会短暂地将光标跳回到对应的左括号，这样您可以看到右括号与哪个左括号匹配。这非常有用，因为在Lisp中，您写的每个列表都必须有对应的右括号和左括号。（有关Emacs模式的更多信息，@xref{Major Modes, , Major Modes, emacs, The GNU Emacs Manual}）
 
 @node Run a Program
-@section Run a Program
+@section 运行程序
 @cindex Run a program
 @cindex Program, running one
 
 @cindex @samp{evaluate} defined
-A list in Lisp---any list---is a program ready to run.  If you run it
-(for which the Lisp jargon is @dfn{evaluate}), the computer will do one
-of three things: do nothing except return to you the list itself; send
-you an error message; or, treat the first symbol in the list as a
-command to do something.  (Usually, of course, it is the last of these
-three things that you really want!)
+在Lisp中，任何列表——都是一个准备运行的程序。如果您运行它（在Lisp术语中叫做@dfn{评估}(evaluate, eval)），计算机会执行以下三种操作之一：除了返回列表本身外什么也不做；发送错误消息；或者将列表中的第一个符号视为命令来执行某项操作。 （当然，通常情况下，您真正想要的是最后一种情况！）
 
-@c use code for the single apostrophe, not samp.
+@c 用代码表示单引号，而不是samp。
 @findex quote
 @cindex @code{'} for quoting
 @cindex quoting using apostrophe
 @cindex apostrophe for quoting
-The single apostrophe, @code{'}, that I put in front of some of the
-example lists in preceding sections is called a @dfn{quote}; when it
-precedes a list, it tells Lisp to do nothing with the list, other than
-take it as it is written.  But if there is no quote preceding a list,
-the first item of the list is special: it is a command for the computer
-to obey.  (In Lisp, these commands are called @emph{functions}.)  The list
-@code{(+ 2 2)} shown above did not have a quote in front of it, so Lisp
-understands that the @code{+} is an instruction to do something with the
-rest of the list: add the numbers that follow.
+我在前面的章节中放在一些示例列表前面的@code{'}，称为@dfn{单引号}；当它出现在列表前面时，它告诉Lisp不对列表做任何事情，除了按照原样处理。但是，如果列表前面没有单引号，列表中的第一个项目是特殊的：它是计算机要执行的命令。 （在Lisp中，这些命令被称为@emph{函数}。）上面显示的@code{(+ 2 2)}列表没有单引号，因此Lisp理解@code{+}是一个指示要对后面的数字执行某项操作的指令：相加后面的数字。
 
 @need 1250
-If you are reading this inside of GNU Emacs in Info, here is how you can
-evaluate such a list:  place your cursor immediately after the right
-hand parenthesis of the following list and then type @kbd{C-x C-e}:
+如果您正在GNU Emacs中的Info模式中阅读此文档，以下是您执行列表计算的方法：将光标置于以下列表的右括号之后，然后键入@kbd{C-x C-e}：
 
 @smallexample
 (+ 2 2)
 @end smallexample
 
-@c use code for the number four, not samp.
+@c 这里使用代码格式表示数字四，而不是samp。
 @noindent
-You will see the number @code{4} appear in the echo area@footnote{
-Emacs shows integer values in decimal, in octal and in hex, and also
-as a character, but let's ignore this convenience feature for now.
-}.  (What you have just done is evaluate the list.  The echo area is
-the line at the bottom of the screen that displays or echoes text.)
-Now try the same thing with a quoted list: place the cursor right
-after the following list and type @kbd{C-x C-e}:
+您将在回显区域看到数字@code{4}@footnote{Emacs以十进制、八进制和十六进制以及字符的方式显示整数值，但现在让我们忽略这个便利功能。}。 （您刚刚执行了该列表的计算。回显区域是屏幕底部显示或输出文本。）现在尝试对一个带引号的列表执行相同的操作：将光标放在以下列表的右括号之后，然后键入@kbd{C-x C-e}：
 
 @smallexample
 '(this is a quoted list)
 @end smallexample
 
 @noindent
+您将在回显区域看到 @code{(this is a quoted list)}。
 You will see @code{(this is a quoted list)} appear in the echo area.
 
 @cindex Lisp interpreter, explained
 @cindex Interpreter, Lisp, explained
-In both cases, what you are doing is giving a command to the program
-inside of GNU Emacs called the @dfn{Lisp interpreter}---giving the
-interpreter a command to evaluate the expression.  The name of the Lisp
-interpreter comes from the word for the task done by a human who comes
-up with the meaning of an expression---who interprets it.
+在这两种情况下，您所做的是向GNU Emacs内部的一个叫做@dfn{Lisp解释器}的程序发送一个命令——即给解释器一个要评估的表达式。Lisp解释器的名称来源于一个人来解释一个表达式的含义的任务——即解释者。
 
-You can also evaluate an atom that is not part of a list---one that is
-not surrounded by parentheses; again, the Lisp interpreter translates
-from the humanly readable expression to the language of the computer.
-But before discussing this (@pxref{Variables}), we will discuss what the
-Lisp interpreter does when you make an error.
+您也可以评估一个不是列表的原子——一个没有被括号包围的原子；同样，Lisp解释器将从人类可读的表达式翻译成计算机语言。但在讨论这个之前（@pxref{Variables}），我们将讨论当您出现错误时Lisp解释器会做什么。
 
 @node Making Errors
 @section Generate an Error Message
