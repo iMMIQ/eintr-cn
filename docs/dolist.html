@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>dolist (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="dolist (Programming in Emacs Lisp)">
+<meta name="keywords" content="dolist (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="dolist-dotimes.html" rel="up" title="dolist dotimes">
+<link href="dotimes.html" rel="next" title="dotimes">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="dolist">
+<div class="nav-panel">
+<p>
+Next: <a href="dotimes.html" accesskey="n" rel="next">The <code class="code">dotimes</code> Macro</a>, Up: <a href="dolist-dotimes.html" accesskey="u" rel="up">Save your time: <code class="code">dolist</code> and <code class="code">dotimes</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="The-dolist-Macro">The <code class="code">dolist</code> Macro</h4>
+<a class="index-entry-id" id="index-dolist"></a>
+
+<p>Suppose, for example, you want to reverse a list, so that
+&ldquo;first&rdquo; &ldquo;second&rdquo; &ldquo;third&rdquo; becomes &ldquo;third&rdquo; &ldquo;second&rdquo; &ldquo;first&rdquo;.
+</p>
+<p>In practice, you would use the <code class="code">reverse</code> function, like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
+
+(reverse animals)
+</pre></div></div>
+
+<p>Here is how you could reverse the list using a <code class="code">while</code> loop:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
+
+(defun reverse-list-with-while (list)
+  &quot;Using while, reverse the order of LIST.&quot;
+  (let (value)  ; make sure list starts empty
+    (while list
+      (setq value (cons (car list) value))
+      (setq list (cdr list)))
+    value))
+
+(reverse-list-with-while animals)
+</pre></div></div>
+
+<p>And here is how you could use the <code class="code">dolist</code> macro:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
+
+(defun reverse-list-with-dolist (list)
+  &quot;Using dolist, reverse the order of LIST.&quot;
+  (let (value)  ; make sure list starts empty
+    (dolist (element list value)
+      (setq value (cons element value)))))
+
+(reverse-list-with-dolist animals)
+</pre></div></div>
+
+<p>In Info, you can place your cursor after the closing parenthesis of
+each expression and type <kbd class="kbd">C-x C-e</kbd>; in each case, you should see
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(tiger lion giraffe gazelle)
+</pre></div>
+
+<p>in the echo area.
+</p>
+<p>For this example, the existing <code class="code">reverse</code> function is obviously best.
+The <code class="code">while</code> loop is just like our first example (see <a class="pxref" href="Loop-Example.html">A <code class="code">while</code> Loop and a List</a>).  The <code class="code">while</code> first
+checks whether the list has elements; if so, it constructs a new list
+by adding the first element of the list to the existing list (which in
+the first iteration of the loop is <code class="code">nil</code>).  Since the second
+element is prepended in front of the first element, and the third
+element is prepended in front of the second element, the list is reversed.
+</p>
+<p>In the expression using a <code class="code">while</code> loop,
+the <code class="code">(setq&nbsp;list&nbsp;(cdr&nbsp;list))</code><!-- /@w -->
+expression shortens the list, so the <code class="code">while</code> loop eventually
+stops.  In addition, it provides the <code class="code">cons</code> expression with a new
+first element by creating a new and shorter list at each repetition of
+the loop.
+</p>
+<p>The <code class="code">dolist</code> expression does very much the same as the
+<code class="code">while</code> expression, except that the <code class="code">dolist</code> macro does some
+of the work you have to do when writing a <code class="code">while</code> expression.
+</p>
+<p>Like a <code class="code">while</code> loop, a <code class="code">dolist</code> loops.  What is different is
+that it automatically shortens the list each time it loops&mdash;it
+<small class="sc">CDR</small>s down the list on its own&mdash;and it automatically binds
+the <small class="sc">CAR</small> of each shorter version of the list to the first of its
+arguments.
+</p>
+<p>In the example, the <small class="sc">CAR</small> of each shorter version of the list is
+referred to using the symbol &lsquo;<samp class="samp">element</samp>&rsquo;, the list itself is called
+&lsquo;<samp class="samp">list</samp>&rsquo;, and the value returned is called &lsquo;<samp class="samp">value</samp>&rsquo;.  The
+remainder of the <code class="code">dolist</code> expression is the body.
+</p>
+<p>The <code class="code">dolist</code> expression binds the <small class="sc">CAR</small> of each shorter
+version of the list to <code class="code">element</code> and then evaluates the body of
+the expression; and repeats the loop.  The result is returned in
+<code class="code">value</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="dotimes.html">The <code class="code">dotimes</code> Macro</a>, Up: <a href="dolist-dotimes.html">Save your time: <code class="code">dolist</code> and <code class="code">dotimes</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>beginning-of-buffer (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="beginning-of-buffer (Programming in Emacs Lisp)">
+<meta name="keywords" content="beginning-of-buffer (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="More-Complex.html" rel="up" title="More Complex">
+<link href="Second-Buffer-Related-Review.html" rel="next" title="Second Buffer Related Review">
+<link href="insert_002dbuffer.html" rel="prev" title="insert-buffer">
+<style type="text/css">
+<!--
+kbd.kbd {font-style: oblique}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="beginning_002dof_002dbuffer">
+<div class="nav-panel">
+<p>
+Next: <a href="Second-Buffer-Related-Review.html" accesskey="n" rel="next">Review</a>, Previous: <a href="insert_002dbuffer.html" accesskey="p" rel="prev">The Definition of <code class="code">insert-buffer</code></a>, Up: <a href="More-Complex.html" accesskey="u" rel="up">A Few More Complex Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Complete-Definition-of-beginning_002dof_002dbuffer">5.3 Complete Definition of <code class="code">beginning-of-buffer</code></h3>
+<a class="index-entry-id" id="index-beginning_002dof_002dbuffer"></a>
+
+<p>The basic structure of the <code class="code">beginning-of-buffer</code> function has
+already been discussed.  (See <a class="xref" href="simplified_002dbeginning_002dof_002dbuffer.html">A
+Simplified <code class="code">beginning-of-buffer</code> Definition</a>.)
+This section describes the complex part of the definition.
+</p>
+<p>As previously described, when invoked without an argument,
+<code class="code">beginning-of-buffer</code> moves the cursor to the beginning of the
+buffer (in truth, the beginning of the accessible portion of the
+buffer), leaving the mark at the previous position.  However, when the
+command is invoked with a number between one and ten, the function
+considers that number to be a fraction of the length of the buffer,
+measured in tenths, and Emacs moves the cursor that fraction of the
+way from the beginning of the buffer.  Thus, you can either call this
+function with the key command <kbd class="kbd">M-&lt;</kbd>, which will move the cursor to
+the beginning of the buffer, or with a key command such as <kbd class="kbd">C-u 7
+M-&lt;</kbd> which will move the cursor to a point 70% of the way through the
+buffer.  If a number bigger than ten is used for the argument, it
+moves to the end of the buffer.
+</p>
+<p>The <code class="code">beginning-of-buffer</code> function can be called with or without an
+argument.  The use of the argument is optional.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Optional-Arguments.html" accesskey="1">Optional Arguments</a></li>
+<li><a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="2"><code class="code">beginning-of-buffer</code> with an Argument</a></li>
+<li><a href="beginning_002dof_002dbuffer-complete.html" accesskey="3">The Complete <code class="code">beginning-of-buffer</code></a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

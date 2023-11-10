@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>yank-pop (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="yank-pop (Programming in Emacs Lisp)">
+<meta name="keywords" content="yank-pop (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Kill-Ring.html" rel="up" title="Kill Ring">
+<link href="ring-file.html" rel="next" title="ring file">
+<link href="yank.html" rel="prev" title="yank">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="appendixsec-level-extent" id="yank_002dpop">
+<div class="nav-panel">
+<p>
+Next: <a href="ring-file.html" accesskey="n" rel="next">The <samp class="file">ring.el</samp> File</a>, Previous: <a href="yank.html" accesskey="p" rel="prev"><code class="code">yank</code></a>, Up: <a href="Kill-Ring.html" accesskey="u" rel="up">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="appendixsec" id="yank_002dpop-1">B.3 <code class="code">yank-pop</code></h3>
+<a class="index-entry-id" id="index-yank_002dpop"></a>
+
+<p>After understanding <code class="code">yank</code> and <code class="code">current-kill</code>, you know how
+to approach the <code class="code">yank-pop</code> function.  Leaving out the
+documentation to save space, it looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun yank-pop (&amp;optional arg)
+  &quot;&hellip;&quot;
+  (interactive &quot;*p&quot;)
+  (if (not (eq last-command 'yank))
+      (error &quot;Previous command was not a yank&quot;))
+</pre></div><div class="group"><pre class="example-preformatted">  (setq this-command 'yank)
+  (unless arg (setq arg 1))
+  (let ((inhibit-read-only t)
+        (before (&lt; (point) (mark t))))
+</pre></div><div class="group"><pre class="example-preformatted">    (if before
+        (funcall (or yank-undo-function 'delete-region) (point) (mark t))
+      (funcall (or yank-undo-function 'delete-region) (mark t) (point)))
+    (setq yank-undo-function nil)
+</pre></div><div class="group"><pre class="example-preformatted">    (set-marker (mark-marker) (point) (current-buffer))
+    (insert-for-yank (current-kill arg))
+    ;; Set the window start back where it was in the yank command,
+    ;; if possible.
+    (set-window-start (selected-window) yank-window-start t)
+</pre></div><div class="group"><pre class="example-preformatted">    (if before
+        ;; This is like exchange-point-and-mark,
+        ;;     but doesn't activate the mark.
+        ;; It is cleaner to avoid activation, even though the command
+        ;; loop would deactivate the mark because we inserted text.
+        (goto-char (prog1 (mark t)
+                     (set-marker (mark-marker)
+                                 (point)
+                                 (current-buffer))))))
+  nil)
+</pre></div></div>
+
+<p>The function is interactive with a small &lsquo;<samp class="samp">p</samp>&rsquo; so the prefix
+argument is processed and passed to the function.  The command can
+only be used after a previous yank; otherwise an error message is
+sent.  This check uses the variable <code class="code">last-command</code> which is set
+by <code class="code">yank</code> and is discussed elsewhere.
+(See <a class="xref" href="copy_002dregion_002das_002dkill.html"><code class="code">copy-region-as-kill</code></a>.)
+</p>
+<p>The <code class="code">let</code> clause sets the variable <code class="code">before</code> to true or false
+depending whether point is before or after mark and then the region
+between point and mark is deleted.  This is the region that was just
+inserted by the previous yank and it is this text that will be
+replaced.
+</p>
+<p><code class="code">funcall</code> calls its first argument as a function, passing
+remaining arguments to it.  The first argument is whatever the
+<code class="code">or</code> expression returns.  The two remaining arguments are the
+positions of point and mark set by the preceding <code class="code">yank</code> command.
+</p>
+<p>There is more, but that is the hardest part.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="ring-file.html">The <samp class="file">ring.el</samp> File</a>, Previous: <a href="yank.html"><code class="code">yank</code></a>, Up: <a href="Kill-Ring.html">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

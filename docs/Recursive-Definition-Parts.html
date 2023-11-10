@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Recursive Definition Parts (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Recursive Definition Parts (Programming in Emacs Lisp)">
+<meta name="keywords" content="Recursive Definition Parts (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Recursion.html" rel="up" title="Recursion">
+<link href="Recursion-with-list.html" rel="next" title="Recursion with list">
+<link href="Building-Robots.html" rel="prev" title="Building Robots">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Recursive-Definition-Parts">
+<div class="nav-panel">
+<p>
+Next: <a href="Recursion-with-list.html" accesskey="n" rel="next">Recursion with a List</a>, Previous: <a href="Building-Robots.html" accesskey="p" rel="prev">Building Robots: Extending the Metaphor</a>, Up: <a href="Recursion.html" accesskey="u" rel="up">Recursion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="The-Parts-of-a-Recursive-Definition">11.3.2 The Parts of a Recursive Definition</h4>
+<a class="index-entry-id" id="index-Parts-of-a-Recursive-Definition"></a>
+<a class="index-entry-id" id="index-Recursive-Definition-Parts"></a>
+
+<p>A recursive function typically contains a conditional expression which
+has three parts:
+</p>
+<ol class="enumerate">
+<li> A true-or-false-test that determines whether the function is called
+again, here called the <em class="dfn">do-again-test</em>.
+
+</li><li> The name of the function.  When this name is called, a new instance of
+the function&mdash;a new robot, as it were&mdash;is created and told what to do.
+
+</li><li> An expression that returns a different value each time the function is
+called, here called the <em class="dfn">next-step-expression</em>.  Consequently, the
+argument (or arguments) passed to the new instance of the function
+will be different from that passed to the previous instance.  This
+causes the conditional expression, the <em class="dfn">do-again-test</em>, to test
+false after the correct number of repetitions.
+</li></ol>
+
+<p>Recursive functions can be much simpler than any other kind of
+function.  Indeed, when people first start to use them, they often look
+so mysteriously simple as to be incomprehensible.  Like riding a
+bicycle, reading a recursive function definition takes a certain knack
+which is hard at first but then seems simple.
+</p>
+<p>There are several different common recursive patterns.  A very simple
+pattern looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun <var class="var">name-of-recursive-function</var> (<var class="var">argument-list</var>)
+  &quot;<var class="var">documentation</var>&hellip;&quot;
+  (if <var class="var">do-again-test</var>
+    <var class="var">body</var>&hellip;
+    (<var class="var">name-of-recursive-function</var>
+         <var class="var">next-step-expression</var>)))
+</pre></div></div>
+
+<p>Each time a recursive function is evaluated, a new instance of it is
+created and told what to do.  The arguments tell the instance what to do.
+</p>
+<p>An argument is bound to the value of the next-step-expression.  Each
+instance runs with a different value of the next-step-expression.
+</p>
+<p>The value in the next-step-expression is used in the do-again-test.
+</p>
+<p>The value returned by the next-step-expression is passed to the new
+instance of the function, which evaluates it (or some
+transmogrification of it) to determine whether to continue or stop.
+The next-step-expression is designed so that the do-again-test returns
+false when the function should no longer be repeated.
+</p>
+<p>The do-again-test is sometimes called the <em class="dfn">stop condition</em>,
+since it stops the repetitions when it tests false.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Recursion-with-list.html">Recursion with a List</a>, Previous: <a href="Building-Robots.html">Building Robots: Extending the Metaphor</a>, Up: <a href="Recursion.html">Recursion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

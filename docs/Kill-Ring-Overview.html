@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Kill Ring Overview (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Kill Ring Overview (Programming in Emacs Lisp)">
+<meta name="keywords" content="Kill Ring Overview (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Yanking.html" rel="up" title="Yanking">
+<link href="kill_002dring_002dyank_002dpointer.html" rel="next" title="kill-ring-yank-pointer">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Kill-Ring-Overview">
+<div class="nav-panel">
+<p>
+Next: <a href="kill_002dring_002dyank_002dpointer.html" accesskey="n" rel="next">The <code class="code">kill-ring-yank-pointer</code> Variable</a>, Up: <a href="Yanking.html" accesskey="u" rel="up">Yanking Text Back</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Kill-Ring-Overview-1">10.1 Kill Ring Overview</h3>
+<a class="index-entry-id" id="index-Kill-ring-overview"></a>
+
+<p>The kill ring is a list of textual strings.  This is what it looks like:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(&quot;some text&quot; &quot;a different piece of text&quot; &quot;yet more text&quot;)
+</pre></div>
+
+<p>If this were the contents of my kill ring and I pressed <kbd class="kbd">C-y</kbd>, the
+string of characters saying &lsquo;<samp class="samp">some text</samp>&rsquo; would be inserted in this
+buffer where my cursor is located.
+</p>
+<p>The <code class="code">yank</code> command is also used for duplicating text by copying it.
+The copied text is not cut from the buffer, but a copy of it is put on the
+kill ring and is inserted by yanking it back.
+</p>
+<p>Three functions are used for bringing text back from the kill ring:
+<code class="code">yank</code>, which is usually bound to <kbd class="kbd">C-y</kbd>; <code class="code">yank-pop</code>,
+which is usually bound to <kbd class="kbd">M-y</kbd>; and <code class="code">rotate-yank-pointer</code>,
+which is used by the two other functions.
+</p>
+<p>These functions refer to the kill ring through a variable called the
+<code class="code">kill-ring-yank-pointer</code>.  Indeed, the insertion code for both the
+<code class="code">yank</code> and <code class="code">yank-pop</code> functions is:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(insert (car kill-ring-yank-pointer))
+</pre></div>
+
+<p>(Well, no more.  In GNU Emacs 22, the function has been replaced by
+<code class="code">insert-for-yank</code> which calls <code class="code">insert-for-yank-1</code>
+repetitively for each <code class="code">yank-handler</code> segment.  In turn,
+<code class="code">insert-for-yank-1</code> strips text properties from the inserted text
+according to <code class="code">yank-excluded-properties</code>.  Otherwise, it is just
+like <code class="code">insert</code>.  We will stick with plain <code class="code">insert</code> since it
+is easier to understand.)
+</p>
+<p>To begin to understand how <code class="code">yank</code> and <code class="code">yank-pop</code> work, it is
+first necessary to look at the <code class="code">kill-ring-yank-pointer</code> variable.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="kill_002dring_002dyank_002dpointer.html">The <code class="code">kill-ring-yank-pointer</code> Variable</a>, Up: <a href="Yanking.html">Yanking Text Back</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

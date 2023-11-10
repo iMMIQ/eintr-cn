@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>lengths-list-many-files (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="lengths-list-many-files (Programming in Emacs Lisp)">
+<meta name="keywords" content="lengths-list-many-files (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Several-files.html" rel="up" title="Several files">
+<link href="append.html" rel="next" title="append">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="lengths_002dlist_002dmany_002dfiles">
+<div class="nav-panel">
+<p>
+Next: <a href="append.html" accesskey="n" rel="next">The <code class="code">append</code> Function</a>, Up: <a href="Several-files.html" accesskey="u" rel="up">Count Words in <code class="code">defuns</code> in Different Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="Determine-the-lengths-of-defuns">Determine the lengths of <code class="code">defuns</code></h4>
+
+<p>The design using a <code class="code">while</code> loop is routine.  The argument passed
+to the function is a list of files.  As we saw earlier (see <a class="pxref" href="Loop-Example.html">A <code class="code">while</code> Loop and a List</a>), you can write a <code class="code">while</code> loop so that the body of the
+loop is evaluated if such a list contains elements, but to exit the
+loop if the list is empty.  For this design to work, the body of the
+loop must contain an expression that shortens the list each time the
+body is evaluated, so that eventually the list is empty.  The usual
+technique is to set the value of the list to the value of the <small class="sc">CDR</small>
+of the list each time the body is evaluated.
+</p>
+<p>The template looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(while <var class="var">test-whether-list-is-empty</var>
+  <var class="var">body</var>&hellip;
+  <var class="var">set-list-to-cdr-of-list</var>)
+</pre></div></div>
+
+<p>Also, we remember that a <code class="code">while</code> loop returns <code class="code">nil</code> (the
+result of evaluating the true-or-false-test), not the result of any
+evaluation within its body.  (The evaluations within the body of the
+loop are done for their side effects.)  However, the expression that
+sets the lengths&rsquo; list is part of the body&mdash;and that is the value
+that we want returned by the function as a whole.  To do this, we
+enclose the <code class="code">while</code> loop within a <code class="code">let</code> expression, and
+arrange that the last element of the <code class="code">let</code> expression contains
+the value of the lengths&rsquo; list.  (See <a class="xref" href="Incrementing-Example.html">Loop
+Example with an Incrementing Counter</a>.)
+</p>
+<a class="index-entry-id" id="index-lengths_002dlist_002dmany_002dfiles"></a>
+<p>These considerations lead us directly to the function itself:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">Use <code class="code">while</code> loop.</span>
+(defun lengths-list-many-files (list-of-files)
+  &quot;Return list of lengths of defuns in LIST-OF-FILES.&quot;
+</pre></div><div class="group"><pre class="example-preformatted">  (let (lengths-list)
+
+;;; <span class="r">true-or-false-test</span>
+    (while list-of-files
+      (setq lengths-list
+            (append
+             lengths-list
+
+;;; <span class="r">Generate a lengths&rsquo; list.</span>
+             (lengths-list-file
+              (expand-file-name (car list-of-files)))))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">Make files&rsquo; list shorter.</span>
+      (setq list-of-files (cdr list-of-files)))
+
+;;; <span class="r">Return final value of lengths&rsquo; list.</span>
+    lengths-list))
+</pre></div></div>
+
+<p><code class="code">expand-file-name</code> is a built-in function that converts a file
+name to the absolute, long, path name form.  The function employs the
+name of the directory in which the function is called.
+</p>
+<p>Thus, if <code class="code">expand-file-name</code> is called on <code class="code">debug.el</code> when
+Emacs is visiting the
+<samp class="file">/usr/local/share/emacs/22.1.1/lisp/emacs-lisp/</samp> directory,
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">debug.el
+</pre></div>
+
+<p>becomes
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">/usr/local/share/emacs/22.1.1/lisp/emacs-lisp/debug.el
+</pre></div>
+
+<p>The only other new element of this function definition is the as yet
+unstudied function <code class="code">append</code>, which merits a short section for
+itself.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="append.html">The <code class="code">append</code> Function</a>, Up: <a href="Several-files.html">Count Words in <code class="code">defuns</code> in Different Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

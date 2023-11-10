@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>List Processing (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="List Processing (Programming in Emacs Lisp)">
+<meta name="keywords" content="List Processing (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Practicing-Evaluation.html" rel="next" title="Practicing Evaluation">
+<link href="Preface.html" rel="prev" title="Preface">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="List-Processing">
+<div class="nav-panel">
+<p>
+Next: <a href="Practicing-Evaluation.html" accesskey="n" rel="next">Practicing Evaluation</a>, Previous: <a href="Preface.html" accesskey="p" rel="prev">前言</a>, Up: <a href="index.html" accesskey="u" rel="up">An Introduction to Programming in Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Lie-Biao-Chu-Li-">1 列表处理</h2>
+
+<p>对于未经培训的人来说，Lisp 是一种奇特的编程语言。在 Lisp 代码中，到处都是括号。甚至有人声称这个名字代表“Lots of Isolated Silly Parentheses”（很多孤立的愚蠢括号）。但这种说法是不准确的。Lisp 代表 LISt Processing，这种编程语言通过处理括号中的<em class="emph">列表</em>（以及列表的列表）来工作。括号标示着列表的边界。有时候，列表前面会有一个撇号&lsquo;<samp class="samp">'</samp>&rsquo;，称作 Lisp 中的<em class="dfn">单引号</em>。
+<a class="footnote" id="DOCF1" href="#FOOT1"><sup>1</sup></a>  列表是 Lisp 的基础。
+</p>
+
+<ul class="mini-toc">
+<li><a href="Lisp-Lists.html" accesskey="1">Lisp列表</a></li>
+<li><a href="Run-a-Program.html" accesskey="2">运行程序</a></li>
+<li><a href="Making-Errors.html" accesskey="3">生成错误信息</a></li>
+<li><a href="Names-_0026-Definitions.html" accesskey="4">Symbol Names and Function Definitions</a></li>
+<li><a href="Lisp-Interpreter.html" accesskey="5">The Lisp Interpreter</a></li>
+<li><a href="Evaluation.html" accesskey="6">Evaluation</a></li>
+<li><a href="Variables.html" accesskey="7">Variables</a></li>
+<li><a href="Arguments.html" accesskey="8">Arguments</a></li>
+<li><a href="set-_0026-setq.html" accesskey="9">Setting the Value of a Variable</a></li>
+<li><a href="Summary.html">Summary</a></li>
+<li><a href="Error-Message-Exercises.html">Exercises</a></li>
+</ul>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT1" href="#DOCF1">(1)</a></h5>
+<p>A single-quote is an
+abbreviation for the special form <code class="code">quote</code>; you need not think
+about special forms now.
+See <a class="xref" href="Complications.html">Complications</a>.
+</p>
+</div>
+
+
+
+</body>
+</html>

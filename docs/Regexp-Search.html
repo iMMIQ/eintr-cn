@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Regexp Search (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Regexp Search (Programming in Emacs Lisp)">
+<meta name="keywords" content="Regexp Search (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Counting-Words.html" rel="next" title="Counting Words">
+<link href="Loops-_0026-Recursion.html" rel="prev" title="Loops &amp; Recursion">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Regexp-Search">
+<div class="nav-panel">
+<p>
+Next: <a href="Counting-Words.html" accesskey="n" rel="next">Counting via Repetition and Regexps</a>, Previous: <a href="Loops-_0026-Recursion.html" accesskey="p" rel="prev">Loops and Recursion</a>, Up: <a href="index.html" accesskey="u" rel="up">An Introduction to Programming in Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Regular-Expression-Searches">12 Regular Expression Searches</h2>
+<a class="index-entry-id" id="index-Searches_002c-illustrating"></a>
+<a class="index-entry-id" id="index-Regular-expression-searches"></a>
+<a class="index-entry-id" id="index-Patterns_002c-searching-for"></a>
+<a class="index-entry-id" id="index-Motion-by-sentence-and-paragraph"></a>
+<a class="index-entry-id" id="index-Sentences_002c-movement-by"></a>
+<a class="index-entry-id" id="index-Paragraphs_002c-movement-by"></a>
+
+<p>Regular expression searches are used extensively in GNU Emacs.  The
+two functions, <code class="code">forward-sentence</code> and <code class="code">forward-paragraph</code>,
+illustrate these searches well.  They use regular expressions to find
+where to move point.  The phrase &ldquo;regular expression&rdquo; is often written
+as &ldquo;regexp&rdquo;.
+</p>
+<p>Regular expression searches are described in <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Regexp-Search.html#Regexp-Search">Regular Expression Search</a> in <cite class="cite">The GNU Emacs Manual</cite>, as well as in
+<a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Regular-Expressions.html#Regular-Expressions">Regular Expressions</a> in <cite class="cite">The GNU Emacs Lisp Reference
+Manual</cite>.  In writing this chapter, I am presuming that you have at
+least a mild acquaintance with them.  The major point to remember is
+that regular expressions permit you to search for patterns as well as
+for literal strings of characters.  For example, the code in
+<code class="code">forward-sentence</code> searches for the pattern of possible
+characters that could mark the end of a sentence, and moves point to
+that spot.
+</p>
+<p>Before looking at the code for the <code class="code">forward-sentence</code> function, it
+is worth considering what the pattern that marks the end of a sentence
+must be.  The pattern is discussed in the next section; following that
+is a description of the regular expression search function,
+<code class="code">re-search-forward</code>.  The <code class="code">forward-sentence</code> function
+is described in the section following.  Finally, the
+<code class="code">forward-paragraph</code> function is described in the last section of
+this chapter.  <code class="code">forward-paragraph</code> is a complex function that
+introduces several new features.
+</p>
+
+<ul class="mini-toc">
+<li><a href="sentence_002dend.html" accesskey="1">The Regular Expression for <code class="code">sentence-end</code></a></li>
+<li><a href="re_002dsearch_002dforward.html" accesskey="2">The <code class="code">re-search-forward</code> Function</a></li>
+<li><a href="forward_002dsentence.html" accesskey="3"><code class="code">forward-sentence</code></a></li>
+<li><a href="forward_002dparagraph.html" accesskey="4"><code class="code">forward-paragraph</code>: a Goldmine of Functions</a></li>
+<li><a href="Regexp-Review.html" accesskey="5">Review</a></li>
+<li><a href="re_002dsearch-Exercises.html" accesskey="6">Exercises with <code class="code">re-search-forward</code></a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Counting-Words.html">Counting via Repetition and Regexps</a>, Previous: <a href="Loops-_0026-Recursion.html">Loops and Recursion</a>, Up: <a href="index.html">An Introduction to Programming in Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Test print-graph (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Test print-graph (Programming in Emacs Lisp)">
+<meta name="keywords" content="Test print-graph (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Print-Whole-Graph.html" rel="up" title="Print Whole Graph">
+<link href="Graphing-words-in-defuns.html" rel="next" title="Graphing words in defuns">
+<link href="The-final-version.html" rel="prev" title="The final version">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="appendixsubsec-level-extent" id="Test-print_002dgraph">
+<div class="nav-panel">
+<p>
+Next: <a href="Graphing-words-in-defuns.html" accesskey="n" rel="next">Graphing Numbers of Words and Symbols</a>, Previous: <a href="The-final-version.html" accesskey="p" rel="prev">Changes for the Final Version</a>, Up: <a href="Print-Whole-Graph.html" accesskey="u" rel="up">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="appendixsubsec" id="Testing-print_002dgraph">C.4.1 Testing <code class="code">print-graph</code></h4>
+
+<p>We can test the <code class="code">print-graph</code> function with a short list of numbers:
+</p>
+<ol class="enumerate">
+<li> Install the final versions of <code class="code">Y-axis-column</code>,
+<code class="code">graph-body-print</code>, and <code class="code">print-graph</code> (in addition to the
+rest of the code.)
+
+</li><li> Copy the following expression:
+
+<div class="example smallexample">
+<pre class="example-preformatted">(print-graph '(3 2 5 6 7 5 3 4 6 4 3 2 1))
+</pre></div>
+
+</li><li> Switch to the <samp class="file">*scratch*</samp> buffer and place the cursor where you
+want the axis labels to start.
+
+</li><li> Type <kbd class="kbd">M-:</kbd> (<code class="code">eval-expression</code>).
+
+</li><li> Yank the test expression into the minibuffer
+with <kbd class="kbd">C-y</kbd> (<code class="code">yank)</code>.
+
+</li><li> Press <kbd class="key">RET</kbd> to evaluate the expression.
+</li></ol>
+
+<p>Emacs will print a graph that looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">10 -
+
+
+         *
+        **   *
+ 5 -   ****  *
+       **** ***
+     * *********
+     ************
+ 1 - *************
+
+     |   |    |    |
+     1   5   10   15
+</pre></div></div>
+
+<p>On the other hand, if you pass <code class="code">print-graph</code> a
+<code class="code">vertical-step</code> value of 2, by evaluating this expression:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(print-graph '(3 2 5 6 7 5 3 4 6 4 3 2 1) 2)
+</pre></div>
+
+<p>The graph looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">20 -
+
+
+         *
+        **   *
+10 -   ****  *
+       **** ***
+     * *********
+     ************
+ 2 - *************
+
+     |   |    |    |
+     1   5   10   15
+</pre></div></div>
+
+<p>(A question: is the &lsquo;<samp class="samp">2</samp>&rsquo; on the bottom of the vertical axis a bug or a
+feature?  If you think it is a bug, and should be a &lsquo;<samp class="samp">1</samp>&rsquo; instead, (or
+even a &lsquo;<samp class="samp">0</samp>&rsquo;), you can modify the sources.)
+</p>
+</div>
+
+
+
+</body>
+</html>

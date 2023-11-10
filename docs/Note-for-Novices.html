@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Note for Novices (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Note for Novices (Programming in Emacs Lisp)">
+<meta name="keywords" content="Note for Novices (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Preface.html" rel="up" title="Preface">
+<link href="Thank-You.html" rel="next" title="Thank You">
+<link href="Lisp-History.html" rel="prev" title="Lisp History">
+<style type="text/css">
+<!--
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.w-nolinebreak-text {white-space: nowrap}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsec-level-extent" id="Note-for-Novices">
+<div class="nav-panel">
+<p>
+Next: <a href="Thank-You.html" accesskey="n" rel="next">致谢</a>, Previous: <a href="Lisp-History.html" accesskey="p" rel="prev">Lisp的历史</a>, Up: <a href="Preface.html" accesskey="u" rel="up">前言</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="unnumberedsec" id="Xin-Shou-Xu-Zhi-">新手须知</h3>
+
+<p>即使您不了解GNU Emacs，您仍然可以从本文中有所收获。但是，我建议您学习Emacs，即使只是为了学会在计算机屏幕上移动。您可以使用内置教程来自学如何使用Emacs。要使用它，输入<kbd class="kbd">C-h t</kbd>。（这意味着您同时按下和释放<kbd class="key">CTRL</kbd>键和<kbd class="kbd">h</kbd>键，然后按下和释放<kbd class="kbd">t</kbd>键。）
+</p>
+<p>此外，我经常通过列出用于调用标准Emacs命令的按键，然后在括号中给出命令的名称，来引用Emacs的标准命令之一，就像这样：<kbd class="kbd">M-C-\</kbd>（<code class="code">indent-region</code>）。这意味着<code class="code">indent-region</code>命令通常是通过键入<kbd class="kbd">M-C-\</kbd>来调用的。（如果您愿意，您可以更改用于调用命令的按键；这被称为<em class="dfn">rebinding, 重新绑定</em>。See <a class="xref" href="Keymaps.html">Keymaps</a>。）<kbd class="kbd">M-C-\</kbd>的缩写意味着你需要同时按下<kbd class="key">META</kbd>键、<kbd class="key">CTRL</kbd>键和<kbd class="kbd">\</kbd>键。在许多现代键盘上，<kbd class="key">META</kbd>键帽上标着<kbd class="key">ALT</kbd>。像这样的组合被称为组合键(keychord)。如果你的键盘没有<kbd class="key">META</kbd>键，单击<kbd class="key">ESC</kbd>键来代替它。在这种情况下，<kbd class="kbd">M-C-\</kbd>意味着您按下并释放<kbd class="key">ESC</kbd>键，然后同时按下<kbd class="key">CTRL</kbd>键和<kbd class="kbd">\</kbd>键。但通常<kbd class="kbd">M-C-\</kbd>意味着同时按下标有<kbd class="key">ALT</kbd>的键和<kbd class="key">CTRL</kbd>键，同时再按<kbd class="kbd">\</kbd>键。
+</p>
+<p>除了长按单个组合键外，您还可以在你输入的内容前加上<kbd class="kbd">C-u</kbd>，这被称为<em class="dfn">通用参数</em>。<kbd class="kbd">C-u</kbd>组合键会将参数传递给后续的命令。因此，要以6空格缩进一段纯文本的区域，首先标记该区域，然后输入<kbd class="kbd"><span class="w-nolinebreak-text">C-u</span>&nbsp;6&nbsp;<span class="w-nolinebreak-text">M-C-\</span></kbd><!-- /@w -->。（如果您不指定一个数字，Emacs将默认数字为4，或者以不同于其他情况的方式运行该命令。）See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Arguments.html#Arguments">Numeric Arguments</a> in <cite class="cite">The GNU Emacs Manual</cite>。
+</p>
+<p>如果您是在GNU Emacs中使用Info模式阅读这篇文章，您可以通过按下空格键<kbd class="key">SPC</kbd>来浏览整个文档。（要了解Info，请输入<kbd class="kbd">C-h i</kbd>，然后选择Info。）
+</p>
+<p>关于术语的说明：当我单独使用Lisp这个词时，我通常是在泛指各种Lisp方言，但当我谈到Emacs Lisp时，我指的是特定的GNU Emacs Lisp。
+</p>
+</div>
+
+
+
+</body>
+</html>

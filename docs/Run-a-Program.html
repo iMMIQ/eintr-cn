@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Run a Program (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Run a Program (Programming in Emacs Lisp)">
+<meta name="keywords" content="Run a Program (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="List-Processing.html" rel="up" title="List Processing">
+<link href="Making-Errors.html" rel="next" title="Making Errors">
+<link href="Lisp-Lists.html" rel="prev" title="Lisp Lists">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Run-a-Program">
+<div class="nav-panel">
+<p>
+Next: <a href="Making-Errors.html" accesskey="n" rel="next">生成错误信息</a>, Previous: <a href="Lisp-Lists.html" accesskey="p" rel="prev">Lisp列表</a>, Up: <a href="List-Processing.html" accesskey="u" rel="up">列表处理</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Yun-Xing-Cheng-Xu-">1.2 运行程序</h3>
+<a class="index-entry-id" id="index-Run-a-program"></a>
+<a class="index-entry-id" id="index-Program_002c-running-one"></a>
+
+<a class="index-entry-id" id="index-evaluate-defined"></a>
+<p>在Lisp中，任何列表本身都可以作为一个准备执行的程序。如果对列表进行求值（在Lisp术语中称为<em class="dfn">评估</em>(evaluate, eval)），计算机会执行以下三种操作之一：直接返回列表本身且不做任何处理；显示错误信息；或者将列表中的第一个符号视为命令并执行相应操作。 （当然，通常您期望的是最后一种情况！）
+</p>
+<a class="index-entry-id" id="index-quote"></a>
+<a class="index-entry-id" id="index-_0027-for-quoting"></a>
+<a class="index-entry-id" id="index-quoting-using-apostrophe"></a>
+<a class="index-entry-id" id="index-apostrophe-for-quoting"></a>
+<p>在前面章节的示例中，我在某些列表之前使用的<code class="code">'</code>，称为<em class="dfn">单引号</em>；它的作用是告诉Lisp直接原样输出这个列表，不做任何处理。但是，如果列表前没有单引号，那么列表中的第一个元素就具有特殊意义：它是计算机要执行的命令。 （在Lisp中，这些命令被称为<em class="emph">函数</em>。）上例中的<code class="code">(+ 2 2)</code>列表没有单引号，因此Lisp会将<code class="code">+</code>视为指示对后面的数字进行相加运算的命令。
+</p>
+<p>如果您在GNU Emacs中的Info模式下阅读此文档，可以通过以下步骤来执行Lisp表达式的计算：将光标置于以下列表的右括号之后，键入<kbd class="kbd">C-x C-e</kbd>：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ 2 2)
+</pre></div>
+
+<p>您将在回显区域看到数字<code class="code">4</code><a class="footnote" id="DOCF2" href="#FOOT2"><sup>2</sup></a>。 （您刚刚对该列表进行了评估。回显区域位于屏幕底部区域，或是输出文本信息。）现在尝试对一个带引号的列表执行相同的操作：将光标放在下例列表的右括号后，键入<kbd class="kbd">C-x C-e</kbd>：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">'(this is a quoted list)
+</pre></div>
+
+<p>您将在回显区域看到 <code class="code">(this is a quoted list)</code>。
+</p>
+<a class="index-entry-id" id="index-Lisp-interpreter_002c-explained"></a>
+<a class="index-entry-id" id="index-Interpreter_002c-Lisp_002c-explained"></a>
+<p>在上述两种情况下，您所做的是向GNU Emacs内部的一个叫做<em class="dfn">Lisp解释器</em>的程序发送一个命令，即给解释器一个要评估的表达式。Lisp解释器(interpreter)得名于它解释表达式含义的功能,就像一个人在解释一样。
+</p>
+<p>您也可以评估一个不是列表的原子，即一个没有被括号包围的原子；同样，Lisp解释器会将这种人类可读的表达式翻译成计算机语言。但在讨论这个之前（see <a class="pxref" href="Variables.html">Variables</a>），我们先来看当出现错误时Lisp解释器会做什么。
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT2" href="#DOCF2">(2)</a></h5>
+<p>Emacs以十进制、八进制和十六进制以及字符的方式显示整数值，但现在让我们忽略这个便利功能。</p>
+</div>
+
+
+
+</body>
+</html>

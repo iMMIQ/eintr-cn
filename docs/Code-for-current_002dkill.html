@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Code for current-kill (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Code for current-kill (Programming in Emacs Lisp)">
+<meta name="keywords" content="Code for current-kill (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="current_002dkill.html" rel="up" title="current-kill">
+<link href="Understanding-current_002dkill.html" rel="next" title="Understanding current-kill">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="Code-for-current_002dkill">
+<div class="nav-panel">
+<p>
+Next: <a href="Understanding-current_002dkill.html" accesskey="n" rel="next"><code class="code">current-kill</code> in Outline</a>, Up: <a href="current_002dkill.html" accesskey="u" rel="up">The <code class="code">current-kill</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="The-code-for-current_002dkill">The code for <code class="code">current-kill</code></h4>
+
+
+<p>The <code class="code">current-kill</code> function is used by <code class="code">yank</code> and by
+<code class="code">yank-pop</code>.  Here is the code for <code class="code">current-kill</code>:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun current-kill (n &amp;optional do-not-move)
+  &quot;Rotate the yanking point by N places, and then return that kill.
+If N is zero and `interprogram-paste-function' is set to a
+function that returns a string or a list of strings, and if that
+function doesn't return nil, then that string (or list) is added
+to the front of the kill ring and the string (or first string in
+the list) is returned as the latest kill.
+</pre></div><div class="group"><pre class="example-preformatted">If N is not zero, and if `yank-pop-change-selection' is
+non-nil, use `interprogram-cut-function' to transfer the
+kill at the new yank point into the window system selection.
+</pre></div><div class="group"><pre class="example-preformatted">If optional arg DO-NOT-MOVE is non-nil, then don't actually
+move the yanking point; just return the Nth kill forward.&quot;
+
+  (let ((interprogram-paste (and (= n 0)
+                                 interprogram-paste-function
+                                 (funcall interprogram-paste-function))))
+</pre></div><div class="group"><pre class="example-preformatted">    (if interprogram-paste
+        (progn
+          ;; Disable the interprogram cut function when we add the new
+          ;; text to the kill ring, so Emacs doesn't try to own the
+          ;; selection, with identical text.
+          (let ((interprogram-cut-function nil))
+            (if (listp interprogram-paste)
+              (mapc 'kill-new (nreverse interprogram-paste))
+              (kill-new interprogram-paste)))
+          (car kill-ring))
+</pre></div><div class="group"><pre class="example-preformatted">      (or kill-ring (error &quot;Kill ring is empty&quot;))
+      (let ((ARGth-kill-element
+             (nthcdr (mod (- n (length kill-ring-yank-pointer))
+                          (length kill-ring))
+                     kill-ring)))
+        (unless do-not-move
+          (setq kill-ring-yank-pointer ARGth-kill-element)
+          (when (and yank-pop-change-selection
+                     (&gt; n 0)
+                     interprogram-cut-function)
+            (funcall interprogram-cut-function (car ARGth-kill-element))))
+        (car ARGth-kill-element)))))
+</pre></div></div>
+
+<p>Remember also that the <code class="code">kill-new</code> function sets
+<code class="code">kill-ring-yank-pointer</code> to the latest element of the kill
+ring, which means that all the functions that call it set the value
+indirectly: <code class="code">kill-append</code>, <code class="code">copy-region-as-kill</code>,
+<code class="code">kill-ring-save</code>, <code class="code">kill-line</code>, and <code class="code">kill-region</code>.
+</p>
+<p>Here is the line in <code class="code">kill-new</code>, which is explained in
+<a class="ref" href="kill_002dnew-function.html">The <code class="code">kill-new</code> function</a>.
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq kill-ring-yank-pointer kill-ring)
+</pre></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Understanding-current_002dkill.html"><code class="code">current-kill</code> in Outline</a>, Up: <a href="current_002dkill.html">The <code class="code">current-kill</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

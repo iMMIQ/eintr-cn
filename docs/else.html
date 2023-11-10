@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>else (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="else (Programming in Emacs Lisp)">
+<meta name="keywords" content="else (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Writing-Defuns.html" rel="up" title="Writing Defuns">
+<link href="Truth-_0026-Falsehood.html" rel="next" title="Truth &amp; Falsehood">
+<link href="if.html" rel="prev" title="if">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="else">
+<div class="nav-panel">
+<p>
+Next: <a href="Truth-_0026-Falsehood.html" accesskey="n" rel="next">Truth and Falsehood in Emacs Lisp</a>, Previous: <a href="if.html" accesskey="p" rel="prev">The <code class="code">if</code> Special Form</a>, Up: <a href="Writing-Defuns.html" accesskey="u" rel="up">How To Write Function Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="If_002d_002dthen_002d_002delse-Expressions">3.8 If&ndash;then&ndash;else Expressions</h3>
+<a class="index-entry-id" id="index-Else"></a>
+
+<p>An <code class="code">if</code> expression may have an optional third argument, called
+the <em class="dfn">else-part</em>, for the case when the true-or-false-test returns
+false.  When this happens, the second argument or then-part of the
+overall <code class="code">if</code> expression is <em class="emph">not</em> evaluated, but the third or
+else-part <em class="emph">is</em> evaluated.  You might think of this as the cloudy
+day alternative for the decision &ldquo;if it is warm and sunny, then go to
+the beach, else read a book!&rdquo;.
+</p>
+<p>The word &ldquo;else&rdquo; is not written in the Lisp code; the else-part of an
+<code class="code">if</code> expression comes after the then-part.  In the written Lisp, the
+else-part is usually written to start on a line of its own and is
+indented less than the then-part:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(if <var class="var">true-or-false-test</var>
+    <var class="var">action-to-carry-out-if-the-test-returns-true</var>
+  <var class="var">action-to-carry-out-if-the-test-returns-false</var>)
+</pre></div></div>
+
+<p>For example, the following <code class="code">if</code> expression prints the message &lsquo;<samp class="samp">4
+is not greater than 5!</samp>&rsquo; when you evaluate it in the usual way:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(if (&gt; 4 5)                               ; <span class="r">if-part</span>
+    (message &quot;4 falsely greater than 5!&quot;) ; <span class="r">then-part</span>
+  (message &quot;4 is not greater than 5!&quot;))   ; <span class="r">else-part</span>
+</pre></div></div>
+
+<p>Note that the different levels of indentation make it easy to
+distinguish the then-part from the else-part.  (GNU Emacs has several
+commands that automatically indent <code class="code">if</code> expressions correctly.
+See <a class="xref" href="Typing-Lists.html">GNU Emacs Helps You Type Lists</a>.)
+</p>
+<p>We can extend the <code class="code">type-of-animal</code> function to include an
+else-part by simply incorporating an additional part to the <code class="code">if</code>
+expression.
+</p>
+<p>You can see the consequences of doing this if you evaluate the following
+version of the <code class="code">type-of-animal</code> function definition to install it
+and then evaluate the two subsequent expressions to pass different
+arguments to the function.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun type-of-animal (characteristic)  ; <span class="r">Second version.</span>
+  &quot;Print message in echo area depending on CHARACTERISTIC.
+If the CHARACTERISTIC is the string \&quot;fierce\&quot;,
+then warn of a tiger; else say it is not fierce.&quot;
+  (if (equal characteristic &quot;fierce&quot;)
+      (message &quot;It is a tiger!&quot;)
+    (message &quot;It is not fierce!&quot;)))
+</pre></div></div>
+<br>
+
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(type-of-animal &quot;fierce&quot;)
+
+(type-of-animal &quot;striped&quot;)
+
+</pre></div></div>
+
+<p>When you evaluate <code class="code">(type-of-animal &quot;fierce&quot;)</code>, you will see the
+following message printed in the echo area: <code class="code">&quot;It is a tiger!&quot;</code>; but
+when you evaluate <code class="code">(type-of-animal &quot;striped&quot;)</code>, you will see
+<code class="code">&quot;It is not fierce!&quot;</code>.
+</p>
+<p>(Of course, if the <var class="var">characteristic</var> were <code class="code">&quot;ferocious&quot;</code>, the
+message <code class="code">&quot;It is not fierce!&quot;</code> would be printed; and it would be
+misleading!  When you write code, you need to take into account the
+possibility that some such argument will be tested by the <code class="code">if</code>
+and write your program accordingly.)
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Truth-_0026-Falsehood.html">Truth and Falsehood in Emacs Lisp</a>, Previous: <a href="if.html">The <code class="code">if</code> Special Form</a>, Up: <a href="Writing-Defuns.html">How To Write Function Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

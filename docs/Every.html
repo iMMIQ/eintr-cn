@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Every (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Every (Programming in Emacs Lisp)">
+<meta name="keywords" content="Every (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Recursive-Patterns.html" rel="up" title="Recursive Patterns">
+<link href="Accumulate.html" rel="next" title="Accumulate">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+ul.mark-bullet {list-style-type: disc}
+ul.mark-minus {list-style-type: "\2212"}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="Every">
+<div class="nav-panel">
+<p>
+Next: <a href="Accumulate.html" accesskey="n" rel="next">Recursive Pattern: <em class="emph">accumulate</em></a>, Up: <a href="Recursive-Patterns.html" accesskey="u" rel="up">Recursive Patterns</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="Recursive-Pattern_003a-every">Recursive Pattern: <em class="emph">every</em></h4>
+<a class="index-entry-id" id="index-Every_002c-type-of-recursive-pattern"></a>
+<a class="index-entry-id" id="index-Recursive-pattern-_002d-every"></a>
+
+<p>In the <code class="code">every</code> recursive pattern, an action is performed on every
+element of a list.
+</p>
+<p>The basic pattern is:
+</p>
+<ul class="itemize mark-bullet">
+<li>If a list be empty, return <code class="code">nil</code>.
+</li><li>Else, act on the beginning of the list (the <small class="sc">CAR</small> of the list)
+    <ul class="itemize mark-minus">
+<li>through a recursive call by the function on the rest (the
+    <small class="sc">CDR</small>) of the list,
+    </li><li>and, optionally, combine the acted-on element, using <code class="code">cons</code>,
+    with the results of acting on the rest.
+    </li></ul>
+</li></ul>
+
+<p>Here is an example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun square-each (numbers-list)
+  &quot;Square each of a NUMBERS LIST, recursively.&quot;
+  (if (not numbers-list)                ; do-again-test
+      nil
+    (cons
+     (* (car numbers-list) (car numbers-list))
+     (square-each (cdr numbers-list))))) ; next-step-expression
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(square-each '(1 2 3))
+    &rArr; (1 4 9)
+</pre></div></div>
+
+<p>If <code class="code">numbers-list</code> is empty, do nothing.  But if it has content,
+construct a list combining the square of the first number in the list
+with the result of the recursive call.
+</p>
+<p>(The example follows the pattern exactly: <code class="code">nil</code> is returned if
+the numbers&rsquo; list is empty.  In practice, you would write the
+conditional so it carries out the action when the numbers&rsquo; list is not
+empty.)
+</p>
+<p>The <code class="code">print-elements-recursively</code> function (see <a class="pxref" href="Recursion-with-list.html">Recursion with a List</a>) is another example of an <code class="code">every</code>
+pattern, except in this case, rather than bring the results together
+using <code class="code">cons</code>, we print each element of output.
+</p>
+<p>The <code class="code">print-elements-recursively</code> function looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defun print-elements-recursively (list)
+  &quot;Print each element of LIST on a line of its own.
+Uses recursion.&quot;
+  (when list                            ; <span class="r">do-again-test</span>
+        (print (car list))              ; <span class="r">body</span>
+        (print-elements-recursively     ; <span class="r">recursive call</span>
+         (cdr list))))                  ; <span class="r">next-step-expression</span>
+
+(print-elements-recursively animals)
+</pre></div></div>
+
+<p>The pattern for <code class="code">print-elements-recursively</code> is:
+</p>
+<ul class="itemize mark-bullet">
+<li>When the list is empty, do nothing.
+</li><li>But when the list has at least one element,
+    <ul class="itemize mark-minus">
+<li>act on the beginning of the list (the <small class="sc">CAR</small> of the list),
+    </li><li>and make a recursive call on the rest (the <small class="sc">CDR</small>) of the list.
+    </li></ul>
+</li></ul>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Accumulate.html">Recursive Pattern: <em class="emph">accumulate</em></a>, Up: <a href="Recursive-Patterns.html">Recursive Patterns</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Recursive triangle function (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Recursive triangle function (Programming in Emacs Lisp)">
+<meta name="keywords" content="Recursive triangle function (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Recursion.html" rel="up" title="Recursion">
+<link href="Recursion-with-cond.html" rel="next" title="Recursion with cond">
+<link href="Recursion-with-list.html" rel="prev" title="Recursion with list">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Recursive-triangle-function">
+<div class="nav-panel">
+<p>
+Next: <a href="Recursion-with-cond.html" accesskey="n" rel="next">Recursion Example Using <code class="code">cond</code></a>, Previous: <a href="Recursion-with-list.html" accesskey="p" rel="prev">Recursion with a List</a>, Up: <a href="Recursion.html" accesskey="u" rel="up">Recursion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Recursion-in-Place-of-a-Counter">11.3.4 Recursion in Place of a Counter</h4>
+<a class="index-entry-id" id="index-triangle_002drecursively"></a>
+
+<p>The <code class="code">triangle</code> function described in a previous section can also
+be written recursively.  It looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun triangle-recursively (number)
+  &quot;Return the sum of the numbers 1 through NUMBER inclusive.
+Uses recursion.&quot;
+  (if (= number 1)                    ; <span class="r">do-again-test</span>
+      1                               ; <span class="r">then-part</span>
+    (+ number                         ; <span class="r">else-part</span>
+       (triangle-recursively          ; <span class="r">recursive call</span>
+        (1- number)))))               ; <span class="r">next-step-expression</span>
+
+(triangle-recursively 7)
+</pre></div></div>
+
+<p>You can install this function by evaluating it and then try it by
+evaluating <code class="code">(triangle-recursively 7)</code>.  (Remember to put your
+cursor immediately after the last parenthesis of the function
+definition, before the comment.)  The function evaluates to 28.
+</p>
+<p>To understand how this function works, let&rsquo;s consider what happens in the
+various cases when the function is passed 1, 2, 3, or 4 as the value of
+its argument.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Recursive-Example-arg-of-1-or-2.html" accesskey="1">An argument of 1 or 2</a></li>
+<li><a href="Recursive-Example-arg-of-3-or-4.html" accesskey="2">An argument of 3 or 4</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

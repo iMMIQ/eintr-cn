@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>cons &amp; search-fwd Review (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="cons &amp; search-fwd Review (Programming in Emacs Lisp)">
+<meta name="keywords" content="cons &amp; search-fwd Review (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Cutting-_0026-Storing-Text.html" rel="up" title="Cutting &amp; Storing Text">
+<link href="search-Exercises.html" rel="next" title="search Exercises">
+<link href="defvar.html" rel="prev" title="defvar">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="cons-_0026-search_002dfwd-Review">
+<div class="nav-panel">
+<p>
+Next: <a href="search-Exercises.html" accesskey="n" rel="next">Searching Exercises</a>, Previous: <a href="defvar.html" accesskey="p" rel="prev">Initializing a Variable with <code class="code">defvar</code></a>, Up: <a href="Cutting-_0026-Storing-Text.html" accesskey="u" rel="up">Cutting and Storing Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Review-4">8.6 Review</h3>
+
+<p>Here is a brief summary of some recently introduced functions.
+</p>
+<dl class="table">
+<dt><code class="code">car</code></dt>
+<dt><code class="code">cdr</code></dt>
+<dd><p><code class="code">car</code> returns the first element of a list; <code class="code">cdr</code> returns the
+second and subsequent elements of a list.
+</p>
+<p>For example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(car '(1 2 3 4 5 6 7))
+     &rArr; 1
+(cdr '(1 2 3 4 5 6 7))
+     &rArr; (2 3 4 5 6 7)
+</pre></div></div>
+
+</dd>
+<dt><code class="code">cons</code></dt>
+<dd><p><code class="code">cons</code> constructs a list by prepending its first argument to its
+second argument.
+</p>
+<p>For example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(cons 1 '(2 3 4))
+     &rArr; (1 2 3 4)
+</pre></div></div>
+
+</dd>
+<dt><code class="code">funcall</code></dt>
+<dd><p><code class="code">funcall</code> evaluates its first argument as a function.  It passes
+its remaining arguments to its first argument.
+</p>
+</dd>
+<dt><code class="code">nthcdr</code></dt>
+<dd><p>Return the result of taking <small class="sc">CDR</small> <var class="var">n</var> times on a list.
+The &ldquo;rest of the rest&rdquo;, as it were.
+</p>
+<p>For example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(nthcdr 3 '(1 2 3 4 5 6 7))
+     &rArr; (4 5 6 7)
+</pre></div></div>
+
+</dd>
+<dt><code class="code">setcar</code></dt>
+<dt><code class="code">setcdr</code></dt>
+<dd><p><code class="code">setcar</code> changes the first element of a list; <code class="code">setcdr</code>
+changes the second and subsequent elements of a list.
+</p>
+<p>For example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq triple (list 1 2 3))
+
+(setcar triple '37)
+
+triple
+     &rArr; (37 2 3)
+
+(setcdr triple '(&quot;foo&quot; &quot;bar&quot;))
+
+triple
+     &rArr; (37 &quot;foo&quot; &quot;bar&quot;)
+</pre></div></div>
+
+</dd>
+<dt><code class="code">progn</code></dt>
+<dd><p>Evaluate each argument in sequence and then return the value of the
+last.
+</p>
+<p>For example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(progn 1 2 3 4)
+     &rArr; 4
+</pre></div></div>
+
+</dd>
+<dt><code class="code">save-restriction</code></dt>
+<dd><p>Record whatever narrowing is in effect in the current buffer, if any,
+and restore that narrowing after evaluating the arguments.
+</p>
+</dd>
+<dt><code class="code">search-forward</code></dt>
+<dd><p>Search for a string, and if the string is found, move point.  With a
+regular expression, use the similar <code class="code">re-search-forward</code>.
+(See <a class="xref" href="Regexp-Search.html">Regular Expression Searches</a>, for an
+explanation of regular expression patterns and searches.)
+</p>
+<p><code class="code">search-forward</code> and <code class="code">re-search-forward</code> take four
+arguments:
+</p>
+<ol class="enumerate">
+<li> The string or regular expression to search for.
+
+</li><li> Optionally, the limit of the search.
+
+</li><li> Optionally, what to do if the search fails, return <code class="code">nil</code> or an
+error message.
+
+</li><li> Optionally, how many times to repeat the search; if negative, the
+search goes backwards.
+</li></ol>
+
+</dd>
+<dt><code class="code">kill-region</code></dt>
+<dt><code class="code">delete-and-extract-region</code></dt>
+<dt><code class="code">copy-region-as-kill</code></dt>
+<dd>
+<p><code class="code">kill-region</code> cuts the text between point and mark from the
+buffer and stores that text in the kill ring, so you can get it back
+by yanking.
+</p>
+<p><code class="code">copy-region-as-kill</code> copies the text between point and mark into
+the kill ring, from which you can get it by yanking.  The function
+does not cut or remove the text from the buffer.
+</p></dd>
+</dl>
+
+<p><code class="code">delete-and-extract-region</code> removes the text between point and
+mark from the buffer and throws it away.  You cannot get it back.
+(This is not an interactive command.)
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="search-Exercises.html">Searching Exercises</a>, Previous: <a href="defvar.html">Initializing a Variable with <code class="code">defvar</code></a>, Up: <a href="Cutting-_0026-Storing-Text.html">Cutting and Storing Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

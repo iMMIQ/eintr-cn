@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>debug-on-quit (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="debug-on-quit (Programming in Emacs Lisp)">
+<meta name="keywords" content="debug-on-quit (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Debugging.html" rel="up" title="Debugging">
+<link href="edebug.html" rel="next" title="edebug">
+<link href="debug_002don_002dentry.html" rel="prev" title="debug-on-entry">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="debug_002don_002dquit">
+<div class="nav-panel">
+<p>
+Next: <a href="edebug.html" accesskey="n" rel="next">The <code class="code">edebug</code> Source Level Debugger</a>, Previous: <a href="debug_002don_002dentry.html" accesskey="p" rel="prev"><code class="code">debug-on-entry</code></a>, Up: <a href="Debugging.html" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="debug_002don_002dquit-and-_0028debug_0029">17.3 <code class="code">debug-on-quit</code> and <code class="code">(debug)</code></h3>
+
+<p>In addition to setting <code class="code">debug-on-error</code> or calling <code class="code">debug-on-entry</code>,
+there are two other ways to start <code class="code">debug</code>.
+</p>
+<a class="index-entry-id" id="index-debug_002don_002dquit"></a>
+<p>You can start <code class="code">debug</code> whenever you type <kbd class="kbd">C-g</kbd>
+(<code class="code">keyboard-quit</code>) by setting the variable <code class="code">debug-on-quit</code> to
+<code class="code">t</code>.  This is useful for debugging infinite loops.
+</p>
+<a class="index-entry-id" id="index-_0028debug_0029-in-code"></a>
+<p>Or, you can insert a line that says <code class="code">(debug)</code> into your code
+where you want the debugger to start, like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun triangle-bugged (number)
+  &quot;Return sum of numbers 1 through NUMBER inclusive.&quot;
+  (let ((total 0))
+    (while (&gt; number 0)
+      (setq total (+ total number))
+      (debug)                         ; <span class="r">Start debugger.</span>
+      (setq number (1= number)))      ; <span class="r">Error here.</span>
+    total))
+</pre></div></div>
+
+<p>The <code class="code">debug</code> function is described in detail in <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Debugger.html#Debugger">The Lisp Debugger</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>.
+</p>
+</div>
+
+
+
+</body>
+</html>

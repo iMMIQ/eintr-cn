@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Optional Arguments (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Optional Arguments (Programming in Emacs Lisp)">
+<meta name="keywords" content="Optional Arguments (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="beginning_002dof_002dbuffer.html" rel="up" title="beginning-of-buffer">
+<link href="beginning_002dof_002dbuffer-opt-arg.html" rel="next" title="beginning-of-buffer opt arg">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Optional-Arguments">
+<div class="nav-panel">
+<p>
+Next: <a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="n" rel="next"><code class="code">beginning-of-buffer</code> with an Argument</a>, Up: <a href="beginning_002dof_002dbuffer.html" accesskey="u" rel="up">Complete Definition of <code class="code">beginning-of-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Optional-Arguments-1">5.3.1 Optional Arguments</h4>
+
+<p>Unless told otherwise, Lisp expects that a function with an argument in
+its function definition will be called with a value for that argument.
+If that does not happen, you get an error and a message that says
+&lsquo;<samp class="samp">Wrong number of arguments</samp>&rsquo;.
+</p>
+<a class="index-entry-id" id="index-Optional-arguments"></a>
+<a class="index-entry-id" id="index-Keyword"></a>
+<a class="index-entry-id" id="index-optional"></a>
+<p>However, optional arguments are a feature of Lisp: a particular
+<em class="dfn">keyword</em> is used to tell the Lisp interpreter that an argument is
+optional.  The keyword is <code class="code">&amp;optional</code>.  (The &lsquo;<samp class="samp">&amp;</samp>&rsquo; in front of
+&lsquo;<samp class="samp">optional</samp>&rsquo; is part of the keyword.)  In a function definition, if
+an argument follows the keyword <code class="code">&amp;optional</code>, no value need be
+passed to that argument when the function is called.
+</p>
+<p>The first line of the function definition of <code class="code">beginning-of-buffer</code>
+therefore looks like this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(defun beginning-of-buffer (&amp;optional arg)
+</pre></div>
+
+<p>In outline, the whole function looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun beginning-of-buffer (&amp;optional arg)
+  &quot;<var class="var">documentation</var>&hellip;&quot;
+  (interactive &quot;P&quot;)
+  (or (<var class="var">is-the-argument-a-cons-cell</var> arg)
+      (and <var class="var">are-both-transient-mark-mode-and-mark-active-true</var>)
+      (push-mark))
+  (let (<var class="var">determine-size-and-set-it</var>)
+  (goto-char
+    (<var class="var">if-there-is-an-argument</var>
+        <var class="var">figure-out-where-to-go</var>
+      <var class="var">else-go-to</var>
+      (point-min))))
+   <var class="var">do-nicety</var>
+</pre></div></div>
+
+<p>The function is similar to the <code class="code">simplified-beginning-of-buffer</code>
+function except that the <code class="code">interactive</code> expression has <code class="code">&quot;P&quot;</code>
+as an argument and the <code class="code">goto-char</code> function is followed by an
+if-then-else expression that figures out where to put the cursor if
+there is an argument that is not a cons cell.
+</p>
+<p>(Since I do not explain a cons cell for many more chapters, please
+consider ignoring the function <code class="code">consp</code>.  See <a class="xref" href="List-Implementation.html">How Lists are Implemented</a>, and <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Cons-Cell-Type.html#Cons-Cell-Type">Cons Cell and List Types</a> in <cite class="cite">The GNU Emacs Lisp Reference
+Manual</cite>.)
+</p>
+<p>The <code class="code">&quot;P&quot;</code> in the <code class="code">interactive</code> expression tells Emacs to
+pass a prefix argument, if there is one, to the function in raw form.
+A prefix argument is made by typing the <kbd class="key">META</kbd> key followed by a
+number, or by typing <kbd class="kbd">C-u</kbd> and then a number.  (If you don&rsquo;t type
+a number, <kbd class="kbd">C-u</kbd> defaults to a cons cell with a 4.  A lowercase
+<code class="code">&quot;p&quot;</code> in the <code class="code">interactive</code> expression causes the function to
+convert a prefix arg to a number.)
+</p>
+<p>The true-or-false-test of the <code class="code">if</code> expression looks complex, but
+it is not: it checks whether <code class="code">arg</code> has a value that is not
+<code class="code">nil</code> and whether it is a cons cell.  (That is what <code class="code">consp</code>
+does; it checks whether its argument is a cons cell.)  If <code class="code">arg</code>
+has a value that is not <code class="code">nil</code> (and is not a cons cell), which
+will be the case if <code class="code">beginning-of-buffer</code> is called with a
+numeric argument, then this true-or-false-test will return true and
+the then-part of the <code class="code">if</code> expression will be evaluated.  On the
+other hand, if <code class="code">beginning-of-buffer</code> is not called with an
+argument, the value of <code class="code">arg</code> will be <code class="code">nil</code> and the else-part
+of the <code class="code">if</code> expression will be evaluated.  The else-part is
+simply <code class="code">point-min</code>, and when this is the outcome, the whole
+<code class="code">goto-char</code> expression is <code class="code">(goto-char (point-min))</code>, which
+is how we saw the <code class="code">beginning-of-buffer</code> function in its
+simplified form.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="beginning_002dof_002dbuffer-opt-arg.html"><code class="code">beginning-of-buffer</code> with an Argument</a>, Up: <a href="beginning_002dof_002dbuffer.html">Complete Definition of <code class="code">beginning-of-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

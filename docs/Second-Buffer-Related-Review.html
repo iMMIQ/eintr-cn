@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Second Buffer Related Review (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Second Buffer Related Review (Programming in Emacs Lisp)">
+<meta name="keywords" content="Second Buffer Related Review (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="More-Complex.html" rel="up" title="More Complex">
+<link href="optional-Exercise.html" rel="next" title="optional Exercise">
+<link href="beginning_002dof_002dbuffer.html" rel="prev" title="beginning-of-buffer">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Second-Buffer-Related-Review">
+<div class="nav-panel">
+<p>
+Next: <a href="optional-Exercise.html" accesskey="n" rel="next"><code class="code">optional</code> Argument Exercise</a>, Previous: <a href="beginning_002dof_002dbuffer.html" accesskey="p" rel="prev">Complete Definition of <code class="code">beginning-of-buffer</code></a>, Up: <a href="More-Complex.html" accesskey="u" rel="up">A Few More Complex Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Review-3">5.4 Review</h3>
+
+<p>Here is a brief summary of some of the topics covered in this chapter.
+</p>
+<dl class="table">
+<dt><code class="code">or</code></dt>
+<dd><p>Evaluate each argument in sequence, and return the value of the first
+argument that is not <code class="code">nil</code>; if none return a value that is not
+<code class="code">nil</code>, return <code class="code">nil</code>.  In brief, return the first true value
+of the arguments; return a true value if one <em class="emph">or</em> any of the
+others are true.
+</p>
+</dd>
+<dt><code class="code">and</code></dt>
+<dd><p>Evaluate each argument in sequence, and if any are <code class="code">nil</code>, return
+<code class="code">nil</code>; if none are <code class="code">nil</code>, return the value of the last
+argument.  In brief, return a true value only if all the arguments are
+true; return a true value if one <em class="emph">and</em> each of the others is
+true.
+</p>
+</dd>
+<dt><code class="code">&amp;optional</code></dt>
+<dd><p>A keyword used to indicate that an argument to a function definition
+is optional; this means that the function can be evaluated without the
+argument, if desired.
+</p>
+</dd>
+<dt><code class="code">prefix-numeric-value</code></dt>
+<dd><p>Convert the raw prefix argument produced by <code class="code">(interactive
+&quot;P&quot;)</code> to a numeric value.
+</p>
+</dd>
+<dt><code class="code">forward-line</code></dt>
+<dd><p>Move point forward to the beginning of the next line, or if the argument
+is greater than one, forward that many lines.  If it can&rsquo;t move as far
+forward as it is supposed to, <code class="code">forward-line</code> goes forward as far as
+it can and then returns a count of the number of additional lines it was
+supposed to move but couldn&rsquo;t.
+</p>
+</dd>
+<dt><code class="code">erase-buffer</code></dt>
+<dd><p>Delete the entire contents of the current buffer.
+</p>
+</dd>
+<dt><code class="code">bufferp</code></dt>
+<dd><p>Return <code class="code">t</code> if its argument is a buffer; otherwise return <code class="code">nil</code>.
+</p></dd>
+</dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="optional-Exercise.html"><code class="code">optional</code> Argument Exercise</a>, Previous: <a href="beginning_002dof_002dbuffer.html">Complete Definition of <code class="code">beginning-of-buffer</code></a>, Up: <a href="More-Complex.html">A Few More Complex Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

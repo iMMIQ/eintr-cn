@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>X Axis Tic Marks (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="X Axis Tic Marks (Programming in Emacs Lisp)">
+<meta name="keywords" content="X Axis Tic Marks (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="print_002dX_002daxis.html" rel="up" title="print-X-axis">
+<link href="Similarities-differences.html" rel="prev" title="Similarities differences">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span.w-nolinebreak-text {white-space: nowrap}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="appendixsubsec-level-extent" id="X-Axis-Tic-Marks">
+<div class="nav-panel">
+<p>
+Previous: <a href="Similarities-differences.html" accesskey="p" rel="prev">Similarities and differences</a>, Up: <a href="print_002dX_002daxis.html" accesskey="u" rel="up">The <code class="code">print-X-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="appendixsubsec" id="X-Axis-Tic-Marks-1">C.3.1 X Axis Tic Marks</h4>
+
+<p>The first function should print the X axis tic marks.  We must specify
+the tic marks themselves and their spacing:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defvar X-axis-label-spacing
+  (if (boundp 'graph-blank)
+      (* 5 (length graph-blank)) 5)
+  &quot;Number of units from one X axis label to next.&quot;)
+</pre></div></div>
+
+<p>(Note that the value of <code class="code">graph-blank</code> is set by another
+<code class="code">defvar</code>.  The <code class="code">boundp</code> predicate checks whether it has
+already been set; <code class="code">boundp</code> returns <code class="code">nil</code> if it has not.  If
+<code class="code">graph-blank</code> were unbound and we did not use this conditional
+construction, we would enter the debugger and see an error message
+saying &lsquo;<samp class="samp">Debugger&nbsp;<span class="w-nolinebreak-text">entered--Lisp</span>&nbsp;error:<!-- /@w -->
+<span class="w-nolinebreak-text">(void-variable</span>&nbsp;<span class="w-nolinebreak-text">graph-blank)</span><!-- /@w --></samp>&rsquo;.)
+</p>
+<p>Here is the <code class="code">defvar</code> for <code class="code">X-axis-tic-symbol</code>:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defvar X-axis-tic-symbol &quot;|&quot;
+  &quot;String to insert to point to a column in X axis.&quot;)
+</pre></div></div>
+
+<p>The goal is to make a line that looks like this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">       |   |    |    |
+</pre></div>
+
+<p>The first tic is indented so that it is under the first column, which is
+indented to provide space for the Y axis labels.
+</p>
+<p>A tic element consists of the blank spaces that stretch from one tic to
+the next plus a tic symbol.  The number of blanks is determined by the
+width of the tic symbol and the <code class="code">X-axis-label-spacing</code>.
+</p>
+<p>The code looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; X-axis-tic-element
+&hellip;
+(concat
+ (make-string
+  ;; <span class="r">Make a string of blanks.</span>
+  (-  (* symbol-width X-axis-label-spacing)
+      (length X-axis-tic-symbol))
+  ? )
+ ;; <span class="r">Concatenate blanks with tic symbol.</span>
+ X-axis-tic-symbol)
+&hellip;
+</pre></div></div>
+
+<p>Next, we determine how many blanks are needed to indent the first tic
+mark to the first column of the graph.  This uses the value of
+<code class="code">full-Y-label-width</code> passed it by the <code class="code">print-graph</code> function.
+</p>
+<p>The code to make <code class="code">X-axis-leading-spaces</code>
+looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;; X-axis-leading-spaces
+&hellip;
+(make-string full-Y-label-width ? )
+&hellip;
+</pre></div></div>
+
+<p>We also need to determine the length of the horizontal axis, which is
+the length of the numbers list, and the number of ticks in the horizontal
+axis:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;; X-length
+&hellip;
+(length numbers-list)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; tic-width
+&hellip;
+(* symbol-width X-axis-label-spacing)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; number-of-X-ticks
+(if (zerop (% (X-length tic-width)))
+    (/ (X-length tic-width))
+  (1+ (/ (X-length tic-width))))
+</pre></div></div>
+
+<p>All this leads us directly to the function for printing the X axis tic line:
+</p>
+<a class="index-entry-id" id="index-print_002dX_002daxis_002dtic_002dline"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun print-X-axis-tic-line
+  (number-of-X-tics X-axis-leading-spaces X-axis-tic-element)
+  &quot;Print ticks for X axis.&quot;
+    (insert X-axis-leading-spaces)
+    (insert X-axis-tic-symbol)  ; <span class="r">Under first column.</span>
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert second tic in the right spot.</span>
+    (insert (concat
+             (make-string
+              (-  (* symbol-width X-axis-label-spacing)
+                  ;; <span class="r">Insert white space up to second tic symbol.</span>
+                  (* 2 (length X-axis-tic-symbol)))
+              ? )
+             X-axis-tic-symbol))
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert remaining ticks.</span>
+    (while (&gt; number-of-X-tics 1)
+      (insert X-axis-tic-element)
+      (setq number-of-X-tics (1- number-of-X-tics))))
+</pre></div></div>
+
+<p>The line of numbers is equally straightforward:
+</p>
+<p>First, we create a numbered element with blank spaces before each number:
+</p>
+<a class="index-entry-id" id="index-X_002daxis_002delement"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun X-axis-element (number)
+  &quot;Construct a numbered X axis element.&quot;
+  (let ((leading-spaces
+         (-  (* symbol-width X-axis-label-spacing)
+             (length (number-to-string number)))))
+    (concat (make-string leading-spaces ? )
+            (number-to-string number))))
+</pre></div></div>
+
+<p>Next, we create the function to print the numbered line, starting with
+the number 1 under the first column:
+</p>
+<a class="index-entry-id" id="index-print_002dX_002daxis_002dnumbered_002dline"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun print-X-axis-numbered-line
+  (number-of-X-tics X-axis-leading-spaces)
+  &quot;Print line of X-axis numbers&quot;
+  (let ((number X-axis-label-spacing))
+    (insert X-axis-leading-spaces)
+    (insert &quot;1&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">    (insert (concat
+             (make-string
+              ;; <span class="r">Insert white space up to next number.</span>
+              (-  (* symbol-width X-axis-label-spacing) 2)
+              ? )
+             (number-to-string number)))
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert remaining numbers.</span>
+    (setq number (+ number X-axis-label-spacing))
+    (while (&gt; number-of-X-tics 1)
+      (insert (X-axis-element number))
+      (setq number (+ number X-axis-label-spacing))
+      (setq number-of-X-tics (1- number-of-X-tics)))))
+</pre></div></div>
+
+<p>Finally, we need to write the <code class="code">print-X-axis</code> that uses
+<code class="code">print-X-axis-tic-line</code> and
+<code class="code">print-X-axis-numbered-line</code>.
+</p>
+<p>The function must determine the local values of the variables used by both
+<code class="code">print-X-axis-tic-line</code> and <code class="code">print-X-axis-numbered-line</code>, and
+then it must call them.  Also, it must print the carriage return that
+separates the two lines.
+</p>
+<p>The function consists of a varlist that specifies five local variables,
+and calls to each of the two line printing functions:
+</p>
+<a class="index-entry-id" id="index-print_002dX_002daxis"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun print-X-axis (numbers-list)
+  &quot;Print X axis labels to length of NUMBERS-LIST.&quot;
+  (let* ((leading-spaces
+          (make-string full-Y-label-width ? ))
+</pre></div><div class="group"><pre class="example-preformatted">       ;; symbol-width <span class="r">is provided by</span> graph-body-print
+       (tic-width (* symbol-width X-axis-label-spacing))
+       (X-length (length numbers-list))
+</pre></div><div class="group"><pre class="example-preformatted">       (X-tic
+        (concat
+         (make-string
+</pre></div><div class="group"><pre class="example-preformatted">          ;; <span class="r">Make a string of blanks.</span>
+          (-  (* symbol-width X-axis-label-spacing)
+              (length X-axis-tic-symbol))
+          ? )
+</pre></div><div class="group"><pre class="example-preformatted">         ;; <span class="r">Concatenate blanks with tic symbol.</span>
+         X-axis-tic-symbol))
+</pre></div><div class="group"><pre class="example-preformatted">       (tic-number
+        (if (zerop (% X-length tic-width))
+            (/ X-length tic-width)
+          (1+ (/ X-length tic-width)))))
+</pre></div><div class="group"><pre class="example-preformatted">    (print-X-axis-tic-line tic-number leading-spaces X-tic)
+    (insert &quot;\n&quot;)
+    (print-X-axis-numbered-line tic-number leading-spaces)))
+</pre></div></div>
+
+<p>You can test <code class="code">print-X-axis</code>:
+</p>
+<ol class="enumerate">
+<li> Install <code class="code">X-axis-tic-symbol</code>, <code class="code">X-axis-label-spacing</code>,
+<code class="code">print-X-axis-tic-line</code>, as well as <code class="code">X-axis-element</code>,
+<code class="code">print-X-axis-numbered-line</code>, and <code class="code">print-X-axis</code>.
+
+</li><li> Copy the following expression:
+
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(progn
+ (let ((full-Y-label-width 5)
+       (symbol-width 1))
+   (print-X-axis
+    '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16))))
+</pre></div></div>
+
+</li><li> Switch to the <samp class="file">*scratch*</samp> buffer and place the cursor where you
+want the axis labels to start.
+
+</li><li> Type <kbd class="kbd">M-:</kbd> (<code class="code">eval-expression</code>).
+
+</li><li> Yank the test expression into the minibuffer
+with <kbd class="kbd">C-y</kbd> (<code class="code">yank)</code>.
+
+</li><li> Press <kbd class="key">RET</kbd> to evaluate the expression.
+</li></ol>
+
+<p>Emacs will print the horizontal axis like this:
+</p><br>
+
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     |   |    |    |    |
+     1   5   10   15   20
+</pre></div></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Similarities-differences.html">Similarities and differences</a>, Up: <a href="print_002dX_002daxis.html">The <code class="code">print-X-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

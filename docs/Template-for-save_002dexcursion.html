@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Template for save-excursion (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Template for save-excursion (Programming in Emacs Lisp)">
+<meta name="keywords" content="Template for save-excursion (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="save_002dexcursion.html" rel="up" title="save-excursion">
+<link href="Point-and-mark.html" rel="prev" title="Point and mark">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Template-for-save_002dexcursion">
+<div class="nav-panel">
+<p>
+Previous: <a href="Point-and-mark.html" accesskey="p" rel="prev">Point and Mark</a>, Up: <a href="save_002dexcursion.html" accesskey="u" rel="up"><code class="code">save-excursion</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Template-for-a-save_002dexcursion-Expression">3.10.1 Template for a <code class="code">save-excursion</code> Expression</h4>
+
+<p>The template for code using <code class="code">save-excursion</code> is simple:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(save-excursion
+  <var class="var">body</var>&hellip;)
+</pre></div></div>
+
+<p>The body of the function is one or more expressions that will be
+evaluated in sequence by the Lisp interpreter.  If there is more than
+one expression in the body, the value of the last one will be returned
+as the value of the <code class="code">save-excursion</code> function.  The other
+expressions in the body are evaluated only for their side effects; and
+<code class="code">save-excursion</code> itself is used only for its side effect (which
+is restoring the position of point).
+</p>
+<p>In more detail, the template for a <code class="code">save-excursion</code> expression
+looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(save-excursion
+  <var class="var">first-expression-in-body</var>
+  <var class="var">second-expression-in-body</var>
+  <var class="var">third-expression-in-body</var>
+   &hellip;
+  <var class="var">last-expression-in-body</var>)
+</pre></div></div>
+
+<p>An expression, of course, may be a symbol on its own or a list.
+</p>
+<p>In Emacs Lisp code, a <code class="code">save-excursion</code> expression often occurs
+within the body of a <code class="code">let</code> expression.  It looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(let <var class="var">varlist</var>
+  (save-excursion
+    <var class="var">body</var>&hellip;))
+</pre></div></div>
+
+</div>
+
+
+
+</body>
+</html>

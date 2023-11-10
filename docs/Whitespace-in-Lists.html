@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Whitespace in Lists (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Whitespace in Lists (Programming in Emacs Lisp)">
+<meta name="keywords" content="Whitespace in Lists (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Lisp-Lists.html" rel="up" title="Lisp Lists">
+<link href="Typing-Lists.html" rel="next" title="Typing Lists">
+<link href="Lisp-Atoms.html" rel="prev" title="Lisp Atoms">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Whitespace-in-Lists">
+<div class="nav-panel">
+<p>
+Next: <a href="Typing-Lists.html" accesskey="n" rel="next">GNU Emacs帮助您输入列表</a>, Previous: <a href="Lisp-Atoms.html" accesskey="p" rel="prev">Lisp原子</a>, Up: <a href="Lisp-Lists.html" accesskey="u" rel="up">Lisp列表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Lie-Biao-ZhongDe-Kong-Ge-">1.1.2 列表中的空格</h4>
+<a class="index-entry-id" id="index-Whitespace-in-lists"></a>
+
+<p>在Lisp语言中，表中的空格数量并不重要。从Lisp的角度看，
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">'(this list
+   looks like this)
+</pre></div></div>
+
+<p>与这个表达式完全等价：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">'(this list looks like this)
+</pre></div>
+
+<p>这两个例子展示了在Lisp中相同的一个列表，它由这些符号 &lsquo;<samp class="samp">this</samp>&rsquo;、&lsquo;<samp class="samp">list</samp>&rsquo;、&lsquo;<samp class="samp">looks</samp>&rsquo;、&lsquo;<samp class="samp">like</samp>&rsquo; 和 &lsquo;<samp class="samp">this</samp>&rsquo; 按顺序组成。
+</p>
+<p>额外的空格和换行只是为了让人更容易阅读列表。当Lisp读取表达式时，会忽略额外的空格（但原子之间至少需要一个空格来区分）。
+</p>
+<p>尽管看起来很奇怪，但我们已经涵盖了Lisp中几乎所有列表的情况！Lisp中的其他列表都或多或少与这些例子相似，只是列表可能更长更复杂。简而言之，列表在括号内，字符串在引号内，符号看起来像单词，数字看起来像数字。（对于某些情况，可能会使用方括号、点号等一些特殊字符；但即使没有它们，我们也已经可以处理很多情况了。）
+</p>
+</div>
+
+
+
+</body>
+</html>

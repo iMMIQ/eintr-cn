@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Making Errors (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Making Errors (Programming in Emacs Lisp)">
+<meta name="keywords" content="Making Errors (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="List-Processing.html" rel="up" title="List Processing">
+<link href="Names-_0026-Definitions.html" rel="next" title="Names &amp; Definitions">
+<link href="Run-a-Program.html" rel="prev" title="Run a Program">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Making-Errors">
+<div class="nav-panel">
+<p>
+Next: <a href="Names-_0026-Definitions.html" accesskey="n" rel="next">Symbol Names and Function Definitions</a>, Previous: <a href="Run-a-Program.html" accesskey="p" rel="prev">运行程序</a>, Up: <a href="List-Processing.html" accesskey="u" rel="up">列表处理</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Sheng-Cheng-Cuo-Wu-Xin-Xi-">1.3 生成错误信息</h3>
+<a class="index-entry-id" id="index-Generate-an-error-message"></a>
+<a class="index-entry-id" id="index-Error-message-generation"></a>
+
+<p>部分原因是,如果您不小心出错了,也不用担心，我们现在将向 Lisp 解释器发出一个命令，让它生成一条错误信息。 这是一项无害的尝试； 事实上，我们经常会尝试故意生成错误信息。 一旦您理解了相关术语，错误信息就可以提供丰富的信息帮助。 它们不应该被称为“错误”信息，而更应该被称为“帮助”信息。 它们就像异国游客遇到的路标； 解读这些信息可能很困难，但一旦理解其含义，它们就能指明道路。
+</p>
+<p>错误信息是由GNU Emacs内置的调试器生成的。我们将进入调试器环境。您可以通过键入 <code class="code">q</code> 来退出调试器。
+</p>
+<p>我们要做的是对一个没有加单引号且第一个元素不是有效命令的列表进行评估。这个列表和我们之前用过的类似,只是没有加上单引号。将光标定位到该列表的后面，然后输入 <kbd class="kbd">C-x C-e</kbd>：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(this is an unquoted list)
+</pre></div>
+
+<p>这将打开一个 <samp class="file">*Backtrace*</samp> 的窗口，您应该在其中看到以下内容：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
+Debugger entered--Lisp error: (void-function this)
+  (this is an unquoted list)
+  eval((this is an unquoted list) nil)
+  elisp--eval-last-sexp(nil)
+  eval-last-sexp(nil)
+  funcall-interactively(eval-last-sexp nil)
+  call-interactively(eval-last-sexp nil nil)
+  command-execute(eval-last-sexp)
+---------- Buffer: *Backtrace* ----------
+</pre></div></div>
+
+<p>此时光标会定位在这个窗口中（可能需要等待几秒才显示出来）。要退出调试器并关闭调试器窗口，请输入：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">q
+</pre></div>
+
+<p>请现在按下 <kbd class="kbd">q</kbd>键，以确保您能退出调试器。然后再次输入 <kbd class="kbd">C-x C-e</kbd> 重新进入调试器。
+</p>
+<a class="index-entry-id" id="index-Han-Shu-defined"></a>
+<p>根据我们已经了解的知识，我们基本可以解析这个错误信息的含义。
+</p>
+<p>从下往上查看 <samp class="file">*Backtrace*</samp> 缓冲区的内容；它记录了Emacs执行的步骤。当您输入 <kbd class="kbd">C-x C-e</kbd> 时，向命令 <code class="code">eval-last-sexp</code> 发起了交互调用。<code class="code">eval</code> 是“evaluate（评估）”的缩写，<code class="code">sexp</code> 是“symbolic expression（符号表达式）”的缩写。该命令的含义是“评估最后一个符号表达式”，也就是光标前的那个表达式。
+</p>
+<p>以上每一行都在告诉我们Lisp解释器接下来评估的内容。最新的操作在顶部。这个缓冲区被称为 <samp class="file">*Backtrace*</samp> ，因为它允许我们回溯Emacs的执行步骤。
+</p>
+<p>在 <samp class="file">*Backtrace*</samp> 缓冲区的顶部，您可以看到这样一行：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Debugger entered--Lisp error: (void-function this)
+</pre></div>
+
+<p>Lisp 解释器试图对列表的第一个原子 &lsquo;<samp class="samp">this</samp>&rsquo; 进行评估。正是这个操作产生了错误信息 &lsquo;<samp class="samp">void-function this</samp>&rsquo;。
+</p>
+<p>这个信息包含了 &lsquo;<samp class="samp">void-function</samp>&rsquo; 和 &lsquo;<samp class="samp">this</samp>&rsquo; 两个词。
+</p>
+<a class="index-entry-id" id="index-Han-Shu-defined-1"></a>
+<p>&lsquo;<samp class="samp">函数</samp>&rsquo; (function)这个词之前提到过一次。这是一个非常重要的概念。对我们而言，可以定义简单理解为一组指令，用于告诉计算机要执行什么操作。
+</p>
+<p>现在我们可以开始解析这个错误信息&lsquo;<samp class="samp">void-function this</samp>&rsquo;的含义了。这个函数（也就是，&lsquo;<samp class="samp">this</samp>&rsquo;这个词）没有关联任何一组指令来告诉计算机要执行什么操作。
+</p>
+<p>这个比较奇怪的词&lsquo;<samp class="samp">void-function</samp>&rsquo;是为了反映Emacs Lisp的实现方式，也就是说，当一个符号没有绑定函数定义时，原本要包含执行指令的位置是空的。
+</p>
+<p>另一方面，由于我们可以成功对2和2进行相加（通过评估 <code class="code">(+ 2 2)</code>），我们可以推断符号 <code class="code">+</code> 一定有一组与之关联的指令，这些指令会指示计算机将紧随其后的数字相加。
+</p>
+<p>在这种情况下，可以避免Emacs进入调试器。我们暂不解释如何实现，但会提及结果的样子，因为当您在使用某段Emacs代码遇到类似情况时，也可能看到类似的效果。在这种情况下，您只会看到一行错误信息；它会出现在回显区，看起来像这样：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Symbol's function definition is void: this
+</pre></div>
+
+<p>当你输入任何键，哪怕只是移动一下光标，这个消息就会消失。
+</p>
+<p>我们知道&lsquo;<samp class="samp">Symbol</samp>&rsquo;这个词的含义。它指代的是列表中的第一个原子，也就是词&lsquo;<samp class="samp">this</samp>&rsquo;。&lsquo;<samp class="samp">function</samp>&rsquo;一词表示用于告知计算机要执行什么操作的指令。（技术上来说，这个符号会告知计算机在何处可以找到这些指令，但这个复杂问题我们暂时可以忽略。）
+</p>
+<p>所以错误信息可以这样理解：&lsquo;<samp class="samp">Symbol's function definition is void: this</samp>&rsquo;。这个符号(Symbol)（也就是词&lsquo;<samp class="samp">this</samp>&rsquo;）缺少可供计算机执行的指令。
+</p>
+</div>
+
+
+
+</body>
+</html>

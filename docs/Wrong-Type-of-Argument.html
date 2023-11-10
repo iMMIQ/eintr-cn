@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Wrong Type of Argument (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Wrong Type of Argument (Programming in Emacs Lisp)">
+<meta name="keywords" content="Wrong Type of Argument (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arguments.html" rel="up" title="Arguments">
+<link href="message.html" rel="next" title="message">
+<link href="Variable-Number-of-Arguments.html" rel="prev" title="Variable Number of Arguments">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.w-nolinebreak-text {white-space: nowrap}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Wrong-Type-of-Argument">
+<div class="nav-panel">
+<p>
+Next: <a href="message.html" accesskey="n" rel="next">The <code class="code">message</code> Function</a>, Previous: <a href="Variable-Number-of-Arguments.html" accesskey="p" rel="prev">Variable Number of Arguments</a>, Up: <a href="Arguments.html" accesskey="u" rel="up">Arguments</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Using-the-Wrong-Type-Object-as-an-Argument">1.8.4 Using the Wrong Type Object as an Argument</h4>
+<a class="index-entry-id" id="index-Wrong-type-of-argument"></a>
+<a class="index-entry-id" id="index-Argument_002c-wrong-type-of"></a>
+
+<p>When a function is passed an argument of the wrong type, the Lisp
+interpreter produces an error message.  For example, the <code class="code">+</code>
+function expects the values of its arguments to be numbers.  As an
+experiment we can pass it the quoted symbol <code class="code">hello</code> instead of a
+number.  Position the cursor after the following expression and type
+<kbd class="kbd">C-x C-e</kbd>:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ 2 'hello)
+</pre></div>
+
+<p>When you do this you will generate an error message.  What has happened
+is that <code class="code">+</code> has tried to add the 2 to the value returned by
+<code class="code">'hello</code>, but the value returned by <code class="code">'hello</code> is the symbol
+<code class="code">hello</code>, not a number.  Only numbers can be added.  So <code class="code">+</code>
+could not carry out its addition.
+</p>
+<p>You will create and enter a <samp class="file">*Backtrace*</samp> buffer that says:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
+Debugger entered--Lisp error:
+         (wrong-type-argument number-or-marker-p hello)
+  +(2 hello)
+  eval((+ 2 'hello) nil)
+  elisp--eval-last-sexp(t)
+  eval-last-sexp(nil)
+  funcall-interactively(eval-print-last-sexp nil)
+  call-interactively(eval-print-last-sexp nil nil)
+  command-execute(eval-print-last-sexp)
+---------- Buffer: *Backtrace* ----------
+</pre></div></div>
+
+<p>As usual, the error message tries to be helpful and makes sense after you
+learn how to read it.<a class="footnote" id="DOCF4" href="#FOOT4"><sup>4</sup></a>
+</p>
+<p>The first part of the error message is straightforward; it says
+&lsquo;<samp class="samp">wrong type argument</samp>&rsquo;.  Next comes the mysterious jargon word
+&lsquo;<samp class="samp"><span class="w-nolinebreak-text">number-or-marker-p</span></samp>&rsquo;<!-- /@w -->.  This word is trying to tell you what
+kind of argument the <code class="code">+</code> expected.
+</p>
+<p>The symbol <code class="code">number-or-marker-p</code> says that the Lisp interpreter is
+trying to determine whether the information presented it (the value of
+the argument) is a number or a marker (a special object representing a
+buffer position).  What it does is test to see whether the <code class="code">+</code> is
+being given numbers to add.  It also tests to see whether the
+argument is something called a marker, which is a specific feature of
+Emacs Lisp.  (In Emacs, locations in a buffer are recorded as markers.
+When the mark is set with the <kbd class="kbd">C-@</kbd> or <kbd class="kbd">C-<kbd class="key">SPC</kbd></kbd> command,
+its position is kept as a marker.  The mark can be considered a
+number&mdash;the number of characters the location is from the beginning
+of the buffer.)  In Emacs Lisp, <code class="code">+</code> can be used to add the
+numeric value of marker positions as numbers.
+</p>
+<a class="index-entry-id" id="index-predicate-defined"></a>
+<p>The &lsquo;<samp class="samp">p</samp>&rsquo; of <code class="code">number-or-marker-p</code> is the embodiment of a
+practice started in the early days of Lisp programming.  The &lsquo;<samp class="samp">p</samp>&rsquo;
+stands for <em class="dfn">predicate</em>.  In the jargon used by the early Lisp
+researchers, a predicate refers to a function to determine whether some
+property is true or false.  So the &lsquo;<samp class="samp">p</samp>&rsquo; tells us that
+<code class="code">number-or-marker-p</code> is the name of a function that determines
+whether it is true or false that the argument supplied is a number or
+a marker.  Other Lisp symbols that end in &lsquo;<samp class="samp">p</samp>&rsquo; include <code class="code">zerop</code>,
+a function that tests whether its argument has the value of zero, and
+<code class="code">listp</code>, a function that tests whether its argument is a list.
+</p>
+<p>Finally, the last part of the error message is the symbol <code class="code">hello</code>.
+This is the value of the argument that was passed to <code class="code">+</code>.  If the
+addition had been passed the correct type of object, the value passed
+would have been a number, such as 37, rather than a symbol like
+<code class="code">hello</code>.  But then you would not have got the error message.
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT4" href="#DOCF4">(4)</a></h5>
+<p><code class="code">(quote hello)</code> is an expansion of
+the abbreviation <code class="code">'hello</code>.</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="message.html">The <code class="code">message</code> Function</a>, Previous: <a href="Variable-Number-of-Arguments.html">Variable Number of Arguments</a>, Up: <a href="Arguments.html">Arguments</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

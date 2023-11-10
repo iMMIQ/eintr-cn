@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Finding More (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Finding More (Programming in Emacs Lisp)">
+<meta name="keywords" content="Finding More (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Buffer-Walk-Through.html" rel="up" title="Buffer Walk Through">
+<link href="simplified_002dbeginning_002dof_002dbuffer.html" rel="next" title="simplified-beginning-of-buffer">
+<style type="text/css">
+<!--
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Finding-More">
+<div class="nav-panel">
+<p>
+Next: <a href="simplified_002dbeginning_002dof_002dbuffer.html" accesskey="n" rel="next">A Simplified <code class="code">beginning-of-buffer</code> Definition</a>, Up: <a href="Buffer-Walk-Through.html" accesskey="u" rel="up">A Few Buffer-Related Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Finding-More-Information">4.1 Finding More Information</h3>
+
+<a class="index-entry-id" id="index-describe_002dfunction_002c-introduced"></a>
+<a class="index-entry-id" id="index-Find-function-documentation"></a>
+<p>In this walk-through, I will describe each new function as we come to
+it, sometimes in detail and sometimes briefly.  If you are interested,
+you can get the full documentation of any Emacs Lisp function at any
+time by typing <kbd class="kbd">C-h f</kbd> and then the name of the function (and then
+<kbd class="key">RET</kbd>).  Similarly, you can get the full documentation for a
+variable by typing <kbd class="kbd">C-h v</kbd> and then the name of the variable (and
+then <kbd class="key">RET</kbd>).
+</p>
+<a class="index-entry-id" id="index-Find-source-of-function"></a>
+<p>Also, <code class="code">describe-function</code> will tell you the location of the
+function definition.
+</p>
+<p>Put point into the name of the file that contains the function and
+press the <kbd class="key">RET</kbd> key.  In this case, <kbd class="key">RET</kbd> means
+<code class="code">push-button</code> rather than &ldquo;return&rdquo; or &ldquo;enter&rdquo;.  Emacs will take
+you directly to the function definition.
+</p>
+
+<p>More generally, if you want to see a function in its original source
+file, you can use the <code class="code">xref-find-definitions</code> function to jump to
+it.  <code class="code">xref-find-definitions</code> works with a wide variety of
+languages, not just Lisp, and C, and it works with non-programming
+text as well.  For example, <code class="code">xref-find-definitions</code> will jump to
+the various nodes in the Texinfo source file of this document
+(provided that you&rsquo;ve run the <code class="command">etags</code> utility to record all
+the nodes in the manuals that come with Emacs; see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Create-Tags-Table.html#Create-Tags-Table">Create Tags
+Table</a> in <cite class="cite">The GNU Emacs Manual</cite>).
+</p>
+<p>To use the <code class="code">xref-find-definitions</code> command, type <kbd class="kbd">M-.</kbd>
+(i.e., press the period key while holding down the <kbd class="key">META</kbd> key, or
+else type the <kbd class="key">ESC</kbd> key and then type the period key), and then,
+at the prompt, type in the name of the function whose source code you
+want to see, such as <code class="code">mark-whole-buffer</code>, and then type
+<kbd class="key">RET</kbd>.  (If the command doesn&rsquo;t prompt, invoke it with an
+argument: <kbd class="kbd">C-u M-.</kbd>; see <a class="pxref" href="Interactive-Options.html">Different Options for <code class="code">interactive</code></a>.)  Emacs will
+switch buffers and display the source code for the function on your
+screen<a class="footnote" id="DOCF10" href="#FOOT10"><sup>10</sup></a>.  To switch back to your current buffer, type <kbd class="kbd">M-,</kbd> or
+<kbd class="kbd">C-x b <kbd class="key">RET</kbd></kbd>.  (On some keyboards, the <kbd class="key">META</kbd> key is
+labeled <kbd class="key">ALT</kbd>.)
+</p>
+<a class="index-entry-id" id="index-Library_002c-as-term-for-_0060_0060file_0027_0027"></a>
+<p>Incidentally, the files that contain Lisp code are conventionally
+called <em class="dfn">libraries</em>.  The metaphor is derived from that of a
+specialized library, such as a law library or an engineering library,
+rather than a general library.  Each library, or file, contains
+functions that relate to a particular topic or activity, such as
+<samp class="file">abbrev.el</samp> for handling abbreviations and other typing
+shortcuts, and <samp class="file">help.el</samp> for help.  (Sometimes several
+libraries provide code for a single activity, as the various
+<samp class="file">rmail&hellip;</samp> files provide code for reading electronic mail.)
+In <cite class="cite">The GNU Emacs Manual</cite>, you will see sentences such as &ldquo;The
+<kbd class="kbd">C-h p</kbd> command lets you search the standard Emacs Lisp libraries
+by topic keywords.&rdquo;
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT10" href="#DOCF10">(10)</a></h5>
+<p>If instead of showing the source code for a Lisp function, Emacs asks
+you which tags table to visit, invoke <kbd class="kbd">M-.</kbd> from a buffer whose
+major mode is Emacs Lisp or Lisp Interaction.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="simplified_002dbeginning_002dof_002dbuffer.html">A Simplified <code class="code">beginning-of-buffer</code> Definition</a>, Up: <a href="Buffer-Walk-Through.html">A Few Buffer-Related Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

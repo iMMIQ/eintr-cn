@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>let (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="let (Programming in Emacs Lisp)">
+<meta name="keywords" content="let (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Writing-Defuns.html" rel="up" title="Writing Defuns">
+<link href="if.html" rel="next" title="if">
+<link href="Permanent-Installation.html" rel="prev" title="Permanent Installation">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="let">
+<div class="nav-panel">
+<p>
+Next: <a href="if.html" accesskey="n" rel="next">The <code class="code">if</code> Special Form</a>, Previous: <a href="Permanent-Installation.html" accesskey="p" rel="prev">Install Code Permanently</a>, Up: <a href="Writing-Defuns.html" accesskey="u" rel="up">How To Write Function Definitions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="let-1">3.6 <code class="code">let</code></h3>
+<a class="index-entry-id" id="index-let"></a>
+
+<p>The <code class="code">let</code> expression is a special form in Lisp that you will need
+to use in most function definitions.
+</p>
+<p><code class="code">let</code> is used to attach or bind a symbol to a value in such a way
+that the Lisp interpreter will not confuse the variable with a
+variable of the same name that is not part of the function.
+</p>
+<p>To understand why the <code class="code">let</code> special form is necessary, consider
+the situation in which you own a home that you generally refer to as
+&ldquo;the house&rdquo;, as in the sentence, &ldquo;The house needs painting.&rdquo;  If you
+are visiting a friend and your host refers to &ldquo;the house&rdquo;, he is
+likely to be referring to <em class="emph">his</em> house, not yours, that is, to a
+different house.
+</p>
+<p>If your friend is referring to his house and you think he is referring
+to your house, you may be in for some confusion.  The same thing could
+happen in Lisp if a variable that is used inside of one function has
+the same name as a variable that is used inside of another function,
+and the two are not intended to refer to the same value.  The
+<code class="code">let</code> special form prevents this kind of confusion.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Prevent-confusion.html" accesskey="1"><code class="code">let</code> Prevents Confusion</a></li>
+<li><a href="Parts-of-let-Expression.html" accesskey="2">The Parts of a <code class="code">let</code> Expression</a></li>
+<li><a href="Sample-let-Expression.html" accesskey="3">Sample <code class="code">let</code> Expression</a></li>
+<li><a href="Uninitialized-let-Variables.html" accesskey="4">Uninitialized Variables in a <code class="code">let</code> Statement</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

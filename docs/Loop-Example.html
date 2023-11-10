@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Loop Example (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Loop Example (Programming in Emacs Lisp)">
+<meta name="keywords" content="Loop Example (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="while.html" rel="up" title="while">
+<link href="print_002delements_002dof_002dlist.html" rel="next" title="print-elements-of-list">
+<link href="Looping-with-while.html" rel="prev" title="Looping with while">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Loop-Example">
+<div class="nav-panel">
+<p>
+Next: <a href="print_002delements_002dof_002dlist.html" accesskey="n" rel="next">An Example: <code class="code">print-elements-of-list</code></a>, Previous: <a href="Looping-with-while.html" accesskey="p" rel="prev">Looping with <code class="code">while</code></a>, Up: <a href="while.html" accesskey="u" rel="up"><code class="code">while</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="A-while-Loop-and-a-List">11.1.1 A <code class="code">while</code> Loop and a List</h4>
+
+<p>A common way to control a <code class="code">while</code> loop is to test whether a list
+has any elements.  If it does, the loop is repeated; but if it does not,
+the repetition is ended.  Since this is an important technique, we will
+create a short example to illustrate it.
+</p>
+<p>A simple way to test whether a list has elements is to evaluate the
+list: if it has no elements, it is an empty list and will return the
+empty list, <code class="code">()</code>, which is a synonym for <code class="code">nil</code> or false.  On
+the other hand, a list with elements will return those elements when it
+is evaluated.  Since Emacs Lisp considers as true any value that is not
+<code class="code">nil</code>, a list that returns elements will test true in a
+<code class="code">while</code> loop.
+</p>
+<p>For example, you can set the variable <code class="code">empty-list</code> to <code class="code">nil</code> by
+evaluating the following <code class="code">setq</code> expression:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq empty-list ())
+</pre></div>
+
+<p>After evaluating the <code class="code">setq</code> expression, you can evaluate the
+variable <code class="code">empty-list</code> in the usual way, by placing the cursor after
+the symbol and typing <kbd class="kbd">C-x C-e</kbd>; <code class="code">nil</code> will appear in your
+echo area:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">empty-list
+</pre></div>
+
+<p>On the other hand, if you set a variable to be a list with elements, the
+list will appear when you evaluate the variable, as you can see by
+evaluating the following two expressions:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
+
+animals
+</pre></div></div>
+
+<p>Thus, to create a <code class="code">while</code> loop that tests whether there are any
+items in the list <code class="code">animals</code>, the first part of the loop will be
+written like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(while animals
+       &hellip;
+</pre></div></div>
+
+<p>When the <code class="code">while</code> tests its first argument, the variable
+<code class="code">animals</code> is evaluated.  It returns a list.  So long as the list
+has elements, the <code class="code">while</code> considers the results of the test to be
+true; but when the list is empty, it considers the results of the test
+to be false.
+</p>
+<p>To prevent the <code class="code">while</code> loop from running forever, some mechanism
+needs to be provided to empty the list eventually.  An oft-used
+technique is to have one of the subsequent forms in the <code class="code">while</code>
+expression set the value of the list to be the <small class="sc">CDR</small> of the list.
+Each time the <code class="code">cdr</code> function is evaluated, the list will be made
+shorter, until eventually only the empty list will be left.  At this
+point, the test of the <code class="code">while</code> loop will return false, and the
+arguments to the <code class="code">while</code> will no longer be evaluated.
+</p>
+<p>For example, the list of animals bound to the variable <code class="code">animals</code>
+can be set to be the <small class="sc">CDR</small> of the original list with the
+following expression:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq animals (cdr animals))
+</pre></div>
+
+<p>If you have evaluated the previous expressions and then evaluate this
+expression, you will see <code class="code">(giraffe lion tiger)</code> appear in the echo
+area.  If you evaluate the expression again, <code class="code">(lion tiger)</code> will
+appear in the echo area.  If you evaluate it again and yet again,
+<code class="code">(tiger)</code> appears and then the empty list, shown by <code class="code">nil</code>.
+</p>
+<p>A template for a <code class="code">while</code> loop that uses the <code class="code">cdr</code> function
+repeatedly to cause the true-or-false-test eventually to test false
+looks like this:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(while <var class="var">test-whether-list-is-empty</var>
+  <var class="var">body</var>&hellip;
+  <var class="var">set-list-to-cdr-of-list</var>)
+</pre></div></div>
+
+<p>This test and use of <code class="code">cdr</code> can be put together in a function that
+goes through a list and prints each element of the list on a line of its
+own.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="print_002delements_002dof_002dlist.html">An Example: <code class="code">print-elements-of-list</code></a>, Previous: <a href="Looping-with-while.html">Looping with <code class="code">while</code></a>, Up: <a href="while.html"><code class="code">while</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

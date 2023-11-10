@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>Numbers Lists (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Numbers Lists (Programming in Emacs Lisp)">
+<meta name="keywords" content="Numbers Lists (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Lisp-Lists.html" rel="up" title="Lisp Lists">
+<link href="Lisp-Atoms.html" rel="next" title="Lisp Atoms">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="Numbers-Lists">
+<div class="nav-panel">
+<p>
+Next: <a href="Lisp-Atoms.html" accesskey="n" rel="next">Lisp原子</a>, Up: <a href="Lisp-Lists.html" accesskey="u" rel="up">Lisp列表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="Lie-Biao-ZhongDe-Shu-Zi-Yu-Lie-Biao-">列表中的数字与列表</h4>
+
+<p>在 Lisp 中,列表也可以包含数值，就像这个列表：<code class="code">(+ 2 2)</code>。
+这个列表包含一个加号，&lsquo;<samp class="samp">+</samp>&rsquo;，后面跟着两个 &lsquo;<samp class="samp">2</samp>&rsquo;，它们之间用空格分隔。
+</p>
+<p>在Lisp中，数据和程序都以相同的方式表示；也就是说，它们都是由单词、数字或其他列表组成，之间用空格分隔，括在括号中。 (由于程序看起来像数据，一个程序可以轻松地作为另一个程序的数据；这是Lisp的一个非常强大的特性。) (顺便说一下，这两个括号中的注释<em class="emph">不是</em>Lisp列表，因为它们包含了分号 &lsquo;<samp class="samp">;</samp>&rsquo; 和句点 &lsquo;<samp class="samp">.</samp>&rsquo; 作为标点符号。)
+</p>
+<p>这里还有一个列表，这次里面包含了一个列表：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">'(this list has (a list inside of it))
+</pre></div>
+
+<p>这个列表的组成部分包括单词 &lsquo;<samp class="samp">this</samp>&rsquo;, &lsquo;<samp class="samp">list</samp>&rsquo;,
+&lsquo;<samp class="samp">has</samp>&rsquo;, 和列表 &lsquo;<samp class="samp">(a list inside of it)</samp>&rsquo;.  内部列表由单词 &lsquo;<samp class="samp">a</samp>&rsquo;, &lsquo;<samp class="samp">list</samp>&rsquo;, &lsquo;<samp class="samp">inside</samp>&rsquo;,
+&lsquo;<samp class="samp">of</samp>&rsquo;, &lsquo;<samp class="samp">it</samp>&rsquo; 组成。
+</p>
+</div>
+
+
+
+</body>
+</html>

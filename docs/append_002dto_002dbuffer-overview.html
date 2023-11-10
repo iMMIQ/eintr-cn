@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is An Introduction to Programming in Emacs Lisp, for
+people who are not programmers.
+
+
+Distributed with Emacs version 29.1.
+
+Copyright © 1990-1995, 1997, 2001-2023 Free Software
+Foundation, Inc.
+
+
+
+Printed copies available from https://shop.fsf.org/. Published by:
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+a division of the                 email: sales@fsf.org
+Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
+51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
+Boston, MA 02110-1301 USA
+
+
+ISBN 1-882114-43-4
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; there
+being no Invariant Section, with the Front-Cover Texts being "A GNU
+Manual", and with the Back-Cover Texts as in (a) below.  A copy of
+the license is included in the section entitled "GNU Free
+Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual.  Buying copies from the FSF
+supports it in developing GNU and promoting software freedom." -->
+<title>append-to-buffer overview (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="append-to-buffer overview (Programming in Emacs Lisp)">
+<meta name="keywords" content="append-to-buffer overview (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="append_002dto_002dbuffer.html" rel="up" title="append-to-buffer">
+<link href="append-interactive.html" rel="next" title="append interactive">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="append_002dto_002dbuffer-overview">
+<div class="nav-panel">
+<p>
+Next: <a href="append-interactive.html" accesskey="n" rel="next">The <code class="code">append-to-buffer</code> Interactive Expression</a>, Up: <a href="append_002dto_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">append-to-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="An-Overview-of-append_002dto_002dbuffer">An Overview of <code class="code">append-to-buffer</code></h4>
+
+<a class="index-entry-id" id="index-insert_002dbuffer_002dsubstring"></a>
+<p>The <code class="code">append-to-buffer</code> command uses the
+<code class="code">insert-buffer-substring</code> function to copy the region.
+<code class="code">insert-buffer-substring</code> is described by its name: it takes a
+substring from a buffer, and inserts it into another buffer.
+</p>
+<p>Most of <code class="code">append-to-buffer</code> is
+concerned with setting up the conditions for
+<code class="code">insert-buffer-substring</code> to work: the code must specify both the
+buffer to which the text will go, the window it comes from and goes
+to, and the region that will be copied.
+</p>
+<p>Here is a possible implementation of the function:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun append-to-buffer (buffer start end)
+  &quot;Append to specified buffer the text of the region.
+It is inserted into that buffer before its point.
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">When calling from a program, give three arguments:
+BUFFER (or buffer name), START and END.
+START and END specify the portion of the current buffer to be copied.&quot;
+  (interactive
+   (list (read-buffer &quot;Append to buffer: &quot; (other-buffer
+                                            (current-buffer) t))
+         (region-beginning) (region-end)))
+</pre></div><div class="group"><pre class="example-preformatted">  (let ((oldbuf (current-buffer)))
+    (save-excursion
+      (let* ((append-to (get-buffer-create buffer))
+             (windows (get-buffer-window-list append-to t t))
+             point)
+        (set-buffer append-to)
+        (setq point (point))
+        (barf-if-buffer-read-only)
+        (insert-buffer-substring oldbuf start end)
+        (dolist (window windows)
+          (when (= (window-point window) point)
+            (set-window-point window (point))))))))
+</pre></div></div>
+
+<p>The function can be understood by looking at it as a series of
+filled-in templates.
+</p>
+<p>The outermost template is for the function definition.  In this
+function, it looks like this (with several slots filled in):
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun append-to-buffer (buffer start end)
+  &quot;<var class="var">documentation</var>&hellip;&quot;
+  (interactive &hellip;)
+  <var class="var">body</var>&hellip;)
+</pre></div></div>
+
+<p>The first line of the function includes its name and three arguments.
+The arguments are the <code class="code">buffer</code> to which the text will be copied, and
+the <code class="code">start</code> and <code class="code">end</code> of the region in the current buffer that
+will be copied.
+</p>
+<p>The next part of the function is the documentation, which is clear and
+complete.  As is conventional, the three arguments are written in
+upper case so you will notice them easily.  Even better, they are
+described in the same order as in the argument list.
+</p>
+<p>Note that the documentation distinguishes between a buffer and its
+name.  (The function can handle either.)
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="append-interactive.html">The <code class="code">append-to-buffer</code> Interactive Expression</a>, Up: <a href="append_002dto_002dbuffer.html">The Definition of <code class="code">append-to-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
