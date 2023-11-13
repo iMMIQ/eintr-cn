@@ -106,38 +106,36 @@
 @c This relates mainly to the published book sold by the FSF.
 
 @copying
-This is @cite{An Introduction to Programming in Emacs Lisp}, for
-people who are not programmers.
+这是针对非程序员的 @cite{Emacs Lisp 编程简介}
 @sp 1
 @ifset edition-number
-Edition @value{edition-number}, @value{update-date}
+版本 @value{edition-number}, @value{update-date}
 @end ifset
 @sp 1
-Distributed with Emacs version @value{EMACSVER}.
+随 Emacs 版本 @value{EMACSVER} 发行.
 @sp 1
-Copyright @copyright{} 1990--1995, 1997, 2001--2023 Free Software
-Foundation, Inc.
+Copyright @copyright{} 1990--1995, 1997, 2001--2023 自由软件基金会.
 @sp 1
 
 @iftex
-Published by the:@*
+由以下机构出版:@*
 
 GNU Press,               @hfill @uref{https://www.fsf.org/licensing/gnu-press/}@*
-a division of the               @hfill email: @email{sales@@fsf.org}@*
-Free Software Foundation, Inc.  @hfill Tel: +1 (617) 542-5942@*
-51 Franklin Street, Fifth Floor @hfill Fax: +1 (617) 542-2652@*
-Boston, MA 02110-1301 USA
+自由软件基金会旗下的一个分部               @hfill email: @email{sales@@fsf.org}@*
+Free Software Foundation, Inc.  @hfill 电话: +1 (617) 542-5942@*
+51 Franklin Street, Fifth Floor @hfill 传真: +1 (617) 542-2652@*
+美国马萨诸塞州波士顿，邮编02110-1301
 @end iftex
 
 @ifnottex
-Printed copies available from @uref{https://shop.fsf.org/}. Published by:
+纸质版本可在 @uref{https://shop.fsf.org/} 获得。由以下机构出版：
 
 @example
 GNU Press,                        https://www.fsf.org/licensing/gnu-press/
-a division of the                 email: sales@@fsf.org
-Free Software Foundation, Inc.    Tel: +1 (617) 542-5942
-51 Franklin Street, Fifth Floor   Fax: +1 (617) 542-2652
-Boston, MA 02110-1301 USA
+自由软件基金会旗下的一个分部                 电子邮件：sales@@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
 @end example
 @end ifnottex
 
@@ -145,17 +143,9 @@ Boston, MA 02110-1301 USA
 ISBN 1-882114-43-4
 
 @quotation
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.3 or
-any later version published by the Free Software Foundation; there
-being no Invariant Section, with the Front-Cover Texts being ``A GNU
-Manual'', and with the Back-Cover Texts as in (a) below.  A copy of
-the license is included in the section entitled ``GNU Free
-Documentation License''.
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
-(a) The FSF's Back-Cover Text is: ``You have the freedom to
-copy and modify this GNU manual.  Buying copies from the FSF
-supports it in developing GNU and promoting software freedom.''
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。”
 @end quotation
 @end copying
 
@@ -232,21 +222,20 @@ supports it in developing GNU and promoting software freedom.''
 
 @ifnottex
 @node Top
-@top An Introduction to Programming in Emacs Lisp
+@top Emacs Lisp 编程简介
 
 @ifset WWW_GNU_ORG
 @html
-<p>The GNU Emacs website is at
+<p>GNU Emacs的网站位于
 <a href="/software/emacs/">https://www.gnu.org/software/emacs/</a>.<br>
-To view this manual in other formats, click
-<a href="/software/emacs/manual/eintr.html">here</a>.
+要查看其他格式的本手册，请点击
+<a href="/software/emacs/manual/eintr.html">这里</a>.
 @end html
 @end ifset
 
 @insertcopying
 
-This master menu first lists each chapter and index; then it lists
-every node in every chapter.
+此主菜单首先列出每个章节和索引；然后列出每个章节中的每个节点。
 @end ifnottex
 
 @c Uncomment the 3 lines below, starting with @iftex, if you want the
