@@ -48,55 +48,24 @@ ISBN 1-882114-43-4
 <div class="unnumberedsubsec-level-extent" id="Complications">
 <div class="nav-panel">
 <p>
-Next: <a href="Byte-Compiling.html" accesskey="n" rel="next">Byte Compiling</a>, Up: <a href="Lisp-Interpreter.html" accesskey="u" rel="up">The Lisp Interpreter</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Byte-Compiling.html" accesskey="n" rel="next">字节编译</a>, Up: <a href="Lisp-Interpreter.html" accesskey="u" rel="up">Lisp解释器</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="unnumberedsubsec" id="Complications-1">Complications</h4>
 
-<p>Now, for the first complication.  In addition to lists, the Lisp
-interpreter can evaluate a symbol that is not quoted and does not have
-parentheses around it.  The Lisp interpreter will attempt to determine
-the symbol&rsquo;s value as a <em class="dfn">variable</em>.  This situation is described
-in the section on variables.  (See <a class="xref" href="Variables.html">Variables</a>.)
+<p>现在，我们来看第一个复杂情况。除了列表，Lisp 解释器还可以对没有引号且没有被括号包围的单个符号进行评估。在这种情况下，Lisp 解释器会试图确定该符号作为<em class="dfn">变量</em>的值。这种情况我们会在变量部分进行描述。(See <a class="xref" href="Variables.html">Variables</a>.)
 </p>
 <a class="index-entry-id" id="index-Special-form"></a>
-<p>The second complication occurs because some functions are unusual and
-do not work in the usual manner.  Those that don&rsquo;t are called
-<em class="dfn">special forms</em>.  They are used for special jobs, like defining a
-function, and there are not many of them.  In the next few chapters,
-you will be introduced to several of the more important special forms.
+<p>第二个复杂情况是，有一些函数的工作方式与常规函数不同，那些不同寻常的函数被称为<em class="dfn">特殊形式</em>。它们用于处理特定任务，比如定义函数，而且数量并不多。在后续章节中，您会了解到一些更重要的特殊形式。
 </p>
-<p>As well as special forms, there are also <em class="dfn">macros</em>.  A macro
-is a construct defined in Lisp, which differs from a function in that it
-translates a Lisp expression into another expression that is to be
-evaluated in place of the original expression.  (See <a class="xref" href="Lisp-macro.html">Lisp macro</a>.)
+<p>除特殊形式外，还有<em class="dfn">宏</em>。宏是Lisp中定义的一种构造，不同于函数的地方在于，它会将一个Lisp表达式转换成另一个要代替原始表达式进行评估的表达式。(See <a class="xref" href="Lisp-macro.html">Lisp macro</a>。)
 </p>
-<p>For the purposes of this introduction, you do not need to worry too much
-about whether something is a special form, macro, or ordinary function.
-For example, <code class="code">if</code> is a special form (see <a class="pxref" href="if.html">The <code class="code">if</code> Special Form</a>), but <code class="code">when</code>
-is a macro (see <a class="pxref" href="Lisp-macro.html">Lisp macro</a>).  In earlier versions of Emacs,
-<code class="code">defun</code> was a special form, but now it is a macro (see <a class="pxref" href="defun.html">The <code class="code">defun</code> Macro</a>).
-It still behaves in the same way.
+<p>就本书而言，您无需过于担心某个东西是特殊形式、宏还是普通函数。例如，<code class="code">if</code> 是一个特殊形式（see <a class="pxref" href="if.html">The <code class="code">if</code> Special Form</a>），而<code class="code">when</code> 是一个宏（see <a class="pxref" href="Lisp-macro.html">Lisp macro</a>）。在Emacs的早期版本中，<code class="code">defun</code> 是一个特殊形式，但现在它是一个宏（see <a class="pxref" href="defun.html">The <code class="code">defun</code> Macro</a>），不过它的用法没有改变。
 </p>
-<p>The final complication is this: if the function that the
-Lisp interpreter is looking at is not a special form, and if it is part
-of a list, the Lisp interpreter looks to see whether the list has a list
-inside of it.  If there is an inner list, the Lisp interpreter first
-figures out what it should do with the inside list, and then it works on
-the outside list.  If there is yet another list embedded inside the
-inner list, it works on that one first, and so on.  It always works on
-the innermost list first.  The interpreter works on the innermost list
-first, to evaluate the result of that list.  The result may be
-used by the enclosing expression.
+<p>最后一个复杂点是：如果Lisp解释器正在处理的函数不是特殊形式，并且它是列表的一部分，Lisp解释器会检查这个列表是否包含内部列表。如果存在内部列表，Lisp解释器先确定应该如何处理内部列表，然后再处理外部列表。如果内部列表中还嵌套了另一个列表，它还会先处理那个列表，以此类推。解释器总是先处理最内层的列表。它会首先对最内层列表进行评估，得到结果用于外层表达式。
 </p>
-<p>Otherwise, the interpreter works left to right, from one expression to
-the next.
+<p>否则，解释器会从左到右顺序处理表达式，每个表达式依次处理。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Byte-Compiling.html">Byte Compiling</a>, Up: <a href="Lisp-Interpreter.html">The Lisp Interpreter</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

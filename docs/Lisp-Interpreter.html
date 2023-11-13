@@ -52,29 +52,18 @@ ISBN 1-882114-43-4
 Next: <a href="Evaluation.html" accesskey="n" rel="next">Evaluation</a>, Previous: <a href="Names-_0026-Definitions.html" accesskey="p" rel="prev">符号名称和函数定义</a>, Up: <a href="List-Processing.html" accesskey="u" rel="up">列表处理</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-Lisp-Interpreter">1.5 The Lisp Interpreter</h3>
+<h3 class="section" id="LispJie-Shi-Qi-">1.5 Lisp解释器</h3>
 <a class="index-entry-id" id="index-Lisp-interpreter_002c-what-it-does"></a>
 <a class="index-entry-id" id="index-Interpreter_002c-what-it-does"></a>
 
-<p>Based on what we have seen, we can now start to figure out what the
-Lisp interpreter does when we command it to evaluate a list.
-First, it looks to see whether there is a quote before the list; if
-there is, the interpreter just gives us the list.  On the other
-hand, if there is no quote, the interpreter looks at the first element
-in the list and sees whether it has a function definition.  If it does,
-the interpreter carries out the instructions in the function definition.
-Otherwise, the interpreter prints an error message.
+<p>基于我们所见，现在我们可以开始弄清楚当命令Lisp解释器评估列表时它会做什么。首先，它会查看列表前是否有引号；如果有，解释器会直接返回这个列表。另一方面，如果没有引号，解释器会查看列表中的第一个元素，检查它是否有一个函数定义与之关联。如果有，解释器就会执行该函数定义中的指令。否则，解释器会打印错误信息。
 </p>
-<p>This is how Lisp works.  Simple.  There are added complications which we
-will get to in a minute, but these are the fundamentals.  Of course, to
-write Lisp programs, you need to know how to write function definitions
-and attach them to names, and how to do this without confusing either
-yourself or the computer.
+<p>这就是Lisp的工作原理。简单明了。当然，还有一些额外的复杂性，我们后面会提到，但这些是基础。想要编写Lisp程序，您还需要了解如何编写函数定义并将其关联到函数名上，以及如何在不使自己和计算机产生困惑的情况下实现这一点。
 </p>
 
 <ul class="mini-toc">
 <li><a href="Complications.html" accesskey="1">Complications</a></li>
-<li><a href="Byte-Compiling.html" accesskey="2">Byte Compiling</a></li>
+<li><a href="Byte-Compiling.html" accesskey="2">字节编译</a></li>
 </ul>
 </div>
 

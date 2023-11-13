@@ -48,29 +48,17 @@ ISBN 1-882114-43-4
 <div class="subsection-level-extent" id="Byte-Compiling">
 <div class="nav-panel">
 <p>
-Previous: <a href="Complications.html" accesskey="p" rel="prev">Complications</a>, Up: <a href="Lisp-Interpreter.html" accesskey="u" rel="up">The Lisp Interpreter</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Complications.html" accesskey="p" rel="prev">Complications</a>, Up: <a href="Lisp-Interpreter.html" accesskey="u" rel="up">Lisp解释器</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="Byte-Compiling-1">1.5.1 Byte Compiling</h4>
+<h4 class="subsection" id="Zi-Jie-Bian-Yi-">1.5.1 字节编译</h4>
 <a class="index-entry-id" id="index-Byte-compiling"></a>
 
-<p>One other aspect of interpreting: the Lisp interpreter is able to
-interpret two kinds of entity: humanly readable code, on which we will
-focus exclusively, and specially processed code, called <em class="dfn">byte
-compiled</em> code, which is not humanly readable.  Byte compiled code
-runs faster than humanly readable code.
+<p>Lisp解释器可以处理两种实体：人类可读的代码，这会是我们的重点；以及经过特殊处理的代码，称为 <em class="dfn">字节编译</em>的代码，后者不是人类可读的。字节编译的代码的运行速度比人类可读的代码要快。
 </p>
-<p>You can transform humanly readable code into byte compiled code by
-running one of the compile commands such as <code class="code">byte-compile-file</code>.
-Byte compiled code is usually stored in a file that ends with a
-<samp class="file">.elc</samp> extension rather than a <samp class="file">.el</samp> extension.  You will
-see both kinds of file in the <samp class="file">emacs/lisp</samp> directory; the files
-to read are those with <samp class="file">.el</samp> extensions.
+<p>您可以通过运行像 <code class="code">byte-compile-file</code> 这样的编译命令，将人类可读的代码转换为字节编译的代码。字节编译后的代码通常保存在以 <samp class="file">.elc</samp> 为扩展名的文件中，而不是 <samp class="file">.el</samp>。在 <samp class="file">emacs/lisp</samp> 目录下您会看到这两种类型的文件；需要阅读的是那些 <samp class="file">.el</samp> 扩展名的文件。
 </p>
-<p>As a practical matter, for most things you might do to customize or
-extend Emacs, you do not need to byte compile; and I will not discuss
-the topic here.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Byte-Compilation.html#Byte-Compilation">Byte Compilation</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>, for a full description of byte
-compilation.
+<p>实际上，对于大多数自定义和扩展Emacs的需要，您不一定要进行字节编译；我在这里也不会详细讨论这个话题。要获取字节编译的完整描述，See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Byte-Compilation.html#Byte-Compilation">Byte Compilation</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。
 </p>
 </div>
 

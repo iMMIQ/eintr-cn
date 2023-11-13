@@ -1187,28 +1187,17 @@ blink.  This is just a device to get your attention.)
 由于 Emacs Lisp 非常庞大，通常会以能够指明函数属于Emacs的哪个部分的方式来命名符号。因此，所有涉及 Texinfo 处理的函数名都以 @samp{texinfo-} 开头，而处理邮件读取的函数则以 @samp{rmail-} 开头。
 
 @node Lisp Interpreter
-@section The Lisp Interpreter
+@section Lisp解释器
 @cindex Lisp interpreter, what it does
 @cindex Interpreter, what it does
 
-Based on what we have seen, we can now start to figure out what the
-Lisp interpreter does when we command it to evaluate a list.
-First, it looks to see whether there is a quote before the list; if
-there is, the interpreter just gives us the list.  On the other
-hand, if there is no quote, the interpreter looks at the first element
-in the list and sees whether it has a function definition.  If it does,
-the interpreter carries out the instructions in the function definition.
-Otherwise, the interpreter prints an error message.
+基于我们所见，现在我们可以开始弄清楚当命令Lisp解释器评估列表时它会做什么。首先，它会查看列表前是否有引号；如果有，解释器会直接返回这个列表。另一方面，如果没有引号，解释器会查看列表中的第一个元素，检查它是否有一个函数定义与之关联。如果有，解释器就会执行该函数定义中的指令。否则，解释器会打印错误信息。
 
-This is how Lisp works.  Simple.  There are added complications which we
-will get to in a minute, but these are the fundamentals.  Of course, to
-write Lisp programs, you need to know how to write function definitions
-and attach them to names, and how to do this without confusing either
-yourself or the computer.
+这就是Lisp的工作原理。简单明了。当然，还有一些额外的复杂性，我们后面会提到，但这些是基础。想要编写Lisp程序，您还需要了解如何编写函数定义并将其关联到函数名上，以及如何在不使自己和计算机产生困惑的情况下实现这一点。
 
 @menu
-* Complications::               Variables, Special forms, Lists within.
-* Byte Compiling::              Specially processing code for speed.
+* Complications::               变量、特殊形式、内部列表。
+* Byte Compiling::              为加速对代码特殊处理。
 @end menu
 
 @ifnottex
@@ -1216,67 +1205,28 @@ yourself or the computer.
 @unnumberedsubsec Complications
 @end ifnottex
 
-Now, for the first complication.  In addition to lists, the Lisp
-interpreter can evaluate a symbol that is not quoted and does not have
-parentheses around it.  The Lisp interpreter will attempt to determine
-the symbol's value as a @dfn{variable}.  This situation is described
-in the section on variables.  (@xref{Variables}.)
+现在，我们来看第一个复杂情况。除了列表，Lisp 解释器还可以对没有引号且没有被括号包围的单个符号进行评估。在这种情况下，Lisp 解释器会试图确定该符号作为@dfn{变量}的值。这种情况我们会在变量部分进行描述。(@xref{Variables}.)
 
 @cindex Special form
-The second complication occurs because some functions are unusual and
-do not work in the usual manner.  Those that don't are called
-@dfn{special forms}.  They are used for special jobs, like defining a
-function, and there are not many of them.  In the next few chapters,
-you will be introduced to several of the more important special forms.
+第二个复杂情况是，有一些函数的工作方式与常规函数不同，那些不同寻常的函数被称为@dfn{特殊形式}。它们用于处理特定任务，比如定义函数，而且数量并不多。在后续章节中，您会了解到一些更重要的特殊形式。
 
-As well as special forms, there are also @dfn{macros}.  A macro
-is a construct defined in Lisp, which differs from a function in that it
-translates a Lisp expression into another expression that is to be
-evaluated in place of the original expression.  (@xref{Lisp macro}.)
+除特殊形式外，还有@dfn{宏}。宏是Lisp中定义的一种构造，不同于函数的地方在于，它会将一个Lisp表达式转换成另一个要代替原始表达式进行评估的表达式。(@xref{Lisp macro}。)
 
-For the purposes of this introduction, you do not need to worry too much
-about whether something is a special form, macro, or ordinary function.
-For example, @code{if} is a special form (@pxref{if}), but @code{when}
-is a macro (@pxref{Lisp macro}).  In earlier versions of Emacs,
-@code{defun} was a special form, but now it is a macro (@pxref{defun}).
-It still behaves in the same way.
+就本书而言，您无需过于担心某个东西是特殊形式、宏还是普通函数。例如，@code{if} 是一个特殊形式（@pxref{if}），而@code{when} 是一个宏（@pxref{Lisp macro}）。在Emacs的早期版本中，@code{defun} 是一个特殊形式，但现在它是一个宏（@pxref{defun}），不过它的用法没有改变。
 
-The final complication is this: if the function that the
-Lisp interpreter is looking at is not a special form, and if it is part
-of a list, the Lisp interpreter looks to see whether the list has a list
-inside of it.  If there is an inner list, the Lisp interpreter first
-figures out what it should do with the inside list, and then it works on
-the outside list.  If there is yet another list embedded inside the
-inner list, it works on that one first, and so on.  It always works on
-the innermost list first.  The interpreter works on the innermost list
-first, to evaluate the result of that list.  The result may be
-used by the enclosing expression.
+最后一个复杂点是：如果Lisp解释器正在处理的函数不是特殊形式，并且它是列表的一部分，Lisp解释器会检查这个列表是否包含内部列表。如果存在内部列表，Lisp解释器先确定应该如何处理内部列表，然后再处理外部列表。如果内部列表中还嵌套了另一个列表，它还会先处理那个列表，以此类推。解释器总是先处理最内层的列表。它会首先对最内层列表进行评估，得到结果用于外层表达式。
 
-Otherwise, the interpreter works left to right, from one expression to
-the next.
+否则，解释器会从左到右顺序处理表达式，每个表达式依次处理。
 
 @node Byte Compiling
-@subsection Byte Compiling
+@subsection 字节编译
 @cindex Byte compiling
 
-One other aspect of interpreting: the Lisp interpreter is able to
-interpret two kinds of entity: humanly readable code, on which we will
-focus exclusively, and specially processed code, called @dfn{byte
-compiled} code, which is not humanly readable.  Byte compiled code
-runs faster than humanly readable code.
+Lisp解释器可以处理两种实体：人类可读的代码，这会是我们的重点；以及经过特殊处理的代码，称为 @dfn{字节编译}的代码，后者不是人类可读的。字节编译的代码的运行速度比人类可读的代码要快。
 
-You can transform humanly readable code into byte compiled code by
-running one of the compile commands such as @code{byte-compile-file}.
-Byte compiled code is usually stored in a file that ends with a
-@file{.elc} extension rather than a @file{.el} extension.  You will
-see both kinds of file in the @file{emacs/lisp} directory; the files
-to read are those with @file{.el} extensions.
+您可以通过运行像 @code{byte-compile-file} 这样的编译命令，将人类可读的代码转换为字节编译的代码。字节编译后的代码通常保存在以 @file{.elc} 为扩展名的文件中，而不是 @file{.el}。在 @file{emacs/lisp} 目录下您会看到这两种类型的文件；需要阅读的是那些 @file{.el} 扩展名的文件。
 
-As a practical matter, for most things you might do to customize or
-extend Emacs, you do not need to byte compile; and I will not discuss
-the topic here.  @xref{Byte Compilation, , Byte Compilation, elisp,
-The GNU Emacs Lisp Reference Manual}, for a full description of byte
-compilation.
+实际上，对于大多数自定义和扩展Emacs的需要，您不一定要进行字节编译；我在这里也不会详细讨论这个话题。要获取字节编译的完整描述，@xref{Byte Compilation, , Byte Compilation, elisp, The GNU Emacs Lisp Reference Manual}。
 
 @node Evaluation
 @section Evaluation
