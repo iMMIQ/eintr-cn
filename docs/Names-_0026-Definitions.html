@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Created by GNU Texinfo 7.0.2, https://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is An Introduction to Programming in Emacs Lisp, for
@@ -62,44 +62,17 @@ supports it in developing GNU and promoting software freedom." -->
 Next: <a href="Lisp-Interpreter.html" accesskey="n" rel="next">The Lisp Interpreter</a>, Previous: <a href="Making-Errors.html" accesskey="p" rel="prev">生成错误信息</a>, Up: <a href="List-Processing.html" accesskey="u" rel="up">列表处理</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Symbol-Names-and-Function-Definitions">1.4 Symbol Names and Function Definitions</h3>
+<h3 class="section" id="Fu-Hao-Ming-Cheng-He-Han-Shu-Ding-Yi-">1.4 符号名称和函数定义</h3>
 <a class="index-entry-id" id="index-Symbol-names"></a>
 
-<p>We can articulate another characteristic of Lisp based on what we have
-discussed so far&mdash;an important characteristic: a symbol, like
-<code class="code">+</code>, is not itself the set of instructions for the computer to
-carry out.  Instead, the symbol is used, perhaps temporarily, as a way
-of locating the definition or set of instructions.  What we see is the
-name through which the instructions can be found.  Names of people
-work the same way.  I can be referred to as &lsquo;<samp class="samp">Bob</samp>&rsquo;; however, I am
-not the letters &lsquo;<samp class="samp">B</samp>&rsquo;, &lsquo;<samp class="samp">o</samp>&rsquo;, &lsquo;<samp class="samp">b</samp>&rsquo; but am, or was, the
-consciousness consistently associated with a particular life-form.
-The name is not me, but it can be used to refer to me.
+<p>根据目前我们的讨论,我们可以归纳出Lisp的另一关键特性：像 <code class="code">+</code> 这样的符号本身并不是计算机可执行的一组指令。相反，这些符号仅用于暂时定位相关的定义或指令集。我们看到的只是通过该符号名称才能找到实际指令的方式。人的名字也是一样的。我可以被称为 &lsquo;<samp class="samp">Bob</samp>&rsquo;；然而，我不是字母 &lsquo;<samp class="samp">B</samp>&rsquo;、&lsquo;<samp class="samp">o</samp>&rsquo;、&lsquo;<samp class="samp">b</samp>&rsquo; 的组合，而是（或者曾是）一个与特定生命形式长期关联的意识。名字并不是我，但可以用来指称我。
 </p>
-<p>In Lisp, one set of instructions can be attached to several names.
-For example, the computer instructions for adding numbers can be
-linked to the symbol <code class="code">plus</code> as well as to the symbol <code class="code">+</code>
-(and are in some dialects of Lisp).  Among humans, I can be referred
-to as &lsquo;<samp class="samp">Robert</samp>&rsquo; as well as &lsquo;<samp class="samp">Bob</samp>&rsquo; and by other words as well.
+<p>在 Lisp 中，一组指令可以被关联到多个名字上。例如，加法运算的计算机指令可以关联到符号 <code class="code">plus</code>，也可以关联到符号 <code class="code">+</code>上（在某些 Lisp 方言中是这样的）。对于人名，我可以被称为 &lsquo;<samp class="samp">Robert</samp>&rsquo;，也可以被称为 &lsquo;<samp class="samp">Bob</samp>&rsquo;，以及其他词汇。
 </p>
-<p>On the other hand, a symbol can have only one function definition
-attached to it at a time.  Otherwise, the computer would be confused as
-to which definition to use.  If this were the case among people, only
-one person in the world could be named &lsquo;<samp class="samp">Bob</samp>&rsquo;.  However, the function
-definition to which the name refers can be changed readily.
-(See <a class="xref" href="Install.html">Install a Function Definition</a>.)
+<p>但是，一个符号一次只能有一个函数定义与之关联。否则，计算机就会困惑应该使用哪个定义。如果这种情况发生在人类身上，世界上也只能有一个人被命名为 &lsquo;<samp class="samp">Bob</samp>&rsquo;。然而，符号所代表的函数定义可以很容易地被更改。(See <a class="xref" href="Install.html">Install a Function Definition</a>.)
 </p>
-<p>Since Emacs Lisp is large, it is customary to name symbols in a way
-that identifies the part of Emacs to which the function belongs.
-Thus, all the names for functions that deal with Texinfo start with
-&lsquo;<samp class="samp">texinfo-</samp>&rsquo; and those for functions that deal with reading mail
-start with &lsquo;<samp class="samp">rmail-</samp>&rsquo;.
+<p>由于 Emacs Lisp 非常庞大，通常会以能够指明函数属于Emacs的哪个部分的方式来命名符号。因此，所有涉及 Texinfo 处理的函数名都以 &lsquo;<samp class="samp">texinfo-</samp>&rsquo; 开头，而处理邮件读取的函数则以 &lsquo;<samp class="samp">rmail-</samp>&rsquo; 开头。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Lisp-Interpreter.html">The Lisp Interpreter</a>, Previous: <a href="Making-Errors.html">生成错误信息</a>, Up: <a href="List-Processing.html">列表处理</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
