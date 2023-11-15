@@ -1229,109 +1229,63 @@ Lisp解释器可以处理两种实体：人类可读的代码，这会是我们�
 实际上，对于大多数自定义和扩展Emacs的需要，您不一定要进行字节编译；我在这里也不会详细讨论这个话题。要获取字节编译的完整描述，@xref{Byte Compilation, , Byte Compilation, elisp, The GNU Emacs Lisp Reference Manual}。
 
 @node Evaluation
-@section Evaluation
+@section 评估
 @cindex Evaluation
 
-When the Lisp interpreter works on an expression, the term for the
-activity is called @dfn{evaluation}.  We say that the interpreter
-``evaluates the expression''.  I've used this term several times before.
-The word comes from its use in everyday language, ``to ascertain the
-value or amount of; to appraise'', according to @cite{Webster's New
-Collegiate Dictionary}.
+当Lisp解释器对表达式进行处理时，这个活动被称为 @dfn{评估}。我们说解释器 "评估表达式"。我之前已经多次使用过这个术语。这个词来源于日常语言中的 "确定价值或数量"，根据 @cite{Webster's New Collegiate Dictionary} 的定义。
 
 @menu
-* How the Interpreter Acts::    Returns and Side Effects...
-* Evaluating Inner Lists::      Lists within lists...
+* How the Interpreter Acts::    返回值和副作用...
+* Evaluating Inner Lists::      列表内部的列表...
 @end menu
 
 @ifnottex
 @node How the Interpreter Acts
-@unnumberedsubsec How the Lisp Interpreter Acts
+@unnumberedsubsec Lisp 解释器的行为方式
 @end ifnottex
 
 @cindex @samp{returned value} explained
-After evaluating an expression, the Lisp interpreter will most likely
-@dfn{return} the value that the computer produces by carrying out the
-instructions it found in the function definition, or perhaps it will
-give up on that function and produce an error message.  (The interpreter
-may also find itself tossed, so to speak, to a different function or it
-may attempt to repeat continually what it is doing for ever and ever in
-an infinite loop.  These actions are less common; and
-we can ignore them.)  Most frequently, the interpreter returns a value.
+在对表达式评估后，Lisp 解释器很可能会@dfn{返回}计算机通过执行函数定义中的指令得到的值，或者它可能放弃对该函数的处理并生成错误消息。（也可能出现解释器被抛入另一个函数的执行,或者陷入无限循环的情况,但这些比较少见,我们可以忽略。）最常见的情况是，解释器返回一个值。
 
 @cindex @samp{side effect} defined
-At the same time the interpreter returns a value, it may do something
-else as well, such as move a cursor or copy a file; this other kind of
-action is called a @dfn{side effect}.  Actions that we humans think are
-important, such as printing results, are often side effects to the
-Lisp interpreter.  It is fairly easy to learn to use side effects.
+与此同时，解释器还可能执行其他操作，如移动光标或复制文件；这类被称为@dfn{副作用}。我们人类认为重要的操作，比如打印结果，通常是 Lisp 解释器的副作用。学习使用副作用相对比较简单。
 
-In summary, evaluating a symbolic expression most commonly causes the
-Lisp interpreter to return a value and perhaps carry out a side effect;
-or else produce an error.
+综上所述，对符号表达式评估通常会导致 Lisp 解释器返回一个值，并可能产生副作用；否则就会产生错误信息。
 
 @node Evaluating Inner Lists
-@subsection Evaluating Inner Lists
+@subsection 评估内部列表
 @cindex Inner list evaluation
 @cindex Evaluating inner lists
 
-If evaluation applies to a list that is inside another list, the outer
-list may use the value returned by the first evaluation as information
-when the outer list is evaluated.  This explains why inner expressions
-are evaluated first: the values they return are used by the outer
-expressions.
+如果对嵌套在另一个列表中的内部列表进行评估，外部列表在评估时可能会使用内层列表的评估结果作为信息。这解释了为什么要首先对内部表达式进行评估：它们的返回值会被外部表达式使用。
 
 @need 1250
-We can investigate this process by evaluating another addition example.
-Place your cursor after the following expression and type @kbd{C-x C-e}:
+我们可以通过对另一个加法示例进行评估来调查这个过程。将光标置于以下表达式之后，键入@kbd{C-x C-e}：
 
 @smallexample
 (+ 2 (+ 3 3))
 @end smallexample
 
 @noindent
-The number 8 will appear in the echo area.
+数字8将会出现在回显区域。
 
-What happens is that the Lisp interpreter first evaluates the inner
-expression, @code{(+ 3 3)}, for which the value 6 is returned; then it
-evaluates the outer expression as if it were written @code{(+ 2 6)}, which
-returns the value 8.  Since there are no more enclosing expressions to
-evaluate, the interpreter prints that value in the echo area.
+过程是这样的，Lisp解释器首先对内部表达式@code{(+ 3 3)}进行评估，返回值是6；然后它对外部表达式评估，就像表达式写成@code{(+ 2 6)}一样，返回值是8。由于没有更多外层表达式需要评估，解释器将这个值打印在回显区域。
 
-Now it is easy to understand the name of the command invoked by the
-keystrokes @kbd{C-x C-e}: the name is @code{eval-last-sexp}.  The
-letters @code{sexp} are an abbreviation for ``symbolic expression'', and
-@code{eval} is an abbreviation for ``evaluate''.  The command
-evaluates the last symbolic expression.
+现在很容易理解@kbd{C-x C-e}这个快捷键所调用命令的名称 @code{eval-last-sexp}。@code{sexp}是“symbolic expression”（符号表达式）的缩写，而@code{eval}是“evaluate”（评估）的缩写。该命令对最后一个符号表达式进行评估。
 
-As an experiment, you can try evaluating the expression by putting the
-cursor at the beginning of the next line immediately following the
-expression, or inside the expression.
+作为实验，您可以尝试通过将光标放在表达式后面紧跟的下一行行首，或者放在表达式内部来评估该表达式。
 
 @need 800
-Here is another copy of the expression:
+下面是表达式的另一份副本：
 
 @smallexample
 (+ 2 (+ 3 3))
 @end smallexample
 
 @noindent
-If you place the cursor at the beginning of the blank line that
-immediately follows the expression and type @kbd{C-x C-e}, you will
-still get the value 8 printed in the echo area.  Now try putting the
-cursor inside the expression.  If you put it right after the next to
-last parenthesis (so it appears to sit on top of the last parenthesis),
-you will get a 6 printed in the echo area!  This is because the command
-evaluates the expression @code{(+ 3 3)}.
+如果将光标放在紧随表达式后面的空白行行首，然后键入 @kbd{C-x C-e}，您仍然会在回显区域中看到打印的值8。现在试着将光标放在表达式内部。如果将光标放在倒数第二个括号后（使它看起来位于最后一个括号上方），您会在回显区域看到打印的值6！这是因为该命令评估了表达式 @code{(+ 3 3)}。
 
-Now put the cursor immediately after a number.  Type @kbd{C-x C-e} and
-you will get the number itself.  In Lisp, if you evaluate a number, you
-get the number itself---this is how numbers differ from symbols.  If you
-evaluate a list starting with a symbol like @code{+}, you will get a
-value returned that is the result of the computer carrying out the
-instructions in the function definition attached to that name.  If a
-symbol by itself is evaluated, something different happens, as we will
-see in the next section.
+现在将光标放在一个数字后面。键入 @kbd{C-x C-e}，您会得到那个数字本身。在Lisp中，对一个数字评估会直接返回这个数字本身——这是数字与符号的区别。如果对以像 @code{+} 这样的符号开头的列表评估，您会得到一个返回值，该返回值是计算机执行附加在该符号上的函数定义中的指令所得到的结果。如果单独对一个符号评估，会发生一些不同的事情，我们将在下一节看到。
 
 @node Variables
 @section Variables

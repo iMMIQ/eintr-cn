@@ -55,72 +55,39 @@ kbd.kbd {font-style: oblique}
 <div class="subsection-level-extent" id="Evaluating-Inner-Lists">
 <div class="nav-panel">
 <p>
-Previous: <a href="How-the-Interpreter-Acts.html" accesskey="p" rel="prev">How the Lisp Interpreter Acts</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="How-the-Interpreter-Acts.html" accesskey="p" rel="prev">Lisp 解释器的行为方式</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">评估</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="Evaluating-Inner-Lists-1">1.6.1 Evaluating Inner Lists</h4>
+<h4 class="subsection" id="Ping-Gu-Nei-Bu-Lie-Biao-">1.6.1 评估内部列表</h4>
 <a class="index-entry-id" id="index-Inner-list-evaluation"></a>
 <a class="index-entry-id" id="index-Evaluating-inner-lists"></a>
 
-<p>If evaluation applies to a list that is inside another list, the outer
-list may use the value returned by the first evaluation as information
-when the outer list is evaluated.  This explains why inner expressions
-are evaluated first: the values they return are used by the outer
-expressions.
+<p>如果对嵌套在另一个列表中的内部列表进行评估，外部列表在评估时可能会使用内层列表的评估结果作为信息。这解释了为什么要首先对内部表达式进行评估：它们的返回值会被外部表达式使用。
 </p>
-<p>We can investigate this process by evaluating another addition example.
-Place your cursor after the following expression and type <kbd class="kbd">C-x C-e</kbd>:
+<p>我们可以通过对另一个加法示例进行评估来调查这个过程。将光标置于以下表达式之后，键入<kbd class="kbd">C-x C-e</kbd>：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(+ 2 (+ 3 3))
 </pre></div>
 
-<p>The number 8 will appear in the echo area.
+<p>数字8将会出现在回显区域。
 </p>
-<p>What happens is that the Lisp interpreter first evaluates the inner
-expression, <code class="code">(+ 3 3)</code>, for which the value 6 is returned; then it
-evaluates the outer expression as if it were written <code class="code">(+ 2 6)</code>, which
-returns the value 8.  Since there are no more enclosing expressions to
-evaluate, the interpreter prints that value in the echo area.
+<p>过程是这样的，Lisp解释器首先对内部表达式<code class="code">(+ 3 3)</code>进行评估，返回值是6；然后它对外部表达式评估，就像表达式写成<code class="code">(+ 2 6)</code>一样，返回值是8。由于没有更多外层表达式需要评估，解释器将这个值打印在回显区域。
 </p>
-<p>Now it is easy to understand the name of the command invoked by the
-keystrokes <kbd class="kbd">C-x C-e</kbd>: the name is <code class="code">eval-last-sexp</code>.  The
-letters <code class="code">sexp</code> are an abbreviation for &ldquo;symbolic expression&rdquo;, and
-<code class="code">eval</code> is an abbreviation for &ldquo;evaluate&rdquo;.  The command
-evaluates the last symbolic expression.
+<p>现在很容易理解<kbd class="kbd">C-x C-e</kbd>这个快捷键所调用命令的名称 <code class="code">eval-last-sexp</code>。<code class="code">sexp</code>是“symbolic expression”（符号表达式）的缩写，而<code class="code">eval</code>是“evaluate”（评估）的缩写。该命令对最后一个符号表达式进行评估。
 </p>
-<p>As an experiment, you can try evaluating the expression by putting the
-cursor at the beginning of the next line immediately following the
-expression, or inside the expression.
+<p>作为实验，您可以尝试通过将光标放在表达式后面紧跟的下一行行首，或者放在表达式内部来评估该表达式。
 </p>
-<p>Here is another copy of the expression:
+<p>下面是表达式的另一份副本：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(+ 2 (+ 3 3))
 </pre></div>
 
-<p>If you place the cursor at the beginning of the blank line that
-immediately follows the expression and type <kbd class="kbd">C-x C-e</kbd>, you will
-still get the value 8 printed in the echo area.  Now try putting the
-cursor inside the expression.  If you put it right after the next to
-last parenthesis (so it appears to sit on top of the last parenthesis),
-you will get a 6 printed in the echo area!  This is because the command
-evaluates the expression <code class="code">(+ 3 3)</code>.
+<p>如果将光标放在紧随表达式后面的空白行行首，然后键入 <kbd class="kbd">C-x C-e</kbd>，您仍然会在回显区域中看到打印的值8。现在试着将光标放在表达式内部。如果将光标放在倒数第二个括号后（使它看起来位于最后一个括号上方），您会在回显区域看到打印的值6！这是因为该命令评估了表达式 <code class="code">(+ 3 3)</code>。
 </p>
-<p>Now put the cursor immediately after a number.  Type <kbd class="kbd">C-x C-e</kbd> and
-you will get the number itself.  In Lisp, if you evaluate a number, you
-get the number itself&mdash;this is how numbers differ from symbols.  If you
-evaluate a list starting with a symbol like <code class="code">+</code>, you will get a
-value returned that is the result of the computer carrying out the
-instructions in the function definition attached to that name.  If a
-symbol by itself is evaluated, something different happens, as we will
-see in the next section.
+<p>现在将光标放在一个数字后面。键入 <kbd class="kbd">C-x C-e</kbd>，您会得到那个数字本身。在Lisp中，对一个数字评估会直接返回这个数字本身——这是数字与符号的区别。如果对以像 <code class="code">+</code> 这样的符号开头的列表评估，您会得到一个返回值，该返回值是计算机执行附加在该符号上的函数定义中的指令所得到的结果。如果单独对一个符号评估，会发生一些不同的事情，我们将在下一节看到。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Previous: <a href="How-the-Interpreter-Acts.html">How the Lisp Interpreter Acts</a>, Up: <a href="Evaluation.html">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
