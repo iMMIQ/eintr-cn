@@ -56,47 +56,26 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsec-level-extent" id="fill_002dcolumn-Example">
 <div class="nav-panel">
 <p>
-Next: <a href="Void-Function.html" accesskey="n" rel="next">Error Message for a Symbol Without a Function</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Void-Function.html" accesskey="n" rel="next">没有函数的符号的错误消息</a>, Up: <a href="Variables.html" accesskey="u" rel="up">变量</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="fill_002dcolumn_002c-an-Example-Variable"><code class="code">fill-column</code>, an Example Variable</h4>
+<h4 class="unnumberedsubsec" id="fill_002dcolumn_002cYiGeShiLiBian-Liang-"><code class="code">fill-column</code>，一个示例变量</h4>
 
-<a class="index-entry-id" id="index-fill_002dcolumn_002c-an-example-variable"></a>
-<a class="index-entry-id" id="index-Example-variable_002c-fill_002dcolumn"></a>
-<a class="index-entry-id" id="index-Variable_002c-example-of_002c-fill_002dcolumn"></a>
-<p>The variable <code class="code">fill-column</code> illustrates a symbol with a value
-attached to it: in every GNU Emacs buffer, this symbol is set to some
-value, usually 72 or 70, but sometimes to some other value.  To find the
-value of this symbol, evaluate it by itself.  If you are reading this in
-Info inside of GNU Emacs, you can do this by putting the cursor after
-the symbol and typing <kbd class="kbd">C-x C-e</kbd>:
+<a class="index-entry-id" id="index-fill_002dcolumn_002cYiGeShiLiBian-Liang-"></a>
+<a class="index-entry-id" id="index-ShiLiBian-Liang-_002cfill_002dcolumn"></a>
+<a class="index-entry-id" id="index-Bian-Liang-_002cShiLi_002cfill_002dcolumn"></a>
+<p>变量 <code class="code">fill-column</code> 说明了一个带有值的符号：在每个 GNU Emacs 缓冲区中，该符号被设置为某个值，通常是 72 或 70，但有时也可能是其他值。要找到此符号的值，请通过单独评估它来执行。如果您在 GNU Emacs 中的 Info 中阅读此信息，可以将光标放在符号后面，然后键入 <kbd class="kbd">C-x C-e</kbd> 来执行：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">fill-column
 </pre></div>
 
-<p>After I typed <kbd class="kbd">C-x C-e</kbd>, Emacs printed the number 72 in my echo
-area.  This is the value for which <code class="code">fill-column</code> is set for me as I
-write this.  It may be different for you in your Info buffer.  Notice
-that the value returned as a variable is printed in exactly the same way
-as the value returned by a function carrying out its instructions.  From
-the point of view of the Lisp interpreter, a value returned is a value
-returned.  What kind of expression it came from ceases to matter once
-the value is known.
+<p>在我键入 <kbd class="kbd">C-x C-e</kbd> 后，Emacs 在我的回显区打印了数字 72。这是我在编写此内容时为 <code class="code">fill-column</code> 设置的值。在您的 Info 缓冲区中，这个值可能是不同的。请注意，变量返回的值与执行其指令的函数返回的值的打印方式完全相同。从 Lisp 解释器的角度来看，返回的值就是返回的值。一旦知道值是什么，它来自哪种表达式就不再重要。
 </p>
-<p>A symbol can have any value attached to it or, to use the jargon, we can
-<em class="dfn">bind</em> the variable to a value: to a number, such as 72; to a
-string, <code class="code">&quot;such as this&quot;</code>; to a list, such as <code class="code">(spruce pine
-oak)</code>; we can even bind a variable to a function definition.
+<p>一个符号可以附有任何值，或者用行话说，我们可以将变量<em class="dfn">绑定</em>到一个值上：可以是一个数字，比如 72；可以是一个字符串，比如 <code class="code">&quot;如此&quot;</code>；可以是一个列表，比如 <code class="code">(云杉 松树 橡树)</code>；我们甚至可以将变量绑定到一个函数定义上。
 </p>
-<p>A symbol can be bound to a value in several ways.  See <a class="xref" href="set-_0026-setq.html">Setting the Value of a Variable</a>, for information about one way to do
-this.
+<p>一个符号可以以多种方式绑定到一个值。有关如何执行此操作的信息，请参阅See <a class="xref" href="set-_0026-setq.html">Setting the Value of a Variable</a>。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Void-Function.html">Error Message for a Symbol Without a Function</a>, Up: <a href="Variables.html">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -55,25 +55,20 @@ kbd.kbd {font-style: oblique}
 <div class="subsection-level-extent" id="Void-Variable">
 <div class="nav-panel">
 <p>
-Previous: <a href="Void-Function.html" accesskey="p" rel="prev">Error Message for a Symbol Without a Function</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Void-Function.html" accesskey="p" rel="prev">没有函数的符号的错误消息</a>, Up: <a href="Variables.html" accesskey="u" rel="up">变量</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="Error-Message-for-a-Symbol-Without-a-Value">1.7.2 Error Message for a Symbol Without a Value</h4>
-<a class="index-entry-id" id="index-Symbol-without-value-error"></a>
-<a class="index-entry-id" id="index-Error-for-symbol-without-value"></a>
+<h4 class="subsection" id="Mei-You-Zhi-De-Fu-Hao-De-Cuo-Wu-Xiao-Xi-">1.7.2 没有值的符号的错误消息</h4>
+<a class="index-entry-id" id="index-Mei-You-Zhi-De-Fu-Hao-Cuo-Wu-"></a>
+<a class="index-entry-id" id="index-Mei-You-Zhi-De-Fu-Hao-Cuo-Wu-Xiao-Xi-"></a>
 
-<p>If you attempt to evaluate a symbol that does not have a value bound to
-it, you will receive an error message.  You can see this by
-experimenting with our 2 plus 2 addition.  In the following expression,
-put your cursor right after the <code class="code">+</code>, before the first number 2,
-type <kbd class="kbd">C-x C-e</kbd>:
+<p>如果你尝试评估一个没有绑定值的符号，你将收到一个错误消息。你可以通过尝试我们的2加2的加法来看到这一点。在下面的表达式中，将光标放在第一个数字2之前的<code class="code">+</code>右边，然后输入<kbd class="kbd">C-x C-e</kbd>：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(+ 2 2)
 </pre></div>
 
-<p>In GNU Emacs 22, you will create a <samp class="file">*Backtrace*</samp> buffer that
-says:
+<p>在GNU Emacs 22中，你将创建一个名为<samp class="file">*Backtrace*</samp>的缓冲区，显示如下错误消息：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
@@ -87,32 +82,14 @@ Debugger entered--Lisp error: (void-variable +)
 ---------- Buffer: *Backtrace* ----------
 </pre></div></div>
 
-<p>(Again, you can quit the debugger by
-typing <kbd class="kbd">q</kbd> in the <samp class="file">*Backtrace*</samp> buffer.)
+<p>（同样，你可以在<samp class="file">*Backtrace*</samp>缓冲区中输入<kbd class="kbd">q</kbd>来退出调试器。）
 </p>
-<p>This backtrace is different from the very first error message we saw,
-which said, &lsquo;<samp class="samp">Debugger entered--Lisp error: (void-function this)</samp>&rsquo;.
-In this case, the function does not have a value as a variable; while
-in the other error message, the function (the word &lsquo;<samp class="samp">this</samp>&rsquo;) did not
-have a definition.
+<p>这个回溯与我们最初看到的第一个错误消息不同，它说的是&lsquo;<samp class="samp">Debugger entered--Lisp error: (void-function this)</samp>&rsquo;。在这种情况下，该函数没有作为变量的值；而在其他错误消息中，函数（单词&lsquo;<samp class="samp">this</samp>&rsquo;）没有定义。
 </p>
-<p>In this experiment with the <code class="code">+</code>, what we did was cause the Lisp
-interpreter to evaluate the <code class="code">+</code> and look for the value of the
-variable instead of the function definition.  We did this by placing the
-cursor right after the symbol rather than after the parenthesis of the
-enclosing list as we did before.  As a consequence, the Lisp interpreter
-evaluated the preceding s-expression, which in this case was
-<code class="code">+</code> by itself.
+<p>在这个对<code class="code">+</code>的实验中，我们的做法是导致Lisp解释器评估<code class="code">+</code>并寻找变量的值，而不是函数的定义。我们通过将光标放在符号右边而不是在封闭列表的括号后面，使Lisp解释器执行了前一个S表达式，这种情况下是单独的<code class="code">+</code>。
 </p>
-<p>Since <code class="code">+</code> does not have a value bound to it, just the function
-definition, the error message reported that the symbol&rsquo;s value as a
-variable was void.
+<p>由于<code class="code">+</code>没有绑定到任何值，只有函数定义，错误消息报告该符号作为变量的值为空。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Previous: <a href="Void-Function.html">Error Message for a Symbol Without a Function</a>, Up: <a href="Variables.html">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

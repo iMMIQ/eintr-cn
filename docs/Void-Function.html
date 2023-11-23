@@ -56,30 +56,25 @@ kbd.kbd {font-style: oblique}
 <div class="subsection-level-extent" id="Void-Function">
 <div class="nav-panel">
 <p>
-Next: <a href="Void-Variable.html" accesskey="n" rel="next">Error Message for a Symbol Without a Value</a>, Previous: <a href="fill_002dcolumn-Example.html" accesskey="p" rel="prev"><code class="code">fill-column</code>, an Example Variable</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Void-Variable.html" accesskey="n" rel="next">没有值的符号的错误消息</a>, Previous: <a href="fill_002dcolumn-Example.html" accesskey="p" rel="prev"><code class="code">fill-column</code>，一个示例变量</a>, Up: <a href="Variables.html" accesskey="u" rel="up">变量</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="Error-Message-for-a-Symbol-Without-a-Function">1.7.1 Error Message for a Symbol Without a Function</h4>
-<a class="index-entry-id" id="index-Symbol-without-function-error"></a>
-<a class="index-entry-id" id="index-Error-for-symbol-without-function"></a>
+<h4 class="subsection" id="Mei-You-Han-Shu-De-Fu-Hao-De-Cuo-Wu-Xiao-Xi-">1.7.1 没有函数的符号的错误消息</h4>
+<a class="index-entry-id" id="index-Mei-You-Han-Shu-De-Fu-Hao-Cuo-Wu-"></a>
+<a class="index-entry-id" id="index-Mei-You-Han-Shu-De-Fu-Hao-Cuo-Wu-Xiao-Xi-"></a>
 
-<p>When we evaluated <code class="code">fill-column</code> to find its value as a variable,
-we did not place parentheses around the word.  This is because we did
-not intend to use it as a function name.
+<p>当我们评估变量 <code class="code">fill-column</code> 以获取其值时，我们没有在单词周围加括号。这是因为我们没有打算将其用作函数名称。
 </p>
-<p>If <code class="code">fill-column</code> were the first or only element of a list, the
-Lisp interpreter would attempt to find the function definition
-attached to it.  But <code class="code">fill-column</code> has no function definition.
-Try evaluating this:
+<p>如果 <code class="code">fill-column</code> 是列表的第一个或唯一元素，Lisp 解释器将尝试找到与之关联的函数定义。但是 <code class="code">fill-column</code> 没有函数定义。尝试评估以下内容：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(fill-column)
 </pre></div>
 
-<p>You will create a <samp class="file">*Backtrace*</samp> buffer that says:
+<p>将会创建一个 <samp class="file">*Backtrace*</samp> 缓冲区，其中显示：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
+<div class="group"><pre class="example-preformatted">---------- 缓冲区：*Backtrace* ----------
 Debugger entered--Lisp error: (void-function fill-column)
   (fill-column)
   eval((fill-column) nil)
@@ -88,11 +83,10 @@ Debugger entered--Lisp error: (void-function fill-column)
   funcall-interactively(eval-last-sexp nil)
   call-interactively(eval-last-sexp nil nil)
   command-execute(eval-last-sexp)
----------- Buffer: *Backtrace* ----------
+---------- 缓冲区：*Backtrace* ----------
 </pre></div></div>
 
-<p>(Remember, to quit the debugger and make the debugger window go away,
-type <kbd class="kbd">q</kbd> in the <samp class="file">*Backtrace*</samp> buffer.)
+<p>（记住，要退出调试器并关闭调试器窗口，请在 <samp class="file">*Backtrace*</samp> 缓冲区中键入 <kbd class="kbd">q</kbd>。）
 </p>
 </div>
 

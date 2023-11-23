@@ -1288,95 +1288,54 @@ Lisp解释器可以处理两种实体：人类可读的代码，这会是我们�
 现在将光标放在一个数字后面。键入 @kbd{C-x C-e}，您会得到那个数字本身。在Lisp中，对一个数字评估会直接返回这个数字本身——这是数字与符号的区别。如果对以像 @code{+} 这样的符号开头的列表评估，您会得到一个返回值，该返回值是计算机执行附加在该符号上的函数定义中的指令所得到的结果。如果单独对一个符号评估，会发生一些不同的事情，我们将在下一节看到。
 
 @node Variables
-@section Variables
+@section 变量
 @cindex Variables
 
-In Emacs Lisp, a symbol can have a value attached to it just as it can
-have a function definition attached to it.  The two are different.
-The function definition is a set of instructions that a computer will
-obey.  A value, on the other hand, is something, such as number or a
-name, that can vary (which is why such a symbol is called a variable).
-The value of a symbol can be any expression in Lisp, such as a symbol,
-number, list, or string.  A symbol that has a value is often called a
-@dfn{variable}.
+在 Emacs Lisp 中，一个符号可以附加一个值，就像它可以附加一个函数定义一样。这两者是不同的。函数定义是计算机将执行的一组指令。值，另一方面，是一些可以变化的东西，比如一个数字或一个名称（这就是为什么这样的符号被称为变量的原因）。一个符号的值可以是Lisp中的任何表达式，比如一个符号、数字、列表或字符串。一个具有值的符号通常被称为@dfn{变量}。
 
-A symbol can have both a function definition and a value attached to
-it at the same time.  Or it can have just one or the other.
-The two are separate.  This is somewhat similar
-to the way the name Cambridge can refer to the city in Massachusetts
-and have some information attached to the name as well, such as
-``great programming center''.
+一个符号可以同时有一个函数定义和一个值。或者它可以只有其中之一。这两者是独立的。这与剑桥这个名称既可以指代马萨诸塞州的城市，又可以附带一些信息，比如“伟大的编程中心”，有些相似。
 
 @ignore
-(Incidentally, in Emacs Lisp, a symbol can have two
-other things attached to it, too: a property list and a documentation
-string; these are discussed later.)
+（顺便说一下，在Emacs Lisp中，一个符号还可以附加两个其他东西：属性列表和文档字符串；这些稍后会讨论。）
 @end ignore
 
-Another way to think about this is to imagine a symbol as being a chest
-of drawers.  The function definition is put in one drawer, the value in
-another, and so on.  What is put in the drawer holding the value can be
-changed without affecting the contents of the drawer holding the
-function definition, and vice versa.
+另一种思考这个问题的方式是将一个符号想象成一个抽屉柜。函数定义放在一个抽屉里，值放在另一个抽屉里，依此类推。在值的抽屉里放置的东西可以更改，而不影响放置函数定义的抽屉的内容，反之亦然。
 
 @menu
 * fill-column Example::
-* Void Function::               The error message for a symbol
-                                  without a function.
-* Void Variable::               The error message for a symbol without a value.
+* Void Function::               一个没有函数的符号的错误消息。
+* Void Variable::               一个没有值的符号的错误消息。
 @end menu
 
 @ifnottex
 @node fill-column Example
-@unnumberedsubsec @code{fill-column}, an Example Variable
+@unnumberedsubsec @code{fill-column}，一个示例变量
 @end ifnottex
 
-@findex fill-column@r{, an example variable}
-@cindex Example variable, @code{fill-column}
-@cindex Variable, example of, @code{fill-column}
-The variable @code{fill-column} illustrates a symbol with a value
-attached to it: in every GNU Emacs buffer, this symbol is set to some
-value, usually 72 or 70, but sometimes to some other value.  To find the
-value of this symbol, evaluate it by itself.  If you are reading this in
-Info inside of GNU Emacs, you can do this by putting the cursor after
-the symbol and typing @kbd{C-x C-e}:
+@findex fill-column@r{，一个示例变量}
+@cindex 示例变量，@code{fill-column}
+@cindex 变量，示例，@code{fill-column}
+变量 @code{fill-column} 说明了一个带有值的符号：在每个 GNU Emacs 缓冲区中，该符号被设置为某个值，通常是 72 或 70，但有时也可能是其他值。要找到此符号的值，请通过单独评估它来执行。如果您在 GNU Emacs 中的 Info 中阅读此信息，可以将光标放在符号后面，然后键入 @kbd{C-x C-e} 来执行：
 
 @smallexample
 fill-column
 @end smallexample
 
 @noindent
-After I typed @kbd{C-x C-e}, Emacs printed the number 72 in my echo
-area.  This is the value for which @code{fill-column} is set for me as I
-write this.  It may be different for you in your Info buffer.  Notice
-that the value returned as a variable is printed in exactly the same way
-as the value returned by a function carrying out its instructions.  From
-the point of view of the Lisp interpreter, a value returned is a value
-returned.  What kind of expression it came from ceases to matter once
-the value is known.
+在我键入 @kbd{C-x C-e} 后，Emacs 在我的回显区打印了数字 72。这是我在编写此内容时为 @code{fill-column} 设置的值。在您的 Info 缓冲区中，这个值可能是不同的。请注意，变量返回的值与执行其指令的函数返回的值的打印方式完全相同。从 Lisp 解释器的角度来看，返回的值就是返回的值。一旦知道值是什么，它来自哪种表达式就不再重要。
 
-A symbol can have any value attached to it or, to use the jargon, we can
-@dfn{bind} the variable to a value: to a number, such as 72; to a
-string, @code{"such as this"}; to a list, such as @code{(spruce pine
-oak)}; we can even bind a variable to a function definition.
+一个符号可以附有任何值，或者用行话说，我们可以将变量@dfn{绑定}到一个值上：可以是一个数字，比如 72；可以是一个字符串，比如 @code{"如此"}；可以是一个列表，比如 @code{(云杉 松树 橡树)}；我们甚至可以将变量绑定到一个函数定义上。
 
-A symbol can be bound to a value in several ways.  @xref{set & setq, ,
-Setting the Value of a Variable}, for information about one way to do
-this.
+一个符号可以以多种方式绑定到一个值。有关如何执行此操作的信息，请参阅@xref{set & setq, , Setting the Value of a Variable}。
 
 @node Void Function
-@subsection Error Message for a Symbol Without a Function
-@cindex Symbol without function error
-@cindex Error for symbol without function
+@subsection 没有函数的符号的错误消息
+@cindex 没有函数的符号错误
+@cindex 没有函数的符号错误消息
 
-When we evaluated @code{fill-column} to find its value as a variable,
-we did not place parentheses around the word.  This is because we did
-not intend to use it as a function name.
+当我们评估变量 @code{fill-column} 以获取其值时，我们没有在单词周围加括号。这是因为我们没有打算将其用作函数名称。
 
-If @code{fill-column} were the first or only element of a list, the
-Lisp interpreter would attempt to find the function definition
-attached to it.  But @code{fill-column} has no function definition.
-Try evaluating this:
+如果 @code{fill-column} 是列表的第一个或唯一元素，Lisp 解释器将尝试找到与之关联的函数定义。但是 @code{fill-column} 没有函数定义。尝试评估以下内容：
 
 @smallexample
 (fill-column)
@@ -1384,11 +1343,11 @@ Try evaluating this:
 
 @need 1250
 @noindent
-You will create a @file{*Backtrace*} buffer that says:
+将会创建一个 @file{*Backtrace*} 缓冲区，其中显示：
 
 @smallexample
 @group
----------- Buffer: *Backtrace* ----------
+---------- 缓冲区：*Backtrace* ----------
 Debugger entered--Lisp error: (void-function fill-column)
   (fill-column)
   eval((fill-column) nil)
@@ -1397,24 +1356,19 @@ Debugger entered--Lisp error: (void-function fill-column)
   funcall-interactively(eval-last-sexp nil)
   call-interactively(eval-last-sexp nil nil)
   command-execute(eval-last-sexp)
----------- Buffer: *Backtrace* ----------
+---------- 缓冲区：*Backtrace* ----------
 @end group
 @end smallexample
 
 @noindent
-(Remember, to quit the debugger and make the debugger window go away,
-type @kbd{q} in the @file{*Backtrace*} buffer.)
+（记住，要退出调试器并关闭调试器窗口，请在 @file{*Backtrace*} 缓冲区中键入 @kbd{q}。）
 
 @node Void Variable
-@subsection Error Message for a Symbol Without a Value
-@cindex Symbol without value error
-@cindex Error for symbol without value
+@subsection 没有值的符号的错误消息
+@cindex 没有值的符号错误
+@cindex 没有值的符号错误消息
 
-If you attempt to evaluate a symbol that does not have a value bound to
-it, you will receive an error message.  You can see this by
-experimenting with our 2 plus 2 addition.  In the following expression,
-put your cursor right after the @code{+}, before the first number 2,
-type @kbd{C-x C-e}:
+如果你尝试评估一个没有绑定值的符号，你将收到一个错误消息。你可以通过尝试我们的2加2的加法来看到这一点。在下面的表达式中，将光标放在第一个数字2之前的@code{+}右边，然后输入@kbd{C-x C-e}：
 
 @smallexample
 (+ 2 2)
@@ -1422,8 +1376,7 @@ type @kbd{C-x C-e}:
 
 @need 1500
 @noindent
-In GNU Emacs 22, you will create a @file{*Backtrace*} buffer that
-says:
+在GNU Emacs 22中，你将创建一个名为@file{*Backtrace*}的缓冲区，显示如下错误消息：
 
 @smallexample
 @group
@@ -1440,26 +1393,13 @@ Debugger entered--Lisp error: (void-variable +)
 @end smallexample
 
 @noindent
-(Again, you can quit the debugger by
-typing @kbd{q} in the @file{*Backtrace*} buffer.)
+（同样，你可以在@file{*Backtrace*}缓冲区中输入@kbd{q}来退出调试器。）
 
-This backtrace is different from the very first error message we saw,
-which said, @samp{Debugger entered--Lisp error: (void-function this)}.
-In this case, the function does not have a value as a variable; while
-in the other error message, the function (the word @samp{this}) did not
-have a definition.
+这个回溯与我们最初看到的第一个错误消息不同，它说的是@samp{Debugger entered--Lisp error: (void-function this)}。在这种情况下，该函数没有作为变量的值；而在其他错误消息中，函数（单词@samp{this}）没有定义。
 
-In this experiment with the @code{+}, what we did was cause the Lisp
-interpreter to evaluate the @code{+} and look for the value of the
-variable instead of the function definition.  We did this by placing the
-cursor right after the symbol rather than after the parenthesis of the
-enclosing list as we did before.  As a consequence, the Lisp interpreter
-evaluated the preceding s-expression, which in this case was
-@code{+} by itself.
+在这个对@code{+}的实验中，我们的做法是导致Lisp解释器评估@code{+}并寻找变量的值，而不是函数的定义。我们通过将光标放在符号右边而不是在封闭列表的括号后面，使Lisp解释器执行了前一个S表达式，这种情况下是单独的@code{+}。
 
-Since @code{+} does not have a value bound to it, just the function
-definition, the error message reported that the symbol's value as a
-variable was void.
+由于@code{+}没有绑定到任何值，只有函数定义，错误消息报告该符号作为变量的值为空。
 
 @node Arguments
 @section Arguments
