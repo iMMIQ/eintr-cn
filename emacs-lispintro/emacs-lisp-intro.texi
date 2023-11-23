@@ -1643,119 +1643,74 @@ detail}，了解其中的一个示例。）
 当你的填充列为70时，评估这个表达式，消息@code{"He saw 38 red foxes leaping."}将出现在你的回显区。
 
 @node set & setq
-@section Setting the Value of a Variable
-@cindex Variable, setting value
-@cindex Setting value of variable
+@section 设置变量的值
+@cindex 变量，设置值
+@cindex 设置变量的值
 
-@cindex @samp{bind} defined
-There are several ways by which a variable can be given a value.  One of
-the ways is to use either the function @code{set} or the special form
-@code{setq}.  Another way is to use @code{let} (@pxref{let}).  (The
-jargon for this process is to @dfn{bind} a variable to a value.)
+@cindex @samp{bind}定义
+有几种方式可以给一个变量赋值。其中一种方式是使用函数@code{set}或特殊形式@code{setq}。另一种方式是使用@code{let}（@pxref{let}）。（这个过程的行话术语是将变量@dfn{bind}到一个值上。）
 
-The following sections not only describe how @code{set} and @code{setq}
-work but also illustrate how arguments are passed.
+以下章节不仅描述了@code{set}和@code{setq}的工作方式，还说明了如何传递参数。
 
 @menu
-* Using set::                  Setting values.
-* Using setq::                 Setting a quoted value.
-* Counting::                   Using @code{setq} to count.
+* 使用 set::                  设置值。
+* 使用 setq::                 设置引用值。
+* 计数::                      使用@code{setq}进行计数。
 @end menu
 
-@node Using set
-@subsection Using @code{set}
+@node 使用 set
+@subsection 使用 @code{set}
 @findex set
 
-To set the value of the symbol @code{flowers} to the list @code{'(rose
-violet daisy buttercup)}, evaluate the following expression by
-positioning the cursor after the expression and typing @kbd{C-x C-e}.
+要将符号 @code{flowers} 的值设置为列表 @code{'(rose violet daisy buttercup)}，请通过将光标定位在表达式后并键入 @kbd{C-x C-e} 来评估以下表达式。
 
 @smallexample
 (set 'flowers '(rose violet daisy buttercup))
 @end smallexample
 
 @noindent
-The list @code{(rose violet daisy buttercup)} will appear in the echo
-area.  This is what is @emph{returned} by the @code{set} function.  As a
-side effect, the symbol @code{flowers} is bound to the list; that is,
-the symbol @code{flowers}, which can be viewed as a variable, is given
-the list as its value.  (This process, by the way, illustrates how a
-side effect to the Lisp interpreter, setting the value, can be the
-primary effect that we humans are interested in.  This is because every
-Lisp function must return a value if it does not get an error, but it
-will only have a side effect if it is designed to have one.)
+列表 @code{(rose violet daisy buttercup)} 将出现在回显区域。这是由 @code{set} 函数@emph{返回}的内容。作为副作用，符号 @code{flowers} 被绑定到该列表；也就是说，可以将符号 @code{flowers} 视为变量，然后将该列表赋给它作为值。（顺便说一下，这个过程说明了对于Lisp解释器来说，设置值是我们人类感兴趣的主要效果。这是因为如果Lisp函数没有出错，它必须返回一个值，但只有在设计为具有副作用时才会有副作用。）
 
-After evaluating the @code{set} expression, you can evaluate the symbol
-@code{flowers} and it will return the value you just set.  Here is the
-symbol.  Place your cursor after it and type @kbd{C-x C-e}.
+在评估 @code{set} 表达式后，可以评估符号 @code{flowers}，它将返回刚刚设置的值。这是该符号。将光标放在其后，然后键入 @kbd{C-x C-e}。
 
 @smallexample
 flowers
 @end smallexample
 
 @noindent
-When you evaluate @code{flowers}, the list
-@code{(rose violet daisy buttercup)} appears in the echo area.
+当你评估 @code{flowers} 时，列表 @code{(rose violet daisy buttercup)} 将出现在回显区域。
 
-Incidentally, if you evaluate @code{'flowers}, the variable with a quote
-in front of it, what you will see in the echo area is the symbol itself,
-@code{flowers}.  Here is the quoted symbol, so you can try this:
+顺便说一下，如果你评估 @code{'flowers}，在带引号的变量前面，你将在回显区域看到符号本身，即 @code{flowers}。这是带引号的符号，所以你可以试一下：
 
 @smallexample
 'flowers
 @end smallexample
 
-Note also, that when you use @code{set}, you need to quote both
-arguments to @code{set}, unless you want them evaluated.  Since we do
-not want either argument evaluated, neither the variable
-@code{flowers} nor the list @code{(rose violet daisy buttercup)}, both
-are quoted.  (When you use @code{set} without quoting its first
-argument, the first argument is evaluated before anything else is
-done.  If you did this and @code{flowers} did not have a value
-already, you would get an error message that the @samp{Symbol's value
-as variable is void}; on the other hand, if @code{flowers} did return
-a value after it was evaluated, the @code{set} would attempt to set
-the value that was returned.  There are situations where this is the
-right thing for the function to do; but such situations are rare.)
+还要注意，当你使用 @code{set} 时，需要引用 @code{set} 的两个参数，除非你想要它们被评估。因为我们不想让任何一个参数被评估，所以变量 @code{flowers} 和列表 @code{(rose violet daisy buttercup)} 都被引用。（当你使用 @code{set} 而不引用其第一个参数时，第一个参数在执行任何其他操作之前被评估。如果你这样做而且 @code{flowers} 没有一个已经存在的值，你会得到一个错误消息，指明 @samp{Symbol's value as variable is void}；另一方面，如果在评估后 @code{flowers} 返回了一个值，@code{set} 将尝试设置返回的值。有些情况下这是函数正确的行为，但这样的情况很少见。）
 
-@node Using setq
-@subsection Using @code{setq}
+@node 使用 setq
+@subsection 使用 @code{setq}
 @findex setq
 
-As a practical matter, you almost always quote the first argument to
-@code{set}.  The combination of @code{set} and a quoted first argument
-is so common that it has its own name: the special form @code{setq}.
-This special form is just like @code{set} except that the first argument
-is quoted automatically, so you don't need to type the quote mark
-yourself.  Also, as an added convenience, @code{setq} permits you to set
-several different variables to different values, all in one expression.
+实际上，几乎总是对@code{set}的第一个参数加引号。@code{set}和引用的第一个参数的组合是如此常见，以至于它有自己的名称：特殊形式@code{setq}。这个特殊形式与@code{set}几乎相同，只是第一个参数被@code{setq}自动引用，因此您不需要自己输入引号。此外，作为额外的便利，@code{setq}允许您在一个表达式中设置多个不同的变量为不同的值。
 
-To set the value of the variable @code{carnivores} to the list
-@code{'(lion tiger leopard)} using @code{setq}, the following expression
-is used:
+为了使用@code{setq}将变量@code{carnivores}的值设置为列表@code{'(lion tiger leopard)}，可以使用以下表达式：
 
 @smallexample
 (setq carnivores '(lion tiger leopard))
 @end smallexample
 
 @noindent
-This is exactly the same as using @code{set} except the first argument
-is automatically quoted by @code{setq}.  (The @samp{q} in @code{setq}
-means @code{quote}.)
+这与使用@code{set}完全相同，只是@code{setq}自动引用了第一个参数。（@code{setq}中的@samp{q}表示@code{quote}。）
 
 @need 1250
-With @code{set}, the expression would look like this:
+使用@code{set}，表达式如下：
 
 @smallexample
 (set 'carnivores '(lion tiger leopard))
 @end smallexample
 
-Also, @code{setq} can be used to assign different values to
-different variables.  The first argument is bound to the value
-of the second argument, the third argument is bound to the value of the
-fourth argument, and so on.  For example, you could use the following to
-assign a list of trees to the symbol @code{trees} and a list of herbivores
-to the symbol @code{herbivores}:
+此外，@code{setq}还可以用于为不同的变量分配不同的值。第一个参数绑定到第二个参数的值，第三个参数绑定到第四个参数的值，依此类推。例如，您可以使用以下表达式将树的列表分配给符号@code{trees}，将食草动物的列表分配给符号@code{herbivores}：
 
 @smallexample
 @group
@@ -1765,64 +1720,32 @@ to the symbol @code{herbivores}:
 @end smallexample
 
 @noindent
-(The expression could just as well have been on one line, but it might
-not have fit on a page; and humans find it easier to read nicely
-formatted lists.)
+（表达式同样可以在一行上，但它可能不适合一页；并且人们更容易阅读格式良好的列表。）
 
-Although I have been using the term ``assign'', there is another way of
-thinking about the workings of @code{set} and @code{setq}; and that is to
-say that @code{set} and @code{setq} make the symbol @emph{point} to the
-list.  This latter way of thinking is very common and in forthcoming
-chapters we shall come upon at least one symbol that has ``pointer'' as
-part of its name.  The name is chosen because the symbol has a value,
-specifically a list, attached to it; or, expressed another way,
-the symbol is set to point to the list.
+尽管我一直在使用术语“分配”，但还有一种理解@code{set}和@code{setq}运作方式的方式；即@code{set}和@code{setq}使符号@emph{指向}列表。这种思考方式非常常见，在接下来的章节中，我们将至少遇到一个其名称中包含“指针”的符号。之所以选择这个名称，是因为符号有一个值，具体来说是一个列表，与之相关联；或者，换句话说，该符号被设置为指向该列表。
 
-@node Counting
-@subsection Counting
-@cindex Counting
+@node 计数
+@subsection 计数
+@cindex 计数
 
-Here is an example that shows how to use @code{setq} in a counter.  You
-might use this to count how many times a part of your program repeats
-itself.  First set a variable to zero; then add one to the number each
-time the program repeats itself.  To do this, you need a variable that
-serves as a counter, and two expressions: an initial @code{setq}
-expression that sets the counter variable to zero; and a second
-@code{setq} expression that increments the counter each time it is
-evaluated.
+以下是一个示例，展示了如何在计数器中使用@code{setq}。您可以使用这种方法来计算程序的某个部分重复的次数。首先将一个变量设置为零；然后在程序重复自身时每次将该数字加一。为此，您需要一个用作计数器的变量，以及两个表达式：一个初始的@code{setq}表达式，将计数器变量设置为零；和第二个@code{setq}表达式，在每次评估时递增计数器。
 
 @smallexample
 @group
-(setq counter 0)                ; @r{Let's call this the initializer.}
+(setq counter 0)                ; @r{我们称之为初始化器。}
 
-(setq counter (+ counter 1))    ; @r{This is the incrementer.}
+(setq counter (+ counter 1))    ; @r{这是递增器。}
 
-counter                         ; @r{This is the counter.}
+counter                         ; @r{这是计数器。}
 @end group
 @end smallexample
 
 @noindent
-(The text following the @samp{;} are comments.  @xref{Change a
-defun, , Change a Function Definition}.)
+（在@samp{;}之后的文本是注释。@xref{Change a defun, , Change a Function Definition}。）
 
-If you evaluate the first of these expressions, the initializer,
-@code{(setq counter 0)}, and then evaluate the third expression,
-@code{counter}, the number @code{0} will appear in the echo area.  If
-you then evaluate the second expression, the incrementer, @code{(setq
-counter (+ counter 1))}, the counter will get the value 1.  So if you
-again evaluate @code{counter}, the number @code{1} will appear in the
-echo area.  Each time you evaluate the second expression, the value of
-the counter will be incremented.
+如果您评估这些表达式中的第一个，即初始化器@code{(setq counter 0)}，然后评估第三个表达式@code{counter}，数字@code{0}将显示在回显区域中。然后，如果您评估第二个表达式，即递增器@code{(setq counter (+ counter 1))}，计数器将获得值1。因此，如果您再次评估@code{counter}，数字@code{1}将显示在回显区域中。每次评估第二个表达式时，计数器的值将递增。
 
-When you evaluate the incrementer, @code{(setq counter (+ counter 1))},
-the Lisp interpreter first evaluates the innermost list; this is the
-addition.  In order to evaluate this list, it must evaluate the variable
-@code{counter} and the number @code{1}.  When it evaluates the variable
-@code{counter}, it receives its current value.  It passes this value and
-the number @code{1} to the @code{+} which adds them together.  The sum
-is then returned as the value of the inner list and passed to the
-@code{setq} which sets the variable @code{counter} to this new value.
-Thus, the value of the variable, @code{counter}, is changed.
+当您评估递增器@code{(setq counter (+ counter 1))}时，Lisp解释器首先评估最内层的列表；这是加法。为了评估此列表，它必须评估变量@code{counter}和数字@code{1}。当它评估变量@code{counter}时，它会得到它的当前值。它将这个值和数字@code{1}传递给@code{+}，将它们相加。然后，总和作为内部列表的值返回，并传递给@code{setq}，将变量@code{counter}设置为这个新值。因此，变量@code{counter}的值被更改。
 
 @node Summary
 @section Summary
