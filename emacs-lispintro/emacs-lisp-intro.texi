@@ -21107,124 +21107,49 @@ Here is the graph:
 @noindent
 The largest group of functions contain 10--19 words and symbols each.
 
-@node Free Software and Free Manuals
-@appendix Free Software and Free Manuals
+@node 自由软件和自由手册
+@appendix 自由软件和自由手册
 
-@strong{by Richard M. Stallman}
+@strong{作者：理查德·斯托曼}
 @sp 1
 
-The biggest deficiency in free operating systems is not in the
-software---it is the lack of good free manuals that we can include in
-these systems.  Many of our most important programs do not come with
-full manuals.  Documentation is an essential part of any software
-package; when an important free software package does not come with a
-free manual, that is a major gap.  We have many such gaps today.
+自由操作系统中最大的不足之处不在于软件本身，而在于我们无法在这些系统中包含好的自由手册。许多我们最重要的程序都没有附带完整的手册。文档是任何软件包的基本组成部分；当一个重要的自由软件包没有附带自由手册时，这是一个重大的缺陷。我们今天有许多这样的缺口。
 
-Once upon a time, many years ago, I thought I would learn Perl.  I got
-a copy of a free manual, but I found it hard to read.  When I asked
-Perl users about alternatives, they told me that there were better
-introductory manuals---but those were not free.
+很多年前的一天，我想学习Perl。我找到了一本免费的手册副本，但我发现它很难阅读。当我询问Perl用户是否有其他选择时，他们告诉我有更好的入门手册---但那些手册并不是免费的。
 
-Why was this?  The authors of the good manuals had written them for
-O'Reilly Associates, which published them with restrictive terms---no
-copying, no modification, source files not available---which exclude
-them from the free software community.
+为什么会这样呢？好的手册作者为O'Reilly Associates编写了手册，该出版社以限制性条款发布它们---禁止复制、禁止修改、源文件不可用---这些条件使它们无法进入自由软件社区。
 
-That wasn't the first time this sort of thing has happened, and (to
-our community's great loss) it was far from the last.  Proprietary
-manual publishers have enticed a great many authors to restrict their
-manuals since then.  Many times I have heard a GNU user eagerly tell me
-about a manual that he is writing, with which he expects to help the
-GNU project---and then had my hopes dashed, as he proceeded to explain
-that he had signed a contract with a publisher that would restrict it
-so that we cannot use it.
+这并不是这种情况发生的第一次，而且（令我们的社区丧失很多）远非最后一次。自从那时以来，专有手册出版商引诱了许多作者限制他们的手册。许多次我听到GNU用户热切地告诉我，他正在撰写一本手册，他希望能够帮助GNU项目---然后我的希望落空，因为他继续解释说他已经签署了一份与出版商的合同，该合同将限制使用，以至于我们无法使用它。
 
-Given that writing good English is a rare skill among programmers, we
-can ill afford to lose manuals this way.
+鉴于写好英语是程序员中一种罕见的技能，我们不能承受以这种方式失去手册的代价。
 
-Free documentation, like free software, is a matter of freedom, not
-price.  The problem with these manuals was not that O'Reilly Associates
-charged a price for printed copies---that in itself is fine.  The Free
-Software Foundation @uref{https://shop.fsf.org, sells printed copies} of
-free @uref{https://www.gnu.org/doc/doc.html, GNU manuals}, too.
-But GNU manuals are available in source code form, while these manuals
-are available only on paper.  GNU manuals come with permission to copy
-and modify; the Perl manuals do not.  These restrictions are the
-problems.
+自由文档，就像自由软件一样，是关乎自由而非价格的问题。这些手册的问题并不在于O'Reilly Associates对印刷品收费---这本身是可以接受的。自由软件基金会在@uref{https://shop.fsf.org, 官方商店}出售免费@uref{https://www.gnu.org/doc/doc.html, GNU手册}的印刷本。但GNU手册以源代码形式提供，而这些手册只能以纸质形式获得。GNU手册附带有复制和修改的权限；Perl手册则没有。这些限制是问题所在。
 
-The criterion for a free manual is pretty much the same as for free
-software: it is a matter of giving all users certain
-freedoms.  Redistribution (including commercial redistribution) must be
-permitted, so that the manual can accompany every copy of the program,
-on-line or on paper.  Permission for modification is crucial too.
+对于一个自由手册，标准几乎与自由软件相同：它涉及给予所有用户特定的自由。必须允许重新分发（包括商业重新分发），以便手册可以随程序的每个副本一起提供，无论是在线还是纸质的。修改的许可也是至关重要的。
 
-As a general rule, I don't believe that it is essential for people to
-have permission to modify all sorts of articles and books.  The issues
-for writings are not necessarily the same as those for software.  For
-example, I don't think you or I are obliged to give permission to
-modify articles like this one, which describe our actions and our
-views.
+总的来说，我不认为人们有必要获得修改各种文章和书籍的权限。对于文学作品，问题不一定与软件相同。例如，我认为你和我没有义务允许修改像这篇文章这样描述我们行动和观点的文章。
 
-But there is a particular reason why the freedom to modify is crucial
-for documentation for free software.  When people exercise their right
-to modify the software, and add or change its features, if they are
-conscientious they will change the manual too---so they can provide
-accurate and usable documentation with the modified program.  A manual
-which forbids programmers to be conscientious and finish the job, or
-more precisely requires them to write a new manual from scratch if
-they change the program, does not fill our community's needs.
+但是，为自由软件提供文档的关键原因之一是修改的自由至关重要。当人们行使他们修改软件的权利，添加或更改其功能时，如果他们是尽责的，他们将同时更改手册---以便他们可以为修改后的程序提供准确可用的文档。一份手册，禁止程序员尽责并完成工作，或者更确切地说，如果他们更改程序，则要求他们从头开始编写新手册，这将无法满足我们社区的需求。
 
-While a blanket prohibition on modification is unacceptable, some
-kinds of limits on the method of modification pose no problem.  For
-example, requirements to preserve the original author's copyright
-notice, the distribution terms, or the list of authors, are ok.  It is
-also no problem to require modified versions to include notice that
-they were modified, even to have entire sections that may not be
-deleted or changed, as long as these sections deal with nontechnical
-topics.  (Some GNU manuals have them.)
+虽然对修改的全面禁令是不可接受的，但对修改方式的某些限制并不构成问题。例如，要求保留原作者的版权声明、分发条款或作者列表是可以接受的。还要求修改版本包含修改通知，甚至包含整个部分不得删除或更改，只要这些部分涉及非技术主题，也没有问题（一些GNU手册有这些限制）。
 
-These kinds of restrictions are not a problem because, as a practical
-matter, they don't stop the conscientious programmer from adapting the
-manual to fit the modified program.  In other words, they don't block
-the free software community from making full use of the manual.
+这些种类的限制不是问题，因为从实际角度来看，它们并不阻止认真的程序员调整手册以适应修改后的程序。换句话说，它们并不阻止自由软件社区充分利用手册。
 
-However, it must be possible to modify all the technical content of
-the manual, and then distribute the result in all the usual media,
-through all the usual channels; otherwise, the restrictions do block
-the community, the manual is not free, and so we need another manual.
+然而，必须有可能修改手册的所有技术内容，然后通过所有通常的媒体、通过所有通常的渠道分发结果；否则，这些限制将阻碍社区，手册就不是自由的，因此我们需要另一份手册。
 
-Unfortunately, it is often hard to find someone to write another
-manual when a proprietary manual exists.  The obstacle is that many
-users think that a proprietary manual is good enough---so they don't
-see the need to write a free manual.  They do not see that the free
-operating system has a gap that needs filling.
+不幸的是，当存在专有手册时，很难找到愿意写另一份手册的人。阻碍在于许多用户认为专有手册已经足够好---因此他们认为没有必要写一份自由手册。他们没有意识到自由操作系统存在需要填补的空白。
 
-Why do users think that proprietary manuals are good enough?  Some have
-not considered the issue.  I hope this article will do something to
-change that.
+为什么用户认为专有手册已经足够好呢？有些人还没有考虑这个问题。我希望这篇文章能够改变这种看法。
 
-Other users consider proprietary manuals acceptable for the same
-reason so many people consider proprietary software acceptable: they
-judge in purely practical terms, not using freedom as a
-criterion.  These people are entitled to their opinions, but since
-those opinions spring from values which do not include freedom, they
-are no guide for those of us who do value freedom.
+其他用户认为专有手册是可以接受的，原因与许多人认为专有软件是可以接受的原因相同：他们纯粹以实际的角度进行判断，而不使用自由作为标准。这些人有权发表他们的观点，但由于这些观点源于不包括自由的价值观，对于那些重视自由的人来说，它们并不是指导。
 
-Please spread the word about this issue.  We continue to lose manuals
-to proprietary publishing.  If we spread the word that proprietary
-manuals are not sufficient, perhaps the next person who wants to help
-GNU by writing documentation will realize, before it is too late, that
-he must above all make it free.
+请传播关于这个问题的信息。我们继续失去手册，因为它们受到专有出版的限制。如果我们传播这样的信息，即专有手册是不够的，也许下一个想通过撰写文档来帮助GNU的人在为时已晚之前会意识到，他首先必须使其自由。
 
-We can also encourage commercial publishers to sell free, copylefted
-manuals instead of proprietary ones.  One way you can help this is to
-check the distribution terms of a manual before you buy it, and prefer
-copylefted manuals to non-copylefted ones.
+我们还可以鼓励商业出版商销售自由的、遵循版权的手册，而不是专有的手册。你可以帮助实现这一点的一种方式是在购买手册之前检查其分发条款，并更喜欢遵循版权的手册而不是非遵循版权的手册。
 
 @sp 2
 @noindent
-Note: The Free Software Foundation maintains a page on its Web site
-that lists free books available from other publishers:@*
+注：自由软件基金会在其网站上维护了一个页面，列出了其他出版商提供的免费图书：@*
 @uref{https://www.gnu.org/doc/other-free-books.html}
 
 @node GNU Free Documentation License
