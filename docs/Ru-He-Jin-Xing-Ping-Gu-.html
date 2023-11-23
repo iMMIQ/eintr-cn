@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>How to Evaluate (Programming in Emacs Lisp)</title>
+<title>如何进行评估 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="How to Evaluate (Programming in Emacs Lisp)">
-<meta name="keywords" content="How to Evaluate (Programming in Emacs Lisp)">
+<meta name="description" content="如何进行评估 (Programming in Emacs Lisp)">
+<meta name="keywords" content="如何进行评估 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -51,40 +51,23 @@ kbd.kbd {font-style: oblique}
 </head>
 
 <body lang="en">
-<div class="unnumberedsec-level-extent" id="How-to-Evaluate">
+<div class="unnumberedsec-level-extent" id="g_t_5982_4f55_8fdb_884c_8bc4_4f30">
 <div class="nav-panel">
 <p>
 Next: <a href="Buffer-Names.html" accesskey="n" rel="next">Buffer Names</a>, Up: <a href="Lian-Xi-Ping-Gu-.html" accesskey="u" rel="up">练习评估</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="unnumberedsec" id="How-to-Evaluate-1">How to Evaluate</h3>
+<h3 class="unnumberedsec" id="Ru-He-Jin-Xing-Ping-Gu-">如何进行评估</h3>
 
-<p><i class="i">Whenever you give an editing command</i> to Emacs Lisp, such as the
-command to move the cursor or to scroll the screen, <i class="i">you are evaluating
-an expression,</i> the first element of which is a function.  <i class="i">This is
-how Emacs works.</i>
+<p><i class="i">每当你向Emacs Lisp发送一个编辑命令</i>，比如移动光标或滚动屏幕时，<i class="i">你都在评估一个表达式，</i>其第一个元素是一个函数。<i class="i">这就是Emacs的工作原理。</i>
 </p>
-<a class="index-entry-id" id="index-interactive-function-defined"></a>
-<a class="index-entry-id" id="index-command-defined"></a>
-<p>When you type keys, you cause the Lisp interpreter to evaluate an
-expression and that is how you get your results.  Even typing plain text
-involves evaluating an Emacs Lisp function, in this case, one that uses
-<code class="code">self-insert-command</code>, which simply inserts the character you
-typed.  The functions you evaluate by typing keystrokes are called
-<em class="dfn">interactive</em> functions, or <em class="dfn">commands</em>; how you make a function
-interactive will be illustrated in the chapter on how to write function
-definitions.  See <a class="xref" href="Interactive.html">Making a Function Interactive</a>.
+<a class="index-entry-id" id="index-Jiao-Hu-Han-Shu-Ding-Yi-"></a>
+<a class="index-entry-id" id="index-Ming-Ling-Ding-Yi-"></a>
+<p>当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是<code class="code">self-insert-command</code>，它简单地插入你键入的字符。通过键入按键而评估的函数称为<em class="dfn">交互</em>函数或<em class="dfn">命令</em>；如何使一个函数交互将在编写函数定义的章节中说明。See <a class="xref" href="Interactive.html">使一个函数交互</a>。
 </p>
-<p>In addition to typing keyboard commands, we have seen a second way to
-evaluate an expression: by positioning the cursor after a list and
-typing <kbd class="kbd">C-x C-e</kbd>.  This is what we will do in the rest of this
-section.  There are other ways to evaluate an expression as well; these
-will be described as we come to them.
+<p>除了键入键盘命令，我们已经看到第二种评估表达式的方法：将光标定位在列表后面，然后键入<kbd class="kbd">C-x C-e</kbd>。这是本节其余部分将要做的事情。还有其他评估表达式的方式；当我们遇到它们时会进行描述。
 </p>
-<p>Besides being used for practicing evaluation, the functions shown in the
-next few sections are important in their own right.  A study of these
-functions makes clear the distinction between buffers and files, how to
-switch to a buffer, and how to determine a location within it.
+<p>除了用于练习评估之外，下面几节中显示的函数在其自身方面也是重要的。研究这些函数清晰地展示了缓冲区和文件之间的区别，如何切换到一个缓冲区以及如何确定其中的位置。
 </p>
 </div>
 

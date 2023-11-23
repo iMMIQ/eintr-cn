@@ -1807,62 +1807,36 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 编写一个在评估时在回显区域打印消息的表达式。
 @end itemize
 
-@node Practicing Evaluation
-@chapter Practicing Evaluation
-@cindex Practicing evaluation
-@cindex Evaluation practice
+@node 练习评估
+@chapter 练习评估
+@cindex 练习评估
+@cindex 评估练习
 
-Before learning how to write a function definition in Emacs Lisp, it is
-useful to spend a little time evaluating various expressions that have
-already been written.  These expressions will be lists with the
-functions as their first (and often only) element.  Since some of the
-functions associated with buffers are both simple and interesting, we
-will start with those.  In this section, we will evaluate a few of
-these.  In another section, we will study the code of several other
-buffer-related functions, to see how they were written.
+在学习如何在Emacs Lisp中编写函数定义之前，花一点时间评估已经编写的各种表达式是很有用的。这些表达式将是具有函数作为它们的第一个（通常是唯一的）元素的列表。由于与缓冲区相关的一些函数既简单又有趣，我们将从这些函数开始。在本节中，我们将评估其中的一些。在另一节中，我们将研究其他几个与缓冲区相关的函数的代码，以了解它们是如何编写的。
 
 @menu
-* How to Evaluate::            Typing editing commands or @kbd{C-x C-e}
-                                 causes evaluation.
-* Buffer Names::               Buffers and files are different.
-* Getting Buffers::            Getting a buffer itself, not merely its name.
-* Switching Buffers::          How to change to another buffer.
-* Buffer Size & Locations::    Where point is located and the size of
-                               the buffer.
-* Evaluation Exercise::
+* 如何进行评估::            键入编辑命令或 @kbd{C-x C-e} 会导致评估。
+* 缓冲区名称::               缓冲区和文件是不同的。
+* 获取缓冲区::               获取缓冲区本身，而不仅仅是它的名称。
+* 切换缓冲区::               如何切换到另一个缓冲区。
+* 缓冲区大小与位置::         point 的位置以及缓冲区的大小。
+* 评估练习::
 @end menu
 
 @ifnottex
-@node How to Evaluate
-@unnumberedsec How to Evaluate
+@node 如何进行评估
+@unnumberedsec 如何进行评估
 @end ifnottex
 
-@i{Whenever you give an editing command} to Emacs Lisp, such as the
-command to move the cursor or to scroll the screen, @i{you are evaluating
-an expression,} the first element of which is a function.  @i{This is
-how Emacs works.}
+@i{每当你向Emacs Lisp发送一个编辑命令}，比如移动光标或滚动屏幕时，@i{你都在评估一个表达式，}其第一个元素是一个函数。@i{这就是Emacs的工作原理。}
 
-@cindex @samp{interactive function} defined
-@cindex @samp{command} defined
-When you type keys, you cause the Lisp interpreter to evaluate an
-expression and that is how you get your results.  Even typing plain text
-involves evaluating an Emacs Lisp function, in this case, one that uses
-@code{self-insert-command}, which simply inserts the character you
-typed.  The functions you evaluate by typing keystrokes are called
-@dfn{interactive} functions, or @dfn{commands}; how you make a function
-interactive will be illustrated in the chapter on how to write function
-definitions.  @xref{Interactive, , Making a Function Interactive}.
+@cindex @samp{交互函数}定义
+@cindex @samp{命令}定义
+当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是@code{self-insert-command}，它简单地插入你键入的字符。通过键入按键而评估的函数称为@dfn{交互}函数或@dfn{命令}；如何使一个函数交互将在编写函数定义的章节中说明。@xref{Interactive, , 使一个函数交互}。
 
-In addition to typing keyboard commands, we have seen a second way to
-evaluate an expression: by positioning the cursor after a list and
-typing @kbd{C-x C-e}.  This is what we will do in the rest of this
-section.  There are other ways to evaluate an expression as well; these
-will be described as we come to them.
+除了键入键盘命令，我们已经看到第二种评估表达式的方法：将光标定位在列表后面，然后键入@kbd{C-x C-e}。这是本节其余部分将要做的事情。还有其他评估表达式的方式；当我们遇到它们时会进行描述。
 
-Besides being used for practicing evaluation, the functions shown in the
-next few sections are important in their own right.  A study of these
-functions makes clear the distinction between buffers and files, how to
-switch to a buffer, and how to determine a location within it.
+除了用于练习评估之外，下面几节中显示的函数在其自身方面也是重要的。研究这些函数清晰地展示了缓冲区和文件之间的区别，如何切换到一个缓冲区以及如何确定其中的位置。
 
 @node Buffer Names
 @section Buffer Names
