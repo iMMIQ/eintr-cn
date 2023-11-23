@@ -21197,22 +21197,15 @@ MENU ENTRY: NODE NAME.
 @end iftex
 
 @ifnottex
-@node About the Author
-@unnumbered About the Author
+@node 作者简介
+@unnumbered 作者简介
 @end ifnottex
 
 @quotation
-Robert J. Chassell (1946--2017) started working with GNU Emacs in 1985.  He wrote
-and edited, taught Emacs and Emacs Lisp, and spoke throughout the
-world on software freedom.  Chassell was a founding Director and
-Treasurer of the Free Software Foundation, Inc.  He was co-author of
-the @cite{Texinfo} manual, and edited more than a dozen other
-books.  He graduated from Cambridge University, in England.  He had an
-abiding interest in social and economic history and flew his own
-airplane.
+罗伯特·J·查瑟尔（1946--2017）于1985年开始使用GNU Emacs。他撰写和编辑了Emacs和Emacs Lisp的教材，并在世界各地演讲，倡导软件自由。查瑟尔是自由软件基金会（Free Software Foundation, Inc.）的创始董事兼财务主管。他是《Texinfo》手册的合著者，还编辑了十多本其他书籍。他毕业于英格兰剑桥大学，对社会和经济历史有浓厚兴趣，同时还是一名私人飞行爱好者。
 
 @uref{https://www.fsf.org/blogs/community/goodbye-to-bob-chassell,
-"Goodbye to Bob Chassell"}
+"向鲍勃·查瑟尔告别"}
 @end quotation
 
 @c @page
