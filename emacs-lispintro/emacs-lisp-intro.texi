@@ -2003,11 +2003,11 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 @cindex @samp{narrowing}定义
 函数@code{point-min}与@code{point}有些相似，但它返回当前缓冲区中point的最小允许值。这个值是1，除非启用了@dfn{narrowing}。（Narrowing是一种机制，通过它，您可以将自己或程序限制在仅对缓冲区的一部分进行操作。@xref{Narrowing & Widening, , 窄化和扩展}。）同样，函数@code{point-max}返回当前缓冲区中point的最大允许值。
 
-@node Evaluation Exercise
-@section Exercise
+@node 评估练习
+@section 练习
 
-Find a file with which you are working and move towards its middle.
-Find its buffer name, file name, length, and your position in the file.
+找到您正在使用的文件，并移动到其中间。
+找到其缓冲区名称、文件名称、长度以及您在文件中的位置。
 
 @node Writing Defuns
 @chapter How To Write Function Definitions
