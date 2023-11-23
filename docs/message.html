@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Arguments.html" rel="up" title="Arguments">
-<link href="Wrong-Type-of-Argument.html" rel="prev" title="Wrong Type of Argument">
+<link href="Can-Shu-.html" rel="up" title="参数">
+<link href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html" rel="prev" title="错误类型的参数">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -55,86 +55,55 @@ kbd.kbd {font-style: oblique}
 <div class="subsection-level-extent" id="message">
 <div class="nav-panel">
 <p>
-Previous: <a href="Wrong-Type-of-Argument.html" accesskey="p" rel="prev">Using the Wrong Type Object as an Argument</a>, Up: <a href="Arguments.html" accesskey="u" rel="up">Arguments</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html" accesskey="p" rel="prev">使用错误类型的对象作为参数</a>, Up: <a href="Can-Shu-.html" accesskey="u" rel="up">参数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-message-Function">1.8.5 The <code class="code">message</code> Function</h4>
+<h4 class="subsection" id="message-Han-Shu-">1.8.5 <code class="code">message</code> 函数</h4>
 <a class="index-entry-id" id="index-message"></a>
 
-<p>Like <code class="code">+</code>, the <code class="code">message</code> function takes a variable number of
-arguments.  It is used to send messages to the user and is so useful
-that we will describe it here.
+<p>类似于<code class="code">+</code>函数，<code class="code">message</code>函数接受可变数量的参数。它用于向用户发送消息，非常实用，我们将在这里描述它。
 </p>
-<p>A message is printed in the echo area.  For example, you can print a
-message in your echo area by evaluating the following list:
+<p>消息将被打印在回显区。例如，通过评估以下列表，您可以在回显区中打印一条消息：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(message &quot;This message appears in the echo area!&quot;)
 </pre></div>
 
-<p>The whole string between double quotation marks is a single argument
-and is printed <i class="i">in toto</i>.  (Note that in this example, the message
-itself will appear in the echo area within double quotes; that is
-because you see the value returned by the <code class="code">message</code> function.  In
-most uses of <code class="code">message</code> in programs that you write, the text will
-be printed in the echo area as a side-effect, without the quotes.
-See <a class="xref" href="multiply_002dby_002dseven-in-detail.html"><code class="code">multiply-by-seven</code> in
-detail</a>, for an example of this.)
+<p>双引号之间的整个字符串是一个单一的参数，并被整体打印出来。（请注意，在这个例子中，消息本身将在回显区中用双引号括起来；这是因为您看到了<code class="code">message</code>函数返回的值。在您编写的程序中，<code class="code">message</code>的大多数用法将作为副作用将文本在回显区中打印出来，而不带引号。See <a class="xref" href="multiply_002dby_002dseven-in-detail.html"><code class="code">multiply-by-seven</code> in
+detail</a>，了解其中的一个示例。）
 </p>
-<p>However, if there is a &lsquo;<samp class="samp">%s</samp>&rsquo; in the quoted string of characters, the
-<code class="code">message</code> function does not print the &lsquo;<samp class="samp">%s</samp>&rsquo; as such, but looks
-to the argument that follows the string.  It evaluates the second
-argument and prints the value at the location in the string where the
-&lsquo;<samp class="samp">%s</samp>&rsquo; is.
+<p>然而，如果在带引号的字符字符串中有一个&lsquo;<samp class="samp">%s</samp>&rsquo;，<code class="code">message</code>函数不会像这样打印&lsquo;<samp class="samp">%s</samp>&rsquo;，而是查看跟随字符串的参数。它评估第二个参数，并在字符串中&lsquo;<samp class="samp">%s</samp>&rsquo;的位置打印该值。
 </p>
-<p>You can see this by positioning the cursor after the following
-expression and typing <kbd class="kbd">C-x C-e</kbd>:
+<p>您可以通过将光标定位在以下表达式之后，然后键入<kbd class="kbd">C-x C-e</kbd>来查看这一点：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(message &quot;The name of this buffer is: %s.&quot; (buffer-name))
 </pre></div>
 
-<p>In Info, <code class="code">&quot;The name of this buffer is: *info*.&quot;</code> will appear in the
-echo area.  The function <code class="code">buffer-name</code> returns the name of the
-buffer as a string, which the <code class="code">message</code> function inserts in place
-of <code class="code">%s</code>.
+<p>在Info中，<code class="code">&quot;The name of this buffer is: *info*.&quot;</code> 将出现在回显区。函数 <code class="code">buffer-name</code> 返回缓冲区的名称作为字符串，<code class="code">message</code> 函数将其插入到 <code class="code">%s</code> 的位置。
 </p>
-<p>To print a value as an integer, use &lsquo;<samp class="samp">%d</samp>&rsquo; in the same way as
-&lsquo;<samp class="samp">%s</samp>&rsquo;.  For example, to print a message in the echo area that
-states the value of the <code class="code">fill-column</code>, evaluate the following:
+<p>要将值以整数形式打印，可以使用 &lsquo;<samp class="samp">%d</samp>&rsquo;，与 &lsquo;<samp class="samp">%s</samp>&rsquo; 的使用方式相同。例如，要在回显区中打印一条消息，指出 <code class="code">fill-column</code> 的值，请评估以下内容：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(message &quot;The value of fill-column is %d.&quot; fill-column)
 </pre></div>
 
-<p>On my system, when I evaluate this list, <code class="code">&quot;The value of
-fill-column is 72.&quot;</code> appears in my echo area<a class="footnote" id="DOCF5" href="#FOOT5"><sup>5</sup></a>.
+<p>在我的系统上，当我评估这个列表时，<code class="code">&quot;The value of fill-column is 72.&quot;</code> 将出现在我的回显区<a class="footnote" id="DOCF5" href="#FOOT5"><sup>5</sup></a>。
 </p>
-<p>If there is more than one &lsquo;<samp class="samp">%s</samp>&rsquo; in the quoted string, the value of
-the first argument following the quoted string is printed at the
-location of the first &lsquo;<samp class="samp">%s</samp>&rsquo; and the value of the second argument is
-printed at the location of the second &lsquo;<samp class="samp">%s</samp>&rsquo;, and so on.
+<p>如果在引用的字符串中有多个 &lsquo;<samp class="samp">%s</samp>&rsquo;，则在第一个 &lsquo;<samp class="samp">%s</samp>&rsquo; 的位置打印跟在引用字符串后的第一个参数的值，并在第二个 &lsquo;<samp class="samp">%s</samp>&rsquo; 的位置打印第二个参数的值，依此类推。
 </p>
-<p>For example, if you evaluate the following,
+<p>例如，如果你评估以下内容，
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(message &quot;There are %d %s in the office!&quot;
          (- fill-column 14) &quot;pink elephants&quot;)
 </pre></div></div>
 
-<p>a rather whimsical message will appear in your echo area.  On my system
-it says, <code class="code">&quot;There are 58 pink elephants in the office!&quot;</code>.
+<p>你的回显区将显示一条相当奇特的消息。在我的系统上，它会显示，<code class="code">&quot;There are 58 pink elephants in the office!&quot;</code>。
 </p>
-<p>The expression <code class="code">(- fill-column 14)</code> is evaluated and the resulting
-number is inserted in place of the &lsquo;<samp class="samp">%d</samp>&rsquo;; and the string in double
-quotes, <code class="code">&quot;pink elephants&quot;</code>, is treated as a single argument and
-inserted in place of the &lsquo;<samp class="samp">%s</samp>&rsquo;.  (That is to say, a string between
-double quotes evaluates to itself, like a number.)
+<p>表达式<code class="code">(- fill-column 14)</code>被评估，生成的数字插入到&lsquo;<samp class="samp">%d</samp>&rsquo;的位置；双引号中的字符串<code class="code">&quot;pink elephants&quot;</code>被视为单个参数，插入到&lsquo;<samp class="samp">%s</samp>&rsquo;的位置。（也就是说，双引号之间的字符串评估为它本身，就像一个数字一样。）
 </p>
-<p>Finally, here is a somewhat complex example that not only illustrates
-the computation of a number, but also shows how you can use an
-expression within an expression to generate the text that is substituted
-for &lsquo;<samp class="samp">%s</samp>&rsquo;:
+<p>最后，这里有一个稍微复杂的例子，不仅说明了一个数字的计算，而且还展示了如何在一个表达式中使用另一个表达式来生成替代&lsquo;<samp class="samp">%s</samp>&rsquo;的文本：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(message &quot;He saw %d %s&quot;
@@ -145,16 +114,9 @@ for &lsquo;<samp class="samp">%s</samp>&rsquo;:
                  &quot; leaping.&quot;))
 </pre></div></div>
 
-<p>In this example, <code class="code">message</code> has three arguments: the string,
-<code class="code">&quot;He saw %d %s&quot;</code>, the expression, <code class="code">(- fill-column 32)</code>, and
-the expression beginning with the function <code class="code">concat</code>.  The value
-resulting from the evaluation of <code class="code">(- fill-column 32)</code> is inserted
-in place of the &lsquo;<samp class="samp">%d</samp>&rsquo;; and the value returned by the expression
-beginning with <code class="code">concat</code> is inserted in place of the &lsquo;<samp class="samp">%s</samp>&rsquo;.
+<p>在这个例子中，<code class="code">message</code>有三个参数：字符串<code class="code">&quot;He saw %d %s&quot;</code>，表达式<code class="code">(- fill-column 32)</code>，以及以<code class="code">concat</code>函数开头的表达式。通过评估<code class="code">(- fill-column 32)</code>生成的值插入到&lsquo;<samp class="samp">%d</samp>&rsquo;的位置；以及通过评估以<code class="code">concat</code>开头的表达式生成的值插入到&lsquo;<samp class="samp">%s</samp>&rsquo;的位置。
 </p>
-<p>When your fill column is 70 and you evaluate the expression, the
-message <code class="code">&quot;He saw 38 red foxes leaping.&quot;</code> appears in your echo
-area.
+<p>当你的填充列为70时，评估这个表达式，消息<code class="code">&quot;He saw 38 red foxes leaping.&quot;</code>将出现在你的回显区。
 </p>
 </div>
 <div class="footnotes-segment">
@@ -162,15 +124,7 @@ area.
 <h4 class="footnotes-heading">Footnotes</h4>
 
 <h5 class="footnote-body-heading"><a id="FOOT5" href="#DOCF5">(5)</a></h5>
-<p>Actually, you
-can use <code class="code">%s</code> to print a number.  It is non-specific.  <code class="code">%d</code>
-prints only the part of a number left of a decimal point, and not
-anything that is not a number.</p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Previous: <a href="Wrong-Type-of-Argument.html">Using the Wrong Type Object as an Argument</a>, Up: <a href="Arguments.html">Arguments</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+<p>实际上，你可以使用 <code class="code">%s</code> 打印一个数字。它是非具体的。<code class="code">%d</code> 只打印小数点左边的数字部分，而不包括任何非数字内容。</p>
 </div>
 
 

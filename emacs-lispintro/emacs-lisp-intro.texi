@@ -1401,169 +1401,99 @@ Debugger entered--Lisp error: (void-variable +)
 
 由于@code{+}没有绑定到任何值，只有函数定义，错误消息报告该符号作为变量的值为空。
 
-@node Arguments
-@section Arguments
-@cindex Arguments
-@cindex Passing information to functions
+@node 参数
+@section 参数
+@cindex 参数
+@cindex 将信息传递给函数
 
-To see how information is passed to functions, let's look again at
-our old standby, the addition of two plus two.  In Lisp, this is written
-as follows:
+为了了解信息是如何传递给函数的，让我们再次看看我们的老朋友，@code{2 + 2}。在Lisp中，它被写成如下形式：
 
 @smallexample
 (+ 2 2)
 @end smallexample
 
-If you evaluate this expression, the number 4 will appear in your echo
-area.  What the Lisp interpreter does is add the numbers that follow
-the @code{+}.
+如果你评估这个表达式，数字4将出现在你的回显区。Lisp解释器所做的是将跟随@code{+}的数字相加。
 
-@cindex @samp{argument} defined
-The numbers added by @code{+} are called the @dfn{arguments} of the
-function @code{+}.  These numbers are the information that is given to
-or @dfn{passed} to the function.
+@cindex @samp{argument} 的定义
+由@code{+}相加的数字被称为函数@code{+}的@dfn{参数}。这些数字是传递给函数的信息。
 
-The word ``argument'' comes from the way it is used in mathematics and
-does not refer to a disputation between two people; instead it refers to
-the information presented to the function, in this case, to the
-@code{+}.  In Lisp, the arguments to a function are the atoms or lists
-that follow the function.  The values returned by the evaluation of
-these atoms or lists are passed to the function.  Different functions
-require different numbers of arguments; some functions require none at
-all.@footnote{It is curious to track the path by which the word ``argument''
-came to have two different meanings, one in mathematics and the other in
-everyday English.  According to the @cite{Oxford English Dictionary},
-the word derives from the Latin for @samp{to make clear, prove}; thus it
-came to mean, by one thread of derivation, ``the evidence offered as
-proof'', which is to say, ``the information offered'', which led to its
-meaning in Lisp.  But in the other thread of derivation, it came to mean
-``to assert in a manner against which others may make counter
-assertions'', which led to the meaning of the word as a disputation.
-(Note here that the English word has two different definitions attached
-to it at the same time.  By contrast, in Emacs Lisp, a symbol cannot
-have two different function definitions at the same time.)}
+“参数”这个词来自数学中的用法，不是指两个人之间的辩论；而是指提供给函数的信息，在这种情况下，是提供给@code{+}的信息。在Lisp中，函数的参数是跟随函数的原子或列表。通过评估这些原子或列表的结果值传递给函数。不同的函数需要不同数量的参数；有些函数根本不需要参数。@footnote{追踪“参数”这个词如何在数学中和日常英语中拥有两个不同的含义是很有趣的。根据《牛津英语词典》的说法，这个词源于拉丁语，意思是“澄清，证明”；因此，它通过一条推导线的方式，来表示“作为证据提供的信息”，也就是说，“提供的信息”，这导致了它在Lisp中的含义。但在另一条推导线上，它的意思变成了“以一种其他人可以提出反对主张的方式断言”，这解释了这个词作为争论的含义。(注意这里英语单词同时拥有两个不同的定义。相比之下，在Emacs Lisp中，一个符号在同一时间不能拥有两个不同的函数定义。)}
 
 @menu
-* Data types::                  Types of data passed to a function.
-* Args as Variable or List::    An argument can be the value
-                                  of a variable or list.
-* Variable Number of Arguments::  Some functions may take a
-                                  variable number of arguments.
-* Wrong Type of Argument::      Passing an argument of the wrong type
-                                  to a function.
-* message::                     A useful function for sending messages.
+* 数据类型::                  传递给函数的数据类型。
+* 将参数作为变量或列表::    参数可以是变量或列表的值。
+* 可变数量的参数::  一些函数可能接受可变数量的参数。
+* 错误类型的参数::      将错误类型的参数传递给函数。
+* message::                     用于发送消息的有用函数。
 @end menu
 
-@node Data types
-@subsection Arguments' Data Types
-@cindex Data types
-@cindex Types of data
-@cindex Arguments' data types
+@node 数据类型
+@subsection 参数的数据类型
+@cindex 数据类型
+@cindex 数据的类型
+@cindex 参数的数据类型
 
-The type of data that should be passed to a function depends on what
-kind of information it uses.  The arguments to a function such as
-@code{+} must have values that are numbers, since @code{+} adds numbers.
-Other functions use different kinds of data for their arguments.
+应传递给函数的数据类型取决于它使用的信息的种类。例如，像@code{+}这样的函数的参数必须是数字，因为@code{+}是对数字进行加法运算的。其他函数使用不同类型的数据作为它们的参数。
 
 @need 1250
 @findex concat
-For example, the @code{concat} function links together or unites two or
-more strings of text to produce a string.  The arguments are strings.
-Concatenating the two character strings @code{abc}, @code{def} produces
-the single string @code{abcdef}.  This can be seen by evaluating the
-following:
+例如，@code{concat}函数将两个或多个文本字符串连接或合并成一个字符串。其参数是字符串。连接两个字符字符串@code{abc}和@code{def}将产生单个字符串@code{abcdef}。通过评估以下表达式可以看到这一点：
 
 @smallexample
 (concat "abc" "def")
 @end smallexample
 
 @noindent
-The value produced by evaluating this expression is @code{"abcdef"}.
+评估这个表达式产生的值是@code{"abcdef"}。
 
 @cindex substring
-A function such as @code{substring} uses both a string and numbers as
-arguments.  The function returns a part of the string, a @dfn{substring} of
-the first argument.  This function takes three arguments.  Its first
-argument is the string of characters, the second and third arguments
-are numbers that indicate the beginning (inclusive) and end
-(exclusive) of the substring.  The numbers are a count of the number
-of characters (including spaces and punctuation) from the beginning of
-the string. Note that the characters in a string are numbered from
-zero, not one.
+像@code{substring}这样的函数使用字符串和数字作为参数。该函数返回字符串的一部分，即第一个参数的@dfn{子字符串}。该函数接受三个参数。其第一个参数是字符字符串，第二个和第三个参数是指示子字符串的开始（包括）和结束（不包括）的数字。这些数字表示从字符串开头开始的字符数（包括空格和标点符号）。注意字符串中的字符是从零开始编号的，而不是从一开始。
 
 @need 800
-For example, if you evaluate the following:
+例如，如果你评估以下表达式：
 
 @smallexample
 (substring "The quick brown fox jumped." 16 19)
 @end smallexample
 
 @noindent
-you will see @code{"fox"} appear in the echo area.  The arguments are the
-string and the two numbers.
+你将在回显区看到@code{"fox"}。这些参数分别是字符串和两个数字。
 
-Note that the string passed to @code{substring} is a single atom even
-though it is made up of several words separated by spaces.  Lisp counts
-everything between the two quotation marks as part of the string,
-including the spaces.  You can think of the @code{substring} function as
-a kind of atom smasher since it takes an otherwise indivisible atom
-and extracts a part.  However, @code{substring} is only able to extract
-a substring from an argument that is a string, not from another type of
-atom such as a number or symbol.
+请注意，传递给@code{substring}的字符串是一个单一的原子，即使它由多个用空格分隔的单词组成。Lisp将引号之间的所有内容都计为字符串的一部分，包括空格。你可以将@code{substring}函数看作是一种原子粒子解体器，因为它从一个否则不可分割的原子中提取了一部分。但是，@code{substring}只能从参数是字符串的原子中提取子字符串，而不能从其他类型的原子（如数字或符号）中提取。
 
-@node Args as Variable or List
-@subsection An Argument as the Value of a Variable or List
+@node 将参数作为变量或列表
+@subsection 参数作为变量或列表的值
 
-An argument can be a symbol that returns a value when it is evaluated.
-For example, when the symbol @code{fill-column} by itself is evaluated,
-it returns a number.  This number can be used in an addition.
+参数可以是一个符号，在评估时返回一个值。例如，当单独评估符号@code{fill-column}时，它会返回一个数字。这个数字可以在加法中使用。
 
 @need 1250
-Position the cursor after the following expression and type @kbd{C-x
-C-e}:
+将光标定位到以下表达式后，键入@kbd{C-x C-e}：
 
 @smallexample
 (+ 2 fill-column)
 @end smallexample
 
 @noindent
-The value will be a number two more than what you get by evaluating
-@code{fill-column} alone.  For me, this is 74, because my value of
-@code{fill-column} is 72.
+该值将是比仅评估@code{fill-column}得到的数字多两个。对我来说，这是74，因为我的@code{fill-column}值是72。
 
-As we have just seen, an argument can be a symbol that returns a value
-when evaluated.  In addition, an argument can be a list that returns a
-value when it is evaluated.  For example, in the following expression,
-the arguments to the function @code{concat} are the strings
-@w{@code{"The "}} and @w{@code{" red foxes."}} and the list
-@code{(number-to-string (+ 2 fill-column))}.
+正如我们刚刚看到的，参数可以是在评估时返回值的符号。此外，参数还可以是在评估时返回值的列表。例如，在以下表达式中，函数@code{concat}的参数是字符串@w{@code{"The "}}和@w{@code{" red foxes."}}，以及列表@code{(number-to-string (+ 2 fill-column))}。
 
 @smallexample
 (concat "The " (number-to-string (+ 2 fill-column)) " red foxes.")
 @end smallexample
 
 @noindent
-If you evaluate this expression---and if, as with my Emacs,
-@code{fill-column} evaluates to 72---@code{"The 74 red foxes."} will
-appear in the echo area.  (Note that you must put spaces after the
-word @samp{The} and before the word @samp{red} so they will appear in
-the final string.  The function @code{number-to-string} converts the
-integer that the addition function returns to a string.
-@code{number-to-string} is also known as @code{int-to-string}.)
+如果你评估这个表达式——如果像我的Emacs一样，@code{fill-column}评估为72——@code{"The 74 red foxes."}将出现在回显区。 (注意，你必须在单词@samp{The}后面和单词@samp{red}前面加上空格，这样它们才会出现在最终的字符串中。函数@code{number-to-string}将加法函数返回的整数转换为字符串。@code{number-to-string}也被称为@code{int-to-string}。)
 
-@node Variable Number of Arguments
-@subsection Variable Number of Arguments
-@cindex Variable number of arguments
-@cindex Arguments, variable number of
+@node 可变数量的参数
+@subsection 可变数量的参数
+@cindex 可变数量的参数
+@cindex 参数，可变数量的
 
-Some functions, such as @code{concat}, @code{+} or @code{*}, take any
-number of arguments.  (The @code{*} is the symbol for multiplication.)
-This can be seen by evaluating each of the following expressions in
-the usual way.  What you will see in the echo area is printed in this
-text after @samp{@result{}}, which you may read as ``evaluates to''.
+一些函数，如@code{concat}，@code{+}或@code{*}，可以接受任意数量的参数。（@code{*}是乘法的符号。）这可以通过以通常的方式评估以下每个表达式来看到。在回显区域中看到的内容在此文本中以@samp{@result{}}打印出来，你可以将其理解为“求值为”。
 
 @need 1250
-In the first set, the functions have no arguments:
+在第一组中，函数没有参数：
 
 @smallexample
 @group
@@ -1574,7 +1504,7 @@ In the first set, the functions have no arguments:
 @end smallexample
 
 @need 1250
-In this set, the functions have one argument each:
+在这一组中，函数每个都有一个参数：
 
 @smallexample
 @group
@@ -1585,7 +1515,7 @@ In this set, the functions have one argument each:
 @end smallexample
 
 @need 1250
-In this set, the functions have three arguments each:
+在这一组中，函数每个都有三个参数：
 
 @smallexample
 @group
@@ -1595,31 +1525,22 @@ In this set, the functions have three arguments each:
 @end group
 @end smallexample
 
-@node Wrong Type of Argument
-@subsection Using the Wrong Type Object as an Argument
-@cindex Wrong type of argument
-@cindex Argument, wrong type of
+@node 错误类型的参数
+@subsection 使用错误类型的对象作为参数
+@cindex 错误类型的参数
+@cindex 参数，错误类型的
 
-When a function is passed an argument of the wrong type, the Lisp
-interpreter produces an error message.  For example, the @code{+}
-function expects the values of its arguments to be numbers.  As an
-experiment we can pass it the quoted symbol @code{hello} instead of a
-number.  Position the cursor after the following expression and type
-@kbd{C-x C-e}:
+当一个函数被传递一个错误类型的参数时，Lisp解释器会产生一个错误消息。例如，@code{+}函数期望其参数的值为数字。作为实验，我们可以传递给它带引号的符号@code{hello}，而不是一个数字。将光标放在以下表达式后，然后输入@kbd{C-x C-e}：
 
 @smallexample
 (+ 2 'hello)
 @end smallexample
 
 @noindent
-When you do this you will generate an error message.  What has happened
-is that @code{+} has tried to add the 2 to the value returned by
-@code{'hello}, but the value returned by @code{'hello} is the symbol
-@code{hello}, not a number.  Only numbers can be added.  So @code{+}
-could not carry out its addition.
+当你这样做时，将生成一个错误消息。发生的情况是，@code{+}试图将2添加到@code{'hello}返回的值，但@code{'hello}返回的值是符号@code{hello}，而不是一个数字。只有数字可以相加。所以@code{+}无法执行其加法运算。
 
 @need 1250
-You will create and enter a @file{*Backtrace*} buffer that says:
+你将创建并进入一个@file{*Backtrace*}缓冲区，其中显示：
 
 @noindent
 @smallexample
@@ -1639,113 +1560,58 @@ Debugger entered--Lisp error:
 @end smallexample
 
 @need 1250
-As usual, the error message tries to be helpful and makes sense after you
-learn how to read it.@footnote{@code{(quote hello)} is an expansion of
-the abbreviation @code{'hello}.}
+和往常一样，错误消息试图提供帮助，并在学会如何阅读后变得有意义。@footnote{@code{(quote hello)}是@code{'hello}缩写的扩展。}
 
-The first part of the error message is straightforward; it says
-@samp{wrong type argument}.  Next comes the mysterious jargon word
-@w{@samp{number-or-marker-p}}.  This word is trying to tell you what
-kind of argument the @code{+} expected.
+错误消息的第一部分很简单，它说@samp{wrong type argument}。接下来是神秘的行话词@samp{number-or-marker-p}。这个词试图告诉你@code{+}期望的参数类型。
 
-The symbol @code{number-or-marker-p} says that the Lisp interpreter is
-trying to determine whether the information presented it (the value of
-the argument) is a number or a marker (a special object representing a
-buffer position).  What it does is test to see whether the @code{+} is
-being given numbers to add.  It also tests to see whether the
-argument is something called a marker, which is a specific feature of
-Emacs Lisp.  (In Emacs, locations in a buffer are recorded as markers.
-When the mark is set with the @kbd{C-@@} or @kbd{C-@key{SPC}} command,
-its position is kept as a marker.  The mark can be considered a
-number---the number of characters the location is from the beginning
-of the buffer.)  In Emacs Lisp, @code{+} can be used to add the
-numeric value of marker positions as numbers.
+符号@code{number-or-marker-p}表示Lisp解释器正在尝试确定所呈现的信息（参数的值）是一个数字还是一个标记（表示缓冲区位置的特殊对象）。它的操作是测试@code{+}是否被赋予要相加的数字。它还测试参数是否是一种称为标记的东西，这是Emacs Lisp的一个特定特性。（在Emacs中，缓冲区中的位置被记录为标记。当使用@kbd{C-@@}或@kbd{C-@key{SPC}}命令设置标记时，其位置被保留为标记。标记可以被视为一个数字---表示该位置距离缓冲区开头的字符数。在Emacs Lisp中，@code{+}可以用于将标记位置的数值作为数字相加。
 
-@cindex @samp{predicate} defined
-The @samp{p} of @code{number-or-marker-p} is the embodiment of a
-practice started in the early days of Lisp programming.  The @samp{p}
-stands for @dfn{predicate}.  In the jargon used by the early Lisp
-researchers, a predicate refers to a function to determine whether some
-property is true or false.  So the @samp{p} tells us that
-@code{number-or-marker-p} is the name of a function that determines
-whether it is true or false that the argument supplied is a number or
-a marker.  Other Lisp symbols that end in @samp{p} include @code{zerop},
-a function that tests whether its argument has the value of zero, and
-@code{listp}, a function that tests whether its argument is a list.
+@cindex @samp{predicate} 的定义
+@code{number-or-marker-p}中的@samp{p}体现了Lisp编程早期实践的一种做法。@samp{p}代表@dfn{谓词}。在早期Lisp研究者使用的行话中，谓词是指一个函数，用于确定某个属性是否为真或为假。因此，@samp{p}告诉我们@code{number-or-marker-p}是一个函数的名称，该函数确定所提供的参数是否为数字或标记。其他以@samp{p}结尾的Lisp符号包括@code{zerop}，一个测试其参数是否为零值的函数，以及@code{listp}，一个测试其参数是否为列表的函数。
 
-Finally, the last part of the error message is the symbol @code{hello}.
-This is the value of the argument that was passed to @code{+}.  If the
-addition had been passed the correct type of object, the value passed
-would have been a number, such as 37, rather than a symbol like
-@code{hello}.  But then you would not have got the error message.
+最后，错误消息的最后部分是符号@code{hello}。这是传递给@code{+}的参数的值。如果相加操作传递了正确类型的对象，传递的值将是一个数字，如37，而不是像@code{hello}这样的符号。但那样你就不会收到错误消息。
 
 @node message
-@subsection The @code{message} Function
+@subsection @code{message} 函数
 @findex message
 
-Like @code{+}, the @code{message} function takes a variable number of
-arguments.  It is used to send messages to the user and is so useful
-that we will describe it here.
+类似于@code{+}函数，@code{message}函数接受可变数量的参数。它用于向用户发送消息，非常实用，我们将在这里描述它。
 
 @need 1250
-A message is printed in the echo area.  For example, you can print a
-message in your echo area by evaluating the following list:
+消息将被打印在回显区。例如，通过评估以下列表，您可以在回显区中打印一条消息：
 
 @smallexample
 (message "This message appears in the echo area!")
 @end smallexample
 
-The whole string between double quotation marks is a single argument
-and is printed @i{in toto}.  (Note that in this example, the message
-itself will appear in the echo area within double quotes; that is
-because you see the value returned by the @code{message} function.  In
-most uses of @code{message} in programs that you write, the text will
-be printed in the echo area as a side-effect, without the quotes.
-@xref{multiply-by-seven in detail, , @code{multiply-by-seven} in
-detail}, for an example of this.)
+双引号之间的整个字符串是一个单一的参数，并被整体打印出来。（请注意，在这个例子中，消息本身将在回显区中用双引号括起来；这是因为您看到了@code{message}函数返回的值。在您编写的程序中，@code{message}的大多数用法将作为副作用将文本在回显区中打印出来，而不带引号。@xref{multiply-by-seven in detail, , @code{multiply-by-seven} in
+detail}，了解其中的一个示例。）
 
-However, if there is a @samp{%s} in the quoted string of characters, the
-@code{message} function does not print the @samp{%s} as such, but looks
-to the argument that follows the string.  It evaluates the second
-argument and prints the value at the location in the string where the
-@samp{%s} is.
+然而，如果在带引号的字符字符串中有一个@samp{%s}，@code{message}函数不会像这样打印@samp{%s}，而是查看跟随字符串的参数。它评估第二个参数，并在字符串中@samp{%s}的位置打印该值。
 
 @need 1250
-You can see this by positioning the cursor after the following
-expression and typing @kbd{C-x C-e}:
+您可以通过将光标定位在以下表达式之后，然后键入@kbd{C-x C-e}来查看这一点：
 
 @smallexample
 (message "The name of this buffer is: %s." (buffer-name))
 @end smallexample
 
 @noindent
-In Info, @code{"The name of this buffer is: *info*."} will appear in the
-echo area.  The function @code{buffer-name} returns the name of the
-buffer as a string, which the @code{message} function inserts in place
-of @code{%s}.
+在Info中，@code{"The name of this buffer is: *info*."} 将出现在回显区。函数 @code{buffer-name} 返回缓冲区的名称作为字符串，@code{message} 函数将其插入到 @code{%s} 的位置。
 
-To print a value as an integer, use @samp{%d} in the same way as
-@samp{%s}.  For example, to print a message in the echo area that
-states the value of the @code{fill-column}, evaluate the following:
+要将值以整数形式打印，可以使用 @samp{%d}，与 @samp{%s} 的使用方式相同。例如，要在回显区中打印一条消息，指出 @code{fill-column} 的值，请评估以下内容：
 
 @smallexample
 (message "The value of fill-column is %d." fill-column)
 @end smallexample
 
 @noindent
-On my system, when I evaluate this list, @code{"The value of
-fill-column is 72."} appears in my echo area@footnote{Actually, you
-can use @code{%s} to print a number.  It is non-specific.  @code{%d}
-prints only the part of a number left of a decimal point, and not
-anything that is not a number.}.
+在我的系统上，当我评估这个列表时，@code{"The value of fill-column is 72."} 将出现在我的回显区@footnote{实际上，你可以使用 @code{%s} 打印一个数字。它是非具体的。@code{%d} 只打印小数点左边的数字部分，而不包括任何非数字内容。}。
 
-If there is more than one @samp{%s} in the quoted string, the value of
-the first argument following the quoted string is printed at the
-location of the first @samp{%s} and the value of the second argument is
-printed at the location of the second @samp{%s}, and so on.
+如果在引用的字符串中有多个 @samp{%s}，则在第一个 @samp{%s} 的位置打印跟在引用字符串后的第一个参数的值，并在第二个 @samp{%s} 的位置打印第二个参数的值，依此类推。
 
 @need 1250
-For example, if you evaluate the following,
+例如，如果你评估以下内容，
 
 @smallexample
 @group
@@ -1755,19 +1621,11 @@ For example, if you evaluate the following,
 @end smallexample
 
 @noindent
-a rather whimsical message will appear in your echo area.  On my system
-it says, @code{"There are 58 pink elephants in the office!"}.
+你的回显区将显示一条相当奇特的消息。在我的系统上，它会显示，@code{"There are 58 pink elephants in the office!"}。
 
-The expression @code{(- fill-column 14)} is evaluated and the resulting
-number is inserted in place of the @samp{%d}; and the string in double
-quotes, @code{"pink elephants"}, is treated as a single argument and
-inserted in place of the @samp{%s}.  (That is to say, a string between
-double quotes evaluates to itself, like a number.)
+表达式@code{(- fill-column 14)}被评估，生成的数字插入到@samp{%d}的位置；双引号中的字符串@code{"pink elephants"}被视为单个参数，插入到@samp{%s}的位置。（也就是说，双引号之间的字符串评估为它本身，就像一个数字一样。）
 
-Finally, here is a somewhat complex example that not only illustrates
-the computation of a number, but also shows how you can use an
-expression within an expression to generate the text that is substituted
-for @samp{%s}:
+最后，这里有一个稍微复杂的例子，不仅说明了一个数字的计算，而且还展示了如何在一个表达式中使用另一个表达式来生成替代@samp{%s}的文本：
 
 @smallexample
 @group
@@ -1780,16 +1638,9 @@ for @samp{%s}:
 @end group
 @end smallexample
 
-In this example, @code{message} has three arguments: the string,
-@code{"He saw %d %s"}, the expression, @code{(- fill-column 32)}, and
-the expression beginning with the function @code{concat}.  The value
-resulting from the evaluation of @code{(- fill-column 32)} is inserted
-in place of the @samp{%d}; and the value returned by the expression
-beginning with @code{concat} is inserted in place of the @samp{%s}.
+在这个例子中，@code{message}有三个参数：字符串@code{"He saw %d %s"}，表达式@code{(- fill-column 32)}，以及以@code{concat}函数开头的表达式。通过评估@code{(- fill-column 32)}生成的值插入到@samp{%d}的位置；以及通过评估以@code{concat}开头的表达式生成的值插入到@samp{%s}的位置。
 
-When your fill column is 70 and you evaluate the expression, the
-message @code{"He saw 38 red foxes leaping."} appears in your echo
-area.
+当你的填充列为70时，评估这个表达式，消息@code{"He saw 38 red foxes leaping."}将出现在你的回显区。
 
 @node set & setq
 @section Setting the Value of a Variable
@@ -5204,8 +5055,7 @@ last character of the function name @code{bufferp} is the character
 @samp{p}; as we saw earlier, such use of @samp{p} is a convention that
 indicates that the function is a predicate, which is a term that means
 that the function will determine whether some property is true or false.
-@xref{Wrong Type of Argument, , Using the Wrong Type Object as an
-Argument}.)
+@xref{错误类型的参数, , 使用错误类型的对象作为参数}.)
 
 @need 1200
 The function @code{not} precedes the expression @code{(bufferp buffer)},
@@ -14733,8 +14583,7 @@ Emacs contains a function to sort lists, called (as you might guess)
 to be sorted, and a predicate that determines whether the first of
 two list elements is less than the second.
 
-As we saw earlier (@pxref{Wrong Type of Argument, , Using the Wrong
-Type Object as an Argument}), a predicate is a function that
+As we saw earlier (@pxref{错误类型的参数, , 使用错误类型的对象作为参数}), a predicate is a function that
 determines whether some property is true or false.  The @code{sort}
 function will reorder a list according to whatever property the
 predicate uses; this means that @code{sort} can be used to sort

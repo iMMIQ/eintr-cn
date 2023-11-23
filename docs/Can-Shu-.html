@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>参数 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="参数 (Programming in Emacs Lisp)">
+<meta name="keywords" content="参数 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="List-Processing.html" rel="up" title="List Processing">
+<link href="set-_0026-setq.html" rel="next" title="set &amp; setq">
+<link href="Variables.html" rel="prev" title="Variables">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_53c2_6570">
+<div class="nav-panel">
+<p>
+Next: <a href="set-_0026-setq.html" accesskey="n" rel="next">Setting the Value of a Variable</a>, Previous: <a href="Variables.html" accesskey="p" rel="prev">变量</a>, Up: <a href="List-Processing.html" accesskey="u" rel="up">列表处理</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Can-Shu-">1.8 参数</h3>
+<a class="index-entry-id" id="index-Can-Shu-"></a>
+<a class="index-entry-id" id="index-Jiang-Xin-Xi-Chuan-Di-Gei-Han-Shu-"></a>
+
+<p>为了了解信息是如何传递给函数的，让我们再次看看我们的老朋友，<code class="code">2 + 2</code>。在Lisp中，它被写成如下形式：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ 2 2)
+</pre></div>
+
+<p>如果你评估这个表达式，数字4将出现在你的回显区。Lisp解释器所做的是将跟随<code class="code">+</code>的数字相加。
+</p>
+<a class="index-entry-id" id="index-argument-De-Ding-Yi-"></a>
+<p>由<code class="code">+</code>相加的数字被称为函数<code class="code">+</code>的<em class="dfn">参数</em>。这些数字是传递给函数的信息。
+</p>
+<p>“参数”这个词来自数学中的用法，不是指两个人之间的辩论；而是指提供给函数的信息，在这种情况下，是提供给<code class="code">+</code>的信息。在Lisp中，函数的参数是跟随函数的原子或列表。通过评估这些原子或列表的结果值传递给函数。不同的函数需要不同数量的参数；有些函数根本不需要参数。<a class="footnote" id="DOCF3" href="#FOOT3"><sup>3</sup></a>
+</p>
+
+<ul class="mini-toc">
+<li><a href="Shu-Ju-Lei-Xing-.html" accesskey="1">参数的数据类型</a></li>
+<li><a href="Jiang-Can-Shu-Zuo-Wei-Bian-Liang-Huo-Lie-Biao-.html" accesskey="2">参数作为变量或列表的值</a></li>
+<li><a href="Ke-Bian-Shu-Liang-De-Can-Shu-.html" accesskey="3">可变数量的参数</a></li>
+<li><a href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html" accesskey="4">使用错误类型的对象作为参数</a></li>
+<li><a href="message.html" accesskey="5"><code class="code">message</code> 函数</a></li>
+</ul>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT3" href="#DOCF3">(3)</a></h5>
+<p>追踪“参数”这个词如何在数学中和日常英语中拥有两个不同的含义是很有趣的。根据《牛津英语词典》的说法，这个词源于拉丁语，意思是“澄清，证明”；因此，它通过一条推导线的方式，来表示“作为证据提供的信息”，也就是说，“提供的信息”，这导致了它在Lisp中的含义。但在另一条推导线上，它的意思变成了“以一种其他人可以提出反对主张的方式断言”，这解释了这个词作为争论的含义。(注意这里英语单词同时拥有两个不同的定义。相比之下，在Emacs Lisp中，一个符号在同一时间不能拥有两个不同的函数定义。)</p>
+</div>
+
+
+
+</body>
+</html>
