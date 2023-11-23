@@ -1890,73 +1890,41 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 @noindent
 在 Info 中你不能这样做，因为 Info 是只读的，它不允许你更改缓冲区的内容。但是在任何你可以编辑的缓冲区中，你都可以这样做；当你编写代码或文档（比如这本书）时，这个功能非常有用。
 
-@node Getting Buffers
-@section Getting Buffers
+@node 获取缓冲区
+@section 获取缓冲区
 @findex current-buffer
 @findex other-buffer
-@cindex Getting a buffer
+@cindex 获取缓冲区
 
-The @code{buffer-name} function returns the @emph{name} of the buffer;
-to get the buffer @emph{itself}, a different function is needed: the
-@code{current-buffer} function.  If you use this function in code, what
-you get is the buffer itself.
+函数@code{buffer-name}返回缓冲区的@emph{名称}；要获取缓冲区@emph{本身}，需要使用另一个函数：@code{current-buffer}函数。如果在代码中使用这个函数，你将得到缓冲区本身。
 
-A name and the object or entity to which the name refers are different
-from each other.  You are not your name.  You are a person to whom
-others refer by name.  If you ask to speak to George and someone hands you
-a card with the letters @samp{G}, @samp{e}, @samp{o}, @samp{r},
-@samp{g}, and @samp{e} written on it, you might be amused, but you would
-not be satisfied.  You do not want to speak to the name, but to the
-person to whom the name refers.  A buffer is similar: the name of the
-scratch buffer is @file{*scratch*}, but the name is not the buffer.  To
-get a buffer itself, you need to use a function such as
-@code{current-buffer}.
+名称和名称所指代的对象或实体是不同的。你不是你的名字。你是一个被别人用名字指称的人。如果你要求与George交谈，而有人递给你一张写有字母@samp{G}、@samp{e}、@samp{o}、@samp{r}、@samp{g}和@samp{e}的卡片，你可能会感到有趣，但你不会满意。你不想和名字交谈，而是想和名字所指代的人交谈。缓冲区类似：临时缓冲区的名称是@file{*scratch*}，但名称不是缓冲区。要获取缓冲区本身，需要使用诸如@code{current-buffer}这样的函数。
 
-However, there is a slight complication: if you evaluate
-@code{current-buffer} in an expression on its own, as we will do here,
-what you see is a printed representation of the name of the buffer
-without the contents of the buffer.  Emacs works this way for two
-reasons: the buffer may be thousands of lines long---too long to be
-conveniently displayed; and, another buffer may have the same contents
-but a different name, and it is important to distinguish between them.
+然而，有一个小复杂性：如果在一个表达式中评估@code{current-buffer}，就像我们在这里所做的那样，你所看到的是缓冲区名称的打印表示，而不是缓冲区的内容。Emacs之所以以这种方式工作有两个原因：缓冲区可能有成千上万行长---太长了无法方便地显示；另一个缓冲区可能具有相同的内容但具有不同的名称，区分它们是很重要的。
 
 @need 800
-Here is an expression containing the function:
+下面是包含该函数的表达式：
 
 @smallexample
 (current-buffer)
 @end smallexample
 
 @noindent
-If you evaluate this expression in Info in Emacs in the usual way,
-@file{#<buffer *info*>} will appear in the echo area.  The special
-format indicates that the buffer itself is being returned, rather than
-just its name.
+如果你在Emacs中通常的方式下在Info中评估这个表达式，@file{#<buffer *info*>} 将会出现在回显区。这个特殊的格式表示正在返回的是缓冲区本身，而不仅仅是它的名称。
 
-Incidentally, while you can type a number or symbol into a program, you
-cannot do that with the printed representation of a buffer: the only way
-to get a buffer itself is with a function such as @code{current-buffer}.
+顺便提一下，虽然你可以在程序中键入数字或符号，但不能在缓冲区的打印表示中这样做：获取缓冲区本身的唯一方式是使用诸如@code{current-buffer}的函数。
 
-A related function is @code{other-buffer}.  This returns the most
-recently selected buffer other than the one you are in currently, not
-a printed representation of its name.  If you have recently switched
-back and forth from the @file{*scratch*} buffer, @code{other-buffer}
-will return that buffer.
+一个相关的函数是@code{other-buffer}。它返回除了当前所在的缓冲区之外最近选择的缓冲区，而不是其名称的打印表示。如果你最近在@file{*scratch*}缓冲区之间切换，@code{other-buffer}将返回该缓冲区。
 
 @need 800
-You can see this by evaluating the expression:
+你可以通过评估以下表达式来看到这一点：
 
 @smallexample
 (other-buffer)
 @end smallexample
 
 @noindent
-You should see @file{#<buffer *scratch*>} appear in the echo area, or
-the name of whatever other buffer you switched back from most
-recently@footnote{Actually, by default, if the buffer from which you
-just switched is visible to you in another window, @code{other-buffer}
-will choose the most recent buffer that you cannot see; this is a
-subtlety that I often forget.}.
+你应该在回显区看到@file{#<buffer *scratch*>}出现，或者是你最近切换回来的任何其他缓冲区的名称@footnote{实际上，默认情况下，如果你刚刚从中切换的缓冲区在另一个窗口中可见，@code{other-buffer}将选择你无法看到的最近的缓冲区；这是我经常忘记的一个细微之处。}。
 
 @node Switching Buffers
 @section Switching Buffers
