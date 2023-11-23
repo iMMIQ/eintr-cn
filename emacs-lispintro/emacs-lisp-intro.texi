@@ -1747,59 +1747,45 @@ counter                         ; @r{这是计数器。}
 
 当您评估递增器@code{(setq counter (+ counter 1))}时，Lisp解释器首先评估最内层的列表；这是加法。为了评估此列表，它必须评估变量@code{counter}和数字@code{1}。当它评估变量@code{counter}时，它会得到它的当前值。它将这个值和数字@code{1}传递给@code{+}，将它们相加。然后，总和作为内部列表的值返回，并传递给@code{setq}，将变量@code{counter}设置为这个新值。因此，变量@code{counter}的值被更改。
 
-@node Summary
-@section Summary
+@node 总结
+@section 总结
 
-Learning Lisp is like climbing a hill in which the first part is the
-steepest.  You have now climbed the most difficult part; what remains
-becomes easier as you progress onwards.
+学习 Lisp 就像攀登一座山，其中的第一部分是最陡峭的。你现在已经攀登过最困难的部分；随着你继续前进，剩下的部分会变得更容易。
 
 @need 1000
-In summary,
+总的来说，
 
 @itemize @bullet
 
 @item
-Lisp programs are made up of expressions, which are lists or single atoms.
+Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 
 @item
-Lists are made up of zero or more atoms or inner lists, separated by whitespace and
-surrounded by parentheses.  A list can be empty.
+列表由零个或多个原子或内部列表组成，它们之间由空格分隔，并用括号括起来。列表可以为空。
 
 @item
-Atoms are multi-character symbols, like @code{forward-paragraph}, single
-character symbols like @code{+}, strings of characters between double
-quotation marks, or numbers.
+原子可以是多字符符号，比如 @code{forward-paragraph}，也可以是单字符符号，比如 @code{+}，还可以是双引号之间的字符字符串或数字。
 
 @item
-A number evaluates to itself.
+数字在求值时等于其自身。
 
 @item
-A string between double quotes also evaluates to itself.
+双引号之间的字符串在求值时也等于其自身。
 
 @item
-When you evaluate a symbol by itself, its value is returned.
+当你对一个符号进行单独求值时，它的值会被返回。
 
 @item
-When you evaluate a list, the Lisp interpreter looks at the first symbol
-in the list and then at the function definition bound to that symbol.
-Then the instructions in the function definition are carried out.
+当你对一个列表进行求值时，Lisp 解释器首先查看列表中的第一个符号，然后查找与该符号绑定的函数定义。然后执行函数定义中的指令。
 
 @item
-A single-quote @samp{'} tells the Lisp interpreter that it should
-return the following expression as written, and not evaluate it as it
-would if the quote were not there.
+单引号 @samp{'} 告诉 Lisp 解释器它应该按照写法返回后面的表达式，而不是像没有引号那样对其进行求值。
 
 @item
-Arguments are the information passed to a function.  The arguments to a
-function are computed by evaluating the rest of the elements of the list
-of which the function is the first element.
+参数是传递给函数的信息。函数的参数是通过求值列表的其余元素来计算的，其中函数是第一个元素。
 
 @item
-A function always returns a value when it is evaluated (unless it gets
-an error); in addition, it may also carry out some action that is a
-side effect.  In many cases, a function's primary purpose is to
-create a side effect.
+函数在求值时总是返回一个值（除非出现错误）；此外，它还可能执行一些是副作用的动作。在许多情况下，函数的主要目的是创建副作用。
 @end itemize
 
 @node Error Message Exercises
