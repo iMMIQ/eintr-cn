@@ -1788,26 +1788,23 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 函数在求值时总是返回一个值（除非出现错误）；此外，它还可能执行一些是副作用的动作。在许多情况下，函数的主要目的是创建副作用。
 @end itemize
 
-@node Error Message Exercises
-@section Exercises
+@node 错误消息练习
+@section 练习
 
-A few simple exercises:
+一些简单的练习：
 
 @itemize @bullet
 @item
-Generate an error message by evaluating an appropriate symbol that is
-not within parentheses.
+通过评估一个适当的不在括号内的符号生成一个错误消息。
 
 @item
-Generate an error message by evaluating an appropriate symbol that is
-between parentheses.
+通过评估一个适当的在括号之间的符号生成一个错误消息。
 
 @item
-Create a counter that increments by two rather than one.
+创建一个计数器，其增量为两而不是一。
 
 @item
-Write an expression that prints a message in the echo area when
-evaluated.
+编写一个在评估时在回显区域打印消息的表达式。
 @end itemize
 
 @node Practicing Evaluation
