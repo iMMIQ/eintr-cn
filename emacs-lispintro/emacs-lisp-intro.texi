@@ -1959,72 +1959,49 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 @cindex @samp{call} 定义
 此外，我们刚刚介绍了另一个行话术语，即词语 @dfn{call}。当您评估一个列表，其中第一个符号是一个函数时，您正在调用该函数。该术语的使用来自于将函数视为如果您调用它可以为您做一些事情的实体的概念，就像水管工是一个实体，如果您呼叫他或她，他或她可以修理漏水一样。
 
-@node Buffer Size & Locations
-@section Buffer Size and the Location of Point
-@cindex Size of buffer
-@cindex Buffer size
-@cindex Point location
-@cindex Location of point
+@node 缓冲区大小与位置
+@section 缓冲区大小和点的位置
+@cindex 缓冲区大小
+@cindex 缓冲区大小
+@cindex 点的位置
+@cindex 点的位置
 
-Finally, let's look at several rather simple functions,
-@code{buffer-size}, @code{point}, @code{point-min}, and
-@code{point-max}.  These give information about the size of a buffer and
-the location of point within it.
+最后，让我们看一些相当简单的函数，@code{buffer-size}、@code{point}、@code{point-min}和@code{point-max}。它们提供有关缓冲区大小和点在其中的位置的信息。
 
-The function @code{buffer-size} tells you the size of the current
-buffer; that is, the function returns a count of the number of
-characters in the buffer.
+函数@code{buffer-size}告诉您当前缓冲区的大小；也就是说，该函数返回缓冲区中字符的数量。
 
 @smallexample
 (buffer-size)
 @end smallexample
 
 @noindent
-You can evaluate this in the usual way, by positioning the
-cursor after the expression and typing @kbd{C-x C-e}.
+您可以通过将光标放置在表达式后，并键入@kbd{C-x C-e}来评估它。
 
-@cindex @samp{point} defined
-In Emacs, the current  position of the cursor is called @dfn{point}.
-The expression @code{(point)} returns a number that tells you where the
-cursor is located as a count of the number of characters from the
-beginning of the buffer up to point.
+@cindex @samp{point}定义
+在Emacs中，光标的当前位置被称为@dfn{point}。表达式@code{(point)}返回一个数字，告诉您光标的位置，以字符数表示，从缓冲区开头到point的位置。
 
 @need 1250
-You can see the character count for point in this buffer by evaluating
-the following expression in the usual way:
+您可以通过以通常的方式评估以下表达式来查看point在该缓冲区的字符计数：
 
 @smallexample
 (point)
 @end smallexample
 
 @noindent
-As I write this, the value of point is 65724.  The @code{point}
-function is frequently used in some of the examples later in this
-book.
+在我写这篇文章的时候，point的值是65724。@code{point}函数在本书的一些后面的示例中经常被使用。
 
 @need 1250
-The value of point depends, of course, on its location within the
-buffer.  If you evaluate point in this spot, the number will be larger:
+point的值当然取决于它在缓冲区内的位置。如果在这个位置评估point，数字会更大：
 
 @smallexample
 (point)
 @end smallexample
 
 @noindent
-For me, the value of point in this location is 66043, which means that
-there are 319 characters (including spaces) between the two
-expressions.  (Doubtless, you will see different numbers, since I will
-have edited this since I first evaluated point.)
+对我而言，在这个位置，point的值是66043，这意味着两个表达式之间有319个字符（包括空格）。 （毫无疑问，由于我首次评估point后进行了编辑，你可能会看到不同的数字。）
 
-@cindex @samp{narrowing} defined
-The function @code{point-min} is somewhat similar to @code{point}, but
-it returns the value of the minimum permissible value of point in the
-current buffer.  This is the number 1 unless @dfn{narrowing} is in
-effect.  (Narrowing is a mechanism whereby you can restrict yourself,
-or a program, to operations on just a part of a buffer.
-@xref{Narrowing & Widening, , Narrowing and Widening}.)  Likewise, the
-function @code{point-max} returns the value of the maximum permissible
-value of point in the current buffer.
+@cindex @samp{narrowing}定义
+函数@code{point-min}与@code{point}有些相似，但它返回当前缓冲区中point的最小允许值。这个值是1，除非启用了@dfn{narrowing}。（Narrowing是一种机制，通过它，您可以将自己或程序限制在仅对缓冲区的一部分进行操作。@xref{Narrowing & Widening, , 窄化和扩展}。）同样，函数@code{point-max}返回当前缓冲区中point的最大允许值。
 
 @node Evaluation Exercise
 @section Exercise
@@ -13865,7 +13842,7 @@ buffer in which it puts the file.  Emacs does not switch its attention
 buffer.  That is what @code{switch-to-buffer} does: it switches the
 buffer to which Emacs attention is directed; and it switches the
 buffer displayed in the window to the new buffer.  We have discussed
-buffer switching elsewhere.  (@xref{Switching Buffers}.)
+buffer switching elsewhere.  (@xref{切换缓冲区}.)
 
 In this histogram project, we do not need to display each file on the
 screen as the program determines the length of each definition within

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>缓冲区大小与位置 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="缓冲区大小与位置 (Programming in Emacs Lisp)">
+<meta name="keywords" content="缓冲区大小与位置 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Lian-Xi-Ping-Gu-.html" rel="up" title="练习评估">
+<link href="Evaluation-Exercise.html" rel="next" title="Evaluation Exercise">
+<link href="Qie-Huan-Huan-Chong-Qu-.html" rel="prev" title="切换缓冲区">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_7f13_51b2_533a_5927_5c0f_4e0e_4f4d_7f6e">
+<div class="nav-panel">
+<p>
+Next: <a href="Evaluation-Exercise.html" accesskey="n" rel="next">Exercise</a>, Previous: <a href="Qie-Huan-Huan-Chong-Qu-.html" accesskey="p" rel="prev">切换缓冲区</a>, Up: <a href="Lian-Xi-Ping-Gu-.html" accesskey="u" rel="up">练习评估</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Huan-Chong-Qu-Da-Xiao-He-Dian-De-Wei-Zhi-">2.4 缓冲区大小和点的位置</h3>
+<a class="index-entry-id" id="index-Huan-Chong-Qu-Da-Xiao-"></a>
+<a class="index-entry-id" id="index-Huan-Chong-Qu-Da-Xiao--1"></a>
+<a class="index-entry-id" id="index-Dian-De-Wei-Zhi-"></a>
+<a class="index-entry-id" id="index-Dian-De-Wei-Zhi--1"></a>
+
+<p>最后，让我们看一些相当简单的函数，<code class="code">buffer-size</code>、<code class="code">point</code>、<code class="code">point-min</code>和<code class="code">point-max</code>。它们提供有关缓冲区大小和点在其中的位置的信息。
+</p>
+<p>函数<code class="code">buffer-size</code>告诉您当前缓冲区的大小；也就是说，该函数返回缓冲区中字符的数量。
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(buffer-size)
+</pre></div>
+
+<p>您可以通过将光标放置在表达式后，并键入<kbd class="kbd">C-x C-e</kbd>来评估它。
+</p>
+<a class="index-entry-id" id="index-pointDing-Yi-"></a>
+<p>在Emacs中，光标的当前位置被称为<em class="dfn">point</em>。表达式<code class="code">(point)</code>返回一个数字，告诉您光标的位置，以字符数表示，从缓冲区开头到point的位置。
+</p>
+<p>您可以通过以通常的方式评估以下表达式来查看point在该缓冲区的字符计数：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(point)
+</pre></div>
+
+<p>在我写这篇文章的时候，point的值是65724。<code class="code">point</code>函数在本书的一些后面的示例中经常被使用。
+</p>
+<p>point的值当然取决于它在缓冲区内的位置。如果在这个位置评估point，数字会更大：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(point)
+</pre></div>
+
+<p>对我而言，在这个位置，point的值是66043，这意味着两个表达式之间有319个字符（包括空格）。 （毫无疑问，由于我首次评估point后进行了编辑，你可能会看到不同的数字。）
+</p>
+<a class="index-entry-id" id="index-narrowingDing-Yi-"></a>
+<p>函数<code class="code">point-min</code>与<code class="code">point</code>有些相似，但它返回当前缓冲区中point的最小允许值。这个值是1，除非启用了<em class="dfn">narrowing</em>。（Narrowing是一种机制，通过它，您可以将自己或程序限制在仅对缓冲区的一部分进行操作。See <a class="xref" href="Narrowing-_0026-Widening.html">窄化和扩展</a>。）同样，函数<code class="code">point-max</code>返回当前缓冲区中point的最大允许值。
+</p>
+</div>
+
+
+
+</body>
+</html>
