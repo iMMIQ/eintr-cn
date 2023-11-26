@@ -1832,7 +1832,7 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 
 @cindex @samp{交互函数}定义
 @cindex @samp{命令}定义
-当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是@code{self-insert-command}，它简单地插入你键入的字符。通过键入按键而评估的函数称为@dfn{交互}函数或@dfn{命令}；如何使函数具有交互性将在编写函数定义的章节中说明。@xref{交互式操作, , 使函数具有交互性}。
+当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是@code{self-insert-command}，它简单地插入你键入的字符。通过键入按键而评估的函数称为@dfn{交互}函数或@dfn{命令}；如何使函数具有交互性将在编写函数定义的章节中说明。@xref{交互操作, , 使函数具有交互性}。
 
 除了键入键盘命令，我们已经看到第二种评估表达式的方法：将光标定位在列表后面，然后键入@kbd{C-x C-e}。这是本节其余部分将要做的事情。还有其他评估表达式的方式；当我们遇到它们时会进行描述。
 
@@ -2021,8 +2021,8 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 * 原始函数::
 * defun::                        @code{defun} 宏。
 * 安装::                          安装函数定义。
-* 交互式操作::                        使函数具有交互性。
-* 交互式选项::                    @code{interactive} 的不同选项。
+* 交互操作::                        使函数具有交互性。
+* 交互选项::                    @code{interactive} 的不同选项。
 * 永久安装::                      永久安装代码。
 * let::                          创建并初始化局部变量。
 * if::                           如果是这样怎么办？
@@ -2086,7 +2086,7 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 @end group
 @end smallexample
 
-以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅@xref{交互式操作,,使函数具有交互性}。）
+以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅@xref{交互操作,,使函数具有交互性}。）
 
 @smallexample
 @group
@@ -2208,7 +2208,7 @@ multiply-by-seven 是一个 Lisp 函数。
 
 总之，这就是在Emacs Lisp中编写代码的方式：编写函数；安装它；测试它；然后进行修复或增强，并再次安装它。
 
-@node 交互式操作
+@node 交互操作
 @section 使函数具有交互性
 @cindex 交互式函数
 @findex interactive
@@ -2264,9 +2264,7 @@ multiply-by-seven 是一个 Lisp 函数。
 @node multiply-by-seven in detail
 @subsection 交互式 @code{multiply-by-seven} 详解
 
-让我们看一下特殊形式 @code{interactive} 的使用，然后再看一下
-@code{multiply-by-seven} 的交互版本中的函数 @code{message}。
-你会记得该函数定义如下：
+让我们看一下特殊形式 @code{interactive} 的使用，然后再看一下@code{multiply-by-seven} 的交互版本中的函数 @code{message}。你会记得该函数定义如下：
 
 @smallexample
 @group
@@ -2277,12 +2275,10 @@ multiply-by-seven 是一个 Lisp 函数。
 @end group
 @end smallexample
 
-在这个函数中，表达式 @code{(interactive "p")} 是一个包含两个元素的列表。
-@code{"p"} 告诉 Emacs 将前缀参数传递给函数，并将其值用作函数的参数。
+在这个函数中，表达式 @code{(interactive "p")} 是一个包含两个元素的列表。@code{"p"} 告诉 Emacs 将前缀参数传递给函数，并将其值用作函数的参数。
 
 @need 1000
-参数将是一个数字。这意味着在以下行中，符号
-@code{number} 将绑定到一个数字：
+参数将是一个数字。这意味着在以下行中，符号@code{number} 将绑定到一个数字：
 
 @smallexample
 (message "结果是 %d" (* 7 number))
@@ -2297,77 +2293,38 @@ multiply-by-seven 是一个 Lisp 函数。
 @end smallexample
 
 @noindent
-(如果你在 GNU Emacs 中阅读此文，你可以自行评估这个表达式。)
-首先，解释器将评估内部列表，即 @code{(* 7 5)}。这将返回一个值为 35。
-接下来，它将评估外部列表，将列表的第二个和随后的元素的值传递给函数 @code{message}。
+(如果你在 GNU Emacs 中阅读此文，你可以自行评估这个表达式。)首先，解释器将评估内部列表，即 @code{(* 7 5)}。这将返回一个值为 35。接下来，它将评估外部列表，将列表的第二个和随后的元素的值传递给函数 @code{message}。
 
-正如我们所见，@code{message} 是一个专为向用户发送单行消息而设计的 Emacs Lisp 函数。
-（@xref{message, , The @code{message} function}。）
-总体而言，@code{message} 函数会将其第一个参数原样打印在回显区域，但会替换
-@samp{%d} 或 @samp{%s}（以及我们未提及的其他各种 %-sequences）的出现。
-当它看到控制序列时，该函数会查找第二个或随后的参数，并在字符串中的控制序列位置打印参数的值。
+正如我们所见，@code{message} 是一个专为向用户发送单行消息而设计的 Emacs Lisp 函数。（@xref{message, , The @code{message} function}。）总体而言，@code{message} 函数会将其第一个参数原样打印在回显区域，但会替换@samp{%d} 或 @samp{%s}（以及我们未提及的其他各种 %-sequences）的出现。当它看到控制序列时，该函数会查找第二个或随后的参数，并在字符串中的控制序列位置打印参数的值。
 
-在交互式 @code{multiply-by-seven} 函数中，控制字符串是 @samp{%d}，需要一个数字，
-而通过评估 @code{(* 7 5)} 返回的值是数字 35。因此，数字 35 将在 @samp{%d} 的位置打印，
-消息为 @samp{结果是 35}。
+在交互式 @code{multiply-by-seven} 函数中，控制字符串是 @samp{%d}，需要一个数字，而通过评估 @code{(* 7 5)} 返回的值是数字 35。因此，数字 35 将在 @samp{%d} 的位置打印，消息为 @samp{结果是 35}。
 
-（请注意，当调用函数 @code{multiply-by-seven} 时，消息会以无引号形式打印，
-但调用 @code{message} 时，文本将以双引号形式打印。这是因为 @code{message} 返回的值是
-在评估其第一个元素为 @code{message} 的表达式时出现在回显区域中的内容；
-但在嵌入函数中时，@code{message} 以副作用的方式打印文本，没有引号。）
+（请注意，当调用函数 @code{multiply-by-seven} 时，消息会以无引号形式打印，但调用 @code{message} 时，文本将以双引号形式打印。这是因为 @code{message} 返回的值是在评估其第一个元素为 @code{message} 的表达式时出现在回显区域中的内容；但在嵌入函数中时，@code{message} 以副作用的方式打印文本，没有引号。）
 
-@node Interactive Options
-@section Different Options for @code{interactive}
-@cindex Options for @code{interactive}
-@cindex Interactive options
+@node 交互选项
+@section @code{interactive} 的不同选项
+@cindex @code{interactive} 的选项
+@cindex 交互选项
 
-In the example, @code{multiply-by-seven} used @code{"p"} as the
-argument to @code{interactive}.  This argument told Emacs to interpret
-your typing either @kbd{C-u} followed by a number or @key{META}
-followed by a number as a command to pass that number to the function
-as its argument.  Emacs has more than twenty characters predefined for
-use with @code{interactive}.  In almost every case, one of these
-options will enable you to pass the right information interactively to
-a function.  (@xref{Interactive Codes, , Code Characters for
-@code{interactive}, elisp, The GNU Emacs Lisp Reference Manual}.)
+在例子中，@code{multiply-by-seven} 使用 @code{"p"} 作为@code{interactive} 的参数。这个参数告诉 Emacs 解释你的输入，无论是 @kbd{C-u} 后跟一个数字还是 @key{META} 后跟一个数字，都是将该数字作为参数传递给函数。Emacs 预定义了超过二十个字符，可以用于 @code{interactive}。在几乎所有情况下，这些选项之一将使你能够以交互方式向函数传递正确的信息。(@xref{Interactive Codes, , @code{interactive} 代码章节, elisp, GNU Emacs Lisp 参考手册}.)
 
 @need 1250
-Consider the function @code{zap-to-char}.  Its interactive expression
-is
+考虑函数 @code{zap-to-char}。它的交互表达式为
 
-@c FIXME: the interactive expression of zap-to-char has been changed
-@c (in 2012-04-10).
+@c FIXME: zap-to-char 的交互表达式已更改
+@c (在2012-04-10)。
 
 @smallexample
 (interactive "p\ncZap to char: ")
 @end smallexample
 
-The first part of the argument to @code{interactive} is @samp{p}, with
-which you are already familiar.  This argument tells Emacs to
-interpret a prefix, as a number to be passed to the function.  You
-can specify a prefix either by typing @kbd{C-u} followed by a number
-or by typing @key{META} followed by a number.  The prefix is the
-number of specified characters.  Thus, if your prefix is three and the
-specified character is @samp{x}, then you will delete all the text up
-to and including the third next @samp{x}.  If you do not set a prefix,
-then you delete all the text up to and including the specified
-character, but no more.
+@code{interactive} 的参数的第一部分是 @samp{p}，这是你已经熟悉的。这个参数告诉 Emacs 解释一个前缀，作为传递给函数的数字。你可以通过键入 @kbd{C-u} 后跟一个数字或者键入 @key{META} 后跟一个数字来指定前缀。前缀是指定的字符数。因此，如果你的前缀是三，指定的字符是@samp{x}，那么你将删除所有文本，包括第三个 @samp{x}。如果你没有设置前缀，那么你将删除所有文本，包括指定的字符，但不包括之后的文本。
 
-The @samp{c} tells the function the name of the character to which to delete.
+@samp{c} 告诉函数要删除的字符的名称。
 
-More formally, a function with two or more arguments can have
-information passed to each argument by adding parts to the string that
-follows @code{interactive}.  When you do this, the information is
-passed to each argument in the same order it is specified in the
-@code{interactive} list.  In the string, each part is separated from
-the next part by a @samp{\n}, which is a newline.  For example, you
-can follow @samp{p} with a @samp{\n} and an @samp{cZap to char:@: }.
-This causes Emacs to pass the value of the prefix argument (if there
-is one) and the character.
+更正式地说，具有两个或更多参数的函数可以通过向跟随 @code{interactive} 的字符串添加部分来将信息传递给每个参数。当你这样做时，信息将按照它在@code{interactive} 列表中指定的顺序传递给每个参数。在字符串中，每个部分都由一个 @samp{\n}（换行符）与下一个部分分隔开。例如，你可以在 @samp{p} 后面加上一个 @samp{\n} 和一个 @samp{cZap to char:}。这将导致 Emacs 传递前缀参数的值（如果有的话）和字符。
 
-In this case, the function definition looks like the following, where
-@code{arg} and @code{char} are the symbols to which @code{interactive}
-binds the prefix argument and the specified character:
+在这种情况下，函数定义如下，其中 @code{arg} 和 @code{char} 是由 @code{interactive} 绑定的前缀参数和指定字符：
 
 @smallexample
 @group
@@ -2379,23 +2336,13 @@ binds the prefix argument and the specified character:
 @end smallexample
 
 @noindent
-(The space after the colon in the prompt makes it look better when you
-are prompted.  @xref{copy-to-buffer, , The Definition of
-@code{copy-to-buffer}}, for an example.)
+（在提示符的冒号后加一个空格使其看起来更好。@xref{copy-to-buffer, , 函数 @code{copy-to-buffer} 的定义}，提供一个例子。）
 
-When a function does not take arguments, @code{interactive} does not
-require any.  Such a function contains the simple expression
-@code{(interactive)}.  The @code{mark-whole-buffer} function is like
-this.
+当函数不接受参数时，@code{interactive} 不需要任何参数。这样的函数包含简单的表达式 @code{(interactive)}。@code{mark-whole-buffer} 函数就是这样的一个例子。
 
-Alternatively, if the special letter-codes are not right for your
-application, you can pass your own arguments to @code{interactive} as
-a list.
+或者，如果特殊的字母代码不适合你的应用程序，你可以将自己的参数作为列表传递给 @code{interactive}。
 
-@xref{append-to-buffer, , The Definition of @code{append-to-buffer}},
-for an example.  @xref{Using Interactive, , Using @code{Interactive},
-elisp, The GNU Emacs Lisp Reference Manual}, for a more complete
-explanation about this technique.
+@xref{append-to-buffer, , 函数 @code{append-to-buffer} 的定义}，提供一个例子。@xref{Using Interactive, , 使用 @code{Interactive}, elisp, GNU Emacs Lisp 参考手册}，提供有关这一技术的更完整解释。
 
 @node Permanent Installation
 @section Install Code Permanently
@@ -3486,7 +3433,7 @@ else type the @key{ESC} key and then type the period key), and then,
 at the prompt, type in the name of the function whose source code you
 want to see, such as @code{mark-whole-buffer}, and then type
 @key{RET}.  (If the command doesn't prompt, invoke it with an
-argument: @kbd{C-u M-.}; @pxref{Interactive Options}.)  Emacs will
+argument: @kbd{C-u M-.}; @pxref{交互选项}.)  Emacs will
 switch buffers and display the source code for the function on your
 screen@footnote{
 If instead of showing the source code for a Lisp function, Emacs asks
@@ -3879,7 +3826,7 @@ name.  (The function can handle either.)
 
 Since the @code{append-to-buffer} function will be used interactively,
 the function must have an @code{interactive} expression.  (For a
-review of @code{interactive}, see @ref{交互式操作, , 使函数具有交互性}.)
+review of @code{interactive}, see @ref{交互操作, , 使函数具有交互性}.)
 
 The expression reads as follows:
 

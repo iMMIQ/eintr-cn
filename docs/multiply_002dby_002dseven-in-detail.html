@@ -38,7 +38,7 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Jiao-Hu-Shi-Cao-Zuo-.html" rel="up" title="交互式操作">
+<link href="Jiao-Hu-Cao-Zuo-.html" rel="up" title="交互操作">
 <link href="Jiao-Hu-Shi-multiply_002dby_002dseven.html" rel="prev" title="交互式multiply-by-seven">
 <style type="text/css">
 <!--
@@ -55,14 +55,12 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="subsection-level-extent" id="multiply_002dby_002dseven-in-detail">
 <div class="nav-panel">
 <p>
-Previous: <a href="Jiao-Hu-Shi-multiply_002dby_002dseven.html" accesskey="p" rel="prev">交互式 <code class="code">multiply-by-seven</code>，概述</a>, Up: <a href="Jiao-Hu-Shi-Cao-Zuo-.html" accesskey="u" rel="up">使函数具有交互性</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Jiao-Hu-Shi-multiply_002dby_002dseven.html" accesskey="p" rel="prev">交互式 <code class="code">multiply-by-seven</code>，概述</a>, Up: <a href="Jiao-Hu-Cao-Zuo-.html" accesskey="u" rel="up">使函数具有交互性</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="subsection" id="Jiao-Hu-Shi-multiply_002dby_002dseven-Xiang-Jie-">3.3.1 交互式 <code class="code">multiply-by-seven</code> 详解</h4>
 
-<p>让我们看一下特殊形式 <code class="code">interactive</code> 的使用，然后再看一下
-<code class="code">multiply-by-seven</code> 的交互版本中的函数 <code class="code">message</code>。
-你会记得该函数定义如下：
+<p>让我们看一下特殊形式 <code class="code">interactive</code> 的使用，然后再看一下<code class="code">multiply-by-seven</code> 的交互版本中的函数 <code class="code">message</code>。你会记得该函数定义如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun multiply-by-seven (number)       ; <span class="r">交互版本。</span>
@@ -71,11 +69,9 @@ Previous: <a href="Jiao-Hu-Shi-multiply_002dby_002dseven.html" accesskey="p" rel
   (message &quot;结果是 %d&quot; (* 7 number)))
 </pre></div></div>
 
-<p>在这个函数中，表达式 <code class="code">(interactive &quot;p&quot;)</code> 是一个包含两个元素的列表。
-<code class="code">&quot;p&quot;</code> 告诉 Emacs 将前缀参数传递给函数，并将其值用作函数的参数。
+<p>在这个函数中，表达式 <code class="code">(interactive &quot;p&quot;)</code> 是一个包含两个元素的列表。<code class="code">&quot;p&quot;</code> 告诉 Emacs 将前缀参数传递给函数，并将其值用作函数的参数。
 </p>
-<p>参数将是一个数字。这意味着在以下行中，符号
-<code class="code">number</code> 将绑定到一个数字：
+<p>参数将是一个数字。这意味着在以下行中，符号<code class="code">number</code> 将绑定到一个数字：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(message &quot;结果是 %d&quot; (* 7 number))
@@ -87,24 +83,13 @@ Previous: <a href="Jiao-Hu-Shi-multiply_002dby_002dseven.html" accesskey="p" rel
 <pre class="example-preformatted">(message &quot;结果是 %d&quot; (* 7 5))
 </pre></div>
 
-<p>(如果你在 GNU Emacs 中阅读此文，你可以自行评估这个表达式。)
-首先，解释器将评估内部列表，即 <code class="code">(* 7 5)</code>。这将返回一个值为 35。
-接下来，它将评估外部列表，将列表的第二个和随后的元素的值传递给函数 <code class="code">message</code>。
+<p>(如果你在 GNU Emacs 中阅读此文，你可以自行评估这个表达式。)首先，解释器将评估内部列表，即 <code class="code">(* 7 5)</code>。这将返回一个值为 35。接下来，它将评估外部列表，将列表的第二个和随后的元素的值传递给函数 <code class="code">message</code>。
 </p>
-<p>正如我们所见，<code class="code">message</code> 是一个专为向用户发送单行消息而设计的 Emacs Lisp 函数。
-（See <a class="xref" href="message.html">The <code class="code">message</code> function</a>。）
-总体而言，<code class="code">message</code> 函数会将其第一个参数原样打印在回显区域，但会替换
-&lsquo;<samp class="samp">%d</samp>&rsquo; 或 &lsquo;<samp class="samp">%s</samp>&rsquo;（以及我们未提及的其他各种 %-sequences）的出现。
-当它看到控制序列时，该函数会查找第二个或随后的参数，并在字符串中的控制序列位置打印参数的值。
+<p>正如我们所见，<code class="code">message</code> 是一个专为向用户发送单行消息而设计的 Emacs Lisp 函数。（See <a class="xref" href="message.html">The <code class="code">message</code> function</a>。）总体而言，<code class="code">message</code> 函数会将其第一个参数原样打印在回显区域，但会替换&lsquo;<samp class="samp">%d</samp>&rsquo; 或 &lsquo;<samp class="samp">%s</samp>&rsquo;（以及我们未提及的其他各种 %-sequences）的出现。当它看到控制序列时，该函数会查找第二个或随后的参数，并在字符串中的控制序列位置打印参数的值。
 </p>
-<p>在交互式 <code class="code">multiply-by-seven</code> 函数中，控制字符串是 &lsquo;<samp class="samp">%d</samp>&rsquo;，需要一个数字，
-而通过评估 <code class="code">(* 7 5)</code> 返回的值是数字 35。因此，数字 35 将在 &lsquo;<samp class="samp">%d</samp>&rsquo; 的位置打印，
-消息为 &lsquo;<samp class="samp">结果是 35</samp>&rsquo;。
+<p>在交互式 <code class="code">multiply-by-seven</code> 函数中，控制字符串是 &lsquo;<samp class="samp">%d</samp>&rsquo;，需要一个数字，而通过评估 <code class="code">(* 7 5)</code> 返回的值是数字 35。因此，数字 35 将在 &lsquo;<samp class="samp">%d</samp>&rsquo; 的位置打印，消息为 &lsquo;<samp class="samp">结果是 35</samp>&rsquo;。
 </p>
-<p>（请注意，当调用函数 <code class="code">multiply-by-seven</code> 时，消息会以无引号形式打印，
-但调用 <code class="code">message</code> 时，文本将以双引号形式打印。这是因为 <code class="code">message</code> 返回的值是
-在评估其第一个元素为 <code class="code">message</code> 的表达式时出现在回显区域中的内容；
-但在嵌入函数中时，<code class="code">message</code> 以副作用的方式打印文本，没有引号。）
+<p>（请注意，当调用函数 <code class="code">multiply-by-seven</code> 时，消息会以无引号形式打印，但调用 <code class="code">message</code> 时，文本将以双引号形式打印。这是因为 <code class="code">message</code> 返回的值是在评估其第一个元素为 <code class="code">message</code> 的表达式时出现在回显区域中的内容；但在嵌入函数中时，<code class="code">message</code> 以副作用的方式打印文本，没有引号。）
 </p>
 </div>
 
