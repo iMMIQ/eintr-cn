@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>避免混淆 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="避免混淆 (Programming in Emacs Lisp)">
+<meta name="keywords" content="避免混淆 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="let.html" rel="up" title="let">
+<link href="let-Biao-Da-Shi-De-Zu-Cheng-Bu-Fen-.html" rel="next" title="let 表达式的组成部分">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="g_t_907f_514d_6df7_6dc6">
+<div class="nav-panel">
+<p>
+Next: <a href="let-Biao-Da-Shi-De-Zu-Cheng-Bu-Fen-.html" accesskey="n" rel="next"><code class="code">let</code> 表达式的组成部分</a>, Up: <a href="let.html" accesskey="u" rel="up"><code class="code">let</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="let-Bi-Mian-Hun-Yao-"><code class="code">let</code> 避免混淆</h4>
+
+<a class="index-entry-id" id="index-Ju-Bu-Bian-Liang-Ding-Yi-"></a>
+<a class="index-entry-id" id="index-Bian-Liang-_002c-Ju-Bu-_002c-Ding-Yi-"></a>
+<p>特殊形式 <code class="code">let</code> 可以避免混淆。<code class="code">let</code> 创建一个<em class="dfn">局部变量</em>的名称，它会遮蔽任何在 <code class="code">let</code> 表达式之外使用相同名称的情况。这就像理解当你的主机提到“房子”时，他指的是他的房子，而不是你的房子一样。（在参数列表中使用的符号也是同样的道理。See <a class="xref" href="defun.html"><code class="code">defun</code> 宏</a>。）
+</p>
+<p>由 <code class="code">let</code> 表达式创建的局部变量只在 <code class="code">let</code> 表达式本身（以及在 <code class="code">let</code> 表达式内调用的表达式中）中保持其值；这些局部变量在 <code class="code">let</code> 表达式之外没有影响。
+</p>
+<p>另一种理解 <code class="code">let</code> 的方式是，它就像一个临时和局部的 <code class="code">setq</code>。由 <code class="code">let</code> 设置的值在 <code class="code">let</code> 结束时会自动撤销。这个设置只影响在 <code class="code">let</code> 表达式边界内的表达式。在计算机科学的术语中，我们会说符号的绑定仅在 <code class="code">let</code> 表单中调用的函数中可见；在 Emacs Lisp 中，默认的作用域是动态的，而不是词法的。 （非默认的词法绑定在本手册中未讨论。）
+</p>
+<p><code class="code">let</code> 可以一次创建多个变量。此外，<code class="code">let</code> 为它创建的每个变量都提供一个初始值，可以是你指定的值，也可以是 <code class="code">nil</code>。（在术语中，这是将变量绑定到值。）在 <code class="code">let</code> 创建并绑定了变量之后，它会执行 <code class="code">let</code> 主体中的代码，并返回主体中最后一个表达式的值，作为整个 <code class="code">let</code> 表达式的值。（“执行”是一个术语，指的是评估列表；它源自“实施”一词的使用，意味着“实际生效”（<cite class="cite">Oxford English Dictionary</cite>）。由于你评估一个表达式来执行一个动作，“执行”已经演变为“评估”的同义词。）
+</p>
+</div>
+
+
+
+</body>
+</html>

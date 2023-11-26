@@ -60,33 +60,20 @@ Next: <a href="if.html" accesskey="n" rel="next">The <code class="code">if</code
 <h3 class="section" id="let-1">3.6 <code class="code">let</code></h3>
 <a class="index-entry-id" id="index-let"></a>
 
-<p>The <code class="code">let</code> expression is a special form in Lisp that you will need
-to use in most function definitions.
+<p><code class="code">let</code>表达式是Lisp中的一种特殊形式，你在大多数函数定义中都需要使用它。
 </p>
-<p><code class="code">let</code> is used to attach or bind a symbol to a value in such a way
-that the Lisp interpreter will not confuse the variable with a
-variable of the same name that is not part of the function.
+<p><code class="code">let</code>用于以一种方式将符号绑定到值，使得Lisp解释器不会将该变量与不属于函数的同名变量混淆。
 </p>
-<p>To understand why the <code class="code">let</code> special form is necessary, consider
-the situation in which you own a home that you generally refer to as
-&ldquo;the house&rdquo;, as in the sentence, &ldquo;The house needs painting.&rdquo;  If you
-are visiting a friend and your host refers to &ldquo;the house&rdquo;, he is
-likely to be referring to <em class="emph">his</em> house, not yours, that is, to a
-different house.
+<p>为了理解为什么需要<code class="code">let</code>特殊形式，考虑以下情况：假设你拥有一所房子，通常将其称为“房子”，就像在句子中说：“房子需要粉刷。” 如果你正在访问朋友，而你的主人提到“房子”，他可能是在指的是<em class="emph">他</em>的房子，而不是你的，也就是说，是另一座房子。
 </p>
-<p>If your friend is referring to his house and you think he is referring
-to your house, you may be in for some confusion.  The same thing could
-happen in Lisp if a variable that is used inside of one function has
-the same name as a variable that is used inside of another function,
-and the two are not intended to refer to the same value.  The
-<code class="code">let</code> special form prevents this kind of confusion.
+<p>如果你的朋友正在指他的房子，而你认为他正在指你的房子，那么可能会产生一些混乱。在Lisp中，如果在一个函数内部使用的变量与另一个函数内部使用的同名变量相同，并且两者意图不是引用相同的值，则可能发生类似的情况。<code class="code">let</code>特殊形式防止了这种混淆。
 </p>
 
 <ul class="mini-toc">
-<li><a href="Prevent-confusion.html" accesskey="1"><code class="code">let</code> Prevents Confusion</a></li>
-<li><a href="Parts-of-let-Expression.html" accesskey="2">The Parts of a <code class="code">let</code> Expression</a></li>
-<li><a href="Sample-let-Expression.html" accesskey="3">Sample <code class="code">let</code> Expression</a></li>
-<li><a href="Uninitialized-let-Variables.html" accesskey="4">Uninitialized Variables in a <code class="code">let</code> Statement</a></li>
+<li><a href="Bi-Mian-Hun-Yao-.html" accesskey="1"><code class="code">let</code> 避免混淆</a></li>
+<li><a href="let-Biao-Da-Shi-De-Zu-Cheng-Bu-Fen-.html" accesskey="2"><code class="code">let</code> 表达式的组成部分</a></li>
+<li><a href="ShiLi-let-Biao-Da-Shi-.html" accesskey="3">示例 <code class="code">let</code> 表达式</a></li>
+<li><a href="Wei-Chu-Shi-Hua-De-letYu-Ju-Bian-Liang-.html" accesskey="4"><code class="code">let</code> 语句中的未初始化变量</a></li>
 </ul>
 </div>
 

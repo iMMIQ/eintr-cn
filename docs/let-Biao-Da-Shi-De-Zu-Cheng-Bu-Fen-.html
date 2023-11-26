@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>let 表达式的组成部分 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="let 表达式的组成部分 (Programming in Emacs Lisp)">
+<meta name="keywords" content="let 表达式的组成部分 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="let.html" rel="up" title="let">
+<link href="ShiLi-let-Biao-Da-Shi-.html" rel="next" title="示例 let 表达式">
+<link href="Bi-Mian-Hun-Yao-.html" rel="prev" title="避免混淆">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="let-_8868_8fbe_5f0f_7684_7ec4_6210_90e8_5206">
+<div class="nav-panel">
+<p>
+Next: <a href="ShiLi-let-Biao-Da-Shi-.html" accesskey="n" rel="next">示例 <code class="code">let</code> 表达式</a>, Previous: <a href="Bi-Mian-Hun-Yao-.html" accesskey="p" rel="prev"><code class="code">let</code> 避免混淆</a>, Up: <a href="let.html" accesskey="u" rel="up"><code class="code">let</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="let-Biao-Da-Shi-De-Zu-Cheng-Bu-Fen-">3.6.1 <code class="code">let</code> 表达式的组成部分</h4>
+<a class="index-entry-id" id="index-let-Biao-Da-Shi-_002cZu-Cheng-Bu-Fen-"></a>
+<a class="index-entry-id" id="index-let-Biao-Da-Shi-De-Zu-Cheng-"></a>
+
+<a class="index-entry-id" id="index-varlist-De-Ding-Yi-"></a>
+<p>一个 <code class="code">let</code> 表达式包含三个部分。第一部分是符号 <code class="code">let</code>。第二部分是一个列表，称为<em class="dfn">varlist</em>，其中每个元素要么是一个单独的符号，要么是一个两元素列表，其中第一个元素是一个符号。<code class="code">let</code> 表达式的第三部分是 <code class="code">let</code> 的主体。主体通常包含一个或多个列表。
+</p>
+<p><code class="code">let</code> 表达式的模板如下：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(let <var class="var">varlist</var> <var class="var">body</var>&hellip;)
+</pre></div>
+
+<p>varlist 中的符号是由 <code class="code">let</code> 特殊形式给予初始值的变量。单独的符号被赋予 <code class="code">nil</code> 的初始值；而每个作为两元素列表的第一个元素的符号则被绑定到 Lisp 解释器评估第二个元素时返回的值。
+</p>
+<p>因此，varlist 可以看起来像这样：<code class="code">(thread (needles 3))</code>。在这种情况下，在 <code class="code">let</code> 表达式中，Emacs 将符号 <code class="code">thread</code> 绑定到初始值 <code class="code">nil</code>，并将符号 <code class="code">needles</code> 绑定到初始值 3。
+</p>
+<p>当编写 <code class="code">let</code> 表达式时，你要做的是将适当的表达式放入 <code class="code">let</code> 表达式模板的各个部分。
+</p>
+<p>如果 varlist 由两元素列表组成，这在许多情况下是常见的，那么 <code class="code">let</code> 表达式的模板如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(let ((<var class="var">variable</var> <var class="var">value</var>)
+      (<var class="var">variable</var> <var class="var">value</var>)
+      &hellip;)
+  <var class="var">body</var>&hellip;)
+</pre></div></div>
+
+</div>
+
+
+
+</body>
+</html>
