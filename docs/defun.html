@@ -61,154 +61,71 @@ span.w-nolinebreak-text {white-space: nowrap}
 Next: <a href="Install.html" accesskey="n" rel="next">Install a Function Definition</a>, Previous: <a href="Yuan-Shi-Han-Shu-.html" accesskey="p" rel="prev">关于原始函数的一些说明</a>, Up: <a href="Bian-Xie-Defuns.html" accesskey="u" rel="up">如何编写函数定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-defun-Macro">3.1 The <code class="code">defun</code> Macro</h3>
+<h3 class="section" id="defun-Hong-">3.1 <code class="code">defun</code> 宏</h3>
 <a class="index-entry-id" id="index-defun"></a>
 
-<a class="index-entry-id" id="index-function-definition-defined"></a>
-<p>In Lisp, a symbol such as <code class="code">mark-whole-buffer</code> has code attached to
-it that tells the computer what to do when the function is called.
-This code is called the <em class="dfn">function definition</em> and is created by
-evaluating a Lisp expression that starts with the symbol <code class="code">defun</code>
-(which is an abbreviation for <em class="emph">define function</em>).
+<a class="index-entry-id" id="index-Han-Shu-Ding-Yi-Yi-Ding-Yi-"></a>
+<p>在Lisp中，像 <code class="code">mark-whole-buffer</code> 这样的符号附有与其关联的代码，告诉计算机在调用该函数时应该执行什么操作。这段代码称为 <em class="dfn">函数定义</em>，它是通过评估以符号 <code class="code">defun</code>（它是 <em class="emph">define function</em> 的缩写）开头的Lisp表达式创建的。
 </p>
-<p>In subsequent sections, we will look at function definitions from the
-Emacs source code, such as <code class="code">mark-whole-buffer</code>.  In this section,
-we will describe a simple function definition so you can see how it
-looks.  This function definition uses arithmetic because it makes for a
-simple example.  Some people dislike examples using arithmetic; however,
-if you are such a person, do not despair.  Hardly any of the code we
-will study in the remainder of this introduction involves arithmetic or
-mathematics.  The examples mostly involve text in one way or another.
+<p>在后续的章节中，我们将查看Emacs源代码中的函数定义，比如 <code class="code">mark-whole-buffer</code>。在本节中，我们将描述一个简单的函数定义，以便您了解其外观。这个函数定义使用算术运算，因为这样做可以提供一个简单的例子。有些人不喜欢使用算术的例子；然而，如果您是这样的人，请不要绝望。在本介绍的其余部分中，我们将几乎不涉及算术或数学的代码。例子主要涉及以某种方式涉及文本的内容。
 </p>
-<p>A function definition has up to five parts following the word
-<code class="code">defun</code>:
+<p>一个函数定义由跟在 <code class="code">defun</code> 之后的最多五个部分组成：
 </p>
 <ol class="enumerate">
-<li> The name of the symbol to which the function definition should be
-attached.
+<li> 应该附加函数定义的符号的名称。
 
-</li><li> A list of the arguments that will be passed to the function.  If no
-arguments will be passed to the function, this is an empty list,
-<code class="code">()</code>.
+</li><li> 将传递给函数的参数列表。如果不会传递任何参数给函数，这是一个空列表，即 <code class="code">()</code>。
 
-</li><li> Documentation describing the function.  (Technically optional, but
-strongly recommended.)
+</li><li> 描述函数的文档。（从技术上讲是可选的，但强烈推荐。）
 
-</li><li> Optionally, an expression to make the function interactive so you can
-use it by typing <kbd class="kbd">M-x</kbd> and then the name of the function; or by
-typing an appropriate key or keychord.
+</li><li> 可选地，一个表达式，使函数具有交互性，以便您可以通过键入 <kbd class="kbd">M-x</kbd>，然后输入函数的名称来使用它；或通过输入适当的键或键组。
 
-</li><li> <a class="index-entry-id" id="index-body-defined"></a>
-The code that instructs the computer what to do: the <em class="dfn">body</em> of the
-function definition.
+</li><li> <a class="index-entry-id" id="index-Han-Shu-Ti-Yi-Ding-Yi-"></a>
+告诉计算机要执行的代码：函数定义的 <em class="dfn">函数体</em>。
 </li></ol>
 
-<p>It is helpful to think of the five parts of a function definition as
-being organized in a template, with slots for each part:
+<p>有助于将函数定义的五个部分视为一个模板，其中为每个部分都留有槽位：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun <var class="var">function-name</var> (<var class="var">arguments</var>&hellip;)
   &quot;<var class="var">optional-documentation</var>&hellip;&quot;
-  (interactive <var class="var">argument-passing-info</var>)     ; <span class="r">optional</span>
+  (interactive <var class="var">argument-passing-info</var>)     ; <span class="r">可选</span>
   <var class="var">body</var>&hellip;)
 </pre></div></div>
 
-<p>As an example, here is the code for a function that multiplies its
-argument by 7.  (This example is not interactive.  See <a class="xref" href="Interactive.html">Making a Function Interactive</a>, for that information.)
+<p>以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅See <a class="xref" href="Interactive.html">使函数交互式</a>。）
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun multiply-by-seven (number)
-  &quot;Multiply NUMBER by seven.&quot;
+  &quot;将NUMBER乘以七。&quot;
   (* 7 number))
 </pre></div></div>
 
-<p>This definition begins with a parenthesis and the symbol <code class="code">defun</code>,
-followed by the name of the function.
+<p>这个定义以括号和符号<code class="code">defun</code>开始，后跟函数的名称。
 </p>
 <a class="index-entry-id" id="index-argument-list-defined"></a>
-<p>The name of the function is followed by a list that contains the
-arguments that will be passed to the function.  This list is called
-the <em class="dfn">argument list</em>.  In this example, the list has only one
-element, the symbol, <code class="code">number</code>.  When the function is used, the
-symbol will be bound to the value that is used as the argument to the
-function.
+<p>函数名称后面是一个包含将传递给函数的参数的列表。 这个列表称为<em class="dfn">参数列表</em>。 在这个例子中，列表只有一个元素，即符号<code class="code">number</code>。 当使用函数时，该符号将绑定到作为函数参数的值。
 </p>
-<p>Instead of choosing the word <code class="code">number</code> for the name of the argument,
-I could have picked any other name.  For example, I could have chosen
-the word <code class="code">multiplicand</code>.  I picked the word &ldquo;number&rdquo; because it
-tells what kind of value is intended for this slot; but I could just as
-well have chosen the word &ldquo;multiplicand&rdquo; to indicate the role that the
-value placed in this slot will play in the workings of the function.  I
-could have called it <code class="code">foogle</code>, but that would have been a bad
-choice because it would not tell humans what it means.  The choice of
-name is up to the programmer and should be chosen to make the meaning of
-the function clear.
+<p>与选择<code class="code">number</code>作为参数名称不同，我可以选择任何其他名称。 例如，我可以选择单词<code class="code">multiplicand</code>。 我选择了单词“number”是因为它说明了此槽位所需的值的类型； 但是我完全可以选择单词“multiplicand”来指示在函数运作中放入此槽位的值所起的作用。 我可以称其为<code class="code">foogle</code>，但那是一个不好的选择，因为它不会告诉人们它的含义。 名称的选择由程序员决定，应该选择使函数的含义清晰的名称。
 </p>
-<p>Indeed, you can choose any name you wish for a symbol in an argument
-list, even the name of a symbol used in some other function: the name
-you use in an argument list is private to that particular definition.
-In that definition, the name refers to a different entity than any use
-of the same name outside the function definition.  Suppose you have a
-nick-name &ldquo;Shorty&rdquo; in your family; when your family members refer to
-&ldquo;Shorty&rdquo;, they mean you.  But outside your family, in a movie, for
-example, the name &ldquo;Shorty&rdquo; refers to someone else.  Because a name in an
-argument list is private to the function definition, you can change the
-value of such a symbol inside the body of a function without changing
-its value outside the function.  The effect is similar to that produced
-by a <code class="code">let</code> expression.  (See <a class="xref" href="let.html"><code class="code">let</code></a>.)
+<p>确实，你可以为参数列表中的符号选择任何你喜欢的名称，甚至是在其他函数中使用的符号的名称：在参数列表中使用的名称对于该特定定义是私有的。在该定义中，该名称指的是与函数定义之外使用的同名实体不同的实体。假设在你的家庭中你有一个绰号“矮子”；当你的家庭成员提到“矮子”时，他们指的是你。但在你的家庭之外，比如在电影中，“矮子”这个名字指的是别人。因为参数列表中的名称对函数定义是私有的，你可以在函数体内改变这样一个符号的值，而不会改变它在函数外的值。这个效果类似于&lsquo;let&lsquo;表达式（See <a class="xref" href="let.html"><code class="code">let</code></a>）。
 </p>
 
-<p>The argument list is followed by the documentation string that
-describes the function.  This is what you see when you type
-<kbd class="kbd"><span class="w-nolinebreak-text">C-h</span>&nbsp;f</kbd><!-- /@w --> and the name of a function.  Incidentally, when you
-write a documentation string like this, you should make the first line
-a complete sentence since some commands, such as <code class="code">apropos</code>, print
-only the first line of a multi-line documentation string.  Also, you
-should not indent the second line of a documentation string, if you
-have one, because that looks odd when you use <kbd class="kbd">C-h f</kbd>
-(<code class="code">describe-function</code>).  The documentation string is optional, but
-it is so useful, it should be included in almost every function you
-write.
+<p>参数列表后面是描述函数的文档字符串。这是当你键入<kbd class="kbd"><span class="w-nolinebreak-text">C-h</span>&nbsp;f</kbd><!-- /@w -->和函数的名称时所看到的内容。顺便说一句，当你编写这样的文档字符串时，应该将第一行写成完整的句子，因为有些命令（比如<code class="code">apropos</code>）只打印多行文档字符串的第一行。此外，如果有第二行文档字符串，不应该对其进行缩进，因为在使用<kbd class="kbd">C-h f</kbd>（<code class="code">describe-function</code>）时，这样看起来很奇怪。文档字符串是可选的，但它非常有用，几乎应该包含在你编写的每个函数中。
 </p>
-<a class="index-entry-id" id="index-_002a-_0028multiplication_0029"></a>
-<p>The third line of the example consists of the body of the function
-definition.  (Most functions&rsquo; definitions, of course, are longer than
-this.)  In this function, the body is the list, <code class="code">(* 7 number)</code>, which
-says to multiply the value of <var class="var">number</var> by 7.  (In Emacs Lisp,
-<code class="code">*</code> is the function for multiplication, just as <code class="code">+</code> is the
-function for addition.)
+<a class="index-entry-id" id="index-_002a-_0028Cheng-Fa-_0029"></a>
+<p>该示例的第三行是函数定义的主体。 （当然，大多数函数的定义要比这个长。）在这个函数中，主体是列表<code class="code">(* 7 number)</code>，它表示将<var class="var">number</var>的值乘以7。（在Emacs Lisp中，<code class="code">*</code>是乘法的函数，就像<code class="code">+</code>是加法的函数一样。）
 </p>
-<p>When you use the <code class="code">multiply-by-seven</code> function, the argument
-<code class="code">number</code> evaluates to the actual number you want used.  Here is an
-example that shows how <code class="code">multiply-by-seven</code> is used; but don&rsquo;t try
-to evaluate this yet!
+<p>当你使用 <code class="code">multiply-by-seven</code> 函数时，参数 <code class="code">number</code> 会被评估为你希望使用的实际数字。下面是展示如何使用 <code class="code">multiply-by-seven</code> 的示例；但现在不要尝试评估它！
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(multiply-by-seven 3)
 </pre></div>
 
-<p>The symbol <code class="code">number</code>, specified in the function definition in the
-next section, is bound to the value 3 in the actual use of
-the function.  Note that although <code class="code">number</code> was inside parentheses
-in the function definition, the argument passed to the
-<code class="code">multiply-by-seven</code> function is not in parentheses.  The
-parentheses are written in the function definition so the computer can
-figure out where the argument list ends and the rest of the function
-definition begins.
+<p>在函数定义的下一部分中指定的符号 <code class="code">number</code> 在实际使用函数时被绑定到值 3。请注意，尽管在函数定义中 <code class="code">number</code> 处于括号中，但传递给 <code class="code">multiply-by-seven</code> 函数的参数不在括号中。括号写在函数定义中，这样计算机可以确定参数列表的结束位置和函数定义的其余部分的开始位置。
 </p>
-<p>If you evaluate this example, you are likely to get an error message.
-(Go ahead, try it!)  This is because we have written the function
-definition, but not yet told the computer about the definition&mdash;we have
-not yet loaded the function definition in Emacs.
-Installing a function is the process that tells the Lisp interpreter the
-definition of the function.  Installation is described in the next
-section.
+<p>如果你评估这个示例，很可能会收到错误消息。（试试看吧！）这是因为我们已经写了函数定义，但还没有告诉计算机有关定义——我们还没有在Emacs中加载函数定义。安装函数是告诉Lisp解释器函数定义的过程。安装过程在下一部分中描述。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Install.html">Install a Function Definition</a>, Previous: <a href="Yuan-Shi-Han-Shu-.html">关于原始函数的一些说明</a>, Up: <a href="Bian-Xie-Defuns.html">如何编写函数定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
