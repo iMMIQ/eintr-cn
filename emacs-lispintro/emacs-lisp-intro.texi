@@ -2009,61 +2009,42 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 找到您正在使用的文件，并移动到其中间。
 找到其缓冲区名称、文件名称、长度以及您在文件中的位置。
 
-@node Writing Defuns
-@chapter How To Write Function Definitions
-@cindex Definition writing
-@cindex Function definition writing
-@cindex Writing a function definition
+@node 编写 Defuns
+@chapter 如何编写函数定义
+@cindex 定义编写
+@cindex 函数定义编写
+@cindex 编写函数定义
 
-When the Lisp interpreter evaluates a list, it looks to see whether the
-first symbol on the list has a function definition attached to it; or,
-put another way, whether the symbol points to a function definition.  If
-it does, the computer carries out the instructions in the definition.  A
-symbol that has a function definition is called, simply, a function
-(although, properly speaking, the definition is the function and the
-symbol refers to it.)
+当Lisp解释器评估一个列表时，它会查看列表上的第一个符号是否附有一个函数定义；或者换句话说，该符号是否指向一个函数定义。如果是的话，计算机将执行定义中的指令。一个具有函数定义的符号被简单地称为函数（尽管严格来说，定义是函数，符号是它的引用）。
 
 @menu
-* Primitive Functions::
-* defun::                        The @code{defun} macro.
-* Install::                      Install a function definition.
-* Interactive::                  Making a function interactive.
-* Interactive Options::          Different options for @code{interactive}.
-* Permanent Installation::       Installing code permanently.
-* let::                          Creating and initializing local variables.
-* if::                           What if?
-* else::                         If--then--else expressions.
-* Truth & Falsehood::            What Lisp considers false and true.
-* save-excursion::               Keeping track of point and buffer.
-* Review::
-* defun Exercises::
+* 原始函数::
+* defun::                        @code{defun} 宏。
+* 安装::                          安装函数定义。
+* 交互式::                        使函数具有交互性。
+* 交互式选项::                    @code{interactive} 的不同选项。
+* 永久安装::                      永久安装代码。
+* let::                          创建并初始化局部变量。
+* if::                           如果是这样怎么办？
+* else::                         If--then--else 表达式。
+* 真与假::                       Lisp认为的真和假。
+* save-excursion::               跟踪点和缓冲区。
+* 回顾::
+* defun 练习::
 @end menu
 
 @ifnottex
-@node Primitive Functions
-@unnumberedsec An Aside about Primitive Functions
+@node 原始函数
+@unnumberedsec 关于原始函数的一些说明
 @end ifnottex
-@cindex Primitive functions
-@cindex Functions, primitive
+@cindex 原始函数
+@cindex 函数，原始
 
-@cindex C language primitives
-@cindex Primitives written in C
-All functions are defined in terms of other functions, except for a few
-@dfn{primitive} functions that are written in the C programming
-language.  When you write functions' definitions, you will write them in
-Emacs Lisp and use other functions as your building blocks.  Some of the
-functions you will use will themselves be written in Emacs Lisp (perhaps
-by you) and some will be primitives written in C@.  The primitive
-functions are used exactly like those written in Emacs Lisp and behave
-like them.  They are written in C so we can easily run GNU Emacs on any
-computer that has sufficient power and can run C.
+@cindex C语言原语
+@cindex 用C编写的原语
+所有函数都是基于其他函数定义的，除了一些用C编写的@dfn{原始}函数。当你编写函数定义时，你将使用Emacs Lisp编写它们，并将其他函数作为构建块。你将使用的一些函数本身是用Emacs Lisp编写的（也许是由你编写的），而另一些是用C编写的原语。这些原始函数的使用方式与用Emacs Lisp编写的函数完全相同，并且其行为也相同。它们是用C编写的，以便我们可以轻松地在任何具有足够计算能力且能够运行C的计算机上运行GNU Emacs。
 
-Let me re-emphasize this: when you write code in Emacs Lisp, you do not
-distinguish between the use of functions written in C and the use of
-functions written in Emacs Lisp.  The difference is irrelevant.  I
-mention the distinction only because it is interesting to know.  Indeed,
-unless you investigate, you won't know whether an already-written
-function is written in Emacs Lisp or C.
+让我再强调一下：当你在Emacs Lisp中编写代码时，你不区分是使用用C编写的函数还是使用用Emacs Lisp编写的函数。这种区别是无关紧要的。我提到这个区别只是因为它是有趣的。实际上，除非你调查，你不会知道一个已经编写好的函数是用Emacs Lisp还是C编写的。
 
 @node defun
 @section The @code{defun} Macro
