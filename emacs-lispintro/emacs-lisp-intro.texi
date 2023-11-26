@@ -2500,44 +2500,29 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 注意，在 @code{let} 的第一部分中，变量 @code{pine} 和 @code{fir} 作为不带括号的原子独立存在；这是因为它们被绑定到 @code{nil}，即空列表。但是，@code{oak} 被绑定到 @code{some}，因此是列表 @code{(oak 'some)} 的一部分。类似地，@code{birch} 被绑定到数字3，因此在具有该数字的列表中。 (由于数字在评估时为自身，因此数字不需要引用。此外，消息中使用 @samp{%d} 而不是 @samp{%s} 打印数字。) 这四个变量作为一个组被放入列表中，以将它们与 @code{let} 的主体分开。
 
 @node if
-@section The @code{if} Special Form
+@section 特殊形式 @code{if}
 @findex if
-@cindex Conditional with @code{if}
+@cindex 使用 @code{if} 的条件语句
 
-Another special form is the conditional @code{if}.  This form is used
-to instruct the computer to make decisions.  You can write function
-definitions without using @code{if}, but it is used often enough, and
-is important enough, to be included here.  It is used, for example, in
-the code for the function @code{beginning-of-buffer}.
+另一种特殊形式是条件语句 @code{if}。该形式用于指导计算机进行决策。您可以编写不使用 @code{if} 的函数定义，但它被经常使用且足够重要，因此在这里进行介绍。例如，在函数 @code{beginning-of-buffer} 的代码中就使用了它。
 
-The basic idea behind an @code{if}, is that @emph{if} a test is true,
-@emph{then} an expression is evaluated.  If the test is not true, the
-expression is not evaluated.  For example, you might make a decision
-such as, ``if it is warm and sunny, then go to the beach!''
+@code{if} 的基本思想是，@emph{如果}测试为真，@emph{那么}就会评估一个表达式。如果测试不为真，则不会评估该表达式。例如，您可能会做出这样的决定：“如果天气暖和而且阳光明媚，那么就去海滩！”
 
 @menu
-* if in more detail::
-* type-of-animal in detail::    An example of an @code{if} expression.
+* if 详细说明::
+* type-of-animal 详细说明::    一个 @code{if} 表达式的示例。
 @end menu
 
 @ifnottex
-@node if in more detail
-@unnumberedsubsec @code{if} in more detail
+@node if 详细说明
+@unnumberedsubsec @code{if}详细说明
 @end ifnottex
 
-@cindex @samp{if-part} defined
-@cindex @samp{then-part} defined
-An @code{if} expression written in Lisp does not use the word ``then'';
-the test and the action are the second and third elements of the list
-whose first element is @code{if}.  Nonetheless, the test part of an
-@code{if} expression is often called the @dfn{if-part} and the second
-argument is often called the @dfn{then-part}.
+@cindex @samp{if-part}定义
+@cindex @samp{then-part}定义
+在Lisp中，@code{if}表达式不使用单词“then”；测试和动作是列表的第二个和第三个元素，其第一个元素是@code{if}。尽管如此，@code{if}表达式的测试部分通常称为@dfn{if-part}，第二个参数通常称为@dfn{then-part}。
 
-Also, when an @code{if} expression is written, the true-or-false-test
-is usually written on the same line as the symbol @code{if}, but the
-action to carry out if the test is true, the then-part, is written
-on the second and subsequent lines.  This makes the @code{if}
-expression easier to read.
+此外，当编写@code{if}表达式时，通常将真假测试写在与符号@code{if}相同的行上，但如果测试为真，则执行的操作，即then-part，会写在第二行及后续行。这样可以使@code{if}表达式更易读。
 
 @smallexample
 @group
@@ -2547,12 +2532,9 @@ expression easier to read.
 @end smallexample
 
 @noindent
-The true-or-false-test will be an expression that
-is evaluated by the Lisp interpreter.
+真假测试将是由Lisp解释器评估的表达式。
 
-Here is an example that you can evaluate in the usual manner.  The test
-is whether the number 5 is greater than the number 4.  Since it is, the
-message @samp{5 is greater than 4!} will be printed.
+以下是一个您可以按照通常方式评估的示例。测试是数字5是否大于数字4。由于是，将打印消息@samp{5 is greater than 4!}。
 
 @smallexample
 @group
@@ -2562,28 +2544,20 @@ message @samp{5 is greater than 4!} will be printed.
 @end smallexample
 
 @noindent
-(The function @code{>} tests whether its first argument is greater than
-its second argument and returns true if it is.)
+（函数@code{>}测试其第一个参数是否大于其第二个参数，并在其为真时返回true。）
 @findex > @r{(greater than)}
 
-Of course, in actual use, the test in an @code{if} expression will not
-be fixed for all time as it is by the expression @code{(> 5 4)}.
-Instead, at least one of the variables used in the test will be bound to
-a value that is not known ahead of time.  (If the value were known ahead
-of time, we would not need to run the test!)
+当然，在实际使用中，@code{if} 表达式中的测试将不会像表达式 @code{(> 5 4)} 中那样永远固定。相反，测试中至少一个变量将被绑定到一个预先未知的值。
+（如果值在预先知道，我们就不需要运行测试了！）
 
-For example, the value may be bound to an argument of a function
-definition.  In the following function definition, the character of the
-animal is a value that is passed to the function.  If the value bound to
-@code{characteristic} is @code{"fierce"}, then the message, @samp{It is a
-tiger!} will be printed; otherwise, @code{nil} will be returned.
+例如，该值可以绑定到函数定义的参数上。在以下函数定义中，动物的特性是传递给函数的值。如果绑定到 @code{characteristic} 的值是 @code{"fierce"}，则将打印消息 @samp{It is a tiger!}；否则，将返回 @code{nil}。
 
 @smallexample
 @group
 (defun type-of-animal (characteristic)
-  "Print message in echo area depending on CHARACTERISTIC.
-If the CHARACTERISTIC is the string \"fierce\",
-then warn of a tiger."
+  "根据 CHARACTERISTIC 在回显区打印消息。
+如果 CHARACTERISTIC 是字符串 \"fierce\"，
+则警告是一只老虎。"
   (if (equal characteristic "fierce")
       (message "It is a tiger!")))
 @end group
@@ -2591,37 +2565,29 @@ then warn of a tiger."
 
 @need 1500
 @noindent
-If you are reading this inside of GNU Emacs, you can evaluate the
-function definition in the usual way to install it in Emacs, and then you
-can evaluate the following two expressions to see the results:
+如果您正在 GNU Emacs 中阅读此文档，您可以按照通常的方式评估函数定义以在 Emacs 中安装它，然后可以评估以下两个表达式以查看结果：
 
 @smallexample
 @group
 (type-of-animal "fierce")
 
 (type-of-animal "striped")
-
 @end group
 @end smallexample
 
-@c Following sentences rewritten to prevent overfull hbox.
+@c 以下句子已重新编写以防止 hbox 溢出。
 @noindent
-When you evaluate @code{(type-of-animal "fierce")}, you will see the
-following message printed in the echo area: @code{"It is a tiger!"}; and
-when you evaluate @code{(type-of-animal "striped")} you will see @code{nil}
-printed in the echo area.
+当您评估 @code{(type-of-animal "fierce")} 时，您将在回显区看到打印的以下消息：@code{"It is a tiger!"}；当您评估 @code{(type-of-animal "striped")} 时，您将在回显区看到打印的 @code{nil}。
 
-@node type-of-animal in detail
-@subsection The @code{type-of-animal} Function in Detail
+@node type-of-animal 详细说明
+@subsection 详细介绍 @code{type-of-animal} 函数
 
-Let's look at the @code{type-of-animal} function in detail.
+让我们详细看一下 @code{type-of-animal} 函数。
 
-The function definition for @code{type-of-animal} was written by filling
-the slots of two templates, one for a function definition as a whole, and
-a second for an @code{if} expression.
+@code{type-of-animal} 函数的定义是通过填充两个模板而完成的，一个用于整个函数定义，另一个用于 @code{if} 表达式。
 
 @need 1250
-The template for every function that is not interactive is:
+每个非交互式函数的模板如下：
 
 @smallexample
 @group
@@ -2632,27 +2598,21 @@ The template for every function that is not interactive is:
 @end smallexample
 
 @need 800
-The parts of the function that match this template look like this:
+符合此模板的函数部分如下：
 
 @smallexample
 @group
 (defun type-of-animal (characteristic)
-  "Print message in echo area depending on CHARACTERISTIC.
-If the CHARACTERISTIC is the string \"fierce\",
-then warn of a tiger."
+  "根据 CHARACTERISTIC 在回显区域打印消息。
+如果 CHARACTERISTIC 是字符串 \"fierce\"，则警告可能是老虎。"
   @var{body: the} @code{if} @var{expression})
 @end group
 @end smallexample
 
-The name of function is @code{type-of-animal}; it is passed the value
-of one argument.  The argument list is followed by a multi-line
-documentation string.  The documentation string is included in the
-example because it is a good habit to write documentation string for
-every function definition.  The body of the function definition
-consists of the @code{if} expression.
+函数的名称是 @code{type-of-animal}；它接受一个参数的值。参数列表后面是多行文档字符串。在示例中包含文档字符串是一个良好的习惯，建议为每个函数定义都编写文档字符串。函数定义的主体由 @code{if} 表达式组成。
 
 @need 800
-The template for an @code{if} expression looks like this:
+@code{if} 表达式的模板如下：
 
 @smallexample
 @group
@@ -2662,41 +2622,27 @@ The template for an @code{if} expression looks like this:
 @end smallexample
 
 @need 1250
-In the @code{type-of-animal} function, the code for the @code{if}
-looks like this:
+在 @code{type-of-animal} 函数中，@code{if} 的代码如下：
 
 @smallexample
 @group
 (if (equal characteristic "fierce")
-    (message "It is a tiger!"))
+    (message "它是一只老虎！"))
 @end group
 @end smallexample
 
 @need 800
-Here, the true-or-false-test is the expression:
+在这里，true-or-false-test 是表达式：
 
 @smallexample
 (equal characteristic "fierce")
 @end smallexample
 
-@noindent
-In Lisp, @code{equal} is a function that determines whether its first
-argument is equal to its second argument.  The second argument is the
-string @code{"fierce"} and the first argument is the value of the
-symbol @code{characteristic}---in other words, the argument passed to
-this function.
+在 Lisp 中，@code{equal} 是一个函数，它确定其第一个参数是否等于第二个参数。第二个参数是字符串 @code{"fierce"}，第一个参数是符号 @code{characteristic} 的值，换句话说，就是传递给该函数的参数。
 
-In the first exercise of @code{type-of-animal}, the argument
-@code{"fierce"} is passed to @code{type-of-animal}.  Since @code{"fierce"}
-is equal to @code{"fierce"}, the expression, @code{(equal characteristic
-"fierce")}, returns a value of true.  When this happens, the @code{if}
-evaluates the second argument or then-part of the @code{if}:
-@code{(message "It is a tiger!")}.
+在 @code{type-of-animal} 的第一个示例中，传递了参数 @code{"fierce"}。由于 @code{"fierce"} 等于 @code{"fierce"}，表达式 @code{(equal characteristic "fierce")} 返回 true。当发生这种情况时，@code{if} 会评估 @code{if} 的第二个参数或 true 部分：@code{(message "它是一只老虎！")}。
 
-On the other hand, in the second exercise of @code{type-of-animal}, the
-argument @code{"striped"} is passed to @code{type-of-animal}.  @code{"striped"}
-is not equal to @code{"fierce"}, so the then-part is not evaluated and
-@code{nil} is returned by the @code{if} expression.
+另一方面，在 @code{type-of-animal} 的第二个示例中，传递了参数 @code{"striped"}。@code{"striped"} 不等于 @code{"fierce"}，因此 true 部分不会被评估，@code{if} 表达式返回 @code{nil}。
 
 @node else
 @section If--then--else Expressions
