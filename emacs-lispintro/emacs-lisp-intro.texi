@@ -2142,7 +2142,7 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 @end smallexample
 
 @noindent
-通过评估这个 @code{defun}，你刚刚在 Emacs 中安装了 @code{multiply-by-seven}。该函数现在与 Emacs 中的其他编辑函数（如 @code{forward-word}）一样成为 Emacs 的一部分。（@code{multiply-by-seven} 将一直保持安装状态，直到你退出 Emacs。要在每次启动 Emacs 时自动重新加载代码，请参阅 @ref{Permanent Installation, , Installing Code Permanently}。）
+通过评估这个 @code{defun}，你刚刚在 Emacs 中安装了 @code{multiply-by-seven}。该函数现在与 Emacs 中的其他编辑函数（如 @code{forward-word}）一样成为 Emacs 的一部分。（@code{multiply-by-seven} 将一直保持安装状态，直到你退出 Emacs。要在每次启动 Emacs 时自动重新加载代码，请参阅 @ref{永久安装, , 永久安装代码}。）
 
 @menu
 * 安装的效果::
@@ -2344,53 +2344,30 @@ multiply-by-seven 是一个 Lisp 函数。
 
 @xref{append-to-buffer, , 函数 @code{append-to-buffer} 的定义}，提供一个例子。@xref{Using Interactive, , 使用 @code{Interactive}, elisp, GNU Emacs Lisp 参考手册}，提供有关这一技术的更完整解释。
 
-@node Permanent Installation
-@section Install Code Permanently
-@cindex Install code permanently
-@cindex Permanent code installation
-@cindex Code installation
+@node 永久安装
+@section 永久安装代码
+@cindex 永久安装代码
+@cindex 永久性代码安装
+@cindex 代码安装
 
-When you install a function definition by evaluating it, it will stay
-installed until you quit Emacs.  The next time you start a new session
-of Emacs, the function will not be installed unless you evaluate the
-function definition again.
+当通过评估来安装函数定义时，它将一直保持安装状态，直到退出 Emacs。下次启动 Emacs 时，除非重新评估函数定义，否则该函数将不会安装。
 
-At some point, you may want to have code installed automatically
-whenever you start a new session of Emacs.  There are several ways of
-doing this:
+在某个时刻，您可能希望在每次启动新的 Emacs 会话时自动安装代码。有几种方法可以实现这一点：
 
 @itemize @bullet
 @item
-If you have code that is just for yourself, you can put the code for the
-function definition in your @file{.emacs} initialization file.  When you
-start Emacs, your @file{.emacs} file is automatically evaluated and all
-the function definitions within it are installed.
-@xref{Emacs Initialization, , Your @file{.emacs} File}.
+如果您的代码只是针对您个人的，您可以将函数定义的代码放入您的 @file{.emacs} 初始化文件中。当您启动 Emacs 时，您的 @file{.emacs} 文件会自动评估，并安装其中的所有函数定义。
+@xref{Emacs Initialization, , 您的 @file{.emacs} 文件}。
 
 @item
-Alternatively, you can put the function definitions that you want
-installed in one or more files of their own and use the @code{load}
-function to cause Emacs to evaluate and thereby install each of the
-functions in the files.
-@xref{Loading Files, , Loading Files}.
+或者，您可以将要安装的函数定义放入一个或多个单独的文件中，并使用 @code{load} 函数使 Emacs 评估并安装这些文件中的每个函数。
+@xref{Loading Files, , 加载文件}。
 
 @item
-Thirdly, if you have code that your whole site will use, it is usual
-to put it in a file called @file{site-init.el} that is loaded when
-Emacs is built.  This makes the code available to everyone who uses
-your machine.  (See the @file{INSTALL} file that is part of the Emacs
-distribution.)
+第三，如果您有整个站点都会使用的代码，通常将其放入一个名为 @file{site-init.el} 的文件中，在构建 Emacs 时加载该文件。这使得代码对使用您的计算机的每个人都可用。（请参阅 Emacs 发行版的 @file{INSTALL} 文件。）
 @end itemize
 
-Finally, if you have code that everyone who uses Emacs may want, you
-can post it on a computer network or send a copy to the Free Software
-Foundation.  (When you do this, please license the code and its
-documentation under a license that permits other people to run, copy,
-study, modify, and redistribute the code and which protects you from
-having your work taken from you.)  If you send a copy of your code to
-the Free Software Foundation, and properly protect yourself and
-others, it may be included in the next release of Emacs.  In large
-part, this is how Emacs has grown over the past years, by donations.
+最后，如果您的代码是每个使用 Emacs 的人都可能需要的，您可以将其发布到计算机网络上，或将副本发送给自由软件基金会。（在执行此操作时，请使用许可证许可代码及其文档，允许其他人运行、复制、研究、修改和重新分发代码，并保护您免受他人夺走您的工作的风险。）如果您向自由软件基金会发送代码的副本，并正确保护自己和其他人，它可能会包含在下一个 Emacs 发布版中。在很大程度上，这就是 Emacs 在过去几年中发展的方式，通过捐赠。
 
 @node let
 @section @code{let}

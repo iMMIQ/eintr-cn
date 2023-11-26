@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>永久安装 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="永久安装 (Programming in Emacs Lisp)">
+<meta name="keywords" content="永久安装 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Bian-Xie-Defuns.html" rel="up" title="编写 Defuns">
+<link href="let.html" rel="next" title="let">
+<link href="Jiao-Hu-Xuan-Xiang-.html" rel="prev" title="交互选项">
+<style type="text/css">
+<!--
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_6c38_4e45_5b89_88c5">
+<div class="nav-panel">
+<p>
+Next: <a href="let.html" accesskey="n" rel="next"><code class="code">let</code></a>, Previous: <a href="Jiao-Hu-Xuan-Xiang-.html" accesskey="p" rel="prev"><code class="code">interactive</code> 的不同选项</a>, Up: <a href="Bian-Xie-Defuns.html" accesskey="u" rel="up">如何编写函数定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Yong-Jiu-An-Zhuang-Dai-Ma-">3.5 永久安装代码</h3>
+<a class="index-entry-id" id="index-Yong-Jiu-An-Zhuang-Dai-Ma-"></a>
+<a class="index-entry-id" id="index-Yong-Jiu-Xing-Dai-Ma-An-Zhuang-"></a>
+<a class="index-entry-id" id="index-Dai-Ma-An-Zhuang-"></a>
+
+<p>当通过评估来安装函数定义时，它将一直保持安装状态，直到退出 Emacs。下次启动 Emacs 时，除非重新评估函数定义，否则该函数将不会安装。
+</p>
+<p>在某个时刻，您可能希望在每次启动新的 Emacs 会话时自动安装代码。有几种方法可以实现这一点：
+</p>
+<ul class="itemize mark-bullet">
+<li>如果您的代码只是针对您个人的，您可以将函数定义的代码放入您的 <samp class="file">.emacs</samp> 初始化文件中。当您启动 Emacs 时，您的 <samp class="file">.emacs</samp> 文件会自动评估，并安装其中的所有函数定义。
+See <a class="xref" href="Emacs-Initialization.html">您的 <samp class="file">.emacs</samp> 文件</a>。
+
+</li><li>或者，您可以将要安装的函数定义放入一个或多个单独的文件中，并使用 <code class="code">load</code> 函数使 Emacs 评估并安装这些文件中的每个函数。
+See <a class="xref" href="Loading-Files.html">加载文件</a>。
+
+</li><li>第三，如果您有整个站点都会使用的代码，通常将其放入一个名为 <samp class="file">site-init.el</samp> 的文件中，在构建 Emacs 时加载该文件。这使得代码对使用您的计算机的每个人都可用。（请参阅 Emacs 发行版的 <samp class="file">INSTALL</samp> 文件。）
+</li></ul>
+
+<p>最后，如果您的代码是每个使用 Emacs 的人都可能需要的，您可以将其发布到计算机网络上，或将副本发送给自由软件基金会。（在执行此操作时，请使用许可证许可代码及其文档，允许其他人运行、复制、研究、修改和重新分发代码，并保护您免受他人夺走您的工作的风险。）如果您向自由软件基金会发送代码的副本，并正确保护自己和其他人，它可能会包含在下一个 Emacs 发布版中。在很大程度上，这就是 Emacs 在过去几年中发展的方式，通过捐赠。
+</p>
+</div>
+
+
+
+</body>
+</html>
