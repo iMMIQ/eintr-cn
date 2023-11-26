@@ -1832,7 +1832,7 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 
 @cindex @samp{交互函数}定义
 @cindex @samp{命令}定义
-当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是@code{self-insert-command}，它简单地插入你键入的字符。通过键入按键而评估的函数称为@dfn{交互}函数或@dfn{命令}；如何使一个函数交互将在编写函数定义的章节中说明。@xref{Interactive, , 使一个函数交互}。
+当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是@code{self-insert-command}，它简单地插入你键入的字符。通过键入按键而评估的函数称为@dfn{交互}函数或@dfn{命令}；如何使函数具有交互性将在编写函数定义的章节中说明。@xref{交互式操作, , 使函数具有交互性}。
 
 除了键入键盘命令，我们已经看到第二种评估表达式的方法：将光标定位在列表后面，然后键入@kbd{C-x C-e}。这是本节其余部分将要做的事情。还有其他评估表达式的方式；当我们遇到它们时会进行描述。
 
@@ -2021,7 +2021,7 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 * 原始函数::
 * defun::                        @code{defun} 宏。
 * 安装::                          安装函数定义。
-* 交互式::                        使函数具有交互性。
+* 交互式操作::                        使函数具有交互性。
 * 交互式选项::                    @code{interactive} 的不同选项。
 * 永久安装::                      永久安装代码。
 * let::                          创建并初始化局部变量。
@@ -2086,7 +2086,7 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 @end group
 @end smallexample
 
-以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅@xref{Interactive,,使函数交互式}。）
+以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅@xref{交互式操作,,使函数具有交互性}。）
 
 @smallexample
 @group
@@ -2208,154 +2208,113 @@ multiply-by-seven 是一个 Lisp 函数。
 
 总之，这就是在Emacs Lisp中编写代码的方式：编写函数；安装它；测试它；然后进行修复或增强，并再次安装它。
 
-@node Interactive
-@section Make a Function Interactive
-@cindex Interactive functions
+@node 交互式操作
+@section 使函数具有交互性
+@cindex 交互式函数
 @findex interactive
 
-You make a function interactive by placing a list that begins with
-the special form @code{interactive} immediately after the
-documentation.  A user can invoke an interactive function by typing
-@kbd{M-x} and then the name of the function; or by typing the keys to
-which it is bound, for example, by typing @kbd{C-n} for
-@code{next-line} or @kbd{C-x h} for @code{mark-whole-buffer}.
+通过在文档后面紧跟以特殊形式 @code{interactive} 开头的列表，可以使函数具有交互性。用户可以通过键入 @kbd{M-x}，然后键入函数名，或者通过键入其绑定的键来调用交互式函数，例如通过键入 @kbd{C-n} 调用 @code{next-line}，或者通过键入 @kbd{C-x h} 调用 @code{mark-whole-buffer}。
 
-Interestingly, when you call an interactive function interactively,
-the value returned is not automatically displayed in the echo area.
-This is because you often call an interactive function for its side
-effects, such as moving forward by a word or line, and not for the
-value returned.  If the returned value were displayed in the echo area
-each time you typed a key, it would be very distracting.
+有趣的是，当你以交互方式调用交互式函数时，返回的值不会自动显示在回显区。这是因为通常你调用交互式函数是为了其副作用，比如按单词或行前进，而不是为了返回的值。如果每次键入一个键时都在回显区显示返回的值，会非常分散注意力。
 
 @menu
-* Interactive multiply-by-seven::  An overview.
-* multiply-by-seven in detail::    The interactive version.
+* 交互式multiply-by-seven::  概述。
+* multiply-by-seven in detail::  交互式版本。
 @end menu
 
 @ifnottex
-@node Interactive multiply-by-seven
-@unnumberedsubsec An Interactive @code{multiply-by-seven}, An Overview
+@node 交互式multiply-by-seven
+@unnumberedsubsec 交互式 @code{multiply-by-seven}，概述
 @end ifnottex
 
-Both the use of the special form @code{interactive} and one way to
-display a value in the echo area can be illustrated by creating an
-interactive version of @code{multiply-by-seven}.
+通过创建 @code{multiply-by-seven} 的交互式版本，可以演示特殊形式 @code{interactive} 的使用以及在回显区域显示值的一种方式。
 
 @need 1250
-Here is the code:
+以下是代码：
 
 @smallexample
 @group
-(defun multiply-by-seven (number)       ; @r{Interactive version.}
-  "Multiply NUMBER by seven."
+(defun multiply-by-seven (number)       ; @r{交互式版本.}
+  "将 NUMBER 乘以七。"
   (interactive "p")
-  (message "The result is %d" (* 7 number)))
+  (message "结果是 %d" (* 7 number)))
 @end group
 @end smallexample
 
 @noindent
-You can install this code by placing your cursor after it and typing
-@kbd{C-x C-e}.  The name of the function will appear in your echo area.
-Then, you can use this code by typing @kbd{C-u} and a number and then
-typing @kbd{M-x multiply-by-seven} and pressing @key{RET}.  The phrase
-@samp{The result is @dots{}} followed by the product will appear in the
-echo area.
+您可以通过将光标放置在代码后并键入 @kbd{C-x C-e} 来安装此代码。函数的名称将出现在回显区域中。然后，您可以通过键入 @kbd{C-u} 和一个数字，然后键入 @kbd{M-x multiply-by-seven} 并按 @key{RET} 使用此代码。回显区域中将出现短语 @samp{结果是 @dots{}}，后面跟着乘积。
 
-Speaking more generally, you invoke a function like this in either of two
-ways:
+更一般地说，可以通过以下两种方式调用这样的函数：
 
 @enumerate
 @item
-By typing a prefix argument that contains the number to be passed, and
-then typing @kbd{M-x} and the name of the function, as with
-@kbd{C-u 3 M-x forward-sentence}; or,
+通过键入包含要传递的数字的前缀参数，然后键入 @kbd{M-x} 和函数的名称，如 @kbd{C-u 3 M-x forward-sentence}；或者，
 
 @item
-By typing whatever key or keychord the function is bound to, as with
-@kbd{C-u 3 M-e}.
+通过键入函数绑定的键或键序列，如 @kbd{C-u 3 M-e}。
 @end enumerate
 
 @noindent
-Both the examples just mentioned work identically to move point forward
-three sentences.  (Since @code{multiply-by-seven} is not bound to a key,
-it could not be used as an example of key binding.)
+刚才提到的两个示例均以相同的方式工作，将光标向前移动三个句子。 (由于 @code{multiply-by-seven} 未绑定到键，它无法用作绑定键的示例。)
 
-(@xref{Key Bindings, , Some Key Bindings}, to learn how to bind a command
-to a key.)
+(@xref{Key Bindings, , 一些按键绑定}, 了解如何将命令绑定到键。)
 
-A @dfn{prefix argument} is passed to an interactive function by typing the
-@key{META} key followed by a number, for example, @kbd{M-3 M-e}, or by
-typing @kbd{C-u} and then a number, for example, @kbd{C-u 3 M-e} (if you
-type @kbd{C-u} without a number, it defaults to 4).
+通过键入数字键后跟一个数字，例如 @kbd{M-3 M-e}，或者通过键入 @kbd{C-u} 然后是一个数字，例如 @kbd{C-u 3 M-e}，将一个 @dfn{前缀参数} 传递给交互式函数（如果键入 @kbd{C-u} 而没有数字，则默认为 4）。
 
 @node multiply-by-seven in detail
-@subsection An Interactive @code{multiply-by-seven}
+@subsection 交互式 @code{multiply-by-seven} 详解
 
-Let's look at the use of the special form @code{interactive} and then at
-the function @code{message} in the interactive version of
-@code{multiply-by-seven}.  You will recall that the function definition
-looks like this:
+让我们看一下特殊形式 @code{interactive} 的使用，然后再看一下
+@code{multiply-by-seven} 的交互版本中的函数 @code{message}。
+你会记得该函数定义如下：
 
 @smallexample
 @group
-(defun multiply-by-seven (number)       ; @r{Interactive version.}
-  "Multiply NUMBER by seven."
+(defun multiply-by-seven (number)       ; @r{交互版本。}
+  "将 NUMBER 乘以七。"
   (interactive "p")
-  (message "The result is %d" (* 7 number)))
+  (message "结果是 %d" (* 7 number)))
 @end group
 @end smallexample
 
-In this function, the expression, @code{(interactive "p")}, is a list of
-two elements.  The @code{"p"} tells Emacs to pass the prefix argument to
-the function and use its value for the argument of the function.
+在这个函数中，表达式 @code{(interactive "p")} 是一个包含两个元素的列表。
+@code{"p"} 告诉 Emacs 将前缀参数传递给函数，并将其值用作函数的参数。
 
 @need 1000
-The argument will be a number.  This means that the symbol
-@code{number} will be bound to a number in the line:
+参数将是一个数字。这意味着在以下行中，符号
+@code{number} 将绑定到一个数字：
 
 @smallexample
-(message "The result is %d" (* 7 number))
+(message "结果是 %d" (* 7 number))
 @end smallexample
 
 @need 1250
 @noindent
-For example, if your prefix argument is 5, the Lisp interpreter will
-evaluate the line as if it were:
+例如，如果你的前缀参数是 5，Lisp 解释器将将该行解释为：
 
 @smallexample
-(message "The result is %d" (* 7 5))
+(message "结果是 %d" (* 7 5))
 @end smallexample
 
 @noindent
-(If you are reading this in GNU Emacs, you can evaluate this expression
-yourself.)  First, the interpreter will evaluate the inner list, which
-is @code{(* 7 5)}.  This returns a value of 35.  Next, it
-will evaluate the outer list, passing the values of the second and
-subsequent elements of the list to the function @code{message}.
+(如果你在 GNU Emacs 中阅读此文，你可以自行评估这个表达式。)
+首先，解释器将评估内部列表，即 @code{(* 7 5)}。这将返回一个值为 35。
+接下来，它将评估外部列表，将列表的第二个和随后的元素的值传递给函数 @code{message}。
 
-As we have seen, @code{message} is an Emacs Lisp function especially
-designed for sending a one line message to a user.  (@xref{message, ,
-The @code{message} function}.)  In summary, the @code{message}
-function prints its first argument in the echo area as is, except for
-occurrences of @samp{%d} or @samp{%s} (and various other %-sequences
-which we have not mentioned).  When it sees a control sequence, the
-function looks to the second or subsequent arguments and prints the
-value of the argument in the location in the string where the control
-sequence is located.
+正如我们所见，@code{message} 是一个专为向用户发送单行消息而设计的 Emacs Lisp 函数。
+（@xref{message, , The @code{message} function}。）
+总体而言，@code{message} 函数会将其第一个参数原样打印在回显区域，但会替换
+@samp{%d} 或 @samp{%s}（以及我们未提及的其他各种 %-sequences）的出现。
+当它看到控制序列时，该函数会查找第二个或随后的参数，并在字符串中的控制序列位置打印参数的值。
 
-In the interactive @code{multiply-by-seven} function, the control string
-is @samp{%d}, which requires a number, and the value returned by
-evaluating @code{(* 7 5)} is the number 35.  Consequently, the number 35
-is printed in place of the @samp{%d} and the message is @samp{The result
-is 35}.
+在交互式 @code{multiply-by-seven} 函数中，控制字符串是 @samp{%d}，需要一个数字，
+而通过评估 @code{(* 7 5)} 返回的值是数字 35。因此，数字 35 将在 @samp{%d} 的位置打印，
+消息为 @samp{结果是 35}。
 
-(Note that when you call the function @code{multiply-by-seven}, the
-message is printed without quotes, but when you call @code{message}, the
-text is printed in double quotes.  This is because the value returned by
-@code{message} is what appears in the echo area when you evaluate an
-expression whose first element is @code{message}; but when embedded in a
-function, @code{message} prints the text as a side effect without
-quotes.)
+（请注意，当调用函数 @code{multiply-by-seven} 时，消息会以无引号形式打印，
+但调用 @code{message} 时，文本将以双引号形式打印。这是因为 @code{message} 返回的值是
+在评估其第一个元素为 @code{message} 的表达式时出现在回显区域中的内容；
+但在嵌入函数中时，@code{message} 以副作用的方式打印文本，没有引号。）
 
 @node Interactive Options
 @section Different Options for @code{interactive}
@@ -3920,8 +3879,7 @@ name.  (The function can handle either.)
 
 Since the @code{append-to-buffer} function will be used interactively,
 the function must have an @code{interactive} expression.  (For a
-review of @code{interactive}, see @ref{Interactive, , Making a
-Function Interactive}.)
+review of @code{interactive}, see @ref{交互式操作, , 使函数具有交互性}.)
 
 The expression reads as follows:
 
