@@ -1182,7 +1182,7 @@ blink.  This is just a device to get your attention.)
 
 在 Lisp 中，一组指令可以被关联到多个名字上。例如，加法运算的计算机指令可以关联到符号 @code{plus}，也可以关联到符号 @code{+}上（在某些 Lisp 方言中是这样的）。对于人名，我可以被称为 @samp{Robert}，也可以被称为 @samp{Bob}，以及其他词汇。
 
-但是，一个符号一次只能有一个函数定义与之关联。否则，计算机就会困惑应该使用哪个定义。如果这种情况发生在人类身上，世界上也只能有一个人被命名为 @samp{Bob}。然而，符号所代表的函数定义可以很容易地被更改。(@xref{Install, , Install a Function Definition}.)
+但是，一个符号一次只能有一个函数定义与之关联。否则，计算机就会困惑应该使用哪个定义。如果这种情况发生在人类身上，世界上也只能有一个人被命名为 @samp{Bob}。然而，符号所代表的函数定义可以很容易地被更改。(@xref{安装, , 安装函数定义}.)
 
 由于 Emacs Lisp 非常庞大，通常会以能够指明函数属于Emacs的哪个部分的方式来命名符号。因此，所有涉及 Texinfo 处理的函数名都以 @samp{texinfo-} 开头，而处理邮件读取的函数则以 @samp{rmail-} 开头。
 
@@ -1741,7 +1741,7 @@ counter                         ; @r{这是计数器。}
 @end smallexample
 
 @noindent
-（在@samp{;}之后的文本是注释。@xref{Change a defun, , Change a Function Definition}。）
+（在@samp{;}之后的文本是注释。@xref{修改 defun, , 修改函数定义}。）
 
 如果您评估这些表达式中的第一个，即初始化器@code{(setq counter 0)}，然后评估第三个表达式@code{counter}，数字@code{0}将显示在回显区域中。然后，如果您评估第二个表达式，即递增器@code{(setq counter (+ counter 1))}，计数器将获得值1。因此，如果您再次评估@code{counter}，数字@code{1}将显示在回显区域中。每次评估第二个表达式时，计数器的值将递增。
 
@@ -2125,119 +2125,88 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 
 如果你评估这个示例，很可能会收到错误消息。（试试看吧！）这是因为我们已经写了函数定义，但还没有告诉计算机有关定义——我们还没有在Emacs中加载函数定义。安装函数是告诉Lisp解释器函数定义的过程。安装过程在下一部分中描述。
 
-@node Install
-@section Install a Function Definition
-@cindex Install a Function Definition
-@cindex Definition installation
-@cindex Function definition installation
+@node 安装
+@section 安装函数定义
+@cindex 安装函数定义
+@cindex 定义安装
+@cindex 函数定义安装
 
-If you are reading this inside of Info in Emacs, you can try out the
-@code{multiply-by-seven} function by first evaluating the function
-definition and then evaluating @code{(multiply-by-seven 3)}.  A copy of
-the function definition follows.  Place the cursor after the last
-parenthesis of the function definition and type @kbd{C-x C-e}.  When you
-do this, @code{multiply-by-seven} will appear in the echo area.  (What
-this means is that when a function definition is evaluated, the value it
-returns is the name of the defined function.)  At the same time, this
-action installs the function definition.
+如果你正在 Emacs 的 Info 中阅读本文，你可以尝试执行 @code{multiply-by-seven} 函数，首先评估函数定义，然后评估 @code{(multiply-by-seven 3)}。函数定义的副本如下。将光标放在函数定义的最后一个括号之后，然后键入 @kbd{C-x C-e}。当你这样做时，@code{multiply-by-seven} 将显示在回显区域。（这意味着当评估函数定义时，它返回的值是定义的函数的名称。）与此同时，此操作安装了函数定义。
 
 @smallexample
 @group
 (defun multiply-by-seven (number)
-  "Multiply NUMBER by seven."
+  "将 NUMBER 乘以七。"
   (* 7 number))
 @end group
 @end smallexample
 
 @noindent
-By evaluating this @code{defun}, you have just installed
-@code{multiply-by-seven} in Emacs.  The function is now just as much a
-part of Emacs as @code{forward-word} or any other editing function you
-use.  (@code{multiply-by-seven} will stay installed until you quit
-Emacs.  To reload code automatically whenever you start Emacs, see
-@ref{Permanent Installation, , Installing Code Permanently}.)
+通过评估这个 @code{defun}，你刚刚在 Emacs 中安装了 @code{multiply-by-seven}。该函数现在与 Emacs 中的其他编辑函数（如 @code{forward-word}）一样成为 Emacs 的一部分。（@code{multiply-by-seven} 将一直保持安装状态，直到你退出 Emacs。要在每次启动 Emacs 时自动重新加载代码，请参阅 @ref{Permanent Installation, , Installing Code Permanently}。）
 
 @menu
-* Effect of installation::
-* Change a defun::              How to change a function definition.
+* 安装的效果::
+* 更改 defun::              如何更改函数定义。
 @end menu
 
 @ifnottex
-@node Effect of installation
-@unnumberedsubsec The effect of installation
+@node 安装效果
+@unnumberedsubsec 安装的效果
 @end ifnottex
 
-You can see the effect of installing @code{multiply-by-seven} by
-evaluating the following sample.  Place the cursor after the following
-expression and type @kbd{C-x C-e}.  The number 21 will appear in the
-echo area.
+通过评估以下示例，您可以看到安装 @code{multiply-by-seven} 的效果。将光标放在下面的表达式之后，然后键入 @kbd{C-x C-e}。数字 21 将出现在回显区域。
 
 @smallexample
 (multiply-by-seven 3)
 @end smallexample
 
-If you wish, you can read the documentation for the function by typing
-@kbd{C-h f} (@code{describe-function}) and then the name of the
-function, @code{multiply-by-seven}.  When you do this, a
-@file{*Help*} window will appear on your screen that says:
+如果您愿意，可以通过键入 @kbd{C-h f}（@code{describe-function}）然后输入函数的名称 @code{multiply-by-seven} 来阅读该函数的文档。这样做时，您的屏幕上将出现一个 @file{*Help*} 窗口，内容如下：
 
 @smallexample
 @group
-multiply-by-seven is a Lisp function.
+multiply-by-seven 是一个 Lisp 函数。
 
 (multiply-by-seven NUMBER)
 
-Multiply NUMBER by seven.
+将 NUMBER 乘以七。
 @end group
 @end smallexample
 
 @noindent
-(To return to a single window on your screen, type @kbd{C-x 1}.)
+（要返回到屏幕上的单个窗口，请键入 @kbd{C-x 1}。）
+@menu
+* 安装效果::
+* 更改 defun::              如何更改函数定义。
+@end menu
 
-@node Change a defun
-@subsection Change a Function Definition
-@cindex Changing a function definition
-@cindex Function definition, how to change
-@cindex Definition, how to change
+@node 修改 defun
+@subsection 修改函数定义
+@cindex 修改函数定义
+@cindex 函数定义，如何修改
+@cindex 定义，如何修改
 
-If you want to change the code in @code{multiply-by-seven}, just rewrite
-it.  To install the new version in place of the old one, evaluate the
-function definition again.  This is how you modify code in Emacs.  It is
-very simple.
+如果你想修改 @code{multiply-by-seven} 中的代码，只需重新编写它。要将新版本安装到旧版本的位置，重新评估函数定义即可。这就是在Emacs中修改代码的方式，非常简单。
 
-As an example, you can change the @code{multiply-by-seven} function to
-add the number to itself seven times instead of multiplying the number
-by seven.  It produces the same answer, but by a different path.  At
-the same time, we will add a comment to the code; a comment is text
-that the Lisp interpreter ignores, but that a human reader may find
-useful or enlightening.  The comment is that this is the second
-version.
+举个例子，你可以将 @code{multiply-by-seven} 函数更改为将数字加到自身七次，而不是将数字乘以七。它产生相同的答案，但是通过不同的路径。同时，我们将在代码中添加一条注释；注释是Lisp解释器忽略的文本，但对人类读者可能很有用或启发。注释是这是第二个版本。
 
 @smallexample
 @group
-(defun multiply-by-seven (number)       ; @r{Second version.}
-  "Multiply NUMBER by seven."
+(defun multiply-by-seven (number)       ; @r{第二个版本。}
+  "将 NUMBER 乘以七。"
   (+ number number number number number number number))
 @end group
 @end smallexample
 
-@cindex Comments in Lisp code
-The comment follows a semicolon, @samp{;}.  In Lisp, everything on a
-line that follows a semicolon is a comment.  The end of the line is the
-end of the comment.  To stretch a comment over two or more lines, begin
-each line with a semicolon.
+@cindex Lisp 代码中的注释
+注释以分号 @samp{;} 开头。在Lisp中，分号后面的一行上的所有内容都是注释。行的结尾是注释的结尾。要将注释延伸到两行或更多行，请在每一行开头加上分号。
 
-@xref{Beginning init File, , Beginning a @file{.emacs}
-File}, and @ref{Comments, , Comments, elisp, The GNU Emacs Lisp
-Reference Manual}, for more about comments.
+@xref{Beginning init File, , 开始一个 @file{.emacs}
+文件}，和 @ref{Comments, , 注释, elisp, GNU Emacs Lisp
+参考手册}，了解更多关于注释的信息。
 
-You can install this version of the @code{multiply-by-seven} function by
-evaluating it in the same way you evaluated the first function: place
-the cursor after the last parenthesis and type @kbd{C-x C-e}.
+你可以通过以与第一个函数相同的方式评估它来安装 @code{multiply-by-seven} 函数的这个版本：将光标放在最后一个括号后，然后输入 @kbd{C-x C-e}。
 
-In summary, this is how you write code in Emacs Lisp: you write a
-function; install it; test it; and then make fixes or enhancements and
-install it again.
+总之，这就是在Emacs Lisp中编写代码的方式：编写函数；安装它；测试它；然后进行修复或增强，并再次安装它。
 
 @node Interactive
 @section Make a Function Interactive
