@@ -3036,77 +3036,33 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 * 缓冲区练习::
 @end menu
 
-@node Finding More
-@section Finding More Information
+@node 查找更多
+@section 查找更多信息
 
 @findex describe-function@r{, introduced}
-@cindex Find function documentation
-In this walk-through, I will describe each new function as we come to
-it, sometimes in detail and sometimes briefly.  If you are interested,
-you can get the full documentation of any Emacs Lisp function at any
-time by typing @kbd{C-h f} and then the name of the function (and then
-@key{RET}).  Similarly, you can get the full documentation for a
-variable by typing @kbd{C-h v} and then the name of the variable (and
-then @key{RET}).
+@cindex 查找函数文档
+在这个步骤中，我将在遇到新函数时逐一描述它，有时详细介绍，有时简要说明。如果你感兴趣，你可以随时通过输入@kbd{C-h f}，然后输入函数的名称（然后按@key{RET}）获取任何Emacs Lisp函数的完整文档。类似地，你可以通过输入@kbd{C-h v}，然后输入变量的名称（然后按@key{RET}）获取变量的完整文档。
 
-@cindex Find source of function
-@c In version 22, tells location both of C and of Emacs Lisp
-Also, @code{describe-function} will tell you the location of the
-function definition.
+@cindex 查找函数源码
+@c 在版本22中，告诉C和Emacs Lisp的函数定义位置
+此外，@code{describe-function}还会告诉你函数定义的位置。
 
-Put point into the name of the file that contains the function and
-press the @key{RET} key.  In this case, @key{RET} means
-@code{push-button} rather than ``return'' or ``enter''.  Emacs will take
-you directly to the function definition.
+将光标放在包含函数的文件名上，然后按@key{RET}键。在这种情况下，@key{RET}意味着@code{push-button}，而不是“return”或“enter”。Emacs将直接跳转到函数定义处。
 
 @ignore
-Not In version 22
+在版本22中不存在
 
-If you move point over the file name and press
-the @key{RET} key, which in this case means @code{help-follow} rather
-than ``return'' or ``enter'', Emacs will take you directly to the function
-definition.
+如果将光标移到文件名上并按@key{RET}键，这种情况下@key{RET}意味着@code{help-follow}而不是“return”或“enter”，Emacs将直接跳转到函数定义处。
 @end ignore
 
-More generally, if you want to see a function in its original source
-file, you can use the @code{xref-find-definitions} function to jump to
-it.  @code{xref-find-definitions} works with a wide variety of
-languages, not just Lisp, and C, and it works with non-programming
-text as well.  For example, @code{xref-find-definitions} will jump to
-the various nodes in the Texinfo source file of this document
-(provided that you've run the @command{etags} utility to record all
-the nodes in the manuals that come with Emacs; @pxref{Create Tags
-Table,,, emacs, The GNU Emacs Manual}).
+更一般地说，如果你想在原始源文件中查看函数，你可以使用@code{xref-find-definitions}函数跳转到它。@code{xref-find-definitions}适用于各种语言，不仅限于Lisp和C，它还适用于非编程文本。例如，@code{xref-find-definitions}将跳转到本文档的Texinfo源文件的各个节点（前提是你已经运行@command{etags}实用程序记录了Emacs附带手册中的所有节点；@pxref{Create Tags Table,,, emacs, The GNU Emacs Manual}）。
 
-To use the @code{xref-find-definitions} command, type @kbd{M-.}
-(i.e., press the period key while holding down the @key{META} key, or
-else type the @key{ESC} key and then type the period key), and then,
-at the prompt, type in the name of the function whose source code you
-want to see, such as @code{mark-whole-buffer}, and then type
-@key{RET}.  (If the command doesn't prompt, invoke it with an
-argument: @kbd{C-u M-.}; @pxref{交互选项}.)  Emacs will
-switch buffers and display the source code for the function on your
-screen@footnote{
-If instead of showing the source code for a Lisp function, Emacs asks
-you which tags table to visit, invoke @kbd{M-.} from a buffer whose
-major mode is Emacs Lisp or Lisp Interaction.
-}.  To switch back to your current buffer, type @kbd{M-,} or
-@kbd{C-x b @key{RET}}.  (On some keyboards, the @key{META} key is
-labeled @key{ALT}.)
+要使用@code{xref-find-definitions}命令，输入@kbd{M-.}（即，按住@key{META}键的同时按下句点键，或者按@key{ESC}键，然后输入句点键），然后在提示符处输入你想要查看源代码的函数的名称，比如@code{mark-whole-buffer}，然后输入@key{RET}。 （如果命令没有提示，带一个参数调用它：@kbd{C-u M-.}；@pxref{交互选项}。）Emacs将切换缓冲区并在屏幕上显示函数的源代码@footnote{
+如果Emacs不是显示Lisp函数的源代码，而是询问你要访问哪个标签表，请在其主要模式为Emacs Lisp或Lisp Interaction的缓冲区中调用@kbd{M-.}。
+}。要切换回当前缓冲区，输入@kbd{M-,}或@kbd{C-x b @key{RET}}。（在某些键盘上，@key{META}键标记为@key{ALT}。）
 
-@cindex Library, as term for ``file''
-Incidentally, the files that contain Lisp code are conventionally
-called @dfn{libraries}.  The metaphor is derived from that of a
-specialized library, such as a law library or an engineering library,
-rather than a general library.  Each library, or file, contains
-functions that relate to a particular topic or activity, such as
-@file{abbrev.el} for handling abbreviations and other typing
-shortcuts, and @file{help.el} for help.  (Sometimes several
-libraries provide code for a single activity, as the various
-@file{rmail@dots{}} files provide code for reading electronic mail.)
-In @cite{The GNU Emacs Manual}, you will see sentences such as ``The
-@kbd{C-h p} command lets you search the standard Emacs Lisp libraries
-by topic keywords.''
+@cindex Library, 作为“文件”一词的用法
+顺便说一下，包含Lisp代码的文件通常被称为@dfn{库}。这个比喻来源于专业图书馆的概念，比如法律图书馆或工程图书馆，而不是普通图书馆。每个库或文件都包含与特定主题或活动相关的函数，比如处理缩写和其他输入快捷方式的@file{abbrev.el}，以及用于帮助的@file{help.el}。（有时，多个库提供单个活动的代码，就像各种@file{rmail@dots{}}文件提供阅读电子邮件的代码一样。）在@cite{The GNU Emacs Manual}中，你会看到类似“@kbd{C-h p}命令允许你按主题关键字搜索标准的Emacs Lisp库。”的句子。
 
 @node simplified-beginning-of-buffer
 @section A Simplified @code{beginning-of-buffer} Definition
