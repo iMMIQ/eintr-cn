@@ -6423,21 +6423,14 @@ triple
 
 @need 1500
 @node search Exercises
-@section Searching Exercises
+@section 搜索练习
 
 @itemize @bullet
 @item
-Write an interactive function that searches for a string.  If the
-search finds the string, leave point after it and display a message
-that says ``Found!''.  (Do not use @code{search-forward} for the name
-of this function; if you do, you will overwrite the existing version of
-@code{search-forward} that comes with Emacs.  Use a name such as
-@code{test-search} instead.)
+编写一个交互式函数，用于搜索字符串。如果搜索找到字符串，将光标放在字符串后面并显示消息：“找到了！”（请勿使用@code{search-forward}作为此函数的名称；如果这样做，将覆盖Emacs自带的@code{search-forward}版本。请使用诸如@code{test-search}的名称。）
 
 @item
-Write a function that prints the third element of the kill ring in the
-echo area, if any; if the kill ring does not contain a third element,
-print an appropriate message.
+编写一个函数，在回显区域打印剪切环的第三个元素（如果存在）；如果剪切环不包含第三个元素，则打印相应的消息。
 @end itemize
 
 @node List Implementation
