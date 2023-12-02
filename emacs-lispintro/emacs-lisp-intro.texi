@@ -6991,25 +6991,15 @@ Emacs Lisp 有两种主要的方式来使一个表达式或一系列表达式被
 
 @node while
 @section @code{while}
-@cindex Loops
+@cindex 循环
 @findex while
 
-The @code{while} special form tests whether the value returned by
-evaluating its first argument is true or false.  This is similar to what
-the Lisp interpreter does with an @code{if}; what the interpreter does
-next, however, is different.
+特殊形式 @code{while} 用于测试通过评估其第一个参数返回的值是否为真或假。这类似于Lisp解释器对 @code{if} 的处理方式；然而，解释器接下来的操作有所不同。
 
-In a @code{while} expression, if the value returned by evaluating the
-first argument is false, the Lisp interpreter skips the rest of the
-expression (the @dfn{body} of the expression) and does not evaluate it.
-However, if the value is true, the Lisp interpreter evaluates the body
-of the expression and then again tests whether the first argument to
-@code{while} is true or false.  If the value returned by evaluating the
-first argument is again true, the Lisp interpreter again evaluates the
-body of the expression.
+在 @code{while} 表达式中，如果通过评估第一个参数返回的值为假，Lisp解释器将跳过表达式的其余部分（表达式的 @dfn{主体}）并不予以评估。然而，如果该值为真，则Lisp解释器将评估表达式的主体，然后再次测试 @code{while} 的第一个参数是真还是假。如果通过评估第一个参数返回的值再次为真，Lisp解释器将再次评估表达式的主体。
 
 @need 1200
-The template for a @code{while} expression looks like this:
+@code{while} 表达式的模板如下：
 
 @smallexample
 @group
@@ -7019,47 +7009,24 @@ The template for a @code{while} expression looks like this:
 @end smallexample
 
 @menu
-* Looping with while::          Repeat so long as test returns true.
-* Loop Example::                A @code{while} loop that uses a list.
-* print-elements-of-list::      Uses @code{while}, @code{car}, @code{cdr}.
-* Incrementing Loop::           A loop with an incrementing counter.
-* Incrementing Loop Details::
-* Decrementing Loop::           A loop with a decrementing counter.
+* 使用 while 循环::          当测试返回 true 时重复执行。
+* 循环示例::                  使用列表的 @code{while} 循环。
+* print-elements-of-list::    使用 @code{while}、@code{car}、@code{cdr}。
+* 增量循环::                  带有递增计数器的循环。
+* 增量循环详解::
+* 递减循环::                  带有递减计数器的循环。
 @end menu
 
 @ifnottex
-@node Looping with while
-@unnumberedsubsec Looping with @code{while}
+@node 使用 while 循环
+@unnumberedsubsec 使用 @code{while} 循环
 @end ifnottex
 
-So long as the true-or-false-test of the @code{while} expression
-returns a true value when it is evaluated, the body is repeatedly
-evaluated.  This process is called a loop since the Lisp interpreter
-repeats the same thing again and again, like an airplane doing a loop.
-When the result of evaluating the true-or-false-test is false, the
-Lisp interpreter does not evaluate the rest of the @code{while}
-expression and exits the loop.
+只要 @code{while} 表达式的 true-or-false-test 在评估时返回真值，就会重复评估主体。这个过程称为循环，因为Lisp解释器一遍又一遍地重复相同的操作，就像一架飞机做环形飞行一样。当评估 true-or-false-test 的结果为假时，Lisp解释器将不再评估 @code{while} 的其余部分并退出循环。
 
-Clearly, if the value returned by evaluating the first argument to
-@code{while} is always true, the body following will be evaluated
-again and again @dots{} and again @dots{} forever.  Conversely, if the
-value returned is never true, the expressions in the body will never
-be evaluated.  The craft of writing a @code{while} loop consists of
-choosing a mechanism such that the true-or-false-test returns true
-just the number of times that you want the subsequent expressions to
-be evaluated, and then have the test return false.
+显然，如果通过评估 @code{while} 的第一个参数返回的值始终为真，那么接下来的主体将一遍又一遍地被评估……而且永远都是如此。相反，如果返回的值从不为真，主体中的表达式将永远不会被评估。编写 @code{while} 循环的技巧在于选择一种机制，使得 true-or-false-test 仅在您希望后续表达式被评估的次数返回真，然后使测试返回假。
 
-The value returned by evaluating a @code{while} is the value of the
-true-or-false-test.  An interesting consequence of this is that a
-@code{while} loop that evaluates without error will return @code{nil}
-or false regardless of whether it has looped 1 or 100 times or none at
-all.  A @code{while} expression that evaluates successfully never
-returns a true value!  What this means is that @code{while} is always
-evaluated for its side effects, which is to say, the consequences of
-evaluating the expressions within the body of the @code{while} loop.
-This makes sense.  It is not the mere act of looping that is desired,
-but the consequences of what happens when the expressions in the loop
-are repeatedly evaluated.
+通过评估 @code{while} 的返回值是 true-or-false-test 的值。这样做的一个有趣的结果是，如果 @code{while} 循环评估成功且没有错误，它将始终返回 @code{nil} 或 false，无论它循环了1次还是100次，甚至一次都没有循环。成功评估的 @code{while} 表达式永远不返回真值！这意味着 @code{while} 总是被评估为其副作用，也就是评估循环体内表达式的后果。这是有道理的。人们追求的不仅仅是循环的行为，更是循环体内表达式反复评估时产生的后果。
 
 @node Loop Example
 @subsection A @code{while} Loop and a List
