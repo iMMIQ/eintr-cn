@@ -59,59 +59,41 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 Next: <a href="Truth-_0026-Falsehood.html" accesskey="n" rel="next">Truth and Falsehood in Emacs Lisp</a>, Previous: <a href="if.html" accesskey="p" rel="prev">特殊形式 <code class="code">if</code></a>, Up: <a href="Bian-Xie-Defuns.html" accesskey="u" rel="up">如何编写函数定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="If_002d_002dthen_002d_002delse-Expressions">3.8 If&ndash;then&ndash;else Expressions</h3>
+<h3 class="section" id="If_002d_002dthen_002d_002delse-Biao-Da-Shi-">3.8 If&ndash;then&ndash;else 表达式</h3>
 <a class="index-entry-id" id="index-Else"></a>
 
-<p>An <code class="code">if</code> expression may have an optional third argument, called
-the <em class="dfn">else-part</em>, for the case when the true-or-false-test returns
-false.  When this happens, the second argument or then-part of the
-overall <code class="code">if</code> expression is <em class="emph">not</em> evaluated, but the third or
-else-part <em class="emph">is</em> evaluated.  You might think of this as the cloudy
-day alternative for the decision &ldquo;if it is warm and sunny, then go to
-the beach, else read a book!&rdquo;.
+<p>一个 <code class="code">if</code> 表达式可能有一个可选的第三个参数，称为 <em class="dfn">else-部分</em>，用于当真假测试返回 false 时的情况。当这种情况发生时，整个 <code class="code">if</code> 表达式的第二个参数或者 then-部分 <em class="emph">不会</em> 被评估，而第三个参数或 else-部分 <em class="emph">会</em> 被评估。你可以将其看作是决策的“如果天气温暖且晴朗，则去海滩，否则读一本书”的多云日备选方案。
 </p>
-<p>The word &ldquo;else&rdquo; is not written in the Lisp code; the else-part of an
-<code class="code">if</code> expression comes after the then-part.  In the written Lisp, the
-else-part is usually written to start on a line of its own and is
-indented less than the then-part:
+<p>在Lisp代码中并没有写下单词 &quot;else&quot;；<code class="code">if</code> 表达式的 else-部分在 then-部分之后。在书写的Lisp中，else-部分通常写在自己的一行上，并且比 then-部分的缩进少：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(if <var class="var">true-or-false-test</var>
-    <var class="var">action-to-carry-out-if-the-test-returns-true</var>
-  <var class="var">action-to-carry-out-if-the-test-returns-false</var>)
+<div class="group"><pre class="example-preformatted">(if <var class="var">真假测试</var>
+    <var class="var">真时执行的动作</var>
+  <var class="var">假时执行的动作</var>)
 </pre></div></div>
 
-<p>For example, the following <code class="code">if</code> expression prints the message &lsquo;<samp class="samp">4
-is not greater than 5!</samp>&rsquo; when you evaluate it in the usual way:
+<p>例如，下面的 <code class="code">if</code> 表达式在通常的情况下，当你对其进行求值时，会打印消息 &lsquo;<samp class="samp">4不大于5！</samp>&rsquo;：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(if (&gt; 4 5)                               ; <span class="r">if-part</span>
-    (message &quot;4 falsely greater than 5!&quot;) ; <span class="r">then-part</span>
-  (message &quot;4 is not greater than 5!&quot;))   ; <span class="r">else-part</span>
+<div class="group"><pre class="example-preformatted">(if (&gt; 4 5)                               ; <span class="r">if-部分</span>
+    (message &quot;4 falsely greater than 5!&quot;) ; <span class="r">then-部分</span>
+  (message &quot;4 is not greater than 5!&quot;))   ; <span class="r">else-部分</span>
 </pre></div></div>
 
-<p>Note that the different levels of indentation make it easy to
-distinguish the then-part from the else-part.  (GNU Emacs has several
-commands that automatically indent <code class="code">if</code> expressions correctly.
-See <a class="xref" href="Typing-Lists.html">GNU Emacs Helps You Type Lists</a>.)
+<p>请注意，不同缩进级别使得很容易区分 then-部分 和 else-部分。（GNU Emacs 有几个命令可以自动正确缩进 <code class="code">if</code> 表达式。See <a class="xref" href="Typing-Lists.html">GNU Emacs Helps You Type Lists</a>.）
 </p>
-<p>We can extend the <code class="code">type-of-animal</code> function to include an
-else-part by simply incorporating an additional part to the <code class="code">if</code>
-expression.
+<p>我们可以通过在 <code class="code">type-of-animal</code> 函数中加入一个 else 部分来扩展它，只需在 <code class="code">if</code> 表达式中加入一个额外的部分即可。
 </p>
-<p>You can see the consequences of doing this if you evaluate the following
-version of the <code class="code">type-of-animal</code> function definition to install it
-and then evaluate the two subsequent expressions to pass different
-arguments to the function.
+<p>如果你评估以下版本的 <code class="code">type-of-animal</code> 函数定义以安装它，然后评估两个后续表达式，将不同的参数传递给函数，你就能看到这样做的后果。
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(defun type-of-animal (characteristic)  ; <span class="r">Second version.</span>
-  &quot;Print message in echo area depending on CHARACTERISTIC.
-If the CHARACTERISTIC is the string \&quot;fierce\&quot;,
-then warn of a tiger; else say it is not fierce.&quot;
+<div class="group"><pre class="example-preformatted">(defun type-of-animal (characteristic)  ; <span class="r">第二个版本。</span>
+  &quot;根据 CHARACTERISTIC 在回显区域打印消息。
+如果 CHARACTERISTIC 是字符串 \&quot;fierce\&quot;，
+则警告是一只老虎；否则说它不凶猛。&quot;
   (if (equal characteristic &quot;fierce&quot;)
-      (message &quot;It is a tiger!&quot;)
-    (message &quot;It is not fierce!&quot;)))
+      (message &quot;这是一只老虎！&quot;)
+    (message &quot;它不凶猛！&quot;)))
 </pre></div></div>
 <br>
 
@@ -122,22 +104,10 @@ then warn of a tiger; else say it is not fierce.&quot;
 
 </pre></div></div>
 
-<p>When you evaluate <code class="code">(type-of-animal &quot;fierce&quot;)</code>, you will see the
-following message printed in the echo area: <code class="code">&quot;It is a tiger!&quot;</code>; but
-when you evaluate <code class="code">(type-of-animal &quot;striped&quot;)</code>, you will see
-<code class="code">&quot;It is not fierce!&quot;</code>.
+<p>当你评估 <code class="code">(type-of-animal &quot;fierce&quot;)</code> 时，你将在回显区域看到以下消息打印出来：<code class="code">&quot;这是一只老虎！&quot;</code>；但是当你评估 <code class="code">(type-of-animal &quot;striped&quot;)</code> 时，你将看到 <code class="code">&quot;它不凶猛！&quot;</code>。
 </p>
-<p>(Of course, if the <var class="var">characteristic</var> were <code class="code">&quot;ferocious&quot;</code>, the
-message <code class="code">&quot;It is not fierce!&quot;</code> would be printed; and it would be
-misleading!  When you write code, you need to take into account the
-possibility that some such argument will be tested by the <code class="code">if</code>
-and write your program accordingly.)
+<p>（当然，如果 <var class="var">characteristic</var> 是 <code class="code">&quot;ferocious&quot;</code>，则将打印消息 <code class="code">&quot;它不凶猛！&quot;</code>；这可能会产生误导！在编写代码时，你需要考虑到 <code class="code">if</code> 可能会测试到这样的参数，并相应地编写你的程序。）
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Truth-_0026-Falsehood.html">Truth and Falsehood in Emacs Lisp</a>, Previous: <a href="if.html">特殊形式 <code class="code">if</code></a>, Up: <a href="Bian-Xie-Defuns.html">如何编写函数定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

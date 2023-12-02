@@ -2645,66 +2645,48 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 另一方面，在 @code{type-of-animal} 的第二个示例中，传递了参数 @code{"striped"}。@code{"striped"} 不等于 @code{"fierce"}，因此 true 部分不会被评估，@code{if} 表达式返回 @code{nil}。
 
 @node else
-@section If--then--else Expressions
+@section If--then--else 表达式
 @cindex Else
 
-An @code{if} expression may have an optional third argument, called
-the @dfn{else-part}, for the case when the true-or-false-test returns
-false.  When this happens, the second argument or then-part of the
-overall @code{if} expression is @emph{not} evaluated, but the third or
-else-part @emph{is} evaluated.  You might think of this as the cloudy
-day alternative for the decision ``if it is warm and sunny, then go to
-the beach, else read a book!''.
+一个 @code{if} 表达式可能有一个可选的第三个参数，称为 @dfn{else-部分}，用于当真假测试返回 false 时的情况。当这种情况发生时，整个 @code{if} 表达式的第二个参数或者 then-部分 @emph{不会} 被评估，而第三个参数或 else-部分 @emph{会} 被评估。你可以将其看作是决策的“如果天气温暖且晴朗，则去海滩，否则读一本书”的多云日备选方案。
 
-The word ``else'' is not written in the Lisp code; the else-part of an
-@code{if} expression comes after the then-part.  In the written Lisp, the
-else-part is usually written to start on a line of its own and is
-indented less than the then-part:
+在Lisp代码中并没有写下单词 "else"；@code{if} 表达式的 else-部分在 then-部分之后。在书写的Lisp中，else-部分通常写在自己的一行上，并且比 then-部分的缩进少：
 
 @smallexample
 @group
-(if @var{true-or-false-test}
-    @var{action-to-carry-out-if-the-test-returns-true}
-  @var{action-to-carry-out-if-the-test-returns-false})
+(if @var{真假测试}
+    @var{真时执行的动作}
+  @var{假时执行的动作})
 @end group
 @end smallexample
 
-For example, the following @code{if} expression prints the message @samp{4
-is not greater than 5!} when you evaluate it in the usual way:
+例如，下面的 @code{if} 表达式在通常的情况下，当你对其进行求值时，会打印消息 @samp{4不大于5！}：
 
 @smallexample
 @group
-(if (> 4 5)                               ; @r{if-part}
-    (message "4 falsely greater than 5!") ; @r{then-part}
-  (message "4 is not greater than 5!"))   ; @r{else-part}
+(if (> 4 5)                               ; @r{if-部分}
+    (message "4 falsely greater than 5!") ; @r{then-部分}
+  (message "4 is not greater than 5!"))   ; @r{else-部分}
 @end group
 @end smallexample
 
 @noindent
-Note that the different levels of indentation make it easy to
-distinguish the then-part from the else-part.  (GNU Emacs has several
-commands that automatically indent @code{if} expressions correctly.
-@xref{Typing Lists, , GNU Emacs Helps You Type Lists}.)
+请注意，不同缩进级别使得很容易区分 then-部分 和 else-部分。（GNU Emacs 有几个命令可以自动正确缩进 @code{if} 表达式。@xref{Typing Lists, , GNU Emacs Helps You Type Lists}.）
 
-We can extend the @code{type-of-animal} function to include an
-else-part by simply incorporating an additional part to the @code{if}
-expression.
+我们可以通过在 @code{type-of-animal} 函数中加入一个 else 部分来扩展它，只需在 @code{if} 表达式中加入一个额外的部分即可。
 
 @need 1500
-You can see the consequences of doing this if you evaluate the following
-version of the @code{type-of-animal} function definition to install it
-and then evaluate the two subsequent expressions to pass different
-arguments to the function.
+如果你评估以下版本的 @code{type-of-animal} 函数定义以安装它，然后评估两个后续表达式，将不同的参数传递给函数，你就能看到这样做的后果。
 
 @smallexample
 @group
-(defun type-of-animal (characteristic)  ; @r{Second version.}
-  "Print message in echo area depending on CHARACTERISTIC.
-If the CHARACTERISTIC is the string \"fierce\",
-then warn of a tiger; else say it is not fierce."
+(defun type-of-animal (characteristic)  ; @r{第二个版本。}
+  "根据 CHARACTERISTIC 在回显区域打印消息。
+如果 CHARACTERISTIC 是字符串 \"fierce\"，
+则警告是一只老虎；否则说它不凶猛。"
   (if (equal characteristic "fierce")
-      (message "It is a tiger!")
-    (message "It is not fierce!")))
+      (message "这是一只老虎！")
+    (message "它不凶猛！")))
 @end group
 @end smallexample
 @sp 1
@@ -2718,18 +2700,11 @@ then warn of a tiger; else say it is not fierce."
 @end group
 @end smallexample
 
-@c Following sentence rewritten to prevent overfull hbox.
+@c 为了防止 hbox 过满，以下句子已重新编写。
 @noindent
-When you evaluate @code{(type-of-animal "fierce")}, you will see the
-following message printed in the echo area: @code{"It is a tiger!"}; but
-when you evaluate @code{(type-of-animal "striped")}, you will see
-@code{"It is not fierce!"}.
+当你评估 @code{(type-of-animal "fierce")} 时，你将在回显区域看到以下消息打印出来：@code{"这是一只老虎！"}；但是当你评估 @code{(type-of-animal "striped")} 时，你将看到 @code{"它不凶猛！"}。
 
-(Of course, if the @var{characteristic} were @code{"ferocious"}, the
-message @code{"It is not fierce!"} would be printed; and it would be
-misleading!  When you write code, you need to take into account the
-possibility that some such argument will be tested by the @code{if}
-and write your program accordingly.)
+（当然，如果 @var{characteristic} 是 @code{"ferocious"}，则将打印消息 @code{"它不凶猛！"}；这可能会产生误导！在编写代码时，你需要考虑到 @code{if} 可能会测试到这样的参数，并相应地编写你的程序。）
 
 @node Truth & Falsehood
 @section Truth and Falsehood in Emacs Lisp
