@@ -3009,18 +3009,15 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @end table
 
 @need 1500
-@node defun Exercises
-@section Exercises
+@node defun 练习
+@section 练习
 
 @itemize @bullet
 @item
-Write a non-interactive function that doubles the value of its
-argument, a number.  Make that function interactive.
+编写一个非交互式函数，它将其参数（一个数字）的值加倍。将该函数设为交互式。
 
 @item
-Write a function that tests whether the current value of
-@code{fill-column} is greater than the argument passed to the function,
-and if so, prints an appropriate message.
+编写一个函数，检查当前的@code{fill-column}值是否大于传递给函数的参数，如果是，则打印相应的消息。
 @end itemize
 
 @node Buffer Walk Through
