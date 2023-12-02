@@ -6959,21 +6959,15 @@ kill-ring     kill-ring-yank-pointer
 @end ignore
 
 @need 1500
-@node yank nthcdr Exercises
-@section Exercises with @code{yank} and @code{nthcdr}
+@node yank nthcdr 练习
+@section 使用 @code{yank} 和 @code{nthcdr} 的练习
 
 @itemize @bullet
 @item
-Using @kbd{C-h v} (@code{describe-variable}), look at the value of
-your kill ring.  Add several items to your kill ring; look at its
-value again.  Using @kbd{M-y} (@code{yank-pop)}, move all the way
-around the kill ring.  How many items were in your kill ring?  Find
-the value of @code{kill-ring-max}.  Was your kill ring full, or could
-you have kept more blocks of text within it?
+使用 @kbd{C-h v} (@code{describe-variable})，查看你的kill ring的值。向kill ring中添加几个项，再次查看其值。使用 @kbd{M-y} (@code{yank-pop})，在kill ring中循环移动。你的kill ring中有多少项？找到 @code{kill-ring-max} 的值。你的kill ring是满的吗，还是可以保存更多文本块？
 
 @item
-Using @code{nthcdr} and @code{car}, construct a series of expressions
-to return the first, second, third, and fourth elements of a list.
+使用 @code{nthcdr} 和 @code{car}，构建一系列表达式，返回列表的第一、第二、第三和第四个元素。
 @end itemize
 
 @node Loops & Recursion
