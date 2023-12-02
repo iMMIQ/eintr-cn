@@ -56,55 +56,26 @@ ISBN 1-882114-43-4
 Previous: <a href="fwd_002dsentence-while-loops.html" accesskey="p" rel="prev">The <code class="code">while</code> loops</a>, Up: <a href="forward_002dsentence.html" accesskey="u" rel="up"><code class="code">forward-sentence</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-regular-expression-search">The regular expression search</h4>
+<h4 class="unnumberedsubsec" id="Zheng-Ze-Biao-Da-Shi-Sou-Suo--1">正则表达式搜索</h4>
 
-<p>The <code class="code">re-search-forward</code> function searches for the end of the
-sentence, that is, for the pattern defined by the <code class="code">sentence-end</code>
-regular expression.  If the pattern is found&mdash;if the end of the sentence is
-found&mdash;then the <code class="code">re-search-forward</code> function does two things:
+<p>函数 <code class="code">re-search-forward</code> 用于搜索句子的结尾，即由 <code class="code">sentence-end</code> 正则表达式定义的模式。如果找到模式——也就是找到了句子的结尾——那么 <code class="code">re-search-forward</code> 函数会执行两个操作：
 </p>
 <ol class="enumerate">
-<li> The <code class="code">re-search-forward</code> function carries out a side effect, which
-is to move point to the end of the occurrence found.
+<li> <code class="code">re-search-forward</code> 函数执行一个副作用，即将点移动到找到的出现的结尾。
 
-</li><li> The <code class="code">re-search-forward</code> function returns a value of true.  This is
-the value received by the <code class="code">if</code>, and means that the search was
-successful.
+</li><li> <code class="code">re-search-forward</code> 函数返回 true 的值。这是由 <code class="code">if</code> 接收的值，并表示搜索成功。
 </li></ol>
 
-<p>The side effect, the movement of point, is completed before the
-<code class="code">if</code> function is handed the value returned by the successful
-conclusion of the search.
+<p>副作用，即点的移动，在 <code class="code">if</code> 函数接收到搜索成功的返回值之前完成。
 </p>
-<p>When the <code class="code">if</code> function receives the value of true from a successful
-call to <code class="code">re-search-forward</code>, the <code class="code">if</code> evaluates the then-part,
-which is the expression <code class="code">(skip-chars-backward &quot; \t\n&quot;)</code>.  This
-expression moves backwards over any blank spaces, tabs or carriage
-returns until a printed character is found and then leaves point after
-the character.  Since point has already been moved to the end of the
-pattern that marks the end of the sentence, this action leaves point
-right after the closing printed character of the sentence, which is
-usually a period.
+<p>当 <code class="code">if</code> 函数从成功调用 <code class="code">re-search-forward</code> 接收到 true 的值时，<code class="code">if</code> 会评估 then 部分，即表达式 <code class="code">(skip-chars-backward &quot; \t\n&quot;)</code>。这个表达式向后移动任何空格、制表符或回车，直到找到一个打印字符，然后将点留在字符之后。由于点已经被移动到标记句子结尾的模式的末尾，这个操作将点留在句子的结束字符后，通常是一个句点。
 </p>
-<p>On the other hand, if the <code class="code">re-search-forward</code> function fails to
-find a pattern marking the end of the sentence, the function returns
-false.  The false then causes the <code class="code">if</code> to evaluate its third
-argument, which is <code class="code">(goto-char par-end)</code>:  it moves point to the
-end of the paragraph.
+<p>另一方面，如果 <code class="code">re-search-forward</code> 函数未能找到标记句子结束的模式，则该函数返回 false。然后 false 导致 <code class="code">if</code> 评估其第三个参数，即 <code class="code">(goto-char par-end)</code>：将点移动到段落的末尾。
 </p>
-<p>(And if the text is in a form or equivalent, and point may not move
-fully, then the <code class="code">constrain-to-field</code> function comes into play.)
+<p>（如果文本处于表单或等效状态，且点可能无法完全移动，则会调用 <code class="code">constrain-to-field</code> 函数。）
 </p>
-<p>Regular expression searches are exceptionally useful and the pattern
-illustrated by <code class="code">re-search-forward</code>, in which the search is the
-test of an <code class="code">if</code> expression, is handy.  You will see or write code
-incorporating this pattern often.
+<p>正则表达式搜索非常有用，而由 <code class="code">re-search-forward</code> 展示的模式，其中搜索是 <code class="code">if</code> 表达式的测试，非常方便。你会经常看到或编写包含这个模式的代码。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Previous: <a href="fwd_002dsentence-while-loops.html">The <code class="code">while</code> loops</a>, Up: <a href="forward_002dsentence.html"><code class="code">forward-sentence</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

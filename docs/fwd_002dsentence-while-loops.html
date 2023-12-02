@@ -56,47 +56,32 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsec-level-extent" id="fwd_002dsentence-while-loops">
 <div class="nav-panel">
 <p>
-Next: <a href="fwd_002dsentence-re_002dsearch.html" accesskey="n" rel="next">The regular expression search</a>, Previous: <a href="Complete-forward_002dsentence.html" accesskey="p" rel="prev">Complete <code class="code">forward-sentence</code> function definition</a>, Up: <a href="forward_002dsentence.html" accesskey="u" rel="up"><code class="code">forward-sentence</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="fwd_002dsentence-re_002dsearch.html" accesskey="n" rel="next">正则表达式搜索</a>, Previous: <a href="Complete-forward_002dsentence.html" accesskey="p" rel="prev">完整的 <code class="code">forward-sentence</code> 函数定义</a>, Up: <a href="forward_002dsentence.html" accesskey="u" rel="up"><code class="code">forward-sentence</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="unnumberedsubsec" id="The-while-loops">The <code class="code">while</code> loops</h4>
 
-<p>Two <code class="code">while</code> loops follow.  The first <code class="code">while</code> has a
-true-or-false-test that tests true if the prefix argument for
-<code class="code">forward-sentence</code> is a negative number.  This is for going
-backwards.  The body of this loop is similar to the body of the second
-<code class="code">while</code> clause, but it is not exactly the same.  We will skip
-this <code class="code">while</code> loop and concentrate on the second <code class="code">while</code>
-loop.
+<p>接下来是两个<code class="code">while</code>循环。第一个<code class="code">while</code>具有一个真假测试，如果<code class="code">forward-sentence</code>的前缀参数是负数，则测试为真。这是用于向后移动的情况。该循环的主体类似于第二个<code class="code">while</code>子句的主体，但不完全相同。我们将跳过这个<code class="code">while</code>循环，专注于第二个<code class="code">while</code>循环。
 </p>
-<p>The second <code class="code">while</code> loop is for moving point forward.  Its skeleton
-looks like this:
+<p>第二个<code class="code">while</code>循环是用于向前移动点的。它的框架如下：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(while (&gt; arg 0)            ; <span class="r">true-or-false-test</span>
+<div class="group"><pre class="example-preformatted">(while (&gt; arg 0)            ; <span class="r">真假测试</span>
   (let <var class="var">varlist</var>
-    (if (<var class="var">true-or-false-test</var>)
+    (if (<var class="var">真假测试</var>)
         <var class="var">then-part</var>
       <var class="var">else-part</var>
-  (setq arg (1- arg))))     ; <code class="code">while</code> <span class="r">loop decrementer</span>
+  (setq arg (1- arg))))     ; <code class="code">while</code> <span class="r">循环递减器</span>
 </pre></div></div>
 
-<p>The <code class="code">while</code> loop is of the decrementing kind.
-(See <a class="xref" href="Di-Jian-Xun-Huan-.html">A Loop with a Decrementing Counter</a>.)  It
-has a true-or-false-test that tests true so long as the counter (in
-this case, the variable <code class="code">arg</code>) is greater than zero; and it has a
-decrementer that subtracts 1 from the value of the counter every time
-the loop repeats.
+<p>该<code class="code">while</code>循环是递减型的。
+(See <a class="xref" href="Di-Jian-Xun-Huan-.html">A Loop with a Decrementing Counter</a>.) 它有一个真假测试，只要计数器（在这种情况下是变量<code class="code">arg</code>）大于零，测试就为真；并且有一个递减器，每次循环重复时从计数器的值中减去1。
 </p>
-<p>If no prefix argument is given to <code class="code">forward-sentence</code>, which is
-the most common way the command is used, this <code class="code">while</code> loop will
-run once, since the value of <code class="code">arg</code> will be 1.
+<p>如果没有给<code class="code">forward-sentence</code>提供前缀参数，这是该命令最常用的方式，那么这个<code class="code">while</code>循环将运行一次，因为<code class="code">arg</code>的值将为1。
 </p>
-<p>The body of the <code class="code">while</code> loop consists of a <code class="code">let</code> expression,
-which creates and binds a local variable, and has, as its body, an
-<code class="code">if</code> expression.
+<p><code class="code">while</code>循环的主体包含一个<code class="code">let</code>表达式，该表达式创建和绑定一个局部变量，并且其主体是一个<code class="code">if</code>表达式。
 </p>
-<p>The body of the <code class="code">while</code> loop looks like this:
+<p><code class="code">while</code>循环的主体如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(let ((par-end
@@ -106,52 +91,28 @@ which creates and binds a local variable, and has, as its body, an
     (goto-char par-end)))
 </pre></div></div>
 
-<p>The <code class="code">let</code> expression creates and binds the local variable
-<code class="code">par-end</code>.  As we shall see, this local variable is designed to
-provide a bound or limit to the regular expression search.  If the
-search fails to find a proper sentence ending in the paragraph, it will
-stop on reaching the end of the paragraph.
+<p><code class="code">let</code>表达式创建并绑定局部变量<code class="code">par-end</code>。正如我们将看到的，此局部变量旨在为正则表达式搜索提供一个边界或限制。如果搜索未能在段落中找到适当的句子结束，它将在达到段落末尾时停止。
 </p>
-<p>But first, let us examine how <code class="code">par-end</code> is bound to the value of
-the end of the paragraph.  What happens is that the <code class="code">let</code> sets the
-value of <code class="code">par-end</code> to the value returned when the Lisp interpreter
-evaluates the expression
+<p>但首先，让我们查看<code class="code">par-end</code>如何绑定到段落末尾的值。发生的是<code class="code">let</code>将<code class="code">par-end</code>的值设置为Lisp解释器评估表达式时返回的值
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(save-excursion (end-of-paragraph-text) (point))
 </pre></div></div>
 
-<p>In this expression, <code class="code">(end-of-paragraph-text)</code> moves point to the
-end of the paragraph, <code class="code">(point)</code> returns the value of point, and then
-<code class="code">save-excursion</code> restores point to its original position.  Thus,
-the <code class="code">let</code> binds <code class="code">par-end</code> to the value returned by the
-<code class="code">save-excursion</code> expression, which is the position of the end of
-the paragraph.  (The <code class="code">end-of-paragraph-text</code> function uses
-<code class="code">forward-paragraph</code>, which we will discuss shortly.)
+<p>在此表达式中，<code class="code">(end-of-paragraph-text)</code>将point移动到段落末尾，<code class="code">(point)</code>返回point的值，然后<code class="code">save-excursion</code>将point恢复到其原始位置。因此，<code class="code">let</code>将<code class="code">par-end</code>绑定到由<code class="code">save-excursion</code>表达式返回的值，即段落末尾的位置。 (<code class="code">end-of-paragraph-text</code>函数使用<code class="code">forward-paragraph</code>，我们将很快讨论。)
 </p>
-<p>Emacs next evaluates the body of the <code class="code">let</code>, which is an <code class="code">if</code>
-expression that looks like this:
+<p>接下来，Emacs评估<code class="code">let</code>的主体，这是一个<code class="code">if</code>表达式，如下所示：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(if (re-search-forward sentence-end par-end t) ; <span class="r">if-part</span>
-    (skip-chars-backward &quot; \t\n&quot;)              ; <span class="r">then-part</span>
-  (goto-char par-end)))                        ; <span class="r">else-part</span>
+<div class="group"><pre class="example-preformatted">(if (re-search-forward sentence-end par-end t) ; <span class="r">if部分</span>
+    (skip-chars-backward &quot; \t\n&quot;)              ; <span class="r">then部分</span>
+  (goto-char par-end)))                        ; <span class="r">else部分</span>
 </pre></div></div>
 
-<p>The <code class="code">if</code> tests whether its first argument is true and if so,
-evaluates its then-part; otherwise, the Emacs Lisp interpreter
-evaluates the else-part.  The true-or-false-test of the <code class="code">if</code>
-expression is the regular expression search.
+<p><code class="code">if</code>测试其第一个参数是否为真，如果是，则评估其then部分；否则，Emacs Lisp解释器将评估else部分。<code class="code">if</code>表达式的真假测试是正则表达式搜索。
 </p>
-<p>It may seem odd to have what looks like the real work of
-the <code class="code">forward-sentence</code> function buried here, but this is a common
-way this kind of operation is carried out in Lisp.
+<p>可能看起来奇怪的是，在这里埋藏看起来像是<code class="code">forward-sentence</code>函数的实际工作，但这是Lisp中执行此类操作的常见方式。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="fwd_002dsentence-re_002dsearch.html">The regular expression search</a>, Previous: <a href="Complete-forward_002dsentence.html">Complete <code class="code">forward-sentence</code> function definition</a>, Up: <a href="forward_002dsentence.html"><code class="code">forward-sentence</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

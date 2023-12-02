@@ -57,17 +57,15 @@ div.example {margin-left: 3.2em}
 Next: <a href="fwd_002dsentence-while-loops.html" accesskey="n" rel="next">The <code class="code">while</code> loops</a>, Up: <a href="forward_002dsentence.html" accesskey="u" rel="up"><code class="code">forward-sentence</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="Complete-forward_002dsentence-function-definition">Complete <code class="code">forward-sentence</code> function definition</h4>
+<h4 class="unnumberedsubsec" id="Wan-Zheng-De-forward_002dsentence-Han-Shu-Ding-Yi-">完整的 <code class="code">forward-sentence</code> 函数定义</h4>
 
-<p>Here is the code for <code class="code">forward-sentence</code>:
+<p>以下是<code class="code">forward-sentence</code>的代码：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun forward-sentence (&amp;optional arg)
-  &quot;Move forward to next end of sentence.  With argument, repeat.
-With negative argument, move backward repeatedly to start of sentence.
+  &quot;向前移动到下一个句子末尾。带有参数时重复。带有负数参数时，反复向后移动到句子开头。
 
-The variable `sentence-end' is a regular expression that matches ends of
-sentences.  Also, every paragraph boundary terminates sentences as well.&quot;
+变量 `sentence-end' 是一个正则表达式，用于匹配句子的末尾。此外，每个段落边界也会终止句子。&quot;
 </pre></div><div class="group"><pre class="example-preformatted">  (interactive &quot;p&quot;)
   (or arg (setq arg 1))
   (let ((opoint (point))
@@ -91,9 +89,7 @@ sentences.  Also, every paragraph boundary terminates sentences as well.&quot;
 </pre></div></div>
 
 
-<p>The function looks long at first sight and it is best to look at its
-skeleton first, and then its muscle.  The way to see the skeleton is to
-look at the expressions that start in the left-most columns:
+<p>这个函数乍一看似乎很长，最好先看它的骨架，然后再看它的实现。看骨架的方法是查看从最左列开始的表达式：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun forward-sentence (&amp;optional arg)
@@ -104,46 +100,25 @@ look at the expressions that start in the left-most columns:
     (while (&lt; arg 0)
       (let ((pos (point))
             (par-beg (save-excursion (start-of-paragraph-text) (point))))
-       <var class="var">rest-of-body-of-while-loop-when-going-backwards</var>
+       <var class="var">向后移动时 while 循环的其余部分的主体</var>
     (while (&gt; arg 0)
       (let ((par-end (save-excursion (end-of-paragraph-text) (point))))
-       <var class="var">rest-of-body-of-while-loop-when-going-forwards</var>
-    <var class="var">handle-forms-and-equivalent</var>
+       <var class="var">向前移动时 while 循环的其余部分的主体</var>
+    <var class="var">处理表单和等价物的表达式</var>
 </pre></div></div>
 
-<p>This looks much simpler!  The function definition consists of
-documentation, an <code class="code">interactive</code> expression, an <code class="code">or</code>
-expression, a <code class="code">let</code> expression, and <code class="code">while</code> loops.
+<p>这看起来简单得多！函数定义由文档、一个<code class="code">interactive</code>表达式、一个<code class="code">or</code>表达式、一个<code class="code">let</code>表达式和<code class="code">while</code>循环组成。
 </p>
-<p>Let&rsquo;s look at each of these parts in turn.
+<p>让我们逐个查看这些部分。
 </p>
-<p>We note that the documentation is thorough and understandable.
+<p>我们注意到文档写得很详细且易懂。
 </p>
-<p>The function has an <code class="code">interactive &quot;p&quot;</code> declaration.  This means
-that the processed prefix argument, if any, is passed to the
-function as its argument.  (This will be a number.)  If the function
-is not passed an argument (it is optional) then the argument
-<code class="code">arg</code> will be bound to 1.
+<p>函数有一个<code class="code">interactive &quot;p&quot;</code>声明。这意味着处理过的前缀参数（如果有）将作为函数的参数传递。 （这将是一个数字。）如果函数未以参数形式调用（它是可选的），则参数<code class="code">arg</code>将绑定为1。
 </p>
-<p>When <code class="code">forward-sentence</code> is called non-interactively without an
-argument, <code class="code">arg</code> is bound to <code class="code">nil</code>.  The <code class="code">or</code> expression
-handles this.  What it does is either leave the value of <code class="code">arg</code> as
-it is, but only if <code class="code">arg</code> is bound to a value; or it sets the
-value of <code class="code">arg</code> to 1, in the case when <code class="code">arg</code> is bound to
-<code class="code">nil</code>.
+<p>当以非交互方式调用<code class="code">forward-sentence</code>且没有参数时，<code class="code">arg</code>绑定为<code class="code">nil</code>。<code class="code">or</code>表达式处理这一点。它的作用是仅在<code class="code">arg</code>绑定到一个值时保持<code class="code">arg</code>的值不变；或者在<code class="code">arg</code>绑定到<code class="code">nil</code>时将<code class="code">arg</code>的值设置为1。
 </p>
-<p>Next is a <code class="code">let</code>.  That specifies the values of two local
-variables, <code class="code">opoint</code> and <code class="code">sentence-end</code>.  The local value of
-point, from before the search, is used in the
-<code class="code">constrain-to-field</code> function which handles forms and
-equivalents.  The <code class="code">sentence-end</code> variable is set by the
-<code class="code">sentence-end</code> function.
+<p>接下来是一个<code class="code">let</code>。它指定了两个局部变量<code class="code">opoint</code>和<code class="code">sentence-end</code>的值。从搜索之前的点的局部值用于<code class="code">constrain-to-field</code>函数，该函数处理表单和等价物。<code class="code">sentence-end</code>变量由<code class="code">sentence-end</code>函数设置。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="fwd_002dsentence-while-loops.html">The <code class="code">while</code> loops</a>, Up: <a href="forward_002dsentence.html"><code class="code">forward-sentence</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

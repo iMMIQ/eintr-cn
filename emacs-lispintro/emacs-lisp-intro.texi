@@ -8557,36 +8557,29 @@ sentence-end
 @section @code{forward-sentence}
 @findex forward-sentence
 
-The command to move the cursor forward a sentence is a straightforward
-illustration of how to use regular expression searches in Emacs Lisp.
-Indeed, the function looks longer and more complicated than it is; this
-is because the function is designed to go backwards as well as forwards;
-and, optionally, over more than one sentence.  The function is usually
-bound to the key command @kbd{M-e}.
+将光标向前移动到下一个句子末尾的命令是如何在Emacs Lisp中使用正则表达式搜索的一个直观例子。实际上，该函数看起来比实际复杂得多；这是因为该函数旨在向前和向后移动；而且，可选地，可以跨越多个句子。该函数通常绑定到键命令@kbd{M-e}。
 
 @menu
 * Complete forward-sentence::
-* fwd-sentence while loops::    Two @code{while} loops.
-* fwd-sentence re-search::      A regular expression search.
+* fwd-sentence while loops::    两个 @code{while} 循环。
+* fwd-sentence re-search::      正则表达式搜索。
 @end menu
 
 @ifnottex
 @node Complete forward-sentence
-@unnumberedsubsec Complete @code{forward-sentence} function definition
+@unnumberedsubsec 完整的 @code{forward-sentence} 函数定义
 @end ifnottex
 
 @need 1250
-Here is the code for @code{forward-sentence}:
+以下是@code{forward-sentence}的代码：
 
-@c in GNU Emacs 22
+@c 在 GNU Emacs 22 中
 @smallexample
 @group
 (defun forward-sentence (&optional arg)
-  "Move forward to next end of sentence.  With argument, repeat.
-With negative argument, move backward repeatedly to start of sentence.
+  "向前移动到下一个句子末尾。带有参数时重复。带有负数参数时，反复向后移动到句子开头。
 
-The variable `sentence-end' is a regular expression that matches ends of
-sentences.  Also, every paragraph boundary terminates sentences as well."
+变量 `sentence-end' 是一个正则表达式，用于匹配句子的末尾。此外，每个段落边界也会终止句子。"
 @end group
 @group
   (interactive "p")
@@ -8619,11 +8612,7 @@ GNU Emacs 21
 @smallexample
 @group
 (defun forward-sentence (&optional arg)
-  "Move forward to next sentence-end.  With argument, repeat.
-With negative argument, move backward repeatedly to sentence-beginning.
-Sentence ends are identified by the value of sentence-end
-treated as a regular expression.  Also, every paragraph boundary
-terminates sentences as well."
+  "向前移动到下一个句子末尾。带有参数时重复。带有负数参数时，反复向后移动到句子开头。句子的末尾由 `sentence-end' 的值标识，被视为正则表达式。此外，每个段落边界也会终止句子。"
 @end group
 @group
   (interactive "p")
@@ -8647,9 +8636,7 @@ terminates sentences as well."
 @end smallexample
 @end ignore
 
-The function looks long at first sight and it is best to look at its
-skeleton first, and then its muscle.  The way to see the skeleton is to
-look at the expressions that start in the left-most columns:
+这个函数乍一看似乎很长，最好先看它的骨架，然后再看它的实现。看骨架的方法是查看从最左列开始的表达式：
 
 @smallexample
 @group
@@ -8661,85 +8648,54 @@ look at the expressions that start in the left-most columns:
     (while (< arg 0)
       (let ((pos (point))
             (par-beg (save-excursion (start-of-paragraph-text) (point))))
-       @var{rest-of-body-of-while-loop-when-going-backwards}
+       @var{向后移动时 while 循环的其余部分的主体}
     (while (> arg 0)
       (let ((par-end (save-excursion (end-of-paragraph-text) (point))))
-       @var{rest-of-body-of-while-loop-when-going-forwards}
-    @var{handle-forms-and-equivalent}
+       @var{向前移动时 while 循环的其余部分的主体}
+    @var{处理表单和等价物的表达式}
 @end group
 @end smallexample
 
-This looks much simpler!  The function definition consists of
-documentation, an @code{interactive} expression, an @code{or}
-expression, a @code{let} expression, and @code{while} loops.
+这看起来简单得多！函数定义由文档、一个@code{interactive}表达式、一个@code{or}表达式、一个@code{let}表达式和@code{while}循环组成。
 
-Let's look at each of these parts in turn.
+让我们逐个查看这些部分。
 
-We note that the documentation is thorough and understandable.
+我们注意到文档写得很详细且易懂。
 
-The function has an @code{interactive "p"} declaration.  This means
-that the processed prefix argument, if any, is passed to the
-function as its argument.  (This will be a number.)  If the function
-is not passed an argument (it is optional) then the argument
-@code{arg} will be bound to 1.
+函数有一个@code{interactive "p"}声明。这意味着处理过的前缀参数（如果有）将作为函数的参数传递。 （这将是一个数字。）如果函数未以参数形式调用（它是可选的），则参数@code{arg}将绑定为1。
 
-When @code{forward-sentence} is called non-interactively without an
-argument, @code{arg} is bound to @code{nil}.  The @code{or} expression
-handles this.  What it does is either leave the value of @code{arg} as
-it is, but only if @code{arg} is bound to a value; or it sets the
-value of @code{arg} to 1, in the case when @code{arg} is bound to
-@code{nil}.
+当以非交互方式调用@code{forward-sentence}且没有参数时，@code{arg}绑定为@code{nil}。@code{or}表达式处理这一点。它的作用是仅在@code{arg}绑定到一个值时保持@code{arg}的值不变；或者在@code{arg}绑定到@code{nil}时将@code{arg}的值设置为1。
 
-Next is a @code{let}.  That specifies the values of two local
-variables, @code{opoint} and @code{sentence-end}.  The local value of
-point, from before the search, is used in the
-@code{constrain-to-field} function which handles forms and
-equivalents.  The @code{sentence-end} variable is set by the
-@code{sentence-end} function.
+接下来是一个@code{let}。它指定了两个局部变量@code{opoint}和@code{sentence-end}的值。从搜索之前的点的局部值用于@code{constrain-to-field}函数，该函数处理表单和等价物。@code{sentence-end}变量由@code{sentence-end}函数设置。
 
 @node fwd-sentence while loops
 @unnumberedsubsec The @code{while} loops
 
-Two @code{while} loops follow.  The first @code{while} has a
-true-or-false-test that tests true if the prefix argument for
-@code{forward-sentence} is a negative number.  This is for going
-backwards.  The body of this loop is similar to the body of the second
-@code{while} clause, but it is not exactly the same.  We will skip
-this @code{while} loop and concentrate on the second @code{while}
-loop.
+接下来是两个@code{while}循环。第一个@code{while}具有一个真假测试，如果@code{forward-sentence}的前缀参数是负数，则测试为真。这是用于向后移动的情况。该循环的主体类似于第二个@code{while}子句的主体，但不完全相同。我们将跳过这个@code{while}循环，专注于第二个@code{while}循环。
 
 @need 1500
-The second @code{while} loop is for moving point forward.  Its skeleton
-looks like this:
+第二个@code{while}循环是用于向前移动点的。它的框架如下：
 
 @smallexample
 @group
-(while (> arg 0)            ; @r{true-or-false-test}
+(while (> arg 0)            ; @r{真假测试}
   (let @var{varlist}
-    (if (@var{true-or-false-test})
+    (if (@var{真假测试})
         @var{then-part}
       @var{else-part}
-  (setq arg (1- arg))))     ; @code{while} @r{loop decrementer}
+  (setq arg (1- arg))))     ; @code{while} @r{循环递减器}
 @end group
 @end smallexample
 
-The @code{while} loop is of the decrementing kind.
-(@xref{递减循环, , A Loop with a Decrementing Counter}.)  It
-has a true-or-false-test that tests true so long as the counter (in
-this case, the variable @code{arg}) is greater than zero; and it has a
-decrementer that subtracts 1 from the value of the counter every time
-the loop repeats.
+该@code{while}循环是递减型的。
+(@xref{递减循环, , A Loop with a Decrementing Counter}.) 它有一个真假测试，只要计数器（在这种情况下是变量@code{arg}）大于零，测试就为真；并且有一个递减器，每次循环重复时从计数器的值中减去1。
 
-If no prefix argument is given to @code{forward-sentence}, which is
-the most common way the command is used, this @code{while} loop will
-run once, since the value of @code{arg} will be 1.
+如果没有给@code{forward-sentence}提供前缀参数，这是该命令最常用的方式，那么这个@code{while}循环将运行一次，因为@code{arg}的值将为1。
 
-The body of the @code{while} loop consists of a @code{let} expression,
-which creates and binds a local variable, and has, as its body, an
-@code{if} expression.
+@code{while}循环的主体包含一个@code{let}表达式，该表达式创建和绑定一个局部变量，并且其主体是一个@code{if}表达式。
 
 @need 1250
-The body of the @code{while} loop looks like this:
+@code{while}循环的主体如下：
 
 @smallexample
 @group
@@ -8751,16 +8707,9 @@ The body of the @code{while} loop looks like this:
 @end group
 @end smallexample
 
-The @code{let} expression creates and binds the local variable
-@code{par-end}.  As we shall see, this local variable is designed to
-provide a bound or limit to the regular expression search.  If the
-search fails to find a proper sentence ending in the paragraph, it will
-stop on reaching the end of the paragraph.
+@code{let}表达式创建并绑定局部变量@code{par-end}。正如我们将看到的，此局部变量旨在为正则表达式搜索提供一个边界或限制。如果搜索未能在段落中找到适当的句子结束，它将在达到段落末尾时停止。
 
-But first, let us examine how @code{par-end} is bound to the value of
-the end of the paragraph.  What happens is that the @code{let} sets the
-value of @code{par-end} to the value returned when the Lisp interpreter
-evaluates the expression
+但首先，让我们查看@code{par-end}如何绑定到段落末尾的值。发生的是@code{let}将@code{par-end}的值设置为Lisp解释器评估表达式时返回的值
 
 @smallexample
 @group
@@ -8769,82 +8718,46 @@ evaluates the expression
 @end smallexample
 
 @noindent
-In this expression, @code{(end-of-paragraph-text)} moves point to the
-end of the paragraph, @code{(point)} returns the value of point, and then
-@code{save-excursion} restores point to its original position.  Thus,
-the @code{let} binds @code{par-end} to the value returned by the
-@code{save-excursion} expression, which is the position of the end of
-the paragraph.  (The @code{end-of-paragraph-text} function uses
-@code{forward-paragraph}, which we will discuss shortly.)
+在此表达式中，@code{(end-of-paragraph-text)}将point移动到段落末尾，@code{(point)}返回point的值，然后@code{save-excursion}将point恢复到其原始位置。因此，@code{let}将@code{par-end}绑定到由@code{save-excursion}表达式返回的值，即段落末尾的位置。 (@code{end-of-paragraph-text}函数使用@code{forward-paragraph}，我们将很快讨论。)
 
 @need 1200
-Emacs next evaluates the body of the @code{let}, which is an @code{if}
-expression that looks like this:
+接下来，Emacs评估@code{let}的主体，这是一个@code{if}表达式，如下所示：
 
 @smallexample
 @group
-(if (re-search-forward sentence-end par-end t) ; @r{if-part}
-    (skip-chars-backward " \t\n")              ; @r{then-part}
-  (goto-char par-end)))                        ; @r{else-part}
+(if (re-search-forward sentence-end par-end t) ; @r{if部分}
+    (skip-chars-backward " \t\n")              ; @r{then部分}
+  (goto-char par-end)))                        ; @r{else部分}
 @end group
 @end smallexample
 
-The @code{if} tests whether its first argument is true and if so,
-evaluates its then-part; otherwise, the Emacs Lisp interpreter
-evaluates the else-part.  The true-or-false-test of the @code{if}
-expression is the regular expression search.
+@code{if}测试其第一个参数是否为真，如果是，则评估其then部分；否则，Emacs Lisp解释器将评估else部分。@code{if}表达式的真假测试是正则表达式搜索。
 
-It may seem odd to have what looks like the real work of
-the @code{forward-sentence} function buried here, but this is a common
-way this kind of operation is carried out in Lisp.
+可能看起来奇怪的是，在这里埋藏看起来像是@code{forward-sentence}函数的实际工作，但这是Lisp中执行此类操作的常见方式。
 
 @node fwd-sentence re-search
-@unnumberedsubsec The regular expression search
+@unnumberedsubsec 正则表达式搜索
 
-The @code{re-search-forward} function searches for the end of the
-sentence, that is, for the pattern defined by the @code{sentence-end}
-regular expression.  If the pattern is found---if the end of the sentence is
-found---then the @code{re-search-forward} function does two things:
+函数 @code{re-search-forward} 用于搜索句子的结尾，即由 @code{sentence-end} 正则表达式定义的模式。如果找到模式——也就是找到了句子的结尾——那么 @code{re-search-forward} 函数会执行两个操作：
 
 @enumerate
 @item
-The @code{re-search-forward} function carries out a side effect, which
-is to move point to the end of the occurrence found.
+@code{re-search-forward} 函数执行一个副作用，即将点移动到找到的出现的结尾。
 
 @item
-The @code{re-search-forward} function returns a value of true.  This is
-the value received by the @code{if}, and means that the search was
-successful.
+@code{re-search-forward} 函数返回 true 的值。这是由 @code{if} 接收的值，并表示搜索成功。
 @end enumerate
 
 @noindent
-The side effect, the movement of point, is completed before the
-@code{if} function is handed the value returned by the successful
-conclusion of the search.
+副作用，即点的移动，在 @code{if} 函数接收到搜索成功的返回值之前完成。
 
-When the @code{if} function receives the value of true from a successful
-call to @code{re-search-forward}, the @code{if} evaluates the then-part,
-which is the expression @code{(skip-chars-backward " \t\n")}.  This
-expression moves backwards over any blank spaces, tabs or carriage
-returns until a printed character is found and then leaves point after
-the character.  Since point has already been moved to the end of the
-pattern that marks the end of the sentence, this action leaves point
-right after the closing printed character of the sentence, which is
-usually a period.
+当 @code{if} 函数从成功调用 @code{re-search-forward} 接收到 true 的值时，@code{if} 会评估 then 部分，即表达式 @code{(skip-chars-backward " \t\n")}。这个表达式向后移动任何空格、制表符或回车，直到找到一个打印字符，然后将点留在字符之后。由于点已经被移动到标记句子结尾的模式的末尾，这个操作将点留在句子的结束字符后，通常是一个句点。
 
-On the other hand, if the @code{re-search-forward} function fails to
-find a pattern marking the end of the sentence, the function returns
-false.  The false then causes the @code{if} to evaluate its third
-argument, which is @code{(goto-char par-end)}:  it moves point to the
-end of the paragraph.
+另一方面，如果 @code{re-search-forward} 函数未能找到标记句子结束的模式，则该函数返回 false。然后 false 导致 @code{if} 评估其第三个参数，即 @code{(goto-char par-end)}：将点移动到段落的末尾。
 
-(And if the text is in a form or equivalent, and point may not move
-fully, then the @code{constrain-to-field} function comes into play.)
+（如果文本处于表单或等效状态，且点可能无法完全移动，则会调用 @code{constrain-to-field} 函数。）
 
-Regular expression searches are exceptionally useful and the pattern
-illustrated by @code{re-search-forward}, in which the search is the
-test of an @code{if} expression, is handy.  You will see or write code
-incorporating this pattern often.
+正则表达式搜索非常有用，而由 @code{re-search-forward} 展示的模式，其中搜索是 @code{if} 表达式的测试，非常方便。你会经常看到或编写包含这个模式的代码。
 
 @node forward-paragraph
 @section @code{forward-paragraph}: a Goldmine of Functions
