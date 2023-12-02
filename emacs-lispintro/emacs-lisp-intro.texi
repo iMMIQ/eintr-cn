@@ -4313,24 +4313,13 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 缩小对Lisp解释器和人类一样有用。通常，Emacs Lisp函数被设计为仅在缓冲区的一部分上工作；或者相反，Emacs Lisp函数需要在已经缩小的整个缓冲区上工作。例如，@code{what-line}函数会在缓冲区存在缩小的情况下移除缩小，并在完成工作后将缩小恢复到原来的状态。另一方面，@code{count-lines}函数使用缩小来限制自己只在其感兴趣的缓冲区部分中运行，然后恢复到先前的情况。
 
 @node save-restriction
-@section The @code{save-restriction} Special Form
+@section 特殊形式 @code{save-restriction}
 @findex save-restriction
 
-In Emacs Lisp, you can use the @code{save-restriction} special form to
-keep track of whatever narrowing is in effect, if any.  When the Lisp
-interpreter meets with @code{save-restriction}, it executes the code
-in the body of the @code{save-restriction} expression, and then undoes
-any changes to narrowing that the code caused.  If, for example, the
-buffer is narrowed and the code that follows @code{save-restriction}
-gets rid of the narrowing, @code{save-restriction} returns the buffer
-to its narrowed region afterwards.  In the @code{what-line} command,
-any narrowing the buffer may have is undone by the @code{widen}
-command that immediately follows the @code{save-restriction} command.
-Any original narrowing is restored just before the completion of the
-function.
+在Emacs Lisp中，你可以使用特殊形式 @code{save-restriction} 来追踪当前是否存在缩小范围的情况。当Lisp解释器遇到 @code{save-restriction} 时，它会执行 @code{save-restriction} 表达式体中的代码，然后撤销代码引起的任何缩小范围的更改。例如，如果缓冲区被缩小，而跟在 @code{save-restriction} 后面的代码消除了缩小，则 @code{save-restriction} 将在之后将缓冲区恢复到缩小的区域。在 @code{what-line} 命令中，由 @code{save-restriction} 命令后立即执行的 @code{widen} 命令会撤销缓冲区可能存在的任何缩小。任何原始的缩小在函数完成之前都会被恢复。
 
 @need 1250
-The template for a @code{save-restriction} expression is simple:
+@code{save-restriction} 表达式的模板很简单：
 
 @smallexample
 @group
@@ -4340,16 +4329,9 @@ The template for a @code{save-restriction} expression is simple:
 @end smallexample
 
 @noindent
-The body of the @code{save-restriction} is one or more expressions that
-will be evaluated in sequence by the Lisp interpreter.
+@code{save-restriction} 的体是一个或多个将由Lisp解释器按顺序评估的表达式。
 
-Finally, a point to note: when you use both @code{save-excursion} and
-@code{save-restriction}, one right after the other, you should use
-@code{save-excursion} outermost.  If you write them in reverse order,
-you may fail to record narrowing in the buffer to which Emacs switches
-after calling @code{save-excursion}.  Thus, when written together,
-@code{save-excursion} and @code{save-restriction} should be written
-like this:
+最后，需要注意的一点是：当你同时使用 @code{save-excursion} 和 @code{save-restriction}，并且它们紧跟在彼此之后时，应该将 @code{save-excursion} 放在最外层。如果你以相反的顺序编写它们，可能无法记录Emacs在调用 @code{save-excursion} 后切换到的缓冲区的缩小。因此，在一起编写时，@code{save-excursion} 和 @code{save-restriction} 应该像这样编写：
 
 @smallexample
 @group
@@ -4359,12 +4341,10 @@ like this:
 @end group
 @end smallexample
 
-In other circumstances, when not written together, the
-@code{save-excursion} and @code{save-restriction} special forms must
-be written in the order appropriate to the function.
+在其他情况下，当它们没有一起编写时，@code{save-excursion} 和 @code{save-restriction} 特殊形式必须按照适合函数的顺序编写。
 
 @need 1250
-For example,
+例如，
 
 @smallexample
 @group
