@@ -57,42 +57,27 @@ ISBN 1-882114-43-4
 Next: <a href="cons-_0026-search_002dfwd-Review.html" accesskey="n" rel="next">Review</a>, Previous: <a href="Jin-Ru-CDe-Cha-Qu-.html" accesskey="p" rel="prev">进入C的插曲</a>, Up: <a href="Jian-Qie-Yu-Cun-Chu-WenBen-.html" accesskey="u" rel="up">剪切与存储文本</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Initializing-a-Variable-with-defvar">8.5 Initializing a Variable with <code class="code">defvar</code></h3>
+<h3 class="section" id="Shi-Yong-defvar-Chu-Shi-Hua-Bian-Liang-">8.5 使用 <code class="code">defvar</code> 初始化变量</h3>
 <a class="index-entry-id" id="index-defvar"></a>
-<a class="index-entry-id" id="index-Initializing-a-variable"></a>
-<a class="index-entry-id" id="index-Variable-initialization"></a>
+<a class="index-entry-id" id="index-Chu-Shi-Hua-Bian-Liang-"></a>
+<a class="index-entry-id" id="index-Bian-Liang-Chu-Shi-Hua-"></a>
 
 
-<p>The <code class="code">copy-region-as-kill</code> function is written in Emacs Lisp.  Two
-functions within it, <code class="code">kill-append</code> and <code class="code">kill-new</code>, copy a
-region in a buffer and save it in a variable called the
-<code class="code">kill-ring</code>.  This section describes how the <code class="code">kill-ring</code>
-variable is created and initialized using the <code class="code">defvar</code> special
-form.
+<p><code class="code">copy-region-as-kill</code> 函数是用Emacs Lisp编写的。其中的两个函数，<code class="code">kill-append</code> 和 <code class="code">kill-new</code>，复制缓冲区中的一段区域并将其保存在一个名为 <code class="code">kill-ring</code> 的变量中。本节描述了如何使用 <code class="code">defvar</code> 特殊形式创建和初始化 <code class="code">kill-ring</code> 变量。
 </p>
-<p>(Again we note that the term <code class="code">kill-ring</code> is a misnomer.  The text
-that is clipped out of the buffer can be brought back; it is not a ring
-of corpses, but a ring of resurrectable text.)
+<p>（再次注意，术语 <code class="code">kill-ring</code> 是不准确的。从缓冲区中剪切出来的文本可以被还原；它不是一个尸体环，而是一个可以复活的文本环。）
 </p>
-<p>In Emacs Lisp, a variable such as the <code class="code">kill-ring</code> is created and
-given an initial value by using the <code class="code">defvar</code> special form.  The
-name comes from &ldquo;define variable&rdquo;.
+<p>在Emacs Lisp中，诸如 <code class="code">kill-ring</code> 这样的变量是通过使用 <code class="code">defvar</code> 特殊形式创建并赋予初始值的。其名称来自于“定义变量”。
 </p>
-<p>The <code class="code">defvar</code> special form is similar to <code class="code">setq</code> in that it sets
-the value of a variable.  It is unlike <code class="code">setq</code> in two ways: first,
-it only sets the value of the variable if the variable does not already
-have a value.  If the variable already has a value, <code class="code">defvar</code> does
-not override the existing value.  Second, <code class="code">defvar</code> has a
-documentation string.
+<p><code class="code">defvar</code> 特殊形式类似于 <code class="code">setq</code>，因为它设置变量的值。但与 <code class="code">setq</code> 不同的有两点：首先，它仅在变量尚未具有值时设置变量的值。如果变量已经有值，<code class="code">defvar</code> 就不会覆盖现有值。其次，<code class="code">defvar</code> 具有文档字符串。
 </p>
-<p>(There is a related macro, <code class="code">defcustom</code>, designed for variables
-that people customize.  It has more features than <code class="code">defvar</code>.
-(See <a class="xref" href="defcustom.html">Setting Variables with <code class="code">defcustom</code></a>.)
+<p>（有一个相关的宏，<code class="code">defcustom</code>，用于用户自定义的变量。它比 <code class="code">defvar</code> 更强大。
+（See <a class="xref" href="defcustom.html">使用 <code class="code">defcustom</code> 设置变量</a>。）
 </p>
 
 <ul class="mini-toc">
-<li><a href="See-variable-current-value.html" accesskey="1">Seeing the Current Value of a Variable</a></li>
-<li><a href="defvar-and-asterisk.html" accesskey="2"><code class="code">defvar</code> and an asterisk</a></li>
+<li><a href="Cha-Kan-Bian-Liang-Dang-Qian-Zhi-.html" accesskey="1">查看变量的当前值</a></li>
+<li><a href="defvar-He-Xing-Hao-.html" accesskey="2"><code class="code">defvar</code> 和星号</a></li>
 </ul>
 </div>
 

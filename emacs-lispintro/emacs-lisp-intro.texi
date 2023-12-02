@@ -6194,150 +6194,99 @@ del_range_1 (XFIXNUM (start), XFIXNUM (end), 1, 1);
 从编写Lisp的人的角度来看，Emacs非常简单；但是在底层隐藏着大量的复杂性，以使一切正常工作。
 
 @node defvar
-@section Initializing a Variable with @code{defvar}
+@section 使用 @code{defvar} 初始化变量
 @findex defvar
-@cindex Initializing a variable
-@cindex Variable initialization
+@cindex 初始化变量
+@cindex 变量初始化
 
 @ignore
-2006 Oct 24
-In Emacs 22,
-copy-region-as-kill is short, 12 lines, and uses
-filter-buffer-substring, which is longer, 39 lines
-and has delete-and-extract-region in it.
-delete-and-extract-region is written in C.
+2006年10月24日
+在Emacs 22中，
+copy-region-as-kill 很短，有12行，使用了
+filter-buffer-substring，它更长，有39行
+并且其中包含了delete-and-extract-region。
+delete-and-extract-region是用C语言编写的。
 
-see Initializing a Variable with @code{defvar}
+见 使用 @code{defvar} 初始化变量
 
 @end ignore
 
-The @code{copy-region-as-kill} function is written in Emacs Lisp.  Two
-functions within it, @code{kill-append} and @code{kill-new}, copy a
-region in a buffer and save it in a variable called the
-@code{kill-ring}.  This section describes how the @code{kill-ring}
-variable is created and initialized using the @code{defvar} special
-form.
+@code{copy-region-as-kill} 函数是用Emacs Lisp编写的。其中的两个函数，@code{kill-append} 和 @code{kill-new}，复制缓冲区中的一段区域并将其保存在一个名为 @code{kill-ring} 的变量中。本节描述了如何使用 @code{defvar} 特殊形式创建和初始化 @code{kill-ring} 变量。
 
-(Again we note that the term @code{kill-ring} is a misnomer.  The text
-that is clipped out of the buffer can be brought back; it is not a ring
-of corpses, but a ring of resurrectable text.)
+（再次注意，术语 @code{kill-ring} 是不准确的。从缓冲区中剪切出来的文本可以被还原；它不是一个尸体环，而是一个可以复活的文本环。）
 
-In Emacs Lisp, a variable such as the @code{kill-ring} is created and
-given an initial value by using the @code{defvar} special form.  The
-name comes from ``define variable''.
+在Emacs Lisp中，诸如 @code{kill-ring} 这样的变量是通过使用 @code{defvar} 特殊形式创建并赋予初始值的。其名称来自于“定义变量”。
 
-The @code{defvar} special form is similar to @code{setq} in that it sets
-the value of a variable.  It is unlike @code{setq} in two ways: first,
-it only sets the value of the variable if the variable does not already
-have a value.  If the variable already has a value, @code{defvar} does
-not override the existing value.  Second, @code{defvar} has a
-documentation string.
+@code{defvar} 特殊形式类似于 @code{setq}，因为它设置变量的值。但与 @code{setq} 不同的有两点：首先，它仅在变量尚未具有值时设置变量的值。如果变量已经有值，@code{defvar} 就不会覆盖现有值。其次，@code{defvar} 具有文档字符串。
 
-(There is a related macro, @code{defcustom}, designed for variables
-that people customize.  It has more features than @code{defvar}.
-(@xref{defcustom, , Setting Variables with @code{defcustom}}.)
+（有一个相关的宏，@code{defcustom}，用于用户自定义的变量。它比 @code{defvar} 更强大。
+（@xref{defcustom, , 使用 @code{defcustom} 设置变量}。）
 
 @menu
-* See variable current value::
-* defvar and asterisk::
+* 查看变量当前值::
+* defvar 和星号::
 @end menu
 
 @ifnottex
-@node See variable current value
-@unnumberedsubsec Seeing the Current Value of a Variable
+@node 查看变量当前值
+@unnumberedsubsec 查看变量的当前值
 @end ifnottex
 
-You can see the current value of a variable, any variable, by using
-the @code{describe-variable} function, which is usually invoked by
-typing @kbd{C-h v}.  If you type @kbd{C-h v} and then @code{kill-ring}
-(followed by @key{RET}) when prompted, you will see what is in your
-current kill ring---this may be quite a lot!  Conversely, if you have
-been doing nothing this Emacs session except read this document, you
-may have nothing in it.  Also, you will see the documentation for
-@code{kill-ring}:
+您可以使用 @code{describe-variable} 函数查看任何变量的当前值，通常通过键入 @kbd{C-h v} 调用。如果在提示时键入 @kbd{C-h v} 然后键入 @code{kill-ring}（然后按 @key{RET}），您将看到当前剪切环中的内容，这可能很多！相反，如果在本次Emacs会话中除了阅读本文档之外什么都没有做，那么可能什么都没有。此外，您将看到 @code{kill-ring} 的文档：
 
 @smallexample
 @group
-Documentation:
-List of killed text sequences.
-Since the kill ring is supposed to interact nicely with cut-and-paste
-facilities offered by window systems, use of this variable should
+文档：
+已删除文本序列的列表。
+由于剪切环应该与窗口系统提供的剪切和粘贴功能良好地交互，因此应使用此变量
 @end group
 @group
-interact nicely with `interprogram-cut-function' and
-`interprogram-paste-function'.  The functions `kill-new',
-`kill-append', and `current-kill' are supposed to implement this
-interaction; you may want to use them instead of manipulating the kill
-ring directly.
+与`interprogram-cut-function'和
+`interprogram-paste-function'良好交互。 函数`kill-new'，
+`kill-append'和`current-kill'应实现此交互；
+您可能希望使用它们而不是直接操作剪切环。
 @end group
 @end smallexample
 
 @need 800
-The kill ring is defined by a @code{defvar} in the following way:
+剪切环的定义如下：
 
 @smallexample
 @group
 (defvar kill-ring nil
-  "List of killed text sequences.
+  "已删除文本序列的列表。
 @dots{}")
 @end group
 @end smallexample
 
 @noindent
-In this variable definition, the variable is given an initial value of
-@code{nil}, which makes sense, since if you have saved nothing, you want
-nothing back if you give a @code{yank} command.  The documentation
-string is written just like the documentation string of a @code{defun}.
-As with the documentation string of the @code{defun}, the first line of
-the documentation should be a complete sentence, since some commands,
-like @code{apropos}, print only the first line of documentation.
-Succeeding lines should not be indented; otherwise they look odd when
-you use @kbd{C-h v} (@code{describe-variable}).
+在此变量定义中，变量被赋予初始值 @code{nil}，这是有道理的，因为如果您没有保存任何内容，那么在执行 @code{yank} 命令时您希望得到空白。文档字符串的写法与 @code{defun} 的文档字符串相同。与 @code{defun} 的文档字符串一样，文档的第一行应该是一个完整的句子，因为一些命令（如 @code{apropos}）仅打印文档的第一行。后续行不应缩进，否则在使用 @kbd{C-h v}（@code{describe-variable}）时会显得奇怪。
 
-@node defvar and asterisk
-@subsection @code{defvar} and an asterisk
-@findex defvar @r{for a user customizable variable}
-@findex defvar @r{with an asterisk}
+@node defvar 和星号
+@subsection @code{defvar} 和星号
+@findex defvar @r{用于用户可定制的变量}
+@findex defvar @r{带有星号}
 
-In the past, Emacs used the @code{defvar} special form both for
-internal variables that you would not expect a user to change and for
-variables that you do expect a user to change.  Although you can still
-use @code{defvar} for user customizable variables, please use
-@code{defcustom} instead, since it provides a path into
-the Customization commands.  (@xref{defcustom, , Specifying Variables
-using @code{defcustom}}.)
+过去，Emacs 在内部变量和用户可能更改的变量上都使用了 @code{defvar} 特殊形式。尽管您仍然可以使用 @code{defvar} 来定义用户可定制的变量，请改用 @code{defcustom}，因为它提供了进入定制命令的路径。
+（@xref{defcustom, , 使用 @code{defcustom} 指定变量}。）
 
-When you specified a variable using the @code{defvar} special form,
-you could distinguish a variable that a user might want to change from
-others by typing an asterisk, @samp{*}, in the first column of its
-documentation string.  For example:
+当使用 @code{defvar} 特殊形式指定变量时，您可以通过在其文档字符串的第一列键入星号（@samp{*}）来区分用户可能想更改的变量和其他变量。例如：
 
 @smallexample
 @group
 (defvar shell-command-default-error-buffer nil
-  "*Buffer name for `shell-command' @dots{} error output.
+  "*'shell-command' @dots{}错误输出的缓冲区名称。
 @dots{} ")
 @end group
 @end smallexample
 
 @findex set-variable
 @noindent
-You could (and still can) use the @code{set-variable} command to
-change the value of @code{shell-command-default-error-buffer}
-temporarily.  However, options set using @code{set-variable} are set
-only for the duration of your editing session.  The new values are not
-saved between sessions.  Each time Emacs starts, it reads the original
-value, unless you change the value within your @file{.emacs} file,
-either by setting it manually or by using @code{customize}.
-@xref{Emacs Initialization, , Your @file{.emacs} File}.
+您可以（仍然可以）使用 @code{set-variable} 命令临时更改 @code{shell-command-default-error-buffer} 的值。但是，使用 @code{set-variable} 设置的选项仅在编辑会话期间设置。新值在会话之间不会保存。每次Emacs启动时，它都会读取原始值，除非您在 @file{.emacs} 文件中更改了该值，要么手动设置它，要么使用 @code{customize}。
+@xref{Emacs Initialization, , 您的 @file{.emacs} 文件}。
 
-For me, the major use of the @code{set-variable} command is to suggest
-variables that I might want to set in my @file{.emacs} file.  There
-are now more than 700 such variables, far too many to remember
-readily.  Fortunately, you can press @key{TAB} after calling the
-@code{M-x set-variable} command to see the list of variables.
-(@xref{Examining, , Examining and Setting Variables, emacs,
-The GNU Emacs Manual}.)
+对我来说，@code{set-variable} 命令的主要用途是建议我可能希望在 @file{.emacs} 文件中设置的变量。现在有700多个这样的变量，太多了，记不住。幸运的是，在调用 @code{M-x set-variable} 命令后，您可以按 @key{TAB} 键查看变量的列表。
+（@xref{Examining, , 检查和设置变量, emacs, GNU Emacs手册}。）
 
 @need 1250
 @node cons & search-fwd Review

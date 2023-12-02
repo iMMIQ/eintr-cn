@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>defvar 和星号 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="defvar 和星号 (Programming in Emacs Lisp)">
+<meta name="keywords" content="defvar 和星号 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="defvar.html" rel="up" title="defvar">
+<link href="Cha-Kan-Bian-Liang-Dang-Qian-Zhi-.html" rel="prev" title="查看变量当前值">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="defvar-_548c_661f_53f7">
+<div class="nav-panel">
+<p>
+Previous: <a href="Cha-Kan-Bian-Liang-Dang-Qian-Zhi-.html" accesskey="p" rel="prev">查看变量的当前值</a>, Up: <a href="defvar.html" accesskey="u" rel="up">使用 <code class="code">defvar</code> 初始化变量</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="defvar-He-Xing-Hao-">8.5.1 <code class="code">defvar</code> 和星号</h4>
+<a class="index-entry-id" id="index-defvar-Yong-Yu-Yong-Hu-Ke-Ding-Zhi-De-Bian-Liang-"></a>
+<a class="index-entry-id" id="index-defvar-Dai-You-Xing-Hao-"></a>
+
+<p>过去，Emacs 在内部变量和用户可能更改的变量上都使用了 <code class="code">defvar</code> 特殊形式。尽管您仍然可以使用 <code class="code">defvar</code> 来定义用户可定制的变量，请改用 <code class="code">defcustom</code>，因为它提供了进入定制命令的路径。
+（See <a class="xref" href="defcustom.html">使用 <code class="code">defcustom</code> 指定变量</a>。）
+</p>
+<p>当使用 <code class="code">defvar</code> 特殊形式指定变量时，您可以通过在其文档字符串的第一列键入星号（&lsquo;<samp class="samp">*</samp>&rsquo;）来区分用户可能想更改的变量和其他变量。例如：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defvar shell-command-default-error-buffer nil
+  &quot;*'shell-command' &hellip;错误输出的缓冲区名称。
+&hellip; &quot;)
+</pre></div></div>
+
+<a class="index-entry-id" id="index-set_002dvariable"></a>
+<p>您可以（仍然可以）使用 <code class="code">set-variable</code> 命令临时更改 <code class="code">shell-command-default-error-buffer</code> 的值。但是，使用 <code class="code">set-variable</code> 设置的选项仅在编辑会话期间设置。新值在会话之间不会保存。每次Emacs启动时，它都会读取原始值，除非您在 <samp class="file">.emacs</samp> 文件中更改了该值，要么手动设置它，要么使用 <code class="code">customize</code>。
+See <a class="xref" href="Emacs-Initialization.html">您的 <samp class="file">.emacs</samp> 文件</a>。
+</p>
+<p>对我来说，<code class="code">set-variable</code> 命令的主要用途是建议我可能希望在 <samp class="file">.emacs</samp> 文件中设置的变量。现在有700多个这样的变量，太多了，记不住。幸运的是，在调用 <code class="code">M-x set-variable</code> 命令后，您可以按 <kbd class="key">TAB</kbd> 键查看变量的列表。
+（See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Examining.html#Examining">检查和设置变量</a> in <cite class="cite">GNU Emacs手册</cite>。）
+</p>
+</div>
+
+
+
+</body>
+</html>
