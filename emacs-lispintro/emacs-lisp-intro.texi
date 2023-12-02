@@ -8416,36 +8416,23 @@ Documentation Format}。
 @end menu
 
 @node sentence-end
-@section The Regular Expression for @code{sentence-end}
+@section 关于 @code{sentence-end} 的正则表达式
 @findex sentence-end
 
-The symbol @code{sentence-end} is bound to the pattern that marks the
-end of a sentence.  What should this regular expression be?
+符号 @code{sentence-end} 被绑定到标记句子结束的模式。这个正则表达式应该是什么呢？
 
-Clearly, a sentence may be ended by a period, a question mark, or an
-exclamation mark.  Indeed, in English, only clauses that end with one
-of those three characters should be considered the end of a sentence.
-This means that the pattern should include the character set:
+显然，句子可以以句点、问号或感叹号结束。实际上，在英语中，只有以这三个字符之一结尾的从句才应被视为句子的结束。这意味着模式应包括字符集：
 
 @smallexample
 [.?!]
 @end smallexample
 
-However, we do not want @code{forward-sentence} merely to jump to a
-period, a question mark, or an exclamation mark, because such a character
-might be used in the middle of a sentence.  A period, for example, is
-used after abbreviations.  So other information is needed.
+然而，我们不希望 @code{forward-sentence} 只是简单地跳到句点、问号或感叹号，因为这样的字符可能在句子中间使用。例如，句点在缩写后使用。因此，需要其他信息。
 
-According to convention, you type two spaces after every sentence, but
-only one space after a period, a question mark, or an exclamation mark in
-the body of a sentence.  So a period, a question mark, or an exclamation
-mark followed by two spaces is a good indicator of an end of sentence.
-However, in a file, the two spaces may instead be a tab or the end of a
-line.  This means that the regular expression should include these three
-items as alternatives.
+按照约定，你在每个句子后面键入两个空格，但在句子中间的句点、问号或感叹号后只键入一个空格。因此，句点、问号或感叹号后跟两个空格是句子结束的良好指示器。然而，在文件中，这两个空格可能被制表符或行尾替代。这意味着正则表达式应包括这三个项作为备选项。
 
 @need 800
-This group of alternatives will look like this:
+这组备选项将如下所示：
 
 @smallexample
 @group
@@ -8456,18 +8443,12 @@ This group of alternatives will look like this:
 @end smallexample
 
 @noindent
-Here, @samp{$} indicates the end of the line, and I have pointed out
-where the tab and two spaces are inserted in the expression.  Both are
-inserted by putting the actual characters into the expression.
+这里，@samp{$} 表示行尾，我标出了制表符和两个空格在表达式中的位置。两者都是通过将实际字符放入表达式中插入的。
 
-Two backslashes, @samp{\\}, are required before the parentheses and
-vertical bars: the first backslash quotes the following backslash in
-Emacs; and the second indicates that the following character, the
-parenthesis or the vertical bar, is special.
+在括号和竖线前需要两个反斜杠，@samp{\\}：第一个反斜杠引用 Emacs 中的后续反斜杠；第二个指示后面的字符（括号或竖线）是特殊的。
 
 @need 1000
-Also, a sentence may be followed by one or more carriage returns, like
-this:
+另外，句子后面可能跟着一个或多个回车，就像这样：
 
 @smallexample
 @group
@@ -8477,28 +8458,17 @@ this:
 @end smallexample
 
 @noindent
-Like tabs and spaces, a carriage return is inserted into a regular
-expression by inserting it literally.  The asterisk indicates that the
-@key{RET} is repeated zero or more times.
+与制表符和空格一样，通过将其直接插入正则表达式，回车就会插入其中。星号表示 @key{RET} 重复零次或多次。
 
-But a sentence end does not consist only of a period, a question mark or
-an exclamation mark followed by appropriate space: a closing quotation
-mark or a closing brace of some kind may precede the space.  Indeed more
-than one such mark or brace may precede the space.  These require a
-expression that looks like this:
+但句子结尾不仅仅包括句点、问号或感叹号后跟适当的空格：可能有一个闭合引号或某种括号在空格之前。事实上，可能有一个以上这样的引号或括号在空格之前。这需要一个如下所示的表达式：
 
 @smallexample
 []\"')@}]*
 @end smallexample
 
-In this expression, the first @samp{]} is the first character in the
-expression; the second character is @samp{"}, which is preceded by a
-@samp{\} to tell Emacs the @samp{"} is @emph{not} special.  The last
-three characters are @samp{'}, @samp{)}, and @samp{@}}.
+在这个表达式中，第一个 @samp{]} 是表达式中的第一个字符；第二个字符是 @samp{"}，它前面有一个 @samp{\}，告诉 Emacs @samp{"} 不是特殊字符。最后三个字符是 @samp{'}, @samp{)} 和 @samp{@}}。
 
-All this suggests what the regular expression pattern for matching the
-end of a sentence should be; and, indeed, if we evaluate
-@code{sentence-end} we find that it returns the following value:
+所有这些都暗示了匹配句子结尾的正则表达式模式，确实，如果我们评估 @code{sentence-end}，我们会发现它返回以下值：
 
 @smallexample
 @group
@@ -8509,60 +8479,26 @@ sentence-end
 @end smallexample
 
 @noindent
-(Well, not in GNU Emacs 22; that is because of an effort to make the
-process simpler and to handle more glyphs and languages.  When the
-value of @code{sentence-end} is @code{nil}, then use the value defined
-by the function @code{sentence-end}.  (Here is a use of the difference
-between a value and a function in Emacs Lisp.)  The function returns a
-value constructed from the variables @code{sentence-end-base},
-@code{sentence-end-double-space}, @code{sentence-end-without-period},
-and @code{sentence-end-without-space}.  The critical variable is
-@code{sentence-end-base}; its global value is similar to the one
-described above but it also contains two additional quotation marks.
-These have differing degrees of curliness.  The
-@code{sentence-end-without-period} variable, when true, tells Emacs
-that a sentence may end without a period, such as text in Thai.)
+（好吧，在 GNU Emacs 22 中不是这样；这是因为为了使过程更简单并处理更多的字形和语言而做的努力。当 @code{sentence-end} 的值为 @code{nil} 时，使用函数 @code{sentence-end} 定义的值。 （这是 Emacs Lisp 中值和函数之间差异的使用示例。）该函数返回由变量 @code{sentence-end-base}、@code{sentence-end-double-space}、@code{sentence-end-without-period} 和 @code{sentence-end-without-space} 构造的值。关键变量是 @code{sentence-end-base}；它的全局值类似于上述描述的值，但还包含两个额外的引号。这些引号的弯曲程度不同。当 @code{sentence-end-without-period} 变量为真时，告诉 Emacs 句子可以在没有句点的情况下结束，例如泰语文本。）
 
 @ignore
 @noindent
-(Note that here the @key{TAB}, two spaces, and  @key{RET} are shown
-literally in the pattern.)
+（注意，在这里 @key{TAB}、两个空格和 @key{RET} 在模式中都是以字面形式显示的。）
 
-This regular expression can be deciphered as follows:
+这个正则表达式可以这样解读：
 
 @table @code
 @item [.?!]
-The first part of the pattern is the three characters, a period, a question
-mark and an exclamation mark, within square brackets.  The pattern must
-begin with one or other of these characters.
+模式的第一部分是三个字符，一个句点、一个问号和一个感叹号，都在方括号内。模式必须以这些字符中的一个开始。
 
 @item []\"')@}]*
-The second part of the pattern is the group of closing braces and
-quotation marks, which can appear zero or more times.  These may follow
-the period, question mark or exclamation mark.  In a regular expression,
-the backslash, @samp{\}, followed by the double quotation mark,
-@samp{"}, indicates the class of string-quote characters.  Usually, the
-double quotation mark is the only character in this class.  The
-asterisk, @samp{*}, indicates that the items in the previous group (the
-group surrounded by square brackets, @samp{[]}) may be repeated zero or
-more times.
+模式的第二部分是闭合括号和引号组成的组，可以出现零次或多次。这些可以跟在句点、问号或感叹号后。在正则表达式中，反斜杠 @samp{\} 后面跟着双引号 @samp{"} 表示字符串引号字符类。通常，双引号是该类中唯一的字符。星号 @samp{*} 表示前面组（由方括号 @samp{[]} 包围的组）中的项可以重复零次或多次。
 
 @item \\($\\|   \\|  \\)
-The third part of the pattern is one or other of: either the end of a
-line, or two blank spaces, or a tab.  The double back-slashes are used
-to prevent Emacs from reading the parentheses and vertical bars as part
-of the search pattern; the parentheses are used to mark the group and
-the vertical bars are used to indicated that the patterns to either side
-of them are alternatives.  The dollar sign is used to indicate the end
-of a line and both the two spaces and the tab are each inserted as is to
-indicate what they are.
+模式的第三部分是下列情况之一：行尾、两个空格或一个制表符。双反斜杠用于防止 Emacs 将括号和竖线读取为搜索模式的一部分；括号用于标记组，竖线用于表示它们两侧的模式是备选项。美元符号用于表示行尾，两个空格和制表符分别插入以指示它们的存在。
 
 @item [@key{RET}]*
-Finally, the last part of the pattern indicates that the end of the line
-or the whitespace following the period, question mark or exclamation
-mark may, but need not, be followed by one or more carriage returns.  In
-the pattern, the carriage return is inserted as an actual carriage
-return between square brackets but here it is shown as @key{RET}.
+最后，模式的最后部分表示行尾或句点、问号或感叹号后的空格后可能跟随零个或多个回车，但不一定。在模式中，回车作为实际回车插入，但这里显示为 @key{RET}。
 @end table
 @end ignore
 

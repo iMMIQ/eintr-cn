@@ -58,35 +58,22 @@ kbd.key {font-style: normal}
 Next: <a href="re_002dsearch_002dforward.html" accesskey="n" rel="next">The <code class="code">re-search-forward</code> Function</a>, Up: <a href="Zheng-Ze-Biao-Da-Shi-Sou-Suo-.html" accesskey="u" rel="up">正则表达式搜索</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-Regular-Expression-for-sentence_002dend">12.1 The Regular Expression for <code class="code">sentence-end</code></h3>
+<h3 class="section" id="Guan-Yu-sentence_002dend-De-Zheng-Ze-Biao-Da-Shi-">12.1 关于 <code class="code">sentence-end</code> 的正则表达式</h3>
 <a class="index-entry-id" id="index-sentence_002dend"></a>
 
-<p>The symbol <code class="code">sentence-end</code> is bound to the pattern that marks the
-end of a sentence.  What should this regular expression be?
+<p>符号 <code class="code">sentence-end</code> 被绑定到标记句子结束的模式。这个正则表达式应该是什么呢？
 </p>
-<p>Clearly, a sentence may be ended by a period, a question mark, or an
-exclamation mark.  Indeed, in English, only clauses that end with one
-of those three characters should be considered the end of a sentence.
-This means that the pattern should include the character set:
+<p>显然，句子可以以句点、问号或感叹号结束。实际上，在英语中，只有以这三个字符之一结尾的从句才应被视为句子的结束。这意味着模式应包括字符集：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">[.?!]
 </pre></div>
 
-<p>However, we do not want <code class="code">forward-sentence</code> merely to jump to a
-period, a question mark, or an exclamation mark, because such a character
-might be used in the middle of a sentence.  A period, for example, is
-used after abbreviations.  So other information is needed.
+<p>然而，我们不希望 <code class="code">forward-sentence</code> 只是简单地跳到句点、问号或感叹号，因为这样的字符可能在句子中间使用。例如，句点在缩写后使用。因此，需要其他信息。
 </p>
-<p>According to convention, you type two spaces after every sentence, but
-only one space after a period, a question mark, or an exclamation mark in
-the body of a sentence.  So a period, a question mark, or an exclamation
-mark followed by two spaces is a good indicator of an end of sentence.
-However, in a file, the two spaces may instead be a tab or the end of a
-line.  This means that the regular expression should include these three
-items as alternatives.
+<p>按照约定，你在每个句子后面键入两个空格，但在句子中间的句点、问号或感叹号后只键入一个空格。因此，句点、问号或感叹号后跟两个空格是句子结束的良好指示器。然而，在文件中，这两个空格可能被制表符或行尾替代。这意味着正则表达式应包括这三个项作为备选项。
 </p>
-<p>This group of alternatives will look like this:
+<p>这组备选项将如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">\\($\\| \\|  \\)
@@ -94,45 +81,28 @@ items as alternatives.
       TAB  SPC
 </pre></div></div>
 
-<p>Here, &lsquo;<samp class="samp">$</samp>&rsquo; indicates the end of the line, and I have pointed out
-where the tab and two spaces are inserted in the expression.  Both are
-inserted by putting the actual characters into the expression.
+<p>这里，&lsquo;<samp class="samp">$</samp>&rsquo; 表示行尾，我标出了制表符和两个空格在表达式中的位置。两者都是通过将实际字符放入表达式中插入的。
 </p>
-<p>Two backslashes, &lsquo;<samp class="samp">\\</samp>&rsquo;, are required before the parentheses and
-vertical bars: the first backslash quotes the following backslash in
-Emacs; and the second indicates that the following character, the
-parenthesis or the vertical bar, is special.
+<p>在括号和竖线前需要两个反斜杠，&lsquo;<samp class="samp">\\</samp>&rsquo;：第一个反斜杠引用 Emacs 中的后续反斜杠；第二个指示后面的字符（括号或竖线）是特殊的。
 </p>
-<p>Also, a sentence may be followed by one or more carriage returns, like
-this:
+<p>另外，句子后面可能跟着一个或多个回车，就像这样：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">[
 ]*
 </pre></div></div>
 
-<p>Like tabs and spaces, a carriage return is inserted into a regular
-expression by inserting it literally.  The asterisk indicates that the
-<kbd class="key">RET</kbd> is repeated zero or more times.
+<p>与制表符和空格一样，通过将其直接插入正则表达式，回车就会插入其中。星号表示 <kbd class="key">RET</kbd> 重复零次或多次。
 </p>
-<p>But a sentence end does not consist only of a period, a question mark or
-an exclamation mark followed by appropriate space: a closing quotation
-mark or a closing brace of some kind may precede the space.  Indeed more
-than one such mark or brace may precede the space.  These require a
-expression that looks like this:
+<p>但句子结尾不仅仅包括句点、问号或感叹号后跟适当的空格：可能有一个闭合引号或某种括号在空格之前。事实上，可能有一个以上这样的引号或括号在空格之前。这需要一个如下所示的表达式：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">[]\&quot;')}]*
 </pre></div>
 
-<p>In this expression, the first &lsquo;<samp class="samp">]</samp>&rsquo; is the first character in the
-expression; the second character is &lsquo;<samp class="samp">&quot;</samp>&rsquo;, which is preceded by a
-&lsquo;<samp class="samp">\</samp>&rsquo; to tell Emacs the &lsquo;<samp class="samp">&quot;</samp>&rsquo; is <em class="emph">not</em> special.  The last
-three characters are &lsquo;<samp class="samp">'</samp>&rsquo;, &lsquo;<samp class="samp">)</samp>&rsquo;, and &lsquo;<samp class="samp">}</samp>&rsquo;.
+<p>在这个表达式中，第一个 &lsquo;<samp class="samp">]</samp>&rsquo; 是表达式中的第一个字符；第二个字符是 &lsquo;<samp class="samp">&quot;</samp>&rsquo;，它前面有一个 &lsquo;<samp class="samp">\</samp>&rsquo;，告诉 Emacs &lsquo;<samp class="samp">&quot;</samp>&rsquo; 不是特殊字符。最后三个字符是 &lsquo;<samp class="samp">'</samp>&rsquo;, &lsquo;<samp class="samp">)</samp>&rsquo; 和 &lsquo;<samp class="samp">}</samp>&rsquo;。
 </p>
-<p>All this suggests what the regular expression pattern for matching the
-end of a sentence should be; and, indeed, if we evaluate
-<code class="code">sentence-end</code> we find that it returns the following value:
+<p>所有这些都暗示了匹配句子结尾的正则表达式模式，确实，如果我们评估 <code class="code">sentence-end</code>，我们会发现它返回以下值：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">sentence-end
@@ -140,26 +110,9 @@ end of a sentence should be; and, indeed, if we evaluate
 ]*&quot;
 </pre></div></div>
 
-<p>(Well, not in GNU Emacs 22; that is because of an effort to make the
-process simpler and to handle more glyphs and languages.  When the
-value of <code class="code">sentence-end</code> is <code class="code">nil</code>, then use the value defined
-by the function <code class="code">sentence-end</code>.  (Here is a use of the difference
-between a value and a function in Emacs Lisp.)  The function returns a
-value constructed from the variables <code class="code">sentence-end-base</code>,
-<code class="code">sentence-end-double-space</code>, <code class="code">sentence-end-without-period</code>,
-and <code class="code">sentence-end-without-space</code>.  The critical variable is
-<code class="code">sentence-end-base</code>; its global value is similar to the one
-described above but it also contains two additional quotation marks.
-These have differing degrees of curliness.  The
-<code class="code">sentence-end-without-period</code> variable, when true, tells Emacs
-that a sentence may end without a period, such as text in Thai.)
+<p>（好吧，在 GNU Emacs 22 中不是这样；这是因为为了使过程更简单并处理更多的字形和语言而做的努力。当 <code class="code">sentence-end</code> 的值为 <code class="code">nil</code> 时，使用函数 <code class="code">sentence-end</code> 定义的值。 （这是 Emacs Lisp 中值和函数之间差异的使用示例。）该函数返回由变量 <code class="code">sentence-end-base</code>、<code class="code">sentence-end-double-space</code>、<code class="code">sentence-end-without-period</code> 和 <code class="code">sentence-end-without-space</code> 构造的值。关键变量是 <code class="code">sentence-end-base</code>；它的全局值类似于上述描述的值，但还包含两个额外的引号。这些引号的弯曲程度不同。当 <code class="code">sentence-end-without-period</code> 变量为真时，告诉 Emacs 句子可以在没有句点的情况下结束，例如泰语文本。）
 </p>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="re_002dsearch_002dforward.html">The <code class="code">re-search-forward</code> Function</a>, Up: <a href="Zheng-Ze-Biao-Da-Shi-Sou-Suo-.html">正则表达式搜索</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
