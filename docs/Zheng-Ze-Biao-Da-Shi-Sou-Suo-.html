@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Regexp Search (Programming in Emacs Lisp)</title>
+<title>正则表达式搜索 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Regexp Search (Programming in Emacs Lisp)">
-<meta name="keywords" content="Regexp Search (Programming in Emacs Lisp)">
+<meta name="description" content="正则表达式搜索 (Programming in Emacs Lisp)">
+<meta name="keywords" content="正则表达式搜索 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -51,45 +51,25 @@ ISBN 1-882114-43-4
 </head>
 
 <body lang="en">
-<div class="chapter-level-extent" id="Regexp-Search">
+<div class="chapter-level-extent" id="g_t_6b63_5219_8868_8fbe_5f0f_641c_7d22">
 <div class="nav-panel">
 <p>
 Next: <a href="Counting-Words.html" accesskey="n" rel="next">Counting via Repetition and Regexps</a>, Previous: <a href="Xun-Huan-Yu-Di-Gui-.html" accesskey="p" rel="prev">循环和递归</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h2 class="chapter" id="Regular-Expression-Searches">12 Regular Expression Searches</h2>
-<a class="index-entry-id" id="index-Searches_002c-illustrating"></a>
-<a class="index-entry-id" id="index-Regular-expression-searches"></a>
-<a class="index-entry-id" id="index-Patterns_002c-searching-for"></a>
-<a class="index-entry-id" id="index-Motion-by-sentence-and-paragraph"></a>
-<a class="index-entry-id" id="index-Sentences_002c-movement-by"></a>
-<a class="index-entry-id" id="index-Paragraphs_002c-movement-by"></a>
+<h2 class="chapter" id="Zheng-Ze-Biao-Da-Shi-Sou-Suo-">12 正则表达式搜索</h2>
+<a class="index-entry-id" id="index-Sou-Suo-_002cYan-Shi"></a>
+<a class="index-entry-id" id="index-Zheng-Ze-Biao-Da-Shi-Sou-Suo-"></a>
+<a class="index-entry-id" id="index-Mo-Shi-_002cSou-Suo-"></a>
+<a class="index-entry-id" id="index-Tong-Guo-Ju-Zi-He-Duan-Luo-Jin-Xing-Yi-Dong-"></a>
+<a class="index-entry-id" id="index-Tong-Guo-Ju-Zi-Jin-Xing-Yi-Dong-"></a>
+<a class="index-entry-id" id="index-Tong-Guo-Duan-Luo-Jin-Xing-Yi-Dong-"></a>
 
-<p>Regular expression searches are used extensively in GNU Emacs.  The
-two functions, <code class="code">forward-sentence</code> and <code class="code">forward-paragraph</code>,
-illustrate these searches well.  They use regular expressions to find
-where to move point.  The phrase &ldquo;regular expression&rdquo; is often written
-as &ldquo;regexp&rdquo;.
+<p>正则表达式搜索在GNU Emacs中被广泛使用。两个函数，<code class="code">forward-sentence</code>和<code class="code">forward-paragraph</code>，很好地说明了这些搜索的用法。它们使用正则表达式来确定点应该移动到哪里。短语“正则表达式”通常写作“regexp”。
 </p>
-<p>Regular expression searches are described in <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Regexp-Search.html#Regexp-Search">Regular Expression Search</a> in <cite class="cite">The GNU Emacs Manual</cite>, as well as in
-<a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Regular-Expressions.html#Regular-Expressions">Regular Expressions</a> in <cite class="cite">The GNU Emacs Lisp Reference
-Manual</cite>.  In writing this chapter, I am presuming that you have at
-least a mild acquaintance with them.  The major point to remember is
-that regular expressions permit you to search for patterns as well as
-for literal strings of characters.  For example, the code in
-<code class="code">forward-sentence</code> searches for the pattern of possible
-characters that could mark the end of a sentence, and moves point to
-that spot.
+<p>正则表达式搜索在<a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Regexp-Search.html#Regexp-Search">Regular Expression Search</a> in <cite class="cite">The GNU Emacs Manual</cite>中有详细描述，以及在<a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Regular-Expressions.html#Regular-Expressions">Regular Expressions</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>中也有描述。在撰写本章时，我假定您至少对它们有一些了解。需要记住的主要观点是正则表达式允许您搜索模式以及字符字面上的字符串。例如，<code class="code">forward-sentence</code>函数中的代码搜索可能标记句子结束的字符模式，并将点移动到该位置。
 </p>
-<p>Before looking at the code for the <code class="code">forward-sentence</code> function, it
-is worth considering what the pattern that marks the end of a sentence
-must be.  The pattern is discussed in the next section; following that
-is a description of the regular expression search function,
-<code class="code">re-search-forward</code>.  The <code class="code">forward-sentence</code> function
-is described in the section following.  Finally, the
-<code class="code">forward-paragraph</code> function is described in the last section of
-this chapter.  <code class="code">forward-paragraph</code> is a complex function that
-introduces several new features.
+<p>在查看<code class="code">forward-sentence</code>函数的代码之前，值得考虑一下标记句子结束的模式是什么。该模式将在下一节中讨论；随后是正则表达式搜索函数<code class="code">re-search-forward</code>的描述。<code class="code">forward-sentence</code>函数在其后的部分中描述。最后，本章的最后一节描述了<code class="code">forward-paragraph</code>函数。<code class="code">forward-paragraph</code>是一个复杂的函数，引入了一些新功能。
 </p>
 
 <ul class="mini-toc">
@@ -100,11 +80,6 @@ introduces several new features.
 <li><a href="Regexp-Review.html" accesskey="5">Review</a></li>
 <li><a href="re_002dsearch-Exercises.html" accesskey="6">Exercises with <code class="code">re-search-forward</code></a></li>
 </ul>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Counting-Words.html">Counting via Repetition and Regexps</a>, Previous: <a href="Xun-Huan-Yu-Di-Gui-.html">循环和递归</a>, Up: <a href="index.html">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

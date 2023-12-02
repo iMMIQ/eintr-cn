@@ -6389,7 +6389,7 @@ triple
 
 @item search-forward
 搜索字符串，如果找到，移动点。使用正则表达式时，请使用类似的 @code{re-search-forward}。
-(@xref{Regexp Search, , 正则表达式搜索}，了解正则表达式模式和搜索的解释。)
+(@xref{正则表达式搜索, , 正则表达式搜索}，了解正则表达式模式和搜索的解释。)
 
 @need 1250
 @noindent
@@ -8391,49 +8391,28 @@ Documentation Format}。
 @end iftex
 @end itemize
 
-@node Regexp Search
-@chapter Regular Expression Searches
-@cindex Searches, illustrating
-@cindex Regular expression searches
-@cindex Patterns, searching for
-@cindex Motion by sentence and paragraph
-@cindex Sentences, movement by
-@cindex Paragraphs, movement by
+@node 正则表达式搜索
+@chapter 正则表达式搜索
+@cindex 搜索，演示
+@cindex 正则表达式搜索
+@cindex 模式，搜索
+@cindex 通过句子和段落进行移动
+@cindex 通过句子进行移动
+@cindex 通过段落进行移动
 
-Regular expression searches are used extensively in GNU Emacs.  The
-two functions, @code{forward-sentence} and @code{forward-paragraph},
-illustrate these searches well.  They use regular expressions to find
-where to move point.  The phrase ``regular expression'' is often written
-as ``regexp''.
+正则表达式搜索在GNU Emacs中被广泛使用。两个函数，@code{forward-sentence}和@code{forward-paragraph}，很好地说明了这些搜索的用法。它们使用正则表达式来确定点应该移动到哪里。短语“正则表达式”通常写作“regexp”。
 
-Regular expression searches are described in @ref{Regexp Search, ,
-Regular Expression Search, emacs, The GNU Emacs Manual}, as well as in
-@ref{Regular Expressions, , , elisp, The GNU Emacs Lisp Reference
-Manual}.  In writing this chapter, I am presuming that you have at
-least a mild acquaintance with them.  The major point to remember is
-that regular expressions permit you to search for patterns as well as
-for literal strings of characters.  For example, the code in
-@code{forward-sentence} searches for the pattern of possible
-characters that could mark the end of a sentence, and moves point to
-that spot.
+正则表达式搜索在@ref{Regexp Search, , Regular Expression Search, emacs, The GNU Emacs Manual}中有详细描述，以及在@ref{Regular Expressions, , , elisp, The GNU Emacs Lisp Reference Manual}中也有描述。在撰写本章时，我假定您至少对它们有一些了解。需要记住的主要观点是正则表达式允许您搜索模式以及字符字面上的字符串。例如，@code{forward-sentence}函数中的代码搜索可能标记句子结束的字符模式，并将点移动到该位置。
 
-Before looking at the code for the @code{forward-sentence} function, it
-is worth considering what the pattern that marks the end of a sentence
-must be.  The pattern is discussed in the next section; following that
-is a description of the regular expression search function,
-@code{re-search-forward}.  The @code{forward-sentence} function
-is described in the section following.  Finally, the
-@code{forward-paragraph} function is described in the last section of
-this chapter.  @code{forward-paragraph} is a complex function that
-introduces several new features.
+在查看@code{forward-sentence}函数的代码之前，值得考虑一下标记句子结束的模式是什么。该模式将在下一节中讨论；随后是正则表达式搜索函数@code{re-search-forward}的描述。@code{forward-sentence}函数在其后的部分中描述。最后，本章的最后一节描述了@code{forward-paragraph}函数。@code{forward-paragraph}是一个复杂的函数，引入了一些新功能。
 
 @menu
-* sentence-end::                The regular expression for @code{sentence-end}.
-* re-search-forward::           Very similar to @code{search-forward}.
-* forward-sentence::            A straightforward example of regexp search.
-* forward-paragraph::           A somewhat complex example.
-* Regexp Review::
-* re-search Exercises::
+* sentence-end::                @code{sentence-end}的正则表达式。
+* re-search-forward::           与@code{search-forward}非常相似。
+* forward-sentence::            正则表达式搜索的简单示例。
+* forward-paragraph::           一个相对复杂的示例。
+* 正则表达式回顾::
+* re-search 练习::
 @end menu
 
 @node sentence-end
@@ -14835,7 +14814,7 @@ by one or more spaces, tabs, or newlines.  However, it does not detect
 duplicated words on different lines, since the ending of the first
 word, the end of the line, is different from the ending of the second
 word, a space.  (For more information about regular expressions, see
-@ref{Regexp Search, , Regular Expression Searches}, as well as
+@ref{正则表达式搜索, , Regular Expression Searches}, as well as
 @ref{Regexps, , Syntax of Regular Expressions, emacs, The GNU Emacs
 Manual}, and @ref{Regular Expressions, , Regular Expressions, elisp,
 The GNU Emacs Lisp Reference Manual}.)
