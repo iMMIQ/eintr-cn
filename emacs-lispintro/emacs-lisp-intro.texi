@@ -4280,13 +4280,9 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 @end table
 
 @node optional Exercise
-@section @code{optional} Argument Exercise
+@section @code{optional} 参数练习
 
-Write an interactive function with an optional argument that tests
-whether its argument, a number, is greater than or equal to, or else,
-less than the value of @code{fill-column}, and tells you which, in a
-message.  However, if you do not pass an argument to the function, use
-56 as a default value.
+编写一个交互式函数，该函数带有一个可选参数，用于测试其参数（一个数字）是否大于或等于 @code{fill-column} 的值，否则，小于该值，并通过消息告诉您结果。然而，如果您没有向函数传递参数，则使用默认值56。
 
 @node Narrowing & Widening
 @chapter Narrowing and Widening
