@@ -9296,81 +9296,53 @@ GNU Emacs 21
 编写一个函数来搜索重复的单词，例如“the the”。有关如何编写匹配由两个相同部分组成的字符串的正则表达式（regexp）的信息，请参阅@xref{Regexps, , Syntax of Regular Expressions, emacs, The GNU Emacs Manual}。您可以设计几个正则表达式；有些比其他的好。我使用的函数在附录中有描述，以及几个正则表达式。@xref{the-the, , @code{the-the} Duplicated Words Function}。
 @end itemize
 
-@node Counting Words
-@chapter Counting via Repetition and Regexps
-@cindex Repetition for word counting
-@cindex Regular expressions for word counting
+@node 统计单词数
+@chapter 通过重复和正则表达式进行统计
+@cindex 通过重复统计单词
+@cindex 通过正则表达式统计单词
 
-Repetition and regular expression searches are powerful tools that you
-often use when you write code in Emacs Lisp.  This chapter illustrates
-the use of regular expression searches through the construction of
-word count commands using @code{while} loops and recursion.
+重复和正则表达式搜索是在编写Emacs Lisp代码时经常使用的强大工具。本章通过使用 @code{while} 循环和递归构建单词计数命令来说明正则表达式搜索的使用。
 
 @menu
-* Why Count Words::
-* @value{COUNT-WORDS}::          Use a regexp, but find a problem.
-* recursive-count-words::       Start with case of no words in region.
-* Counting Exercise::
+* 为什么统计单词::         
+* @value{COUNT-WORDS}::          使用正则表达式，但遇到问题。
+* recursive-count-words::       从区域中没有单词的情况开始。
+* 统计练习::
 @end menu
 
 @ifnottex
-@node Why Count Words
-@unnumberedsec Counting words
+@node 为什么统计单词
+@unnumberedsec 统计单词
 @end ifnottex
 
-The standard Emacs distribution contains functions for counting the
-number of lines and words within a region.
+标准的Emacs发行版包含用于计算区域内行数和单词数的函数。
 
-Certain types of writing ask you to count words.  Thus, if you write
-an essay, you may be limited to 800 words; if you write a novel, you
-may discipline yourself to write 1000 words a day.  It seems odd, but
-for a long time, Emacs lacked a word count command.  Perhaps people used
-Emacs mostly for code or types of documentation that did not require
-word counts; or perhaps they restricted themselves to the operating
-system word count command, @code{wc}.  Alternatively, people may have
-followed the publishers' convention and computed a word count by
-dividing the number of characters in a document by five.
+某些类型的写作要求你统计单词数。因此，如果你写一篇文章，你可能被限制在800个单词；如果你写一本小说，你可能自律地每天写1000个单词。这似乎有些奇怪，但很长一段时间，Emacs缺乏一个统计单词数的命令。也许人们主要使用Emacs编写代码或一些不需要统计单词数的文档；或者他们局限于使用操作系统的单词计数命令 @code{wc}。另外，人们可能按照出版商的习惯，通过将文档中的字符数除以五来计算单词数。
 
-There are many ways to implement a command to count words.  Here are
-some examples, which you may wish to compare with the standard Emacs
-command, @code{count-words-region}.
+有许多实现统计单词数的方法。以下是一些例子，您可能希望与标准Emacs命令 @code{count-words-region} 进行比较。
 
 @node @value{COUNT-WORDS}
-@section The @code{@value{COUNT-WORDS}} Function
+@section 函数 @code{@value{COUNT-WORDS}}
 @findex @value{COUNT-WORDS}
 
-A word count command could count words in a line, paragraph, region,
-or buffer.  What should the command cover?  You could design the
-command to count the number of words in a complete buffer.  However,
-the Emacs tradition encourages flexibility---you may want to count
-words in just a section, rather than all of a buffer.  So it makes
-more sense to design the command to count the number of words in a
-region.  Once you have a command to count words in a region, you can,
-if you wish, count words in a whole buffer by marking it with
-@w{@kbd{C-x h}} (@code{mark-whole-buffer}).
+一个单词计数命令可以在行、段落、区域或缓冲区中计算单词数。这个命令应该覆盖什么范围？你可以设计命令来计算整个缓冲区中的单词数。然而，Emacs 传统鼓励灵活性——你可能只想计算一个部分中的单词，而不是整个缓冲区。因此，更有意义的是设计命令来计算区域中的单词数。一旦你有一个计算区域中单词数的命令，如果愿意，可以通过使用@w{@kbd{C-x h}}（@code{mark-whole-buffer}）标记整个缓冲区来计算单词数。
 
-Clearly, counting words is a repetitive act: starting from the
-beginning of the region, you count the first word, then the second
-word, then the third word, and so on, until you reach the end of the
-region.  This means that word counting is ideally suited to recursion
-or to a @code{while} loop.
+显然，计算单词是一个重复的动作：从区域的开头开始，计算第一个单词，然后是第二个单词，依此类推，直到达到区域的末尾。这意味着单词计数理想情况下适合使用递归或@code{while}循环。
 
 @menu
-* Design @value{COUNT-WORDS}::  The definition using a @code{while} loop.
-* Whitespace Bug::              The Whitespace Bug in @code{@value{COUNT-WORDS}}.
+* 设计 @value{COUNT-WORDS}::  使用@code{while}循环进行定义。
+* 空白符号错误::  @code{@value{COUNT-WORDS}}中的空白符号错误。
 @end menu
 
 @ifnottex
-@node Design @value{COUNT-WORDS}
-@unnumberedsubsec Designing @code{@value{COUNT-WORDS}}
+@node 设计 @value{COUNT-WORDS}
+@unnumberedsubsec 设计 @code{@value{COUNT-WORDS}}
 @end ifnottex
 
-First, we will implement the word count command with a @code{while}
-loop, then with recursion.  The command will, of course, be
-interactive.
+首先，我们将使用@code{while}循环实现单词计数命令，然后再使用递归。当然，该命令将是交互式的。
 
 @need 800
-The template for an interactive function definition is, as always:
+交互式函数定义的模板如下：
 
 @smallexample
 @group
@@ -9381,410 +9353,252 @@ The template for an interactive function definition is, as always:
 @end group
 @end smallexample
 
-What we need to do is fill in the slots.
+我们需要填写这些位置。
 
-The name of the function should be self-explanatory and easy
-to remember.  @code{count-words-region} is the obvious choice.  Since
-that name is used for the standard Emacs command to count words, we
-will name our implementation @code{@value{COUNT-WORDS}}.
+函数的名称应该是不言自明且容易记忆的。@code{count-words-region}是显而易见的选择。由于该名称已用于标准的Emacs命令以计算单词数，我们将为我们的实现命名为@code{@value{COUNT-WORDS}}。
 
-The function counts words within a region.  This means that the
-argument list must contain symbols that are bound to the two
-positions, the beginning and end of the region.  These two positions
-can be called @samp{beginning} and @samp{end} respectively.  The first
-line of the documentation should be a single sentence, since that is
-all that is printed as documentation by a command such as
-@code{apropos}.  The interactive expression will be of the form
-@samp{(interactive "r")}, since that will cause Emacs to pass the
-beginning and end of the region to the function's argument list.  All
-this is routine.
+该函数计算区域中的单词数。这意味着参数列表必须包含绑定到区域的两个位置的符号，即起始和结束。这两个位置可以分别称为@samp{beginning}和@samp{end}。文档的第一行应该是一个简单的句子，因为这是由@code{apropos}等命令打印的所有文档。交互表达式将采用形式@samp{(interactive "r")}，因为这将导致Emacs将区域的起始和结束传递给函数的参数列表。所有这些都是例行公事。
 
-The body of the function needs to be written to do three tasks:
-first, to set up conditions under which the @code{while} loop can
-count words, second, to run the @code{while} loop, and third, to send
-a message to the user.
+函数的主体需要编写三个任务：首先，设置@code{while}循环可以计算单词的条件；其次，运行@code{while}循环；最后，向用户发送消息。
 
-When a user calls @code{@value{COUNT-WORDS}}, point may be at the
-beginning or the end of the region.  However, the counting process
-must start at the beginning of the region.  This means we will want
-to put point there if it is not already there.  Executing
-@code{(goto-char beginning)} ensures this.  Of course, we will want to
-return point to its expected position when the function finishes its
-work.  For this reason, the body must be enclosed in a
-@code{save-excursion} expression.
+当用户调用@code{@value{COUNT-WORDS}}时，点可能位于区域的开头或末尾。然而，计数过程必须从区域的开头开始。这意味着如果点尚未在那里，我们将希望将点放在那里。执行@code{(goto-char beginning)}可以确保这一点。当函数完成其工作时，当然我们希望将点返回到其预期的位置。因此，主体必须包含在@code{save-excursion}表达式中。
 
-The central part of the body of the function consists of a
-@code{while} loop in which one expression jumps point forward word by
-word, and another expression counts those jumps.  The true-or-false-test
-of the @code{while} loop should test true so long as point should jump
-forward, and false when point is at the end of the region.
+函数主体的核心部分包含一个@code{while}循环，其中一个表达式按单词向前跳转点，另一个表达式计算这些跳转。@code{while}循环的真假测试应该在点应该向前跳转时返回true，在点在区域末尾时返回false。
 
-We could use @code{(forward-word 1)} as the expression for moving point
-forward word by word, but it is easier to see what Emacs identifies as a
-``word'' if we use a regular expression search.
+我们可以使用@code{(forward-word 1)}作为将点逐个单词向前移动的表达式，但如果使用正则表达式搜索，可以更容易地看到Emacs将其识别为“单词”的内容。
 
-A regular expression search that finds the pattern for which it is
-searching leaves point after the last character matched.  This means
-that a succession of successful word searches will move point forward
-word by word.
+一个正则表达式搜索找到其正在搜索的模式后，将点留在匹配的最后一个字符之后。这意味着一系列成功的单词搜索将点逐个单词向前移动。
 
-As a practical matter, we want the regular expression search to jump
-over whitespace and punctuation between words as well as over the
-words themselves.  A regexp that refuses to jump over interword
-whitespace would never jump more than one word!  This means that
-the regexp should include the whitespace and punctuation that follows
-a word, if any, as well as the word itself.  (A word may end a buffer
-and not have any following whitespace or punctuation, so that part of
-the regexp must be optional.)
+实际上，我们希望正则表达式搜索跳过单词之间的空白符和标点符号，以及单词本身。一个拒绝跳过单词之间空白符的正则表达式搜索永远不会跳过一个以上的单词！这意味着正则表达式应包括单词之后（如果有的话）的空白符和标点符号，以及单词本身。 （一个单词可能结束于缓冲区，而没有任何后续空白符或标点符号，因此该正则表达式的这一部分必须是可选的。）
 
-Thus, what we want for the regexp is a pattern defining one or more
-word constituent characters followed, optionally, by one or more
-characters that are not word constituents.  The regular expression for
-this is:
+因此，我们希望正则表达式的模式是定义一个或多个单词成分字符，后面跟着可选的一个或多个不是单词成分字符的字符。这个正则表达式的模式如下：
 
 @smallexample
 \w+\W*
 @end smallexample
 
 @noindent
-The buffer's syntax table determines which characters are and are not
-word constituents.  For more information about syntax,
-@pxref{Syntax Tables, , Syntax Tables, elisp, The GNU Emacs Lisp
-Reference Manual}.
+缓冲区的语法表决定了哪些字符是单词成分字符，哪些不是。有关语法的更多信息，请参见@pxref{Syntax Tables, , Syntax Tables, elisp, The GNU Emacs Lisp Reference Manual}。
 
 @need 800
-The search expression looks like this:
+搜索表达式看起来像这样：
 
 @smallexample
 (re-search-forward "\\w+\\W*")
 @end smallexample
 
 @noindent
-(Note that paired backslashes precede the @samp{w} and @samp{W}.  A
-single backslash has special meaning to the Emacs Lisp interpreter.
-It indicates that the following character is interpreted differently
-than usual.  For example, the two characters, @samp{\n}, stand for
-@samp{newline}, rather than for a backslash followed by @samp{n}.  Two
-backslashes in a row stand for an ordinary, unspecial backslash, so
-Emacs Lisp interpreter ends of seeing a single backslash followed by a
-letter.  So it discovers the letter is special.)
+（请注意，斜杠前面有@samp{w}和@samp{W}。单个斜杠对Emacs Lisp解释器有特殊含义。它表示以下字符的解释方式与通常不同。例如，两个字符@samp{\n}代表@samp{newline}，而不是反斜杠后跟@samp{n}。两个连续的斜杠表示一个普通的、非特殊的反斜杠，因此Emacs Lisp解释器最终会看到一个后面跟着一个字母的单个反斜杠。因此，它发现这个字母是特殊的。）
 
-We need a counter to count how many words there are; this variable
-must first be set to 0 and then incremented each time Emacs goes
-around the @code{while} loop.  The incrementing expression is simply:
+我们需要一个计数器来计算有多少个单词；这个变量必须首先设置为0，然后在Emacs循环@code{while}中的每一次都递增。递增表达式很简单：
 
 @smallexample
 (setq count (1+ count))
 @end smallexample
 
-Finally, we want to tell the user how many words there are in the
-region.  The @code{message} function is intended for presenting this
-kind of information to the user.  The message has to be phrased so
-that it reads properly regardless of how many words there are in the
-region: we don't want to say that ``there are 1 words in the region''.
-The conflict between singular and plural is ungrammatical.  We can
-solve this problem by using a conditional expression that evaluates
-different messages depending on the number of words in the region.
-There are three possibilities: no words in the region, one word in the
-region, and more than one word.  This means that the @code{cond}
-special form is appropriate.
+最后，我们想告诉用户区域中有多少个单词。@code{message}函数适用于向用户呈现这种类型的信息。消息必须以这样的方式构造，以便不管区域中有多少个单词，它都能正确阅读：我们不想说“区域中有1个单词”。单数和复数之间的冲突是不合语法的。我们可以通过使用条件表达式来解决此问题，该表达式根据区域中的单词数评估不同的消息。有三种可能性：区域中没有单词，区域中有一个单词，以及区域中有多个单词。这意味着@code{cond}特殊形式是适当的。
 
 @need 1500
-All this leads to the following function definition:
+所有这些导致以下函数定义：
 
 @smallexample
 @group
-;;; @r{First version; has bugs!}
+;;; @r{第一个版本；存在错误！}
 (defun @value{COUNT-WORDS} (beginning end)
-  "Print number of words in the region.
-Words are defined as at least one word-constituent
-character followed by at least one character that
-is not a word-constituent.  The buffer's syntax
-table determines which characters these are."
+  "打印区域中的单词数。
+单词被定义为至少一个单词成分字符，后跟至少一个不是单词成分字符的字符。
+缓冲区的语法表决定了这些字符是什么。"
   (interactive "r")
-  (message "Counting words in region ... ")
+  (message "正在计算区域中的单词数... ")
 @end group
 
 @group
-;;; @r{1. Set up appropriate conditions.}
+;;; @r{1. 设置适当的条件。}
   (save-excursion
     (goto-char beginning)
     (let ((count 0))
 @end group
 
 @group
-;;; @r{2. Run the} while @r{loop.}
+;;; @r{2. 运行} while @r{循环。}
       (while (< (point) end)
         (re-search-forward "\\w+\\W*")
         (setq count (1+ count)))
 @end group
 
 @group
-;;; @r{3. Send a message to the user.}
+;;; @r{3. 向用户发送消息。}
       (cond ((zerop count)
              (message
-              "The region does NOT have any words."))
+              "区域中没有单词。"))
             ((= 1 count)
              (message
-              "The region has 1 word."))
+              "区域中有1个单词。"))
             (t
              (message
-              "The region has %d words." count))))))
+              "区域中有%d个单词。" count))))))
 @end group
 @end smallexample
 
 @noindent
-As written, the function works, but not in all circumstances.
+按照目前的编写方式，该函数能够工作，但在某些情况下不完全正确。
 
-@node Whitespace Bug
-@subsection The Whitespace Bug in @code{@value{COUNT-WORDS}}
+@node 空白字符错误
+@subsection @code{@value{COUNT-WORDS}} 中的空白字符错误
 
-The @code{@value{COUNT-WORDS}} command described in the preceding
-section has two bugs, or rather, one bug with two manifestations.
-First, if you mark a region containing only whitespace in the middle
-of some text, the @code{@value{COUNT-WORDS}} command tells you that the
-region contains one word!  Second, if you mark a region containing
-only whitespace at the end of the buffer or the accessible portion of
-a narrowed buffer, the command displays an error message that looks
-like this:
+在前面的章节中描述的 @code{@value{COUNT-WORDS}} 命令有两个错误，或者更确切地说，有一个带有两个表现形式的错误。首先，如果你标记一个仅包含中间某些文本的空白区域，@code{@value{COUNT-WORDS}} 命令会告诉你该区域包含一个单词！其次，如果你标记一个仅包含位于缓冲区末尾或缩小缓冲区的可访问部分的空白字符的区域，该命令会显示一个错误消息，看起来像这样：
 
 @smallexample
-Search failed: "\\w+\\W*"
+搜索失败："\\w+\\W*"
 @end smallexample
 
-If you are reading this in Info in GNU Emacs, you can test for these
-bugs yourself.
+如果你是在GNU Emacs的Info中阅读本文，你可以自行测试这些错误。
 
-First, evaluate the function in the usual manner to install it.
+首先，按照通常的方式评估该函数以安装它。
 @ifinfo
-Here is a copy of the definition.  Place your cursor after the closing
-parenthesis and type @kbd{C-x C-e} to install it.
+这是定义的一个副本。将光标放在括号结束后，然后键入 @kbd{C-x C-e} 以安装它。
 
 @smallexample
 @group
-;; @r{First version; has bugs!}
+;; @r{第一个版本; 存在错误!}
 (defun @value{COUNT-WORDS} (beginning end)
-  "Print number of words in the region.
-Words are defined as at least one word-constituent character followed
-by at least one character that is not a word-constituent.  The buffer's
-syntax table determines which characters these are."
+  "打印区域内的单词数。
+单词定义为至少一个单词构成字符，后面跟着至少一个不是单词构成字符的字符。缓冲区的语法表确定这些字符。"
 @end group
 @group
   (interactive "r")
-  (message "Counting words in region ... ")
+  (message "正在计算区域内的单词数 ... ")
 @end group
 
 @group
-;;; @r{1. Set up appropriate conditions.}
+;;; @r{1. 设置适当的条件。}
   (save-excursion
     (goto-char beginning)
     (let ((count 0))
 @end group
 
 @group
-;;; @r{2. Run the} while @r{loop.}
+;;; @r{2. 运行} while @r{循环。}
       (while (< (point) end)
         (re-search-forward "\\w+\\W*")
         (setq count (1+ count)))
 @end group
 
 @group
-;;; @r{3. Send a message to the user.}
+;;; @r{3. 向用户发送消息。}
       (cond ((zerop count)
-             (message "The region does NOT have any words."))
-            ((= 1 count) (message "The region has 1 word."))
-            (t (message "The region has %d words." count))))))
+             (message "该区域不包含任何单词。"))
+            ((= 1 count) (message "该区域包含1个单词。"))
+            (t (message "该区域包含%d个单词。" count))))))
 @end group
 @end smallexample
 @end ifinfo
 
 @need 1000
-If you wish, you can also install this key binding by evaluating it:
+如果愿意，也可以通过评估以下绑定来安装此键绑定：
 
 @smallexample
 (global-set-key "\C-c=" '@value{COUNT-WORDS})
 @end smallexample
 
-To conduct the first test, set mark and point to the beginning and end
-of the following line and then type @kbd{C-c =} (or @kbd{M-x
-@value{COUNT-WORDS}} if you have not bound @kbd{C-c =}):
+进行第一个测试，将标记和点设置到以下行的开始和结束，然后键入 @kbd{C-c =}（或如果未绑定 @kbd{C-c =}，则为 @kbd{M-x @value{COUNT-WORDS}}）：
 
 @smallexample
-    one   two  three
+    一个  两个  三
 @end smallexample
 
 @noindent
-Emacs will tell you, correctly, that the region has three words.
+Emacs 将告诉你，该区域有三个单词，这是正确的。
 
-Repeat the test, but place mark at the beginning of the line and place
-point just @emph{before} the word @samp{one}.  Again type the command
-@kbd{C-c =} (or @kbd{M-x @value{COUNT-WORDS}}).  Emacs should tell you
-that the region has no words, since it is composed only of the
-whitespace at the beginning of the line.  But instead Emacs tells you
-that the region has one word!
+重复测试，但将标记放在该行的开头，并将点放在单词 @samp{一个} 之前。再次输入命令 @kbd{C-c =}（或 @kbd{M-x @value{COUNT-WORDS}}）。Emacs 应该告诉你该区域没有单词，因为它仅由该行开头的空白字符组成。但是，Emacs却告诉你该区域有一个单词！
 
-For the third test, copy the sample line to the end of the
-@file{*scratch*} buffer and then type several spaces at the end of the
-line.  Place mark right after the word @samp{three} and point at the
-end of line.  (The end of the line will be the end of the buffer.)
-Type @kbd{C-c =} (or @kbd{M-x @value{COUNT-WORDS}}) as you did before.
-Again, Emacs should tell you that the region has no words, since it is
-composed only of the whitespace at the end of the line.  Instead,
-Emacs displays an error message saying @samp{Search failed}.
+对于第三个测试，将示例行复制到 @file{*scratch*} 缓冲区的末尾，然后在该行的末尾输入多个空格。将标记放在单词 @samp{三} 之后，将点放在行末。 （行末将是缓冲区的末尾。）像之前一样，输入 @kbd{C-c =}（或 @kbd{M-x @value{COUNT-WORDS}}）。再次，Emacs 应该告诉你该区域没有单词，因为它仅由该行末尾的空白字符组成。但是，相反，Emacs 显示一个错误消息，其中显示 @samp{Search failed}。
 
-The two bugs stem from the same problem.
+这两个错误源于同一个问题。
 
-Consider the first manifestation of the bug, in which the command
-tells you that the whitespace at the beginning of the line contains
-one word.  What happens is this: The @code{M-x @value{COUNT-WORDS}}
-command moves point to the beginning of the region.  The @code{while}
-tests whether the value of point is smaller than the value of
-@code{end}, which it is.  Consequently, the regular expression search
-looks for and finds the first word.  It leaves point after the word.
-@code{count} is set to one.  The @code{while} loop repeats; but this
-time the value of point is larger than the value of @code{end}, the
-loop is exited; and the function displays a message saying the number
-of words in the region is one.  In brief, the regular expression
-search looks for and finds the word even though it is outside
-the marked region.
+考虑错误的第一个表现形式，在该表现形式中，该命令告诉你该行开头的空白字符包含一个单词。发生的情况是：@code{M-x @value{COUNT-WORDS}} 命令将点移动到区域的开头。@code{while} 测试点的值是否小于 @code{end} 的值，它是的。因此，正则表达式搜索寻找并找到第一个单词。它将点放在单词之后。 @code{count} 设置为一。@code{while} 循环重复; 但是这次点的值大于 @code{end} 的值，循环退出；函数显示一条消息，其中包含区域中的单词数为一。简而言之，尽管标记区域外的单词，但正则表达式搜索却寻找并找到了该单词。
 
-In the second manifestation of the bug, the region is whitespace at
-the end of the buffer.  Emacs says @samp{Search failed}.  What happens
-is that the true-or-false-test in the @code{while} loop tests true, so
-the search expression is executed.  But since there are no more words
-in the buffer, the search fails.
+在错误的第二个表现形式中，该区域是位于缓冲区末尾的空白字符。Emacs 显示 @samp{Search failed}。发生的情况是，在 @code{while} 循环中的真假测试中，测试为真，因此执行搜索表达式。但由于缓冲区中没有更多的单词，搜索失败。
 
-In both manifestations of the bug, the search extends or attempts to
-extend outside of the region.
+在错误的两个表现形式中，搜索都会扩展或尝试扩展到区域之外。
 
-The solution is to limit the search to the region---this is a fairly
-simple action, but as you may have come to expect, it is not quite as
-simple as you might think.
+解决方案是限制搜索到该区域，这是一个相当简单的操作，但正如你可能期望的那样，它并不像你想象的那么简单。
 
-As we have seen, the @code{re-search-forward} function takes a search
-pattern as its first argument.  But in addition to this first,
-mandatory argument, it accepts three optional arguments.  The optional
-second argument bounds the search.  The optional third argument, if
-@code{t}, causes the function to return @code{nil} rather than signal
-an error if the search fails.  The optional fourth argument is a
-repeat count.  (In Emacs, you can see a function's documentation by
-typing @kbd{C-h f}, the name of the function, and then @key{RET}.)
+正如我们所见，@code{re-search-forward} 函数将搜索模式作为其第一个参数。但除了这第一个，强制性的参数外，它还接受三个可选参数。可选的第二个参数限制了搜索。可选的第三个参数，如果是 @code{t}，则使函数在搜索失败时返回 @code{nil} 而不是引发错误。可选的第四个参数是重复计数。（在Emacs中，可以通过键入 @kbd{C-h f}，函数的名称，然后 @key{RET} 来查看函数的文档。）
 
-In the @code{@value{COUNT-WORDS}} definition, the value of the end of
-the region is held by the variable @code{end} which is passed as an
-argument to the function.  Thus, we can add @code{end} as an argument
-to the regular expression search expression:
+在 @code{@value{COUNT-WORDS}} 的定义中，区域末尾的值由传递给函数的变量 @code{end} 持有。因此，我们可以将 @code{end} 添加为正则表达式搜索表达式的参数：
 
 @smallexample
 (re-search-forward "\\w+\\W*" end)
 @end smallexample
 
-However, if you make only this change to the @code{@value{COUNT-WORDS}}
-definition and then test the new version of the definition on a
-stretch of whitespace, you will receive an error message saying
-@samp{Search failed}.
+然而，如果你只对 @code{@value{COUNT-WORDS}} 定义进行这个更改，然后在一段空白区域上测试新版本的定义，你将收到一条错误消息，其中显示 @samp{Search failed}。
 
-What happens is this: the search is limited to the region, and fails
-as you expect because there are no word-constituent characters in the
-region.  Since it fails, we receive an error message.  But we do not
-want to receive an error message in this case; we want to receive the
-message ``The region does NOT have any words.''
+发生的情况是：搜索限制为该区域，因为在该区域中没有单词构成字符，所以搜索失败，正如你所期望的那样。由于失败，我们收到了一条错误消息。但在这种情况下，我们不希望收到错误消息；我们希望收到消息“该区域不包含任何单词”。
 
-The solution to this problem is to provide @code{re-search-forward}
-with a third argument of @code{t}, which causes the function to return
-@code{nil} rather than signal an error if the search fails.
+解决此问题的方法是向 @code{re-search-forward} 提供第三个参数 @code{t}，这将导致函数在搜索失败时返回 @code{nil} 而不是引发错误。
 
-However, if you make this change and try it, you will see the message
-``Counting words in region ... '' and @dots{} you will keep on seeing
-that message @dots{}, until you type @kbd{C-g} (@code{keyboard-quit}).
+然而，如果你进行此更改并尝试运行它，你将看到消息“计算区域内的单词数 ...”，等等，你将继续看到该消息...，直到你键入 @kbd{C-g}（@code{keyboard-quit}）。
 
-Here is what happens: the search is limited to the region, as before,
-and it fails because there are no word-constituent characters in the
-region, as expected.  Consequently, the @code{re-search-forward}
-expression returns @code{nil}.  It does nothing else.  In particular,
-it does not move point, which it does as a side effect if it finds the
-search target.  After the @code{re-search-forward} expression returns
-@code{nil}, the next expression in the @code{while} loop is evaluated.
-This expression increments the count.  Then the loop repeats.  The
-true-or-false-test tests true because the value of point is still less
-than the value of end, since the @code{re-search-forward} expression
-did not move point. @dots{} and the cycle repeats @dots{}
+发生的情况是：搜索限制为该区域，与之前一样失败，因为该区域中没有单词构成字符，正如预期的那样。因此，@code{re-search-forward} 表达式返回 @code{nil}。它仅仅返回 @code{nil}。特别地，如果找到了搜索目标，它不会移动点，这是它的副作用之一。在 @code{re-search-forward} 表达式返回 @code{nil} 后，@code{while} 循环中的下一个表达式将被评估。该表达式递增计数。然后循环重复。由于 @code{re-search-forward} 表达式没有移动点，所以 @code{while} 循环的真假测试测试为真，因为点的值仍然小于 @code{end} 的值。...循环重复...
 
-The @code{@value{COUNT-WORDS}} definition requires yet another
-modification, to cause the true-or-false-test of the @code{while} loop
-to test false if the search fails.  Put another way, there are two
-conditions that must be satisfied in the true-or-false-test before the
-word count variable is incremented: point must still be within the
-region and the search expression must have found a word to count.
+@code{@value{COUNT-WORDS}} 定义需要进行另一个修改，以使 @code{while} 循环的真假测试在搜索失败时测试为假。换句话说，在增加单词计数变量之前，必须同时满足两个条件：点必须仍然在区域内，并且搜索表达式必须找到一个要计数的单词。
 
-Since both the first condition and the second condition must be true
-together, the two expressions, the region test and the search
-expression, can be joined with an @code{and} special form and embedded in
-the @code{while} loop as the true-or-false-test, like this:
+由于第一个条件和第二个条件必须一起为真，所以这两个表达式，区域测试和搜索表达式，可以用 @code{and} 特殊形式连接，并嵌入到 @code{while} 循环中作为真假测试，如下所示：
 
 @smallexample
 (and (< (point) end) (re-search-forward "\\w+\\W*" end t))
 @end smallexample
 
-@c colon in printed section title causes problem in Info cross reference
-@c also trouble with an overfull hbox
+@c 在打印的章节标题中的冒号会导致Info交叉引用问题
+@c 在Info交叉引用中也存在问题
 @iftex
 @noindent
-(For information about @code{and}, see
-@ref{kill-new function, , The @code{kill-new} function}.)
+（有关 @code{and} 的信息，请参见 @ref{kill-new function, , The @code{kill-new} function}。）
 @end iftex
 @ifinfo
 @noindent
-(@xref{kill-new function, , The @code{kill-new} function}, for
-information about @code{and}.)
+（关于 @code{and} 的信息，请参见 @ref{kill-new function, , The @code{kill-new} function}。）
 @end ifinfo
 
-The @code{re-search-forward} expression returns @code{t} if the search
-succeeds and as a side effect moves point.  Consequently, as words are
-found, point is moved through the region.  When the search expression
-fails to find another word, or when point reaches the end of the
-region, the true-or-false-test tests false, the @code{while} loop
-exits, and the @code{@value{COUNT-WORDS}} function displays one or
-other of its messages.
+@code{re-search-forward} 表达式在搜索成功时返回 @code{t}，并作为副作用移动点。因此，随着找到单词，点通过区域移动。当搜索表达式未能找到另一个单词，或当点达到区域的末尾时，真假测试失败，@code{while} 循环退出，@code{@value{COUNT-WORDS}} 函数显示其消息之一。
 
-After incorporating these final changes, the @code{@value{COUNT-WORDS}}
-works without bugs (or at least, without bugs that I have found!).
-Here is what it looks like:
+在加入这些最终更改后，@code{@value{COUNT-WORDS}} 就没有错误了（或者至少，我没有找到错误！）。以下是它的最终版本：
 
 @smallexample
 @group
-;;; @r{Final version:} @code{while}
+;;; @r{最终版本：} @code{while}
 (defun @value{COUNT-WORDS} (beginning end)
-  "Print number of words in the region."
+  "打印区域内的单词数。"
   (interactive "r")
-  (message "Counting words in region ... ")
+  (message "计算区域内的单词数 ... ")
 @end group
 
 @group
-;;; @r{1. Set up appropriate conditions.}
+;;; @r{1. 设置适当的条件。}
   (save-excursion
     (let ((count 0))
       (goto-char beginning)
 @end group
 
 @group
-;;; @r{2. Run the} while @r{loop.}
+;;; @r{2. 运行} while @r{循环。}
       (while (and (< (point) end)
                   (re-search-forward "\\w+\\W*" end t))
         (setq count (1+ count)))
 @end group
 
 @group
-;;; @r{3. Send a message to the user.}
+;;; @r{3. 向用户发送消息。}
       (cond ((zerop count)
              (message
-              "The region does NOT have any words."))
+              "该区域不包含任何单词。"))
             ((= 1 count)
              (message
-              "The region has 1 word."))
+              "该区域包含一个单词。"))
             (t
              (message
-              "The region has %d words." count))))))
+              "该区域包含 %d 个单词。" count))))))
 @end group
 @end smallexample
 
@@ -9961,7 +9775,7 @@ Thus, the do-again-test should look like this:
 
 Note that the search expression is part of the do-again-test---the
 function returns @code{t} if its search succeeds and @code{nil} if it
-fails.  (@xref{Whitespace Bug, , The Whitespace Bug in
+fails.  (@xref{空白字符错误, , The Whitespace Bug in
 @code{@value{COUNT-WORDS}}}, for an explanation of how
 @code{re-search-forward} works.)
 
@@ -10180,7 +9994,7 @@ exclamation mark, and question mark.  Do the same using recursion.
 
 Our next project is to count the number of words in a function
 definition.  Clearly, this can be done using some variant of
-@code{@value{COUNT-WORDS}}.  @xref{Counting Words, , Counting via
+@code{@value{COUNT-WORDS}}.  @xref{统计单词数, , Counting via
 Repetition and Regexps}.  If we are just going to count the words in
 one definition, it is easy enough to mark the definition with the
 @kbd{C-M-h} (@code{mark-defun}) command, and then call

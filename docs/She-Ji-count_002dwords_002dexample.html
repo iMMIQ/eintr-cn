@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>设计 count-words-example (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="设计 count-words-example (Programming in Emacs Lisp)">
+<meta name="keywords" content="设计 count-words-example (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="count_002dwords_002dexample.html" rel="up" title="count-words-example">
+<link href="Kong-Bai-Zi-Fu-Cuo-Wu-.html" rel="next" title="空白字符错误">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="g_t_8bbe_8ba1-count_002dwords_002dexample">
+<div class="nav-panel">
+<p>
+Next: <a href="Kong-Bai-Zi-Fu-Cuo-Wu-.html" accesskey="n" rel="next"><code class="code">count-words-example</code> 中的空白字符错误</a>, Up: <a href="count_002dwords_002dexample.html" accesskey="u" rel="up">函数 <code class="code">count-words-example</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="She-Ji-count_002dwords_002dexample">设计 <code class="code">count-words-example</code></h4>
+
+<p>首先，我们将使用<code class="code">while</code>循环实现单词计数命令，然后再使用递归。当然，该命令将是交互式的。
+</p>
+<p>交互式函数定义的模板如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun <var class="var">name-of-function</var> (<var class="var">argument-list</var>)
+  &quot;<var class="var">documentation</var>&hellip;&quot;
+  (<var class="var">interactive-expression</var>&hellip;)
+  <var class="var">body</var>&hellip;)
+</pre></div></div>
+
+<p>我们需要填写这些位置。
+</p>
+<p>函数的名称应该是不言自明且容易记忆的。<code class="code">count-words-region</code>是显而易见的选择。由于该名称已用于标准的Emacs命令以计算单词数，我们将为我们的实现命名为<code class="code">count-words-example</code>。
+</p>
+<p>该函数计算区域中的单词数。这意味着参数列表必须包含绑定到区域的两个位置的符号，即起始和结束。这两个位置可以分别称为&lsquo;<samp class="samp">beginning</samp>&rsquo;和&lsquo;<samp class="samp">end</samp>&rsquo;。文档的第一行应该是一个简单的句子，因为这是由<code class="code">apropos</code>等命令打印的所有文档。交互表达式将采用形式&lsquo;<samp class="samp">(interactive &quot;r&quot;)</samp>&rsquo;，因为这将导致Emacs将区域的起始和结束传递给函数的参数列表。所有这些都是例行公事。
+</p>
+<p>函数的主体需要编写三个任务：首先，设置<code class="code">while</code>循环可以计算单词的条件；其次，运行<code class="code">while</code>循环；最后，向用户发送消息。
+</p>
+<p>当用户调用<code class="code">count-words-example</code>时，点可能位于区域的开头或末尾。然而，计数过程必须从区域的开头开始。这意味着如果点尚未在那里，我们将希望将点放在那里。执行<code class="code">(goto-char beginning)</code>可以确保这一点。当函数完成其工作时，当然我们希望将点返回到其预期的位置。因此，主体必须包含在<code class="code">save-excursion</code>表达式中。
+</p>
+<p>函数主体的核心部分包含一个<code class="code">while</code>循环，其中一个表达式按单词向前跳转点，另一个表达式计算这些跳转。<code class="code">while</code>循环的真假测试应该在点应该向前跳转时返回true，在点在区域末尾时返回false。
+</p>
+<p>我们可以使用<code class="code">(forward-word 1)</code>作为将点逐个单词向前移动的表达式，但如果使用正则表达式搜索，可以更容易地看到Emacs将其识别为“单词”的内容。
+</p>
+<p>一个正则表达式搜索找到其正在搜索的模式后，将点留在匹配的最后一个字符之后。这意味着一系列成功的单词搜索将点逐个单词向前移动。
+</p>
+<p>实际上，我们希望正则表达式搜索跳过单词之间的空白符和标点符号，以及单词本身。一个拒绝跳过单词之间空白符的正则表达式搜索永远不会跳过一个以上的单词！这意味着正则表达式应包括单词之后（如果有的话）的空白符和标点符号，以及单词本身。 （一个单词可能结束于缓冲区，而没有任何后续空白符或标点符号，因此该正则表达式的这一部分必须是可选的。）
+</p>
+<p>因此，我们希望正则表达式的模式是定义一个或多个单词成分字符，后面跟着可选的一个或多个不是单词成分字符的字符。这个正则表达式的模式如下：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">\w+\W*
+</pre></div>
+
+<p>缓冲区的语法表决定了哪些字符是单词成分字符，哪些不是。有关语法的更多信息，请参见see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Tables.html#Syntax-Tables">Syntax Tables</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。
+</p>
+<p>搜索表达式看起来像这样：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(re-search-forward &quot;\\w+\\W*&quot;)
+</pre></div>
+
+<p>（请注意，斜杠前面有&lsquo;<samp class="samp">w</samp>&rsquo;和&lsquo;<samp class="samp">W</samp>&rsquo;。单个斜杠对Emacs Lisp解释器有特殊含义。它表示以下字符的解释方式与通常不同。例如，两个字符&lsquo;<samp class="samp">\n</samp>&rsquo;代表&lsquo;<samp class="samp">newline</samp>&rsquo;，而不是反斜杠后跟&lsquo;<samp class="samp">n</samp>&rsquo;。两个连续的斜杠表示一个普通的、非特殊的反斜杠，因此Emacs Lisp解释器最终会看到一个后面跟着一个字母的单个反斜杠。因此，它发现这个字母是特殊的。）
+</p>
+<p>我们需要一个计数器来计算有多少个单词；这个变量必须首先设置为0，然后在Emacs循环<code class="code">while</code>中的每一次都递增。递增表达式很简单：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq count (1+ count))
+</pre></div>
+
+<p>最后，我们想告诉用户区域中有多少个单词。<code class="code">message</code>函数适用于向用户呈现这种类型的信息。消息必须以这样的方式构造，以便不管区域中有多少个单词，它都能正确阅读：我们不想说“区域中有1个单词”。单数和复数之间的冲突是不合语法的。我们可以通过使用条件表达式来解决此问题，该表达式根据区域中的单词数评估不同的消息。有三种可能性：区域中没有单词，区域中有一个单词，以及区域中有多个单词。这意味着<code class="code">cond</code>特殊形式是适当的。
+</p>
+<p>所有这些导致以下函数定义：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">第一个版本；存在错误！</span>
+(defun count-words-example (beginning end)
+  &quot;打印区域中的单词数。
+单词被定义为至少一个单词成分字符，后跟至少一个不是单词成分字符的字符。
+缓冲区的语法表决定了这些字符是什么。&quot;
+  (interactive &quot;r&quot;)
+  (message &quot;正在计算区域中的单词数... &quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">1. 设置适当的条件。</span>
+  (save-excursion
+    (goto-char beginning)
+    (let ((count 0))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">2. 运行</span> while <span class="r">循环。</span>
+      (while (&lt; (point) end)
+        (re-search-forward &quot;\\w+\\W*&quot;)
+        (setq count (1+ count)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">3. 向用户发送消息。</span>
+      (cond ((zerop count)
+             (message
+              &quot;区域中没有单词。&quot;))
+            ((= 1 count)
+             (message
+              &quot;区域中有1个单词。&quot;))
+            (t
+             (message
+              &quot;区域中有%d个单词。&quot; count))))))
+</pre></div></div>
+
+<p>按照目前的编写方式，该函数能够工作，但在某些情况下不完全正确。
+</p>
+</div>
+
+
+
+</body>
+</html>
