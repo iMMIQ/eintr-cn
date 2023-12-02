@@ -8503,65 +8503,45 @@ sentence-end
 @end ignore
 
 @node re-search-forward
-@section The @code{re-search-forward} Function
+@section @code{re-search-forward} 函数
 @findex re-search-forward
 
-The @code{re-search-forward} function is very like the
-@code{search-forward} function.  (@xref{search-forward, , The
-@code{search-forward} Function}.)
+@code{re-search-forward} 函数与 @code{search-forward} 函数非常相似。(@xref{search-forward, , @code{search-forward} 函数}.)
 
-@code{re-search-forward} searches for a regular expression.  If the
-search is successful, it leaves point immediately after the last
-character in the target.  If the search is backwards, it leaves point
-just before the first character in the target.  You may tell
-@code{re-search-forward} to return @code{t} for true.  (Moving point
-is therefore a side effect.)
+@code{re-search-forward} 用于搜索正则表达式。如果搜索成功，它将把光标立即放在目标的最后一个字符之后。如果是反向搜索，它将把光标放在目标的第一个字符之前。您可以告诉 @code{re-search-forward} 在搜索成功时返回 @code{t}。 (移动光标因此是一个副作用。)
 
-Like @code{search-forward}, the @code{re-search-forward} function takes
-four arguments:
+与 @code{search-forward} 一样，@code{re-search-forward} 函数接受四个参数：
 
 @enumerate
 @item
-The first argument is the regular expression that the function searches
-for.  The regular expression will be a string between quotation marks.
+第一个参数是要搜索的正则表达式。正则表达式将是双引号之间的字符串。
 
 @item
-The optional second argument limits how far the function will search; it is a
-bound, which is specified as a position in the buffer.
+可选的第二个参数限制函数搜索的范围；它是一个界限，指定为缓冲区中的位置。
 
 @item
-The optional third argument specifies how the function responds to
-failure: @code{nil} as the third argument causes the function to
-signal an error (and print a message) when the search fails; any other
-value causes it to return @code{nil} if the search fails and @code{t}
-if the search succeeds.
+可选的第三个参数指定函数对失败的响应方式：当搜索失败时，第三个参数为 @code{nil} 会导致函数发出错误信号（并打印一条消息）；任何其他值会导致在搜索失败时返回 @code{nil}，在搜索成功时返回 @code{t}。
 
 @item
-The optional fourth argument is the repeat count.  A negative repeat
-count causes @code{re-search-forward} to search backwards.
+可选的第四个参数是重复计数。负重复计数会导致 @code{re-search-forward} 进行向后搜索。
 @end enumerate
 
 @need 800
-The template for @code{re-search-forward} looks like this:
+@code{re-search-forward} 的模板如下：
 
 @smallexample
 @group
-(re-search-forward "@var{regular-expression}"
-                @var{limit-of-search}
-                @var{what-to-do-if-search-fails}
-                @var{repeat-count})
+(re-search-forward "@var{正则表达式}"
+                @var{搜索限制}
+                @var{失败时的操作}
+                @var{重复计数})
 @end group
 @end smallexample
 
-The second, third, and fourth arguments are optional.  However, if you
-want to pass a value to either or both of the last two arguments, you
-must also pass a value to all the preceding arguments.  Otherwise, the
-Lisp interpreter will mistake which argument you are passing the value
-to.
+第二、第三和第四个参数是可选的。但是，如果您想向最后两个参数之一或两者都传递一个值，您还必须向所有前面的参数传递一个值。否则，Lisp 解释器将混淆您正在传递值的参数。
 
 @need 1200
-In the @code{forward-sentence} function, the regular expression will be
-the value of the variable @code{sentence-end}.  In simple form, that is:
+在 @code{forward-sentence} 函数中，正则表达式将是变量 @code{sentence-end} 的值。简单形式如下：
 
 @smallexample
 @group
@@ -8571,10 +8551,7 @@ the value of the variable @code{sentence-end}.  In simple form, that is:
 @end smallexample
 
 @noindent
-The limit of the search will be the end of the paragraph (since a
-sentence cannot go beyond a paragraph).  If the search fails, the
-function will return @code{nil}; and the repeat count will be provided
-by the argument to the @code{forward-sentence} function.
+搜索的限制将是段落的末尾（因为句子不能超过段落）。如果搜索失败，函数将返回 @code{nil}；而重复计数将由 @code{forward-sentence} 函数的参数提供。
 
 @node forward-sentence
 @section @code{forward-sentence}

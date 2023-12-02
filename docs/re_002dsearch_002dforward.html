@@ -58,73 +58,45 @@ div.example {margin-left: 3.2em}
 Next: <a href="forward_002dsentence.html" accesskey="n" rel="next"><code class="code">forward-sentence</code></a>, Previous: <a href="sentence_002dend.html" accesskey="p" rel="prev">关于 <code class="code">sentence-end</code> 的正则表达式</a>, Up: <a href="Zheng-Ze-Biao-Da-Shi-Sou-Suo-.html" accesskey="u" rel="up">正则表达式搜索</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-re_002dsearch_002dforward-Function">12.2 The <code class="code">re-search-forward</code> Function</h3>
+<h3 class="section" id="re_002dsearch_002dforward-Han-Shu-">12.2 <code class="code">re-search-forward</code> 函数</h3>
 <a class="index-entry-id" id="index-re_002dsearch_002dforward"></a>
 
-<p>The <code class="code">re-search-forward</code> function is very like the
-<code class="code">search-forward</code> function.  (See <a class="xref" href="search_002dforward.html">The
-<code class="code">search-forward</code> Function</a>.)
+<p><code class="code">re-search-forward</code> 函数与 <code class="code">search-forward</code> 函数非常相似。(See <a class="xref" href="search_002dforward.html"><code class="code">search-forward</code> 函数</a>.)
 </p>
-<p><code class="code">re-search-forward</code> searches for a regular expression.  If the
-search is successful, it leaves point immediately after the last
-character in the target.  If the search is backwards, it leaves point
-just before the first character in the target.  You may tell
-<code class="code">re-search-forward</code> to return <code class="code">t</code> for true.  (Moving point
-is therefore a side effect.)
+<p><code class="code">re-search-forward</code> 用于搜索正则表达式。如果搜索成功，它将把光标立即放在目标的最后一个字符之后。如果是反向搜索，它将把光标放在目标的第一个字符之前。您可以告诉 <code class="code">re-search-forward</code> 在搜索成功时返回 <code class="code">t</code>。 (移动光标因此是一个副作用。)
 </p>
-<p>Like <code class="code">search-forward</code>, the <code class="code">re-search-forward</code> function takes
-four arguments:
+<p>与 <code class="code">search-forward</code> 一样，<code class="code">re-search-forward</code> 函数接受四个参数：
 </p>
 <ol class="enumerate">
-<li> The first argument is the regular expression that the function searches
-for.  The regular expression will be a string between quotation marks.
+<li> 第一个参数是要搜索的正则表达式。正则表达式将是双引号之间的字符串。
 
-</li><li> The optional second argument limits how far the function will search; it is a
-bound, which is specified as a position in the buffer.
+</li><li> 可选的第二个参数限制函数搜索的范围；它是一个界限，指定为缓冲区中的位置。
 
-</li><li> The optional third argument specifies how the function responds to
-failure: <code class="code">nil</code> as the third argument causes the function to
-signal an error (and print a message) when the search fails; any other
-value causes it to return <code class="code">nil</code> if the search fails and <code class="code">t</code>
-if the search succeeds.
+</li><li> 可选的第三个参数指定函数对失败的响应方式：当搜索失败时，第三个参数为 <code class="code">nil</code> 会导致函数发出错误信号（并打印一条消息）；任何其他值会导致在搜索失败时返回 <code class="code">nil</code>，在搜索成功时返回 <code class="code">t</code>。
 
-</li><li> The optional fourth argument is the repeat count.  A negative repeat
-count causes <code class="code">re-search-forward</code> to search backwards.
+</li><li> 可选的第四个参数是重复计数。负重复计数会导致 <code class="code">re-search-forward</code> 进行向后搜索。
 </li></ol>
 
-<p>The template for <code class="code">re-search-forward</code> looks like this:
+<p><code class="code">re-search-forward</code> 的模板如下：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(re-search-forward &quot;<var class="var">regular-expression</var>&quot;
-                <var class="var">limit-of-search</var>
-                <var class="var">what-to-do-if-search-fails</var>
-                <var class="var">repeat-count</var>)
+<div class="group"><pre class="example-preformatted">(re-search-forward &quot;<var class="var">正则表达式</var>&quot;
+                <var class="var">搜索限制</var>
+                <var class="var">失败时的操作</var>
+                <var class="var">重复计数</var>)
 </pre></div></div>
 
-<p>The second, third, and fourth arguments are optional.  However, if you
-want to pass a value to either or both of the last two arguments, you
-must also pass a value to all the preceding arguments.  Otherwise, the
-Lisp interpreter will mistake which argument you are passing the value
-to.
+<p>第二、第三和第四个参数是可选的。但是，如果您想向最后两个参数之一或两者都传递一个值，您还必须向所有前面的参数传递一个值。否则，Lisp 解释器将混淆您正在传递值的参数。
 </p>
-<p>In the <code class="code">forward-sentence</code> function, the regular expression will be
-the value of the variable <code class="code">sentence-end</code>.  In simple form, that is:
+<p>在 <code class="code">forward-sentence</code> 函数中，正则表达式将是变量 <code class="code">sentence-end</code> 的值。简单形式如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">&quot;[.?!][]\&quot;')}]*\\($\\|  \\|  \\)[
 ]*&quot;
 </pre></div></div>
 
-<p>The limit of the search will be the end of the paragraph (since a
-sentence cannot go beyond a paragraph).  If the search fails, the
-function will return <code class="code">nil</code>; and the repeat count will be provided
-by the argument to the <code class="code">forward-sentence</code> function.
+<p>搜索的限制将是段落的末尾（因为句子不能超过段落）。如果搜索失败，函数将返回 <code class="code">nil</code>；而重复计数将由 <code class="code">forward-sentence</code> 函数的参数提供。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="forward_002dsentence.html"><code class="code">forward-sentence</code></a>, Previous: <a href="sentence_002dend.html">关于 <code class="code">sentence-end</code> 的正则表达式</a>, Up: <a href="Zheng-Ze-Biao-Da-Shi-Sou-Suo-.html">正则表达式搜索</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
