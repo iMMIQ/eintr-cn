@@ -3536,61 +3536,43 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 
 通过查看 @code{append-to-buffer}，你已经探索了一个相当复杂的函数。它展示了如何使用 @code{let}、@code{save-excursion} 以及如何在不同缓冲区之间切换和返回的方法。许多函数定义都以这种方式使用 @code{let}、@code{save-excursion} 和 @code{set-buffer}。
 
-@node Buffer Related Review
-@section Review
+@node 缓冲区相关复习
+@section 复习
 
-Here is a brief summary of the various functions discussed in this chapter.
+这里是本章讨论的各种函数的简要总结。
 
 @table @code
 @item describe-function
 @itemx describe-variable
-Print the documentation for a function or variable.
-Conventionally bound to @kbd{C-h f} and @kbd{C-h v}.
+打印函数或变量的文档。通常绑定到 @kbd{C-h f} 和 @kbd{C-h v}。
 
 @item xref-find-definitions
-Find the file containing the source for a function or variable and
-switch buffers to it, positioning point at the beginning of the item.
-Conventionally bound to @kbd{M-.} (that's a period following the
-@key{META} key).
+查找包含函数或变量源代码的文件，并切换到该文件，将光标定位在该项的开头。通常绑定到 @kbd{M-.}（这是在 @key{META} 键后面加上句点）。
 
 @item save-excursion
-Save the location of point and restore its value after the
-arguments to @code{save-excursion} have been evaluated.  Also, remember
-the current buffer and return to it.
+保存光标位置，并在评估 @code{save-excursion} 参数后还原其值。还记住当前缓冲区并返回到它。
 
 @item push-mark
-Set mark at a location and record the value of the previous mark on the
-mark ring.  The mark is a location in the buffer that will keep its
-relative position even if text is added to or removed from the buffer.
+在某个位置设置标记，并记录标记环上前一个标记的值。标记是缓冲区中的一个位置，即使在缓冲区中添加或删除文本，它也会保持相对位置。
 
 @item goto-char
-Set point to the location specified by the value of the argument, which
-can be a number, a marker,  or an expression that returns the number of
-a position, such as @code{(point-min)}.
+将光标设置为由参数的值指定的位置，该参数可以是数字、标记或返回位置数字的表达式，例如 @code{(point-min)}。
 
 @item insert-buffer-substring
-Copy a region of text from a buffer that is passed to the function as
-an argument and insert the region into the current buffer.
+从作为参数传递给函数的缓冲区中复制文本区域，并将该区域插入到当前缓冲区中。
 
 @item mark-whole-buffer
-Mark the whole buffer as a region.  Normally bound to @kbd{C-x h}.
+将整个缓冲区标记为一个区域。通常绑定到 @kbd{C-x h}。
 
 @item let*
-Declare a list of variables and give them an initial value; then
-evaluate the rest of the expressions in the body of @code{let*}.  The
-values of the variables can be used to bind ensuing variables in the
-list.
+声明一个变量列表并为它们赋初始值；然后评估 @code{let*} 体中的其余表达式。变量的值可以用来绑定列表中随后的变量。
 
 @item set-buffer
-Switch the attention of Emacs to another buffer, but do not change the
-window being displayed.  Used when the program rather than a human is
-to work on a different buffer.
+将Emacs的注意力切换到另一个缓冲区，但不更改显示的窗口。在程序而不是人类要在不同的缓冲区上工作时使用。
 
 @item get-buffer-create
 @itemx get-buffer
-Find a named buffer or create one if a buffer of that name does not
-exist.  The @code{get-buffer} function returns @code{nil} if the named
-buffer does not exist.
+查找命名的缓冲区，如果不存在该名称的缓冲区，则创建一个。如果命名的缓冲区不存在，@code{get-buffer} 函数返回 @code{nil}。
 @end table
 
 @need 1500
