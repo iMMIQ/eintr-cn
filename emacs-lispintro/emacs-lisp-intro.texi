@@ -4615,9 +4615,7 @@ IBM 704 在历史上留下了痕迹，但这些名字现在已经成为 Lisp 珍
 @section @code{cons}
 @findex cons@r{, introduced}
 
-The @code{cons} function constructs lists; it is the inverse of
-@code{car} and @code{cdr}.  For example, @code{cons} can be used to make
-a four element list from the three element list, @code{(fir oak maple)}:
+@code{cons}函数用于构建列表；它是@code{car}和@code{cdr}的反函数。例如，@code{cons}可以用来从三元素列表@code{(fir oak maple)}中创建一个四元素列表：
 
 @smallexample
 (cons 'pine '(fir oak maple))
@@ -4625,44 +4623,30 @@ a four element list from the three element list, @code{(fir oak maple)}:
 
 @need 800
 @noindent
-After evaluating this list, you will see
+在评估了这个列表之后，你将会看到：
 
 @smallexample
 (pine fir oak maple)
 @end smallexample
 
 @noindent
-appear in the echo area.  @code{cons} causes the creation of a new
-list in which the element is followed by the elements of the original
-list.
+出现在回显区。@code{cons}导致创建一个新的列表，其中元素后面是原始列表的元素。
 
-We often say that @code{cons} puts a new element at the beginning of
-a list, or that it attaches or pushes elements onto the list, but this
-phrasing can be misleading, since @code{cons} does not change an
-existing list, but creates a new one.
+我们经常说@code{cons}将一个新元素放在列表的开头，或者附加或推送元素到列表中，但这种表达可能会误导，因为@code{cons}不会改变现有的列表，而是创建一个新列表。
 
-Like @code{car} and @code{cdr}, @code{cons} is non-destructive.
+与@code{car}和@code{cdr}一样，@code{cons}是非破坏性的。
 
 @menu
-* Build a list::
-* length::                      How to find the length of a list.
+* 构建列表::
+* 长度::                      如何找到列表的长度。
 @end menu
 
 @ifnottex
-@node Build a list
-@unnumberedsubsec Build a list
+@node 构建列表
+@unnumberedsubsec 构建列表
 @end ifnottex
 
-@code{cons} must have a list to attach to.@footnote{Actually, you can
-@code{cons} an element to an atom to produce a dotted pair.  Dotted
-pairs are not discussed here; see @ref{Dotted Pair Notation, , Dotted
-Pair Notation, elisp, The GNU Emacs Lisp Reference Manual}.}  You
-cannot start from absolutely nothing.  If you are building a list, you
-need to provide at least an empty list at the beginning.  Here is a
-series of @code{cons} expressions that build up a list of flowers.  If
-you are reading this in Info in GNU Emacs, you can evaluate each of
-the expressions in the usual way; the value is printed in this text
-after @samp{@result{}}, which you may read as ``evaluates to''.
+@code{cons}必须有一个要附加的列表。@footnote{实际上，你可以将元素@code{cons}到原子上以生成一个点对。这里不讨论点对；参见@ref{Dotted Pair Notation, , Dotted Pair Notation, elisp, The GNU Emacs Lisp Reference Manual}。} 你不能从绝对的空白开始。如果你正在构建一个列表，你需要至少在开头提供一个空列表。以下是一系列的@code{cons}表达式，用于构建一系列花的列表。如果你在GNU Emacs中的Info中阅读这个，你可以按照通常的方式评估每个表达式；值将在这个文本中以@samp{@result{}}打印出来，你可以将其解读为“评估为”。
 
 @smallexample
 @group
@@ -4687,24 +4671,15 @@ after @samp{@result{}}, which you may read as ``evaluates to''.
 @end smallexample
 
 @noindent
-In the first example, the empty list is shown as @code{()} and a list
-made up of @code{buttercup} followed by the empty list is constructed.
-As you can see, the empty list is not shown in the list that was
-constructed.  All that you see is @code{(buttercup)}.  The empty list is
-not counted as an element of a list because there is nothing in an empty
-list.  Generally speaking, an empty list is invisible.
+在第一个例子中，空列表显示为@code{()}，并构建了一个由@code{buttercup}后面跟着空列表的列表。正如你所见，空列表在构建的列表中没有显示。因为空列表中没有任何内容，通常来说，空列表是不可见的。
 
-The second example, @code{(cons 'daisy '(buttercup))} constructs a new,
-two element list by putting @code{daisy} in front of @code{buttercup};
-and the third example constructs a three element list by putting
-@code{violet} in front of @code{daisy} and @code{buttercup}.
+在第二个例子中，@code{(cons 'daisy '(buttercup))}通过将@code{daisy}放在@code{buttercup}前面构建了一个新的两元素列表；第三个例子通过将@code{violet}放在@code{daisy}和@code{buttercup}前面构建了一个三元素列表。
 
-@node length
-@subsection Find the Length of a List: @code{length}
+@node 长度
+@subsection 查找列表的长度：@code{length}
 @findex length
 
-You can find out how many elements there are in a list by using the Lisp
-function @code{length}, as in the following examples:
+你可以使用Lisp函数@code{length}来查找列表中有多少元素，例如以下示例：
 
 @smallexample
 @group
@@ -4724,13 +4699,10 @@ function @code{length}, as in the following examples:
 @end smallexample
 
 @noindent
-In the third example, the @code{cons} function is used to construct a
-three element list which is then passed to the @code{length} function as
-its argument.
+在第三个例子中，@code{cons}函数用于构建一个包含三个元素的列表，然后将其作为参数传递给@code{length}函数。
 
 @need 1200
-We can also use @code{length} to count the number of elements in an
-empty list:
+我们还可以使用@code{length}来计算空列表中的元素个数：
 
 @smallexample
 @group
@@ -4740,11 +4712,9 @@ empty list:
 @end smallexample
 
 @noindent
-As you would expect, the number of elements in an empty list is zero.
+正如你所期望的那样，空列表中的元素个数为零。
 
-An interesting experiment is to find out what happens if you try to find
-the length of no list at all; that is, if you try to call @code{length}
-without giving it an argument, not even an empty list:
+一个有趣的实验是找出当你尝试找到根本没有列表的长度时会发生什么；也就是说，如果你尝试调用@code{length}而没有给它提供参数，甚至没有空列表：
 
 @smallexample
 (length )
@@ -4752,32 +4722,22 @@ without giving it an argument, not even an empty list:
 
 @need 800
 @noindent
-What you see, if you evaluate this, is the error message
+如果你评估这个表达式，你将看到错误消息：
 
 @smallexample
 Lisp error: (wrong-number-of-arguments length 0)
 @end smallexample
 
 @noindent
-This means that the function receives the wrong number of
-arguments, zero, when it expects some other number of arguments.  In
-this case, one argument is expected, the argument being a list whose
-length the function is measuring.  (Note that @emph{one} list is
-@emph{one} argument, even if the list has many elements inside it.)
+这意味着函数在期望某个其他数量的参数时（在本例中是一个参数），收到了错误数量的参数，即零。在这种情况下，期望一个参数，而参数是要测量其长度的列表。（注意，@emph{一个}列表是@emph{一个}参数，即使列表内有多个元素。）
 
-The part of the error message that says @samp{length} is the name of
-the function.
+错误消息中的@samp{length}是函数的名称。
 
 @ignore
-@code{length} is still a subroutine, but you need C-h f to discover that.
+@code{length}仍然是一个子例程，但你需要使用C-h f来发现这一点。
 
-In an earlier version:
-    This is written with a special notation, @samp{#<subr},
-    that indicates that the function @code{length} is one of the primitive
-    functions written in C rather than in Emacs Lisp.  (@samp{subr} is an
-    abbreviation for ``subroutine''.)  @xref{What Is a Function, , What Is a
-    Function?, elisp , The GNU Emacs Lisp Reference Manual}, for more
-    about subroutines.
+在早期版本中：
+这是用一种特殊的符号@samp{#<subr}写的，表示函数@code{length}是用C编写而不是用Emacs Lisp编写的原始函数之一。(@samp{subr}是“子例程”的缩写。) 更多关于子例程的信息，请参阅@ref{What Is a Function, , What Is a Function?, elisp, The GNU Emacs Lisp Reference Manual}。
 @end ignore
 
 @node nthcdr
@@ -16772,7 +16732,7 @@ That is fine.
 We can guess what the @code{-} function does.  It is like @code{+} but
 subtracts instead of adds; the @code{-} function subtracts its second
 argument from its first.  Also, we already know what the @code{length}
-function does (@pxref{length}).  It returns the length of a list.
+function does (@pxref{长度}).  It returns the length of a list.
 
 And @code{n} is the name of the required argument to the
 @code{current-kill} function.
