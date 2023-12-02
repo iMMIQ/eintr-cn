@@ -4935,17 +4935,12 @@ animals
 @section @code{setcdr}
 @findex setcdr
 
-The @code{setcdr} function is similar to the @code{setcar} function,
-except that the function replaces the second and subsequent elements of
-a list rather than the first element.
+@code{setcdr}函数类似于@code{setcar}函数，不同之处在于该函数替换列表的第二个及其后的元素，而不是第一个元素。
 
-(To see how to change the last element of a list, look ahead to
-@ref{kill-new function, , The @code{kill-new} function}, which uses
-the @code{nthcdr} and @code{setcdr} functions.)
+(要了解如何更改列表的最后一个元素，请查看@ref{kill-new function, , The @code{kill-new} function}，该函数使用@code{nthcdr}和@code{setcdr}函数。)
 
 @need 1200
-To see how this works, set the value of the variable to a list of
-domesticated animals by evaluating the following expression:
+为了了解它是如何工作的，请通过评估以下表达式将变量的值设置为一组驯养的动物：
 
 @smallexample
 (setq domesticated-animals (list 'horse 'cow 'sheep 'goat))
@@ -4953,8 +4948,7 @@ domesticated animals by evaluating the following expression:
 
 @need 1200
 @noindent
-If you now evaluate the list, you will be returned the list
-@code{(horse cow sheep goat)}:
+如果现在评估该列表，将返回列表@code{(horse cow sheep goat)}：
 
 @smallexample
 @group
@@ -4964,19 +4958,14 @@ domesticated-animals
 @end smallexample
 
 @need 1200
-Next, evaluate @code{setcdr} with two arguments, the name of the
-variable which has a list as its value, and the list to which the
-@sc{cdr} of the first list will be set;
+接下来，通过使用两个参数评估@code{setcdr}，第一个参数是具有列表值的变量的名称，第二个参数是将设置为第一个列表的@sc{cdr}的列表；
 
 @smallexample
 (setcdr domesticated-animals '(cat dog))
 @end smallexample
 
 @noindent
-If you evaluate this expression, the list @code{(cat dog)} will appear
-in the echo area.  This is the value returned by the function.  The
-result we are interested in is the side effect, which we can see by
-evaluating the variable @code{domesticated-animals}:
+如果评估此表达式，将在回显区域看到列表@code{(cat dog)}。这是该函数返回的值。我们感兴趣的结果是副作用，可以通过评估变量@code{domesticated-animals}来查看：
 
 @smallexample
 @group
@@ -4986,9 +4975,7 @@ domesticated-animals
 @end smallexample
 
 @noindent
-Indeed, the list is changed from @code{(horse cow sheep goat)} to
-@code{(horse cat dog)}.  The @sc{cdr} of the list is changed from
-@code{(cow sheep goat)} to @code{(cat dog)}.
+确实，列表从@code{(horse cow sheep goat)}更改为@code{(horse cat dog)}。列表的@sc{cdr}从@code{(cow sheep goat)}更改为@code{(cat dog)}。
 
 @node cons Exercise
 @section Exercise

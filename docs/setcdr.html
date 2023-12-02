@@ -61,56 +61,38 @@ Next: <a href="cons-Exercise.html" accesskey="n" rel="next">Exercise</a>, Previo
 <h3 class="section" id="setcdr-1">7.6 <code class="code">setcdr</code></h3>
 <a class="index-entry-id" id="index-setcdr"></a>
 
-<p>The <code class="code">setcdr</code> function is similar to the <code class="code">setcar</code> function,
-except that the function replaces the second and subsequent elements of
-a list rather than the first element.
+<p><code class="code">setcdr</code>函数类似于<code class="code">setcar</code>函数，不同之处在于该函数替换列表的第二个及其后的元素，而不是第一个元素。
 </p>
-<p>(To see how to change the last element of a list, look ahead to
-<a class="ref" href="kill_002dnew-function.html">The <code class="code">kill-new</code> function</a>, which uses
-the <code class="code">nthcdr</code> and <code class="code">setcdr</code> functions.)
+<p>(要了解如何更改列表的最后一个元素，请查看<a class="ref" href="kill_002dnew-function.html">The <code class="code">kill-new</code> function</a>，该函数使用<code class="code">nthcdr</code>和<code class="code">setcdr</code>函数。)
 </p>
-<p>To see how this works, set the value of the variable to a list of
-domesticated animals by evaluating the following expression:
+<p>为了了解它是如何工作的，请通过评估以下表达式将变量的值设置为一组驯养的动物：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(setq domesticated-animals (list 'horse 'cow 'sheep 'goat))
 </pre></div>
 
-<p>If you now evaluate the list, you will be returned the list
-<code class="code">(horse cow sheep goat)</code>:
+<p>如果现在评估该列表，将返回列表<code class="code">(horse cow sheep goat)</code>：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">domesticated-animals
      &rArr; (horse cow sheep goat)
 </pre></div></div>
 
-<p>Next, evaluate <code class="code">setcdr</code> with two arguments, the name of the
-variable which has a list as its value, and the list to which the
-<small class="sc">CDR</small> of the first list will be set;
+<p>接下来，通过使用两个参数评估<code class="code">setcdr</code>，第一个参数是具有列表值的变量的名称，第二个参数是将设置为第一个列表的<small class="sc">CDR</small>的列表；
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(setcdr domesticated-animals '(cat dog))
 </pre></div>
 
-<p>If you evaluate this expression, the list <code class="code">(cat dog)</code> will appear
-in the echo area.  This is the value returned by the function.  The
-result we are interested in is the side effect, which we can see by
-evaluating the variable <code class="code">domesticated-animals</code>:
+<p>如果评估此表达式，将在回显区域看到列表<code class="code">(cat dog)</code>。这是该函数返回的值。我们感兴趣的结果是副作用，可以通过评估变量<code class="code">domesticated-animals</code>来查看：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">domesticated-animals
      &rArr; (horse cat dog)
 </pre></div></div>
 
-<p>Indeed, the list is changed from <code class="code">(horse cow sheep goat)</code> to
-<code class="code">(horse cat dog)</code>.  The <small class="sc">CDR</small> of the list is changed from
-<code class="code">(cow sheep goat)</code> to <code class="code">(cat dog)</code>.
+<p>确实，列表从<code class="code">(horse cow sheep goat)</code>更改为<code class="code">(horse cat dog)</code>。列表的<small class="sc">CDR</small>从<code class="code">(cow sheep goat)</code>更改为<code class="code">(cat dog)</code>。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="cons-Exercise.html">Exercise</a>, Previous: <a href="setcar.html"><code class="code">setcar</code></a>, Up: <a href="car-cdr-_0026-cons.html"><code class="code">car</code>、<code class="code">cdr</code> 和 <code class="code">cons</code>：基本函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
