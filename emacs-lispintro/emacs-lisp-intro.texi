@@ -9877,12 +9877,10 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 @end group
 @end smallexample
 
-@node Counting Exercise
-@section Exercise: Counting Punctuation
+@node 计数练习
+@section 练习：计算标点符号
 
-Using a @code{while} loop, write a function to count the number of
-punctuation marks in a region---period, comma, semicolon, colon,
-exclamation mark, and question mark.  Do the same using recursion.
+使用 @code{while} 循环，编写一个函数来计算区域内标点符号的数量---句号、逗号、分号、冒号、感叹号和问号。然后使用递归方式完成相同的任务。
 
 @node Words in a defun
 @chapter Counting Words in a @code{defun}
