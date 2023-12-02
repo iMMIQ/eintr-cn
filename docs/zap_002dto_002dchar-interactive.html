@@ -56,41 +56,24 @@ kbd.kbd {font-style: oblique}
 <div class="subsection-level-extent" id="zap_002dto_002dchar-interactive">
 <div class="nav-panel">
 <p>
-Next: <a href="zap_002dto_002dchar-body.html" accesskey="n" rel="next">The Body of <code class="code">zap-to-char</code></a>, Previous: <a href="Complete-zap_002dto_002dchar.html" accesskey="p" rel="prev">The Complete <code class="code">zap-to-char</code> Implementation</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="zap_002dto_002dchar-body.html" accesskey="n" rel="next"><code class="code">zap-to-char</code>函数的主体</a>, Previous: <a href="Complete-zap_002dto_002dchar.html" accesskey="p" rel="prev">完整的 <code class="code">zap-to-char</code> 实现</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-interactive-Expression">8.1.1 The <code class="code">interactive</code> Expression</h4>
+<h4 class="subsection" id="interactive-Biao-Da-Shi-">8.1.1 <code class="code">interactive</code> 表达式</h4>
 
-<p>The interactive expression in the <code class="code">zap-to-char</code> command looks like
-this:
+<p><code class="code">zap-to-char</code> 命令中的交互式表达式如下：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(interactive &quot;p\ncZap to char: &quot;)
 </pre></div>
 
-<p>The part within quotation marks, <code class="code">&quot;p\ncZap to char: &quot;</code>, specifies
-two different things.  First, and most simply, is the &lsquo;<samp class="samp">p</samp>&rsquo;.
-This part is separated from the next part by a newline, &lsquo;<samp class="samp">\n</samp>&rsquo;.
-The &lsquo;<samp class="samp">p</samp>&rsquo; means that the first argument to the function will be
-passed the value of a <em class="dfn">processed prefix</em>.  The prefix argument is
-passed by typing <kbd class="kbd">C-u</kbd> and a number, or <kbd class="kbd">M-</kbd> and a number.  If
-the function is called interactively without a prefix, 1 is passed to
-this argument.
+<p>引号内的部分，<code class="code">&quot;p\ncZap to char: &quot;</code>，指定了两个不同的信息。首先，最简单的是 &lsquo;<samp class="samp">p</samp>&rsquo;。这一部分与下一部分由换行符 &lsquo;<samp class="samp">\n</samp>&rsquo; 分隔。&lsquo;<samp class="samp">p</samp>&rsquo; 表示函数的第一个参数将传递一个 <em class="dfn">processed prefix</em> 的值。前缀参数通过键入 <kbd class="kbd">C-u</kbd> 和一个数字，或者 <kbd class="kbd">M-</kbd> 和一个数字传递。如果在不带前缀的情况下交互调用该函数，则将 1 传递给此参数。
 </p>
-<p>The second part of <code class="code">&quot;p\ncZap to char: &quot;</code> is
-&lsquo;<samp class="samp">cZap to char:  </samp>&rsquo;.  In this part, the lower case &lsquo;<samp class="samp">c</samp>&rsquo;
-indicates that <code class="code">interactive</code> expects a prompt and that the
-argument will be a character.  The prompt follows the &lsquo;<samp class="samp">c</samp>&rsquo; and is
-the string &lsquo;<samp class="samp">Zap to char: </samp>&rsquo; (with a space after the colon to
-make it look good).
+<p><code class="code">&quot;p\ncZap to char: &quot;</code> 的第二部分是 &lsquo;<samp class="samp">cZap to char:  </samp>&rsquo;。在这一部分中，小写的 &lsquo;<samp class="samp">c</samp>&rsquo; 表示 <code class="code">interactive</code> 期望一个提示，并且参数将是一个字符。提示跟在 &lsquo;<samp class="samp">c</samp>&rsquo; 后面，是字符串 &lsquo;<samp class="samp">Zap to char: </samp>&rsquo;（冒号后面有一个空格，使其看起来更好）。
 </p>
-<p>What all this does is prepare the arguments to <code class="code">zap-to-char</code> so they
-are of the right type, and give the user a prompt.
+<p>所有这些都是为了准备 <code class="code">zap-to-char</code> 的参数，以使它们具有正确的类型，并为用户提供提示。
 </p>
-<p>In a read-only buffer, the <code class="code">zap-to-char</code> function copies the text
-to the kill ring, but does not remove it.  The echo area displays a
-message saying that the buffer is read-only.  Also, the terminal may
-beep or blink at you.
+<p>在只读缓冲区中，<code class="code">zap-to-char</code> 函数将文本复制到 kill ring，但不删除它。回显区显示一条消息，指示缓冲区是只读的。此外，终端可能会发出哔声或闪烁提醒。
 </p>
 </div>
 

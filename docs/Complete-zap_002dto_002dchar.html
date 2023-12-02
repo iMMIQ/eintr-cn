@@ -55,33 +55,19 @@ kbd.kbd {font-style: oblique}
 <div class="unnumberedsubsec-level-extent" id="Complete-zap_002dto_002dchar">
 <div class="nav-panel">
 <p>
-Next: <a href="zap_002dto_002dchar-interactive.html" accesskey="n" rel="next">The <code class="code">interactive</code> Expression</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="zap_002dto_002dchar-interactive.html" accesskey="n" rel="next"><code class="code">interactive</code> 表达式</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-Complete-zap_002dto_002dchar-Implementation">The Complete <code class="code">zap-to-char</code> Implementation</h4>
+<h4 class="unnumberedsubsec" id="Wan-Zheng-De-zap_002dto_002dchar-Shi-Xian-">完整的 <code class="code">zap-to-char</code> 实现</h4>
 
-<p>The <code class="code">zap-to-char</code> function removes the text in the region between
-the location of the cursor (i.e., of point) up to and including the
-next occurrence of a specified character.  The text that
-<code class="code">zap-to-char</code> removes is put in the kill ring; and it can be
-retrieved from the kill ring by typing <kbd class="kbd">C-y</kbd> (<code class="code">yank</code>).  If
-the command is given an argument, it removes text through that number
-of occurrences.  Thus, if the cursor were at the beginning of this
-sentence and the character were &lsquo;<samp class="samp">s</samp>&rsquo;, &lsquo;<samp class="samp">Thus</samp>&rsquo; would be
-removed.  If the argument were two, &lsquo;<samp class="samp">Thus, if the curs</samp>&rsquo; would be
-removed, up to and including the &lsquo;<samp class="samp">s</samp>&rsquo; in &lsquo;<samp class="samp">cursor</samp>&rsquo;.
+<p><code class="code">zap-to-char</code> 函数删除光标位置（即 point）到下一个指定字符（包括该字符）之间的文本。<code class="code">zap-to-char</code> 删除的文本被放入 kill ring，可以通过键入 <kbd class="kbd">C-y</kbd>（<code class="code">yank</code>）从 kill ring 中检索。如果给命令传递了一个参数，它将通过指定数量的出现次数删除文本。因此，如果光标位于本句的开头，字符为 &lsquo;<samp class="samp">s</samp>&rsquo;，则将删除 &lsquo;<samp class="samp">Thus</samp>&rsquo;。如果参数为二，则将删除 &lsquo;<samp class="samp">Thus, if the curs</samp>&rsquo;，直到 &lsquo;<samp class="samp">cursor</samp>&rsquo; 中的 &lsquo;<samp class="samp">s</samp>&rsquo;。
 </p>
-<p>If the specified character is not found, <code class="code">zap-to-char</code> will say
-&ldquo;Search failed&rdquo;, tell you the character you typed, and not remove
-any text.
+<p>如果未找到指定的字符，<code class="code">zap-to-char</code> 将显示“Search failed”，告诉您输入的字符，并且不会删除任何文本。
 </p>
-<p>In order to determine how much text to remove, <code class="code">zap-to-char</code> uses
-a search function.  Searches are used extensively in code that
-manipulates text, and we will focus attention on them as well as on the
-deletion command.
+<p>为了确定要删除多少文本，<code class="code">zap-to-char</code> 使用搜索函数。搜索在处理文本的代码中广泛使用，我们将重点关注搜索以及删除命令。
 </p>
 
-<p>Here is the complete text of the version 22 implementation of the function:
+<p>下面是版本 22 的函数实现的完整文本：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun zap-to-char (arg char)
@@ -97,28 +83,12 @@ Goes backward if ARG is negative; error if CHAR not found.&quot;
                          (point))))
 </pre></div></div>
 
-<p>The documentation is thorough.  You do need to know the jargon meaning
-of the word &ldquo;kill&rdquo;.
+<p>文档非常详细。您需要了解“kill”这个术语的含义。
 </p>
 <a class="index-entry-id" id="index-curved-quotes"></a>
 <a class="index-entry-id" id="index-curly-quotes"></a>
-<p>The version 22 documentation string for <code class="code">zap-to-char</code> uses ASCII
-grave accent and apostrophe to quote a symbol, so it appears as
-<code class="t">`case-fold-search'</code>.  This quoting style was inspired by 1970s-era
-displays in which grave accent and apostrophe were often mirror images
-suitable for use as quotes.  On most modern displays this is no longer
-true, and when these two ASCII characters appear in documentation
-strings or diagnostic message formats, Emacs typically transliterates
-them to <em class="dfn">curved quotes</em> (left and right single quotation marks),
-so that the abovequoted symbol appears
-as <code class="t">‘case-fold-search’</code>.  Source-code strings can also simply use
-curved quotes directly.
+<p><code class="code">zap-to-char</code> 版本 22 的文档字符串使用 ASCII grave accent 和撇号引用一个符号，因此它显示为 <code class="t">`case-fold-search'</code>。这种引用风格受到上世纪 70 年代显示器的启发，在那里 grave accent 和撇号经常是镜像图像，适合用作引号。在大多数现代显示器上，这不再成立，当这两个 ASCII 字符出现在文档字符串或诊断消息格式中时，Emacs 通常将它们转换为 <em class="dfn">弯引号</em>（左右单引号），因此上面引用的符号显示为 <code class="t">‘case-fold-search’</code>。源代码字符串也可以直接使用弯引号。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="zap_002dto_002dchar-interactive.html">The <code class="code">interactive</code> Expression</a>, Up: <a href="zap_002dto_002dchar.html"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

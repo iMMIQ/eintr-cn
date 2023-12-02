@@ -5057,41 +5057,27 @@ domesticated-animals
 @section @code{zap-to-char}
 @findex zap-to-char
 
-Let us look at the interactive @code{zap-to-char} function.
+让我们看一下交互式函数 @code{zap-to-char}。
 
 @menu
-* Complete zap-to-char::        The complete implementation.
-* zap-to-char interactive::     A three part interactive expression.
-* zap-to-char body::            A short overview.
-* search-forward::              How to search for a string.
-* progn::                       The @code{progn} special form.
-* Summing up zap-to-char::      Using @code{point} and @code{search-forward}.
+* Complete zap-to-char::        完整的实现。
+* zap-to-char interactive::     一个三部分的交互式表达式。
+* zap-to-char body::            简要概述。
+* search-forward::              如何搜索字符串。
+* progn::                       特殊形式 @code{progn}。
+* Summing up zap-to-char::      使用 @code{point} 和 @code{search-forward}。
 @end menu
 
 @ifnottex
 @node Complete zap-to-char
-@unnumberedsubsec The Complete @code{zap-to-char} Implementation
+@unnumberedsubsec 完整的 @code{zap-to-char} 实现
 @end ifnottex
 
-The @code{zap-to-char} function removes the text in the region between
-the location of the cursor (i.e., of point) up to and including the
-next occurrence of a specified character.  The text that
-@code{zap-to-char} removes is put in the kill ring; and it can be
-retrieved from the kill ring by typing @kbd{C-y} (@code{yank}).  If
-the command is given an argument, it removes text through that number
-of occurrences.  Thus, if the cursor were at the beginning of this
-sentence and the character were @samp{s}, @samp{Thus} would be
-removed.  If the argument were two, @samp{Thus, if the curs} would be
-removed, up to and including the @samp{s} in @samp{cursor}.
+@code{zap-to-char} 函数删除光标位置（即 point）到下一个指定字符（包括该字符）之间的文本。@code{zap-to-char} 删除的文本被放入 kill ring，可以通过键入 @kbd{C-y}（@code{yank}）从 kill ring 中检索。如果给命令传递了一个参数，它将通过指定数量的出现次数删除文本。因此，如果光标位于本句的开头，字符为 @samp{s}，则将删除 @samp{Thus}。如果参数为二，则将删除 @samp{Thus, if the curs}，直到 @samp{cursor} 中的 @samp{s}。
 
-If the specified character is not found, @code{zap-to-char} will say
-``Search failed'', tell you the character you typed, and not remove
-any text.
+如果未找到指定的字符，@code{zap-to-char} 将显示“Search failed”，告诉您输入的字符，并且不会删除任何文本。
 
-In order to determine how much text to remove, @code{zap-to-char} uses
-a search function.  Searches are used extensively in code that
-manipulates text, and we will focus attention on them as well as on the
-deletion command.
+为了确定要删除多少文本，@code{zap-to-char} 使用搜索函数。搜索在处理文本的代码中广泛使用，我们将重点关注搜索以及删除命令。
 
 @ignore
 @c GNU Emacs version 19
@@ -5107,7 +5093,7 @@ Goes backward if ARG is negative; error if CHAR not found."
 @end ignore
 
 @need 1250
-Here is the complete text of the version 22 implementation of the function:
+下面是版本 22 的函数实现的完整文本：
 
 @c GNU Emacs 22
 @smallexample
@@ -5126,66 +5112,36 @@ Goes backward if ARG is negative; error if CHAR not found."
 @end group
 @end smallexample
 
-The documentation is thorough.  You do need to know the jargon meaning
-of the word ``kill''.
+文档非常详细。您需要了解“kill”这个术语的含义。
 
 @cindex curved quotes
 @cindex curly quotes
-The version 22 documentation string for @code{zap-to-char} uses ASCII
-grave accent and apostrophe to quote a symbol, so it appears as
-@t{`case-fold-search'}.  This quoting style was inspired by 1970s-era
-displays in which grave accent and apostrophe were often mirror images
-suitable for use as quotes.  On most modern displays this is no longer
-true, and when these two ASCII characters appear in documentation
-strings or diagnostic message formats, Emacs typically transliterates
-them to @dfn{curved quotes} (left and right single quotation marks),
-so that the abovequoted symbol appears
-as @t{‘case-fold-search’}.  Source-code strings can also simply use
-curved quotes directly.
+@code{zap-to-char} 版本 22 的文档字符串使用 ASCII grave accent 和撇号引用一个符号，因此它显示为 @t{`case-fold-search'}。这种引用风格受到上世纪 70 年代显示器的启发，在那里 grave accent 和撇号经常是镜像图像，适合用作引号。在大多数现代显示器上，这不再成立，当这两个 ASCII 字符出现在文档字符串或诊断消息格式中时，Emacs 通常将它们转换为 @dfn{弯引号}（左右单引号），因此上面引用的符号显示为 @t{‘case-fold-search’}。源代码字符串也可以直接使用弯引号。
 
 @node zap-to-char interactive
-@subsection The @code{interactive} Expression
+@subsection @code{interactive} 表达式
 
 @need 800
-The interactive expression in the @code{zap-to-char} command looks like
-this:
+@code{zap-to-char} 命令中的交互式表达式如下：
 
 @smallexample
 (interactive "p\ncZap to char: ")
 @end smallexample
 
-The part within quotation marks, @code{"p\ncZap to char:@: "}, specifies
-two different things.  First, and most simply, is the @samp{p}.
-This part is separated from the next part by a newline, @samp{\n}.
-The @samp{p} means that the first argument to the function will be
-passed the value of a @dfn{processed prefix}.  The prefix argument is
-passed by typing @kbd{C-u} and a number, or @kbd{M-} and a number.  If
-the function is called interactively without a prefix, 1 is passed to
-this argument.
+引号内的部分，@code{"p\ncZap to char: "}，指定了两个不同的信息。首先，最简单的是 @samp{p}。这一部分与下一部分由换行符 @samp{\n} 分隔。@samp{p} 表示函数的第一个参数将传递一个 @dfn{processed prefix} 的值。前缀参数通过键入 @kbd{C-u} 和一个数字，或者 @kbd{M-} 和一个数字传递。如果在不带前缀的情况下交互调用该函数，则将 1 传递给此参数。
 
-The second part of @code{"p\ncZap to char:@: "} is
-@samp{cZap to char:@:  }.  In this part, the lower case @samp{c}
-indicates that @code{interactive} expects a prompt and that the
-argument will be a character.  The prompt follows the @samp{c} and is
-the string @samp{Zap to char:@: } (with a space after the colon to
-make it look good).
+@code{"p\ncZap to char: "} 的第二部分是 @samp{cZap to char:@:  }。在这一部分中，小写的 @samp{c} 表示 @code{interactive} 期望一个提示，并且参数将是一个字符。提示跟在 @samp{c} 后面，是字符串 @samp{Zap to char:@: }（冒号后面有一个空格，使其看起来更好）。
 
-What all this does is prepare the arguments to @code{zap-to-char} so they
-are of the right type, and give the user a prompt.
+所有这些都是为了准备 @code{zap-to-char} 的参数，以使它们具有正确的类型，并为用户提供提示。
 
-In a read-only buffer, the @code{zap-to-char} function copies the text
-to the kill ring, but does not remove it.  The echo area displays a
-message saying that the buffer is read-only.  Also, the terminal may
-beep or blink at you.
+在只读缓冲区中，@code{zap-to-char} 函数将文本复制到 kill ring，但不删除它。回显区显示一条消息，指示缓冲区是只读的。此外，终端可能会发出哔声或闪烁提醒。
 
 @node zap-to-char body
-@subsection The Body of @code{zap-to-char}
+@subsection @code{zap-to-char}函数的主体
 
-The body of the @code{zap-to-char} function contains the code that
-kills (that is, removes) the text in the region from the current
-position of the cursor up to and including the specified character.
+@code{zap-to-char}函数的主体包含了用于删除（即移除）文本的代码，该文本位于光标当前位置到指定字符（包括该字符）的区域。
 
-The first part of the code looks like this:
+代码的第一部分如下：
 
 @smallexample
 (if (char-table-p translation-table-for-input)
@@ -5196,89 +5152,48 @@ The first part of the code looks like this:
 @end smallexample
 
 @noindent
-@code{char-table-p} is a hitherto unseen function.  It determines
-whether its argument is a character table.  When it is, it sets the
-character passed to @code{zap-to-char} to one of them, if that
-character exists, or to the character itself.  (This becomes important
-for certain characters in non-European languages.  The @code{aref}
-function extracts an element from an array.  It is an array-specific
-function that is not described in this document.  @xref{Arrays, ,
-Arrays, elisp, The GNU Emacs Lisp Reference Manual}.)
+@code{char-table-p}是一个前文未见的函数。它用于确定其参数是否为字符表。当是字符表时，它将传递给@code{zap-to-char}的字符设置为其中之一（如果该字符存在），否则设置为字符本身。（这对于非欧洲语言中的某些字符很重要。@code{aref}函数从数组中提取元素。它是一个特定于数组的函数，本文档不详细描述。@xref{Arrays, , Arrays, elisp, The GNU Emacs Lisp Reference Manual}。）
 
 @noindent
-@code{(point)} is the current position of the cursor.
+@code{(point)}是光标的当前位置。
 
-The next part of the code is an expression using @code{progn}.  The body
-of the @code{progn} consists of calls to @code{search-forward} and
-@code{point}.
+代码的下一部分是一个使用@code{progn}的表达式。@code{progn}的主体由对@code{search-forward}和@code{point}的调用组成。
 
-It is easier to understand how @code{progn} works after learning about
-@code{search-forward}, so we will look at @code{search-forward} and
-then at @code{progn}.
+在学习@code{progn}之前，了解一下@code{search-forward}会更容易理解，因此我们将先看看@code{search-forward}，然后再看@code{progn}。
 
 @node search-forward
-@subsection The @code{search-forward} Function
+@subsection @code{search-forward}函数
 @findex search-forward
 
-The @code{search-forward} function is used to locate the
-zapped-for-character in @code{zap-to-char}.  If the search is
-successful, @code{search-forward} leaves point immediately after the
-last character in the target string.  (In @code{zap-to-char}, the
-target string is just one character long.  @code{zap-to-char} uses the
-function @code{char-to-string} to ensure that the computer treats that
-character as a string.)  If the search is backwards,
-@code{search-forward} leaves point just before the first character in
-the target.  Also, @code{search-forward} returns @code{t} for true.
-(Moving point is therefore a side effect.)
+@code{search-forward}函数用于在@code{zap-to-char}中定位要删除的字符。如果搜索成功，@code{search-forward}将光标立即置于目标字符串的最后一个字符之后。（在@code{zap-to-char}中，目标字符串只有一个字符长。@code{zap-to-char}使用@code{char-to-string}函数确保计算机将该字符视为字符串。）如果搜索是向后的，@code{search-forward}将光标放在目标的第一个字符之前。此外，@code{search-forward}返回@code{t}表示真（移动光标因此是一个副作用）。
 
 @need 1250
-In @code{zap-to-char}, the @code{search-forward} function looks like this:
+在@code{zap-to-char}中，@code{search-forward}函数如下：
 
 @smallexample
 (search-forward (char-to-string char) nil nil arg)
 @end smallexample
 
-The @code{search-forward} function takes four arguments:
+@code{search-forward}函数接受四个参数：
 
 @enumerate
 @item
-The first argument is the target, what is searched for.  This must be a
-string, such as @samp{"z"}.
+第一个参数是目标，即要搜索的内容。这必须是一个字符串，例如@samp{"z"}。
 
-As it happens, the argument passed to @code{zap-to-char} is a single
-character.  Because of the way computers are built, the Lisp
-interpreter may treat a single character as being different from a
-string of characters.  Inside the computer, a single character has a
-different electronic format than a string of one character.  (A single
-character can often be recorded in the computer using exactly one
-byte; but a string may be longer, and the computer needs to be ready
-for this.)  Since the @code{search-forward} function searches for a
-string, the character that the @code{zap-to-char} function receives as
-its argument must be converted inside the computer from one format to
-the other; otherwise the @code{search-forward} function will fail.
-The @code{char-to-string} function is used to make this conversion.
+正好传递给@code{zap-to-char}的参数是一个单个字符。由于计算机的构造方式，Lisp解释器可能会将单个字符视为与字符串不同。在计算机内部，单个字符具有与一个字符的字符串不同的电子格式。（计算机中通常可以用一个字节精确地记录一个单个字符；但字符串可能更长，计算机需要为此做好准备。）因此，@code{zap-to-char}函数接收的字符必须在计算机内部从一种格式转换为另一种格式；否则，@code{search-forward}函数将失败。使用@code{char-to-string}函数进行此转换。
 
 @item
-The second argument bounds the search; it is specified as a position in
-the buffer.  In this case, the search can go to the end of the buffer,
-so no bound is set and the second argument is @code{nil}.
+第二个参数限制了搜索的范围；它指定为缓冲区中的位置。在这种情况下，搜索可以到达缓冲区的末尾，因此未设置边界，第二个参数为@code{nil}。
 
 @item
-The third argument tells the function what it should do if the search
-fails---it can signal an error (and print a message) or it can return
-@code{nil}.  A @code{nil} as the third argument causes the function to
-signal an error when the search fails.
+第三个参数告诉函数如果搜索失败应该做什么——它可以发出错误（并打印一条消息），或者返回@code{nil}。将@code{nil}作为第三个参数会导致函数在搜索失败时发出错误。
 
 @item
-The fourth argument to @code{search-forward} is the repeat count---how
-many occurrences of the string to look for.  This argument is optional
-and if the function is called without a repeat count, this argument is
-passed the value 1.  If this argument is negative, the search goes
-backwards.
+@code{search-forward}的第四个参数是重复计数——要查找字符串的出现次数。此参数是可选的，如果函数在没有重复计数的情况下调用，则此参数将传递值1。如果此参数为负数，则搜索将向后进行。
 @end enumerate
 
 @need 800
-In template form, a @code{search-forward} expression looks like this:
+在模板形式中，@code{search-forward}表达式如下：
 
 @smallexample
 @group
@@ -5289,19 +5204,16 @@ In template form, a @code{search-forward} expression looks like this:
 @end group
 @end smallexample
 
-We will look at @code{progn} next.
+接下来我们将看一下@code{progn}。
 
 @node progn
-@subsection The @code{progn} Special Form
+@subsection @code{progn}特殊形式
 @findex progn
 
-@code{progn} is a special form that causes each of its arguments to be
-evaluated in sequence and then returns the value of the last one.  The
-preceding expressions are evaluated only for the side effects they
-perform.  The values produced by them are discarded.
+@code{progn}是一种特殊形式，它导致按顺序评估其每个参数，然后返回最后一个参数的值。前面的表达式仅为它们执行的副作用而进行评估。它们产生的值被丢弃。
 
 @need 800
-The template for a @code{progn} expression is very simple:
+@code{progn}表达式的模板非常简单：
 
 @smallexample
 @group
@@ -5310,47 +5222,20 @@ The template for a @code{progn} expression is very simple:
 @end group
 @end smallexample
 
-In @code{zap-to-char}, the @code{progn} expression has to do two things:
-put point in exactly the right position; and return the location of
-point so that @code{kill-region} will know how far to kill to.
+在`zap-to-char`中，@code{progn}表达式必须执行两个操作：将点放置在准确的位置，并返回点的位置，以便@code{kill-region}知道要删除多远。
 
-The first argument to the @code{progn} is @code{search-forward}.  When
-@code{search-forward} finds the string, the function leaves point
-immediately after the last character in the target string.  (In this
-case the target string is just one character long.)  If the search is
-backwards, @code{search-forward} leaves point just before the first
-character in the target.  The movement of point is a side effect.
+@code{progn}的第一个参数是@code{search-forward}。当@code{search-forward}找到字符串时，该函数将点立即置于目标字符串的最后一个字符之后。（在本例中，目标字符串只有一个字符长。）如果搜索是向后的，则@code{search-forward}将点置于目标的第一个字符之前。点的移动是一个副作用。
 
-The second and last argument to @code{progn} is the expression
-@code{(point)}.  This expression returns the value of point, which in
-this case will be the location to which it has been moved by
-@code{search-forward}.  (In the source, a line that tells the function
-to go to the previous character, if it is going forward, was commented
-out in 1999; I don't remember whether that feature or mis-feature was
-ever a part of the distributed source.)  The value of @code{point} is
-returned by the @code{progn} expression and is passed to
-@code{kill-region} as @code{kill-region}'s second argument.
+@code{progn}的第二个也是最后一个参数是表达式@code{(point)}。此表达式返回点的值，而在这种情况下，它将是由@code{search-forward}移动到的位置。（在源代码中，一行指示函数转到前一个字符（如果它是向前的）的代码在1999年被注释掉了；我不记得这个功能或错误是否曾经是分布源代码的一部分。）@code{point}的值由@code{progn}表达式返回，并作为@code{kill-region}的第二个参数传递。
 
 @node Summing up zap-to-char
-@subsection Summing up @code{zap-to-char}
+@subsection 总结@code{zap-to-char}
 
-Now that we have seen how @code{search-forward} and @code{progn} work,
-we can see how the @code{zap-to-char} function works as a whole.
+现在我们已经看到了@code{search-forward}和@code{progn}的工作原理，我们可以看到@code{zap-to-char}函数是如何整体工作的。
 
-The first argument to @code{kill-region} is the position of the cursor
-when the @code{zap-to-char} command is given---the value of point at
-that time.  Within the @code{progn}, the search function then moves
-point to just after the zapped-to-character and @code{point} returns the
-value of this location.  The @code{kill-region} function puts together
-these two values of point, the first one as the beginning of the region
-and the second one as the end of the region, and removes the region.
+@code{kill-region}的第一个参数是在给定@code{zap-to-char}命令时光标的位置——即那个时刻的点的值。在@code{progn}内，搜索函数然后将点移动到刚刚删除的字符之后，并且@code{point}返回此位置的值。@code{kill-region}函数将这两个点的值组合在一起，第一个作为区域的起始，第二个作为区域的结束，然后删除该区域。
 
-The @code{progn} special form is necessary because the
-@code{kill-region} command takes two arguments; and it would fail if
-@code{search-forward} and @code{point} expressions were written in
-sequence as two additional arguments.  The @code{progn} expression is
-a single argument to @code{kill-region} and returns the one value that
-@code{kill-region} needs for its second argument.
+@code{progn}特殊形式是必需的，因为@code{kill-region}命令接受两个参数；如果@code{search-forward}和@code{point}表达式被顺序写为两个额外的参数，它将失败。@code{progn}表达式是@code{kill-region}的单个参数，并返回@code{kill-region}所需的唯一值作为其第二个参数。
 
 @node kill-region
 @section @code{kill-region}

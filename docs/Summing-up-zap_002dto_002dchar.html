@@ -53,28 +53,16 @@ ISBN 1-882114-43-4
 <div class="subsection-level-extent" id="Summing-up-zap_002dto_002dchar">
 <div class="nav-panel">
 <p>
-Previous: <a href="progn.html" accesskey="p" rel="prev">The <code class="code">progn</code> Special Form</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="progn.html" accesskey="p" rel="prev"><code class="code">progn</code>特殊形式</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="Summing-up-zap_002dto_002dchar-1">8.1.5 Summing up <code class="code">zap-to-char</code></h4>
+<h4 class="subsection" id="Zong-Jie-zap_002dto_002dchar">8.1.5 总结<code class="code">zap-to-char</code></h4>
 
-<p>Now that we have seen how <code class="code">search-forward</code> and <code class="code">progn</code> work,
-we can see how the <code class="code">zap-to-char</code> function works as a whole.
+<p>现在我们已经看到了<code class="code">search-forward</code>和<code class="code">progn</code>的工作原理，我们可以看到<code class="code">zap-to-char</code>函数是如何整体工作的。
 </p>
-<p>The first argument to <code class="code">kill-region</code> is the position of the cursor
-when the <code class="code">zap-to-char</code> command is given&mdash;the value of point at
-that time.  Within the <code class="code">progn</code>, the search function then moves
-point to just after the zapped-to-character and <code class="code">point</code> returns the
-value of this location.  The <code class="code">kill-region</code> function puts together
-these two values of point, the first one as the beginning of the region
-and the second one as the end of the region, and removes the region.
+<p><code class="code">kill-region</code>的第一个参数是在给定<code class="code">zap-to-char</code>命令时光标的位置——即那个时刻的点的值。在<code class="code">progn</code>内，搜索函数然后将点移动到刚刚删除的字符之后，并且<code class="code">point</code>返回此位置的值。<code class="code">kill-region</code>函数将这两个点的值组合在一起，第一个作为区域的起始，第二个作为区域的结束，然后删除该区域。
 </p>
-<p>The <code class="code">progn</code> special form is necessary because the
-<code class="code">kill-region</code> command takes two arguments; and it would fail if
-<code class="code">search-forward</code> and <code class="code">point</code> expressions were written in
-sequence as two additional arguments.  The <code class="code">progn</code> expression is
-a single argument to <code class="code">kill-region</code> and returns the one value that
-<code class="code">kill-region</code> needs for its second argument.
+<p><code class="code">progn</code>特殊形式是必需的，因为<code class="code">kill-region</code>命令接受两个参数；如果<code class="code">search-forward</code>和<code class="code">point</code>表达式被顺序写为两个额外的参数，它将失败。<code class="code">progn</code>表达式是<code class="code">kill-region</code>的单个参数，并返回<code class="code">kill-region</code>所需的唯一值作为其第二个参数。
 </p>
 </div>
 

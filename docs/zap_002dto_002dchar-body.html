@@ -55,16 +55,14 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="zap_002dto_002dchar-body">
 <div class="nav-panel">
 <p>
-Next: <a href="search_002dforward.html" accesskey="n" rel="next">The <code class="code">search-forward</code> Function</a>, Previous: <a href="zap_002dto_002dchar-interactive.html" accesskey="p" rel="prev">The <code class="code">interactive</code> Expression</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="search_002dforward.html" accesskey="n" rel="next"><code class="code">search-forward</code>函数</a>, Previous: <a href="zap_002dto_002dchar-interactive.html" accesskey="p" rel="prev"><code class="code">interactive</code> 表达式</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-Body-of-zap_002dto_002dchar">8.1.2 The Body of <code class="code">zap-to-char</code></h4>
+<h4 class="subsection" id="zap_002dto_002dcharHan-Shu-De-Zhu-Ti-">8.1.2 <code class="code">zap-to-char</code>函数的主体</h4>
 
-<p>The body of the <code class="code">zap-to-char</code> function contains the code that
-kills (that is, removes) the text in the region from the current
-position of the cursor up to and including the specified character.
+<p><code class="code">zap-to-char</code>函数的主体包含了用于删除（即移除）文本的代码，该文本位于光标当前位置到指定字符（包括该字符）的区域。
 </p>
-<p>The first part of the code looks like this:
+<p>代码的第一部分如下：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(if (char-table-p translation-table-for-input)
@@ -74,23 +72,13 @@ position of the cursor up to and including the specified character.
                        (point)))
 </pre></div>
 
-<p><code class="code">char-table-p</code> is a hitherto unseen function.  It determines
-whether its argument is a character table.  When it is, it sets the
-character passed to <code class="code">zap-to-char</code> to one of them, if that
-character exists, or to the character itself.  (This becomes important
-for certain characters in non-European languages.  The <code class="code">aref</code>
-function extracts an element from an array.  It is an array-specific
-function that is not described in this document.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Arrays.html#Arrays">Arrays</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>.)
+<p><code class="code">char-table-p</code>是一个前文未见的函数。它用于确定其参数是否为字符表。当是字符表时，它将传递给<code class="code">zap-to-char</code>的字符设置为其中之一（如果该字符存在），否则设置为字符本身。（这对于非欧洲语言中的某些字符很重要。<code class="code">aref</code>函数从数组中提取元素。它是一个特定于数组的函数，本文档不详细描述。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Arrays.html#Arrays">Arrays</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
 </p>
-<p><code class="code">(point)</code> is the current position of the cursor.
+<p><code class="code">(point)</code>是光标的当前位置。
 </p>
-<p>The next part of the code is an expression using <code class="code">progn</code>.  The body
-of the <code class="code">progn</code> consists of calls to <code class="code">search-forward</code> and
-<code class="code">point</code>.
+<p>代码的下一部分是一个使用<code class="code">progn</code>的表达式。<code class="code">progn</code>的主体由对<code class="code">search-forward</code>和<code class="code">point</code>的调用组成。
 </p>
-<p>It is easier to understand how <code class="code">progn</code> works after learning about
-<code class="code">search-forward</code>, so we will look at <code class="code">search-forward</code> and
-then at <code class="code">progn</code>.
+<p>在学习<code class="code">progn</code>之前，了解一下<code class="code">search-forward</code>会更容易理解，因此我们将先看看<code class="code">search-forward</code>，然后再看<code class="code">progn</code>。
 </p>
 </div>
 

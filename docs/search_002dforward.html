@@ -55,65 +55,35 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="search_002dforward">
 <div class="nav-panel">
 <p>
-Next: <a href="progn.html" accesskey="n" rel="next">The <code class="code">progn</code> Special Form</a>, Previous: <a href="zap_002dto_002dchar-body.html" accesskey="p" rel="prev">The Body of <code class="code">zap-to-char</code></a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="progn.html" accesskey="n" rel="next"><code class="code">progn</code>特殊形式</a>, Previous: <a href="zap_002dto_002dchar-body.html" accesskey="p" rel="prev"><code class="code">zap-to-char</code>函数的主体</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-search_002dforward-Function">8.1.3 The <code class="code">search-forward</code> Function</h4>
+<h4 class="subsection" id="search_002dforwardHan-Shu-">8.1.3 <code class="code">search-forward</code>函数</h4>
 <a class="index-entry-id" id="index-search_002dforward"></a>
 
-<p>The <code class="code">search-forward</code> function is used to locate the
-zapped-for-character in <code class="code">zap-to-char</code>.  If the search is
-successful, <code class="code">search-forward</code> leaves point immediately after the
-last character in the target string.  (In <code class="code">zap-to-char</code>, the
-target string is just one character long.  <code class="code">zap-to-char</code> uses the
-function <code class="code">char-to-string</code> to ensure that the computer treats that
-character as a string.)  If the search is backwards,
-<code class="code">search-forward</code> leaves point just before the first character in
-the target.  Also, <code class="code">search-forward</code> returns <code class="code">t</code> for true.
-(Moving point is therefore a side effect.)
+<p><code class="code">search-forward</code>函数用于在<code class="code">zap-to-char</code>中定位要删除的字符。如果搜索成功，<code class="code">search-forward</code>将光标立即置于目标字符串的最后一个字符之后。（在<code class="code">zap-to-char</code>中，目标字符串只有一个字符长。<code class="code">zap-to-char</code>使用<code class="code">char-to-string</code>函数确保计算机将该字符视为字符串。）如果搜索是向后的，<code class="code">search-forward</code>将光标放在目标的第一个字符之前。此外，<code class="code">search-forward</code>返回<code class="code">t</code>表示真（移动光标因此是一个副作用）。
 </p>
-<p>In <code class="code">zap-to-char</code>, the <code class="code">search-forward</code> function looks like this:
+<p>在<code class="code">zap-to-char</code>中，<code class="code">search-forward</code>函数如下：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(search-forward (char-to-string char) nil nil arg)
 </pre></div>
 
-<p>The <code class="code">search-forward</code> function takes four arguments:
+<p><code class="code">search-forward</code>函数接受四个参数：
 </p>
 <ol class="enumerate">
-<li> The first argument is the target, what is searched for.  This must be a
-string, such as &lsquo;<samp class="samp">&quot;z&quot;</samp>&rsquo;.
+<li> 第一个参数是目标，即要搜索的内容。这必须是一个字符串，例如&lsquo;<samp class="samp">&quot;z&quot;</samp>&rsquo;。
 
-<p>As it happens, the argument passed to <code class="code">zap-to-char</code> is a single
-character.  Because of the way computers are built, the Lisp
-interpreter may treat a single character as being different from a
-string of characters.  Inside the computer, a single character has a
-different electronic format than a string of one character.  (A single
-character can often be recorded in the computer using exactly one
-byte; but a string may be longer, and the computer needs to be ready
-for this.)  Since the <code class="code">search-forward</code> function searches for a
-string, the character that the <code class="code">zap-to-char</code> function receives as
-its argument must be converted inside the computer from one format to
-the other; otherwise the <code class="code">search-forward</code> function will fail.
-The <code class="code">char-to-string</code> function is used to make this conversion.
+<p>正好传递给<code class="code">zap-to-char</code>的参数是一个单个字符。由于计算机的构造方式，Lisp解释器可能会将单个字符视为与字符串不同。在计算机内部，单个字符具有与一个字符的字符串不同的电子格式。（计算机中通常可以用一个字节精确地记录一个单个字符；但字符串可能更长，计算机需要为此做好准备。）因此，<code class="code">zap-to-char</code>函数接收的字符必须在计算机内部从一种格式转换为另一种格式；否则，<code class="code">search-forward</code>函数将失败。使用<code class="code">char-to-string</code>函数进行此转换。
 </p>
-</li><li> The second argument bounds the search; it is specified as a position in
-the buffer.  In this case, the search can go to the end of the buffer,
-so no bound is set and the second argument is <code class="code">nil</code>.
+</li><li> 第二个参数限制了搜索的范围；它指定为缓冲区中的位置。在这种情况下，搜索可以到达缓冲区的末尾，因此未设置边界，第二个参数为<code class="code">nil</code>。
 
-</li><li> The third argument tells the function what it should do if the search
-fails&mdash;it can signal an error (and print a message) or it can return
-<code class="code">nil</code>.  A <code class="code">nil</code> as the third argument causes the function to
-signal an error when the search fails.
+</li><li> 第三个参数告诉函数如果搜索失败应该做什么——它可以发出错误（并打印一条消息），或者返回<code class="code">nil</code>。将<code class="code">nil</code>作为第三个参数会导致函数在搜索失败时发出错误。
 
-</li><li> The fourth argument to <code class="code">search-forward</code> is the repeat count&mdash;how
-many occurrences of the string to look for.  This argument is optional
-and if the function is called without a repeat count, this argument is
-passed the value 1.  If this argument is negative, the search goes
-backwards.
+</li><li> <code class="code">search-forward</code>的第四个参数是重复计数——要查找字符串的出现次数。此参数是可选的，如果函数在没有重复计数的情况下调用，则此参数将传递值1。如果此参数为负数，则搜索将向后进行。
 </li></ol>
 
-<p>In template form, a <code class="code">search-forward</code> expression looks like this:
+<p>在模板形式中，<code class="code">search-forward</code>表达式如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(search-forward &quot;<var class="var">target-string</var>&quot;
@@ -122,13 +92,8 @@ backwards.
                 <var class="var">repeat-count</var>)
 </pre></div></div>
 
-<p>We will look at <code class="code">progn</code> next.
+<p>接下来我们将看一下<code class="code">progn</code>。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="progn.html">The <code class="code">progn</code> Special Form</a>, Previous: <a href="zap_002dto_002dchar-body.html">The Body of <code class="code">zap-to-char</code></a>, Up: <a href="zap_002dto_002dchar.html"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

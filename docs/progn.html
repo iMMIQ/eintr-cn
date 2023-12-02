@@ -55,50 +55,27 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="progn">
 <div class="nav-panel">
 <p>
-Next: <a href="Summing-up-zap_002dto_002dchar.html" accesskey="n" rel="next">Summing up <code class="code">zap-to-char</code></a>, Previous: <a href="search_002dforward.html" accesskey="p" rel="prev">The <code class="code">search-forward</code> Function</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Summing-up-zap_002dto_002dchar.html" accesskey="n" rel="next">总结<code class="code">zap-to-char</code></a>, Previous: <a href="search_002dforward.html" accesskey="p" rel="prev"><code class="code">search-forward</code>函数</a>, Up: <a href="zap_002dto_002dchar.html" accesskey="u" rel="up"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-progn-Special-Form">8.1.4 The <code class="code">progn</code> Special Form</h4>
+<h4 class="subsection" id="prognTe-Shu-Xing-Shi-">8.1.4 <code class="code">progn</code>特殊形式</h4>
 <a class="index-entry-id" id="index-progn"></a>
 
-<p><code class="code">progn</code> is a special form that causes each of its arguments to be
-evaluated in sequence and then returns the value of the last one.  The
-preceding expressions are evaluated only for the side effects they
-perform.  The values produced by them are discarded.
+<p><code class="code">progn</code>是一种特殊形式，它导致按顺序评估其每个参数，然后返回最后一个参数的值。前面的表达式仅为它们执行的副作用而进行评估。它们产生的值被丢弃。
 </p>
-<p>The template for a <code class="code">progn</code> expression is very simple:
+<p><code class="code">progn</code>表达式的模板非常简单：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(progn
   <var class="var">body</var>&hellip;)
 </pre></div></div>
 
-<p>In <code class="code">zap-to-char</code>, the <code class="code">progn</code> expression has to do two things:
-put point in exactly the right position; and return the location of
-point so that <code class="code">kill-region</code> will know how far to kill to.
+<p>在&lsquo;zap-to-char&lsquo;中，<code class="code">progn</code>表达式必须执行两个操作：将点放置在准确的位置，并返回点的位置，以便<code class="code">kill-region</code>知道要删除多远。
 </p>
-<p>The first argument to the <code class="code">progn</code> is <code class="code">search-forward</code>.  When
-<code class="code">search-forward</code> finds the string, the function leaves point
-immediately after the last character in the target string.  (In this
-case the target string is just one character long.)  If the search is
-backwards, <code class="code">search-forward</code> leaves point just before the first
-character in the target.  The movement of point is a side effect.
+<p><code class="code">progn</code>的第一个参数是<code class="code">search-forward</code>。当<code class="code">search-forward</code>找到字符串时，该函数将点立即置于目标字符串的最后一个字符之后。（在本例中，目标字符串只有一个字符长。）如果搜索是向后的，则<code class="code">search-forward</code>将点置于目标的第一个字符之前。点的移动是一个副作用。
 </p>
-<p>The second and last argument to <code class="code">progn</code> is the expression
-<code class="code">(point)</code>.  This expression returns the value of point, which in
-this case will be the location to which it has been moved by
-<code class="code">search-forward</code>.  (In the source, a line that tells the function
-to go to the previous character, if it is going forward, was commented
-out in 1999; I don&rsquo;t remember whether that feature or mis-feature was
-ever a part of the distributed source.)  The value of <code class="code">point</code> is
-returned by the <code class="code">progn</code> expression and is passed to
-<code class="code">kill-region</code> as <code class="code">kill-region</code>&rsquo;s second argument.
+<p><code class="code">progn</code>的第二个也是最后一个参数是表达式<code class="code">(point)</code>。此表达式返回点的值，而在这种情况下，它将是由<code class="code">search-forward</code>移动到的位置。（在源代码中，一行指示函数转到前一个字符（如果它是向前的）的代码在1999年被注释掉了；我不记得这个功能或错误是否曾经是分布源代码的一部分。）<code class="code">point</code>的值由<code class="code">progn</code>表达式返回，并作为<code class="code">kill-region</code>的第二个参数传递。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Summing-up-zap_002dto_002dchar.html">Summing up <code class="code">zap-to-char</code></a>, Previous: <a href="search_002dforward.html">The <code class="code">search-forward</code> Function</a>, Up: <a href="zap_002dto_002dchar.html"><code class="code">zap-to-char</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
