@@ -61,33 +61,24 @@ Next: <a href="setcar.html" accesskey="n" rel="next"><code class="code">setcar</
 <h3 class="section" id="nth-1">7.4 <code class="code">nth</code></h3>
 <a class="index-entry-id" id="index-nth"></a>
 
-<p>The <code class="code">nthcdr</code> function takes the <small class="sc">CDR</small> of a list repeatedly.
-The <code class="code">nth</code> function takes the <small class="sc">CAR</small> of the result returned by
-<code class="code">nthcdr</code>.  It returns the Nth element of the list.
+<p>函数 <code class="code">nthcdr</code> 重复获取列表的 <small class="sc">CDR</small>。函数 <code class="code">nth</code> 获取由 <code class="code">nthcdr</code> 返回的结果的 <small class="sc">CAR</small>。它返回列表的第 N 个元素。
 </p>
-<p>Thus, if it were not defined in C for speed, the definition of
-<code class="code">nth</code> would be:
+<p>因此，如果不是为了速度而在C中定义，<code class="code">nth</code> 的定义将是：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun nth (n list)
-  &quot;Returns the Nth element of LIST.
-N counts from zero.  If LIST is not that long, nil is returned.&quot;
+  &quot;返回列表 LIST 的第 N 个元素。
+N 从零开始计数。如果列表没有那么长，则返回 nil。&quot;
   (car (nthcdr n list)))
 </pre></div></div>
 
-<p>(Originally, <code class="code">nth</code> was defined in Emacs Lisp in <samp class="file">subr.el</samp>,
-but its definition was redone in C in the 1980s.)
+<p>(最初，<code class="code">nth</code> 是在Emacs Lisp中在<samp class="file">subr.el</samp>中定义的，但它的定义在1980年代被重写为C语言。)
 </p>
-<p>The <code class="code">nth</code> function returns a single element of a list.
-This can be very convenient.
+<p><code class="code">nth</code> 函数返回列表的单个元素。这可能非常方便。
 </p>
-<p>Note that the elements are numbered from zero, not one.  That is to
-say, the first element of a list, its <small class="sc">CAR</small> is the zeroth element.
-This zero-based counting often bothers people who
-are accustomed to the first element in a list being number one, which
-is one-based.
+<p>请注意，元素从零开始编号，而不是从一开始。也就是说，列表的第一个元素，它的 <small class="sc">CAR</small> 是零号元素。这种从零开始计数通常会让习惯于列表中第一个元素为编号一的人感到困扰。
 </p>
-<p>For example:
+<p>例如：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(nth 0 '(&quot;one&quot; &quot;two&quot; &quot;three&quot;))
@@ -97,10 +88,7 @@ is one-based.
     &rArr; &quot;two&quot;
 </pre></div></div>
 
-<p>It is worth mentioning that <code class="code">nth</code>, like <code class="code">nthcdr</code> and
-<code class="code">cdr</code>, does not change the original list&mdash;the function is
-non-destructive.  This is in sharp contrast to the <code class="code">setcar</code> and
-<code class="code">setcdr</code> functions.
+<p>值得一提的是，<code class="code">nth</code>、<code class="code">nthcdr</code> 和 <code class="code">cdr</code> 都不会改变原始列表&mdash;这些函数是非破坏性的。这与 <code class="code">setcar</code> 和 <code class="code">setcdr</code> 函数形成鲜明对比。
 </p>
 </div>
 

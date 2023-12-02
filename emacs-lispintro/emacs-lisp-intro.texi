@@ -4844,38 +4844,29 @@ Lisp error: (wrong-number-of-arguments length 0)
 @section @code{nth}
 @findex nth
 
-The @code{nthcdr} function takes the @sc{cdr} of a list repeatedly.
-The @code{nth} function takes the @sc{car} of the result returned by
-@code{nthcdr}.  It returns the Nth element of the list.
+函数 @code{nthcdr} 重复获取列表的 @sc{cdr}。函数 @code{nth} 获取由 @code{nthcdr} 返回的结果的 @sc{car}。它返回列表的第 N 个元素。
 
 @need 1500
-Thus, if it were not defined in C for speed, the definition of
-@code{nth} would be:
+因此，如果不是为了速度而在C中定义，@code{nth} 的定义将是：
 
 @smallexample
 @group
 (defun nth (n list)
-  "Returns the Nth element of LIST.
-N counts from zero.  If LIST is not that long, nil is returned."
+  "返回列表 LIST 的第 N 个元素。
+N 从零开始计数。如果列表没有那么长，则返回 nil。"
   (car (nthcdr n list)))
 @end group
 @end smallexample
 
 @noindent
-(Originally, @code{nth} was defined in Emacs Lisp in @file{subr.el},
-but its definition was redone in C in the 1980s.)
+(最初，@code{nth} 是在Emacs Lisp中在@file{subr.el}中定义的，但它的定义在1980年代被重写为C语言。)
 
-The @code{nth} function returns a single element of a list.
-This can be very convenient.
+@code{nth} 函数返回列表的单个元素。这可能非常方便。
 
-Note that the elements are numbered from zero, not one.  That is to
-say, the first element of a list, its @sc{car} is the zeroth element.
-This zero-based counting often bothers people who
-are accustomed to the first element in a list being number one, which
-is one-based.
+请注意，元素从零开始编号，而不是从一开始。也就是说，列表的第一个元素，它的 @sc{car} 是零号元素。这种从零开始计数通常会让习惯于列表中第一个元素为编号一的人感到困扰。
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -4887,10 +4878,7 @@ For example:
 @end group
 @end smallexample
 
-It is worth mentioning that @code{nth}, like @code{nthcdr} and
-@code{cdr}, does not change the original list---the function is
-non-destructive.  This is in sharp contrast to the @code{setcar} and
-@code{setcdr} functions.
+值得一提的是，@code{nth}、@code{nthcdr} 和 @code{cdr} 都不会改变原始列表---这些函数是非破坏性的。这与 @code{setcar} 和 @code{setcdr} 函数形成鲜明对比。
 
 @node setcar
 @section @code{setcar}
