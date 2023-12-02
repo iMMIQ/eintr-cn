@@ -5051,7 +5051,7 @@ domesticated-animals
 
 保存文本片段的列表称为@dfn{kill环}。本章首先描述了kill环，以及首先追踪@code{zap-to-char}函数的工作方式。此函数调用一个调用函数，该函数操纵kill环。因此，在到达山脚之前，我们要先爬过丘陵。
 
-后续章节描述了从缓冲区剪切的文本如何被检索。@xref{Yanking, , 检索文本}。
+后续章节描述了从缓冲区剪切的文本如何被检索。@xref{插入文本, , 检索文本}。
 
 @node zap-to-char
 @section @code{zap-to-char}
@@ -6804,35 +6804,21 @@ bouquet                       flowers
 
 将@code{flowers}设置为@code{violet}和@code{buttercup}。在这个列表上再连接两朵花，并将这个新列表设置为@code{more-flowers}。将@code{flowers}的@sc{car}设置为一条鱼。现在，@code{more-flowers}列表包含什么？
 
-@node Yanking
-@chapter Yanking Text Back
-@findex yank
-@cindex Text retrieval
-@cindex Retrieving text
-@cindex Pasting text
+@node 插入文本
+@chapter 插入文本
+@findex 插入
+@cindex 文本检索
+@cindex 检索文本
+@cindex 粘贴文本
 
-Whenever you cut text out of a buffer with a kill command in GNU Emacs,
-you can bring it back with a yank command.  The text that is cut out of
-the buffer is put in the kill ring and the yank commands insert the
-appropriate contents of the kill ring back into a buffer (not necessarily
-the original buffer).
+在GNU Emacs中，每当你使用一个kill命令从缓冲区中剪切文本，你都可以使用yank命令将其还原。从缓冲区中剪切出的文本被放入kill环中，而yank命令则将kill环的相应内容插入到缓冲区中（不一定是原始缓冲区）。
 
-A simple @kbd{C-y} (@code{yank}) command inserts the first item from
-the kill ring into the current buffer.  If the @kbd{C-y} command is
-followed immediately by @kbd{M-y}, the first element is replaced by
-the second element.  Successive @kbd{M-y} commands replace the second
-element with the third, fourth, or fifth element, and so on.  When the
-last element in the kill ring is reached, it is replaced by the first
-element and the cycle is repeated.  (Thus the kill ring is called a
-``ring'' rather than just a ``list''.  However, the actual data structure
-that holds the text is a list.
-@xref{Kill Ring, , Handling the Kill Ring}, for the details of how the
-list is handled as a ring.)
+一个简单的@kbd{C-y}（@code{yank}）命令将kill环中的第一个条目插入到当前缓冲区中。如果@kbd{C-y}命令后面紧跟着@kbd{M-y}，那么第一个元素将被第二个元素替换。随后的@kbd{M-y}命令将第二个元素替换为第三个、第四个或第五个元素，依此类推。当达到kill环中的最后一个元素时，它将被第一个元素替换，然后循环重复。（因此，kill环被称为“环”而不仅仅是一个“列表”。然而，实际保存文本的数据结构是一个列表。@xref{Kill Ring, , 处理Kill环}，了解如何将列表作为环处理的详细信息。）
 
 @menu
-* Kill Ring Overview::
-* kill-ring-yank-pointer::      The kill ring is a list.
-* yank nthcdr Exercises::       The @code{kill-ring-yank-pointer} variable.
+* Kill环概述::
+* kill-ring-yank-pointer::      Kill环是一个列表。
+* yank nthcdr 练习::           @code{kill-ring-yank-pointer}变量。
 @end menu
 
 @node Kill Ring Overview
@@ -8998,7 +8984,7 @@ beginning of a paragraph for every @samp{@@dfn} within the paragraph.
 written in Texinfo.)
 
 Many of the functions you will need are described in two of the
-previous chapters, @ref{剪切与存储文本, , 剪切与存储文本}, and @ref{Yanking, , Yanking Text Back}.  If you use
+previous chapters, @ref{剪切与存储文本, , 剪切与存储文本}, and @ref{插入文本, , Yanking Text Back}.  If you use
 @code{forward-paragraph} to put the index entry at the beginning of
 the paragraph, you will have to use @w{@kbd{C-h f}}
 (@code{describe-function}) to find out how to make the command go

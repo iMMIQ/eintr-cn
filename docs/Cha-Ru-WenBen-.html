@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>插入文本 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="插入文本 (Programming in Emacs Lisp)">
+<meta name="keywords" content="插入文本 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Loops-_0026-Recursion.html" rel="next" title="Loops &amp; Recursion">
+<link href="Lie-Biao-Shi-Xian-.html" rel="prev" title="列表实现">
+<style type="text/css">
+<!--
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="g_t_63d2_5165_6587_672c">
+<div class="nav-panel">
+<p>
+Next: <a href="Loops-_0026-Recursion.html" accesskey="n" rel="next">Loops and Recursion</a>, Previous: <a href="Lie-Biao-Shi-Xian-.html" accesskey="p" rel="prev">如何实现列表</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Cha-Ru-WenBen-">10 插入文本</h2>
+<a class="index-entry-id" id="index-Cha-Ru-"></a>
+<a class="index-entry-id" id="index-WenBen-Jian-Suo-"></a>
+<a class="index-entry-id" id="index-Jian-Suo-WenBen-"></a>
+<a class="index-entry-id" id="index-Nian-Tie-WenBen-"></a>
+
+<p>在GNU Emacs中，每当你使用一个kill命令从缓冲区中剪切文本，你都可以使用yank命令将其还原。从缓冲区中剪切出的文本被放入kill环中，而yank命令则将kill环的相应内容插入到缓冲区中（不一定是原始缓冲区）。
+</p>
+<p>一个简单的<kbd class="kbd">C-y</kbd>（<code class="code">yank</code>）命令将kill环中的第一个条目插入到当前缓冲区中。如果<kbd class="kbd">C-y</kbd>命令后面紧跟着<kbd class="kbd">M-y</kbd>，那么第一个元素将被第二个元素替换。随后的<kbd class="kbd">M-y</kbd>命令将第二个元素替换为第三个、第四个或第五个元素，依此类推。当达到kill环中的最后一个元素时，它将被第一个元素替换，然后循环重复。（因此，kill环被称为“环”而不仅仅是一个“列表”。然而，实际保存文本的数据结构是一个列表。See <a class="xref" href="Kill-Ring.html">处理Kill环</a>，了解如何将列表作为环处理的详细信息。）
+</p>
+
+<ul class="mini-toc">
+<li><a href="Kill-Ring-Overview.html" accesskey="1">Kill Ring Overview</a></li>
+<li><a href="kill_002dring_002dyank_002dpointer.html" accesskey="2">The <code class="code">kill-ring-yank-pointer</code> Variable</a></li>
+<li><a href="yank-nthcdr-Exercises.html" accesskey="3">Exercises with <code class="code">yank</code> and <code class="code">nthcdr</code></a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>
