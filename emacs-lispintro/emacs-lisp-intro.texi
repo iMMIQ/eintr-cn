@@ -7623,104 +7623,66 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 @end group
 @end smallexample
 
-@node Recursion
-@section Recursion
-@cindex Recursion
+@node 递归
+@section 递归
+@cindex 递归
 
-A recursive function contains code that tells the Lisp interpreter to
-call a program that runs exactly like itself, but with slightly
-different arguments.  The code runs exactly the same because it has
-the same name.  However, even though the program has the same name, it
-is not the same entity.  It is different.  In the jargon, it is a
-different ``instance''.
+一个递归函数包含代码，告诉Lisp解释器调用一个与自身完全相同但具有略有不同参数的程序。代码运行完全相同，因为它具有相同的名称。然而，即使程序具有相同的名称，它也不是相同的实体。它是不同的。在行话中，它是一个不同的“实例”。
 
-Eventually, if the program is written correctly, the slightly
-different arguments will become sufficiently different from the first
-arguments that the final instance will stop.
+最终，如果程序被正确编写，稍微不同的参数将与第一个参数足够不同，以至于最终的实例将停止。
 
 @menu
-* Building Robots::             Same model, different serial number ...
-* Recursive Definition Parts::  Walk until you stop ...
-* Recursion with list::         Using a list as the test whether to recurse.
-* Recursive triangle function::
-* Recursion with cond::
-* Recursive Patterns::          Often used templates.
-* No Deferment::                Don't store up work ...
-* No deferment solution::
+* 构建机器人::             相同的模型，不同的序列号...
+* 递归定义的部分::         走到停下来...
+* 使用列表的递归::         将列表用作判断是否递归的测试。
+* 递归三角函数::
+* 使用cond的递归::
+* 递归模式::               经常使用的模板。
+* 无推迟::                  不要存储工作...
+* 无推迟解决方案::
 @end menu
 
-@node Building Robots
-@subsection Building Robots: Extending the Metaphor
-@cindex Building robots
-@cindex Robots, building
+@node 构建机器人
+@subsection 构建机器人：扩展隐喻
+@cindex 构建机器人
+@cindex 机器人，构建
 
-It is sometimes helpful to think of a running program as a robot that
-does a job.  In doing its job, a recursive function calls on a second
-robot to help it.  The second robot is identical to the first in every
-way, except that the second robot helps the first and has been
-passed different arguments than the first.
+有时将运行的程序看作是执行任务的机器人是有帮助的。在执行其任务时，递归函数调用第二个机器人来帮助它。第二个机器人与第一个机器人在每个方面都是相同的，除了第二个机器人帮助第一个机器人并传递了不同于第一个机器人的参数。
 
-In a recursive function, the second robot may call a third; and the
-third may call a fourth, and so on.  Each of these is a different
-entity; but all are clones.
+在递归函数中，第二个机器人可能调用第三个；第三个可能调用第四个，依此类推。每个都是一个不同的实体；但都是克隆体。
 
-Since each robot has slightly different instructions---the arguments
-will differ from one robot to the next---the last robot should know
-when to stop.
+由于每个机器人都有略有不同的指令——参数将从一个机器人到另一个机器人不同——最后一个机器人应该知道何时停止。
 
-Let's expand on the metaphor in which a computer program is a robot.
+让我们扩展一下计算机程序是机器人的隐喻。
 
-A function definition provides the blueprints for a robot.  When you
-install a function definition, that is, when you evaluate a
-@code{defun} macro, you install the necessary equipment to build
-robots.  It is as if you were in a factory, setting up an assembly
-line.  Robots with the same name are built according to the same
-blueprints.  So they have the same model number, but a
-different serial number.
+函数定义提供了一个机器人的蓝图。当您安装函数定义时，也就是当您评估@code{defun}宏时，您安装了构建机器人所需的设备。这就好像您在工厂中设置了一个装配线。具有相同名称的机器人是根据相同的蓝图构建的。因此，它们具有相同的型号，但不同的序列号。
 
-We often say that a recursive function ``calls itself''.  What we mean
-is that the instructions in a recursive function cause the Lisp
-interpreter to run a different function that has the same name and
-does the same job as the first, but with different arguments.
+我们经常说一个递归函数“调用自身”。我们的意思是递归函数中的指令导致Lisp解释器运行一个具有相同名称且执行与第一个相同的工作的不同函数，但具有不同参数。
 
-It is important that the arguments differ from one instance to the
-next; otherwise, the process will never stop.
+参数从一个实例到下一个必须不同；否则，这个过程将永远不会停止。
 
-@node Recursive Definition Parts
-@subsection The Parts of a Recursive Definition
-@cindex Parts of a Recursive Definition
-@cindex Recursive Definition Parts
+@node 递归定义的部分
+@subsection 递归定义的组成部分
+@cindex 递归定义的部分
+@cindex 递归定义的组成部分
 
-A recursive function typically contains a conditional expression which
-has three parts:
+一个递归函数通常包含一个条件表达式，该表达式有三个部分：
 
 @enumerate
 @item
-A true-or-false-test that determines whether the function is called
-again, here called the @dfn{do-again-test}.
+一个判断函数是否再次调用的真假测试，这里称为@dfn{再次执行测试}。
 
 @item
-The name of the function.  When this name is called, a new instance of
-the function---a new robot, as it were---is created and told what to do.
+函数的名称。当调用此名称时，将创建一个函数的新实例，也可以看作是创建一个新的机器人，并告诉它要做什么。
 
 @item
-An expression that returns a different value each time the function is
-called, here called the @dfn{next-step-expression}.  Consequently, the
-argument (or arguments) passed to the new instance of the function
-will be different from that passed to the previous instance.  This
-causes the conditional expression, the @dfn{do-again-test}, to test
-false after the correct number of repetitions.
+一个表达式，每次调用函数时都返回不同的值，这里称为@dfn{下一步表达式}。因此，传递给函数的新实例的参数（或参数）将与传递给上一个实例的参数不同。这导致条件表达式，即@dfn{再次执行测试}在正确的重复次数后返回false。
 @end enumerate
 
-Recursive functions can be much simpler than any other kind of
-function.  Indeed, when people first start to use them, they often look
-so mysteriously simple as to be incomprehensible.  Like riding a
-bicycle, reading a recursive function definition takes a certain knack
-which is hard at first but then seems simple.
+递归函数可能比其他类型的函数简单得多。实际上，当人们首次开始使用它们时，它们经常看起来如此神秘简单，以至于难以理解。就像骑自行车一样，阅读递归函数定义需要一定的技巧，起初很难，但后来似乎很简单。
 
 @need 1200
-There are several different common recursive patterns.  A very simple
-pattern looks like this:
+有几种常见的递归模式。一个非常简单的模式如下：
 
 @smallexample
 @group
@@ -7733,41 +7695,24 @@ pattern looks like this:
 @end group
 @end smallexample
 
-Each time a recursive function is evaluated, a new instance of it is
-created and told what to do.  The arguments tell the instance what to do.
+每次评估递归函数时，都会创建它的一个新实例，并告诉它要做什么。参数告诉实例要做什么。
 
-An argument is bound to the value of the next-step-expression.  Each
-instance runs with a different value of the next-step-expression.
+参数被绑定到下一步表达式的值。每个实例以不同的下一步表达式的值运行。
 
-The value in the next-step-expression is used in the do-again-test.
+下一步表达式中的值在再次执行测试中使用。
 
-The value returned by the next-step-expression is passed to the new
-instance of the function, which evaluates it (or some
-transmogrification of it) to determine whether to continue or stop.
-The next-step-expression is designed so that the do-again-test returns
-false when the function should no longer be repeated.
+由下一步表达式返回的值被传递给函数的新实例，该实例评估它（或它的某些转化）以确定是否继续还是停止。下一步表达式被设计成当函数不再需要重复时再次执行测试返回false。
 
-The do-again-test is sometimes called the @dfn{stop condition},
-since it stops the repetitions when it tests false.
+再次执行测试有时被称为@dfn{停止条件}，因为它在测试为false时停止重复。
 
-@node Recursion with list
-@subsection Recursion with a List
+@node 递归与列表
+@subsection 列表递归
 
-The example of a @code{while} loop that printed the elements of a list
-of numbers can be written recursively.  Here is the code, including
-an expression to set the value of the variable @code{animals} to a list.
+一个用@code{while}循环打印数字列表元素的例子可以用递归的方式重写。下面是代码，包括一个表达式，将变量@code{animals}的值设置为一个列表。
 
-If you are reading this in Info in Emacs, you can evaluate this
-expression directly in Info.  Otherwise, you must copy the example
-to the @file{*scratch*} buffer and evaluate each expression there.
-Use @kbd{C-u C-x C-e} to evaluate the
-@code{(print-elements-recursively animals)} expression so that the
-results are printed in the buffer; otherwise the Lisp interpreter will
-try to squeeze the results into the one line of the echo area.
+如果你在Emacs的Info中阅读此内容，你可以直接在Info中评估这个表达式。否则，你必须将示例复制到@file{*scratch*}缓冲区，并在那里逐个评估每个表达式。使用@kbd{C-u C-x C-e}来评估@code{(print-elements-recursively animals)}表达式，以便结果打印在缓冲区中；否则，Lisp解释器将尝试将结果压缩成回显区域的一行。
 
-Also, place your cursor immediately after the last closing parenthesis
-of the @code{print-elements-recursively} function, before the comment.
-Otherwise, the Lisp interpreter will try to evaluate the comment.
+此外，在@code{print-elements-recursively}函数的最后一个闭合括号之后，在注释之前将光标放置在此处。否则，Lisp解释器将尝试评估注释。
 
 @findex print-elements-recursively
 @smallexample
@@ -7775,8 +7720,8 @@ Otherwise, the Lisp interpreter will try to evaluate the comment.
 (setq animals '(gazelle giraffe lion tiger))
 
 (defun print-elements-recursively (list)
-  "Print each element of LIST on a line of its own.
-Uses recursion."
+  "将LIST的每个元素单独打印到一行上。
+使用递归。"
   (when list                            ; @r{do-again-test}
         (print (car list))              ; @r{body}
         (print-elements-recursively     ; @r{recursive call}
@@ -7786,47 +7731,22 @@ Uses recursion."
 @end group
 @end smallexample
 
-The @code{print-elements-recursively} function first tests whether
-there is any content in the list; if there is, the function prints the
-first element of the list, the @sc{car} of the list.  Then the
-function invokes itself, but gives itself as its argument, not the
-whole list, but the second and subsequent elements of the list, the
-@sc{cdr} of the list.
+@code{print-elements-recursively}函数首先测试列表中是否有内容；如果有，函数将打印列表的第一个元素，即列表的@sc{car}。然后，函数调用自身，但将自身作为参数传递，而不是整个列表，而是列表的第二个及后续元素，即列表的@sc{cdr}。
 
-Put another way, if the list is not empty, the function invokes
-another instance of code that is similar to the initial code, but is a
-different thread of execution, with different arguments than the first
-instance.
+换句话说，如果列表不为空，函数调用另一个与初始代码相似但是不同执行线程的代码实例，其参数与第一个实例不同。
 
-Put in yet another way, if the list is not empty, the first robot
-assembles a second robot and tells it what to do; the second robot is
-a different individual from the first, but is the same model.
+再换一种说法，如果列表不为空，第一个机器人组装第二个机器人并告诉它该做什么；第二个机器人是第一个机器人之外的另一个个体，但是是相同型号。
 
-When the second evaluation occurs, the @code{when} expression is
-evaluated and if true, prints the first element of the list it
-receives as its argument (which is the second element of the original
-list).  Then the function calls itself with the @sc{cdr} of the list
-it is invoked with, which (the second time around) is the @sc{cdr} of
-the @sc{cdr} of the original list.
+当进行第二次评估时，@code{when}表达式将被评估，如果为真，则打印作为其参数接收到的列表的第一个元素（这是原始列表的第二个元素）。然后，函数使用它调用的列表的@sc{cdr}调用自身，这是原始列表的@sc{cdr}的@sc{cdr}（第二次调用时）。
 
-Note that although we say that the function ``calls itself'', what we
-mean is that the Lisp interpreter assembles and instructs a new
-instance of the program.  The new instance is a clone of the first,
-but is a separate individual.
+请注意，尽管我们说函数“调用自身”，但我们的意思是Lisp解释器将装配并指导程序的新实例。新实例是第一个的克隆，但是是独立的个体。
 
-Each time the function invokes itself, it does so on a
-shorter version of the original list.  It creates a new instance that
-works on a shorter list.
+每次函数调用自身时，它都是在原始列表的较短版本上进行的。它创建一个在较短列表上运行的新实例。
 
-Eventually, the function invokes itself on an empty list.  It creates
-a new instance whose argument is @code{nil}.  The conditional expression
-tests the value of @code{list}.  Since the value of @code{list} is
-@code{nil}, the @code{when} expression tests false so the then-part is
-not evaluated.  The function as a whole then returns @code{nil}.
+最终，函数在空列表上调用自身。它创建一个参数为@code{nil}的新实例。条件表达式测试@code{list}的值。由于@code{list}的值是@code{nil}，@code{when}表达式测试为假，因此不会评估then部分。因此，整个函数返回@code{nil}。
 
 @need 1200
-When you evaluate the expression @code{(print-elements-recursively
-animals)} in the @file{*scratch*} buffer, you see this result:
+当在@file{*scratch*}缓冲区中评估表达式@code{(print-elements-recursively animals)}时，你将看到以下结果：
 
 @smallexample
 @group
@@ -7842,151 +7762,112 @@ nil
 @end smallexample
 
 @need 2000
-@node Recursive triangle function
-@subsection Recursion in Place of a Counter
+@node 递归三角形函数
+@subsection 使用递归替代计数器
 @findex triangle-recursively
 
 @need 1200
-The @code{triangle} function described in a previous section can also
-be written recursively.  It looks like this:
+在前一节中描述的 @code{triangle} 函数也可以使用递归方式编写。它的代码如下：
 
 @smallexample
 @group
 (defun triangle-recursively (number)
-  "Return the sum of the numbers 1 through NUMBER inclusive.
-Uses recursion."
-  (if (= number 1)                    ; @r{do-again-test}
-      1                               ; @r{then-part}
-    (+ number                         ; @r{else-part}
-       (triangle-recursively          ; @r{recursive call}
-        (1- number)))))               ; @r{next-step-expression}
+  "返回从1到NUMBER（包括NUMBER）的数字之和，使用递归。"
+  (if (= number 1)                    ; @r{再做一次测试}
+      1                               ; @r{然后部分}
+    (+ number                         ; @r{否则部分}
+       (triangle-recursively          ; @r{递归调用}
+        (1- number)))))               ; @r{下一步表达式}
 
 (triangle-recursively 7)
 @end group
 @end smallexample
 
 @noindent
-You can install this function by evaluating it and then try it by
-evaluating @code{(triangle-recursively 7)}.  (Remember to put your
-cursor immediately after the last parenthesis of the function
-definition, before the comment.)  The function evaluates to 28.
+你可以通过评估这个函数来安装它，并通过评估 @code{(triangle-recursively 7)} 来尝试它。（记得把光标放在函数定义的最后一个括号之后，注释之前。）这个函数的值为28。
 
-To understand how this function works, let's consider what happens in the
-various cases when the function is passed 1, 2, 3, or 4 as the value of
-its argument.
+为了理解这个函数的工作原理，让我们考虑当函数的参数值为1、2、3或4时发生的各种情况。
 
 @menu
-* Recursive Example arg of 1 or 2::
-* Recursive Example arg of 3 or 4::
+* 参数为1或2的递归示例::
+* 参数为3或4的递归示例::
 @end menu
 
 @ifnottex
-@node Recursive Example arg of 1 or 2
-@unnumberedsubsubsec An argument of 1 or 2
+@node 参数为1或2的递归示例
+@unnumberedsubsubsec 参数为1或2
 @end ifnottex
 
-First, what happens if the value of the argument is 1?
+首先，如果参数值为1会发生什么？
 
-The function has an @code{if} expression after the documentation
-string.  It tests whether the value of @code{number} is equal to 1; if
-so, Emacs evaluates the then-part of the @code{if} expression, which
-returns the number 1 as the value of the function.  (A triangle with
-one row has one pebble in it.)
+在文档字符串之后，函数有一个 @code{if} 表达式。它测试 @code{number} 的值是否等于1；如果是，Emacs 将评估 @code{if} 表达式的 then-部分，将1作为函数的值返回。（一个只有一行的三角形中有一个小石子。）
 
-Suppose, however, that the value of the argument is 2.  In this case,
-Emacs evaluates the else-part of the @code{if} expression.
+然而，假设参数值为2。在这种情况下，Emacs 将评估 @code{if} 表达式的 else-部分。
 
 @need 1200
-The else-part consists of an addition, the recursive call to
-@code{triangle-recursively} and a decrementing action; and it looks like
-this:
+else-部分由一个加法、对 @code{triangle-recursively} 的递归调用和一个递减操作组成；它看起来像这样：
 
 @smallexample
 (+ number (triangle-recursively (1- number)))
 @end smallexample
 
-When Emacs evaluates this expression, the innermost expression is
-evaluated first; then the other parts in sequence.  Here are the steps
-in detail:
+当Emacs评估这个表达式时，首先评估最内层的表达式；然后按顺序评估其他部分。以下是详细的步骤：
 
 @table @i
-@item Step 1 @w{  } Evaluate the innermost expression.
+@item 步骤1 @w{  } 评估最内层的表达式。
 
-The innermost expression is @code{(1- number)} so Emacs decrements the
-value of @code{number} from 2 to 1.
+最内层的表达式是 @code{(1- number)}，因此Emacs将 @code{number} 的值从2递减到1。
 
-@item Step 2 @w{  } Evaluate the @code{triangle-recursively} function.
+@item 步骤2 @w{  } 评估 @code{triangle-recursively} 函数。
 
-The Lisp interpreter creates an individual instance of
-@code{triangle-recursively}.  It does not matter that this function is
-contained within itself.  Emacs passes the result Step 1 as the
-argument used by this instance of the @code{triangle-recursively}
-function
+Lisp解释器创建了 @code{triangle-recursively} 的一个单独实例。这个函数包含在它自己的内部并不重要。Emacs将步骤1的结果作为这个 @code{triangle-recursively} 函数实例使用的参数传递。
 
-In this case, Emacs evaluates @code{triangle-recursively} with an
-argument of 1.  This means that this evaluation of
-@code{triangle-recursively} returns 1.
+在这种情况下，Emacs使用参数1评估 @code{triangle-recursively}。这意味着这次评估返回1。
 
-@item Step 3 @w{  } Evaluate the value of @code{number}.
+@item 步骤3 @w{  } 评估 @code{number} 的值。
 
-The variable @code{number} is the second element of the list that
-starts with @code{+}; its value is 2.
+变量 @code{number} 是以 @code{+} 开头的列表的第二个元素；它的值为2。
 
-@item Step 4 @w{  } Evaluate the @code{+} expression.
+@item 步骤4 @w{  } 评估 @code{+} 表达式。
 
-The @code{+} expression receives two arguments, the first
-from the evaluation of @code{number} (Step 3) and the second from the
-evaluation of @code{triangle-recursively} (Step 2).
+@code{+} 表达式接收两个参数，第一个来自 @code{number} 的评估（步骤3），第二个来自 @code{triangle-recursively} 的评估（步骤2）。
 
-The result of the addition is the sum of 2 plus 1, and the number 3 is
-returned, which is correct.  A triangle with two rows has three
-pebbles in it.
+加法的结果是2加1的和，返回数字3，这是正确的。一个有两行的三角形中有三颗小石子。
 @end table
 
-@node Recursive Example arg of 3 or 4
-@unnumberedsubsubsec An argument of 3 or 4
+@node 递归示例参数为3或4的情况
+@unnumberedsubsubsec 参数为3或4的情况
 
-Suppose that @code{triangle-recursively} is called with an argument of
-3.
+假设调用 @code{triangle-recursively} 时参数为3。
 
 @table @i
-@item Step 1 @w{  } Evaluate the do-again-test.
+@item 步骤 1 @w{  } 评估再次执行测试。
 
-The @code{if} expression is evaluated first.  This is the do-again
-test and returns false, so the else-part of the @code{if} expression
-is evaluated.  (Note that in this example, the do-again-test causes
-the function to call itself when it tests false, not when it tests
-true.)
+首先评估 @code{if} 表达式。这是再次执行测试，并返回false，因此 @code{if} 表达式的else部分将被评估。（请注意，在此示例中，再次执行测试在测试false时导致函数调用自身，而不是在测试true时。）
 
-@item Step 2 @w{  } Evaluate the innermost expression of the else-part.
+@item 步骤 2 @w{  } 评估else部分的最内层表达式。
 
-The innermost expression of the else-part is evaluated, which decrements
-3 to 2.  This is the next-step-expression.
+评估else部分的最内层表达式，将3减少到2。这是下一步表达式。
 
-@item Step 3 @w{  } Evaluate the @code{triangle-recursively} function.
+@item 步骤 3 @w{  } 评估 @code{triangle-recursively} 函数。
 
-The number 2 is passed to the @code{triangle-recursively} function.
+将数字2传递给 @code{triangle-recursively} 函数。
 
-We already know what happens when Emacs evaluates @code{triangle-recursively} with
-an argument of 2.  After going through the sequence of actions described
-earlier, it returns a value of 3.  So that is what will happen here.
+我们已经知道当Emacs使用参数2评估 @code{triangle-recursively} 时会发生什么。在经历了前面描述的一系列动作后，它将返回值3。因此，在这里也将发生这种情况。
 
-@item Step 4 @w{  } Evaluate the addition.
+@item 步骤 4 @w{  } 评估加法。
 
-3 will be passed as an argument to the addition and will be added to the
-number with which the function was called, which is 3.
+3将作为参数传递给加法，并将被添加到调用函数的数字中，该数字为3。
 @end table
 
 @noindent
-The value returned by the function as a whole will be 6.
+函数整体返回的值将为6。
 
-Now that we know what will happen when @code{triangle-recursively} is
-called with an argument of 3, it is evident what will happen if it is
-called with an argument of 4:
+现在我们知道当 @code{triangle-recursively} 使用参数3调用时会发生什么，那么如果使用参数4调用它会发生什么就显而易见了：
 
 @quotation
 @need 800
-In the recursive call, the evaluation of
+在递归调用中，评估
 
 @smallexample
 (triangle-recursively (1- 4))
@@ -7994,60 +7875,39 @@ In the recursive call, the evaluation of
 
 @need 800
 @noindent
-will return the value of evaluating
+将返回评估的值
 
 @smallexample
 (triangle-recursively 3)
 @end smallexample
 
 @noindent
-which is 6 and this value will be added to 4 by the addition in the
-third line.
+这是6，此值将通过第三行的加法添加到4中。
 @end quotation
 
 @noindent
-The value returned by the function as a whole will be 10.
+函数整体返回的值将为10。
 
-Each time @code{triangle-recursively} is evaluated, it evaluates a
-version of itself---a different instance of itself---with a smaller
-argument, until the argument is small enough so that it does not
-evaluate itself.
+每次评估 @code{triangle-recursively} 时，它都会评估它自己的版本---一个具有较小参数的不同实例，直到参数足够小以使其不再评估自身。
 
-Note that this particular design for a recursive function
-requires that operations be deferred.
+请注意，这种递归函数的特定设计要求推迟操作。
 
-Before @code{(triangle-recursively 7)} can calculate its answer, it
-must call @code{(triangle-recursively 6)}; and before
-@code{(triangle-recursively 6)} can calculate its answer, it must call
-@code{(triangle-recursively 5)}; and so on.  That is to say, the
-calculation that @code{(triangle-recursively 7)} makes must be
-deferred until @code{(triangle-recursively 6)} makes its calculation;
-and @code{(triangle-recursively 6)} must defer until
-@code{(triangle-recursively 5)} completes; and so on.
+在 @code{(triangle-recursively 7)} 可以计算其答案之前，它必须调用 @code{(triangle-recursively 6)}；在 @code{(triangle-recursively 6)} 可以计算其答案之前，它必须调用 @code{(triangle-recursively 5)}；依此类推。也就是说，@code{(triangle-recursively 7)} 进行的计算必须推迟，直到 @code{(triangle-recursively 6)} 进行其计算为止；而 @code{(triangle-recursively 6)} 必须推迟，直到 @code{(triangle-recursively 5)} 完成为止；依此类推。
 
-If each of these instances of @code{triangle-recursively} are thought
-of as different robots, the first robot must wait for the second to
-complete its job, which must wait until the third completes, and so
-on.
+如果将 @code{triangle-recursively} 的每个实例都视为不同的机器人，第一个机器人必须等待第二个完成其工作，第二个必须等待第三个完成，依此类推。
 
-There is a way around this kind of waiting, which we will discuss in
-@ref{No Deferment, , Recursion without Deferments}.
+有一种绕过这种等待的方法，我们将在 @ref{不推迟的递归, , 无推迟的递归} 中讨论。
 
-@node Recursion with cond
-@subsection Recursion Example Using @code{cond}
+@node 用 cond 进行递归
+@subsection 使用 @code{cond} 进行递归的例子
 @findex cond
 
-The version of @code{triangle-recursively} described earlier is written
-with the @code{if} special form.  It can also be written using another
-special form called @code{cond}.  The name of the special form
-@code{cond} is an abbreviation of the word @samp{conditional}.
+先前描述的 @code{triangle-recursively} 版本是用 @code{if} 特殊形式编写的。它也可以使用另一种特殊形式称为 @code{cond} 来编写。特殊形式 @code{cond} 的名称是单词 @samp{conditional} 的缩写。
 
-Although the @code{cond} special form is not used as often in the
-Emacs Lisp sources as @code{if}, it is used often enough to justify
-explaining it.
+尽管在 Emacs Lisp 源代码中并不像 @code{if} 那样经常使用 @code{cond} 特殊形式，但它被足够频繁地使用，以便解释它是有道理的。
 
 @need 800
-The template for a @code{cond} expression looks like this:
+@code{cond} 表达式的模板如下：
 
 @smallexample
 @group
@@ -8057,10 +7917,10 @@ The template for a @code{cond} expression looks like this:
 @end smallexample
 
 @noindent
-where the @var{body} is a series of lists.
+其中 @var{body} 是一系列列表。
 
 @need 800
-Written out more fully, the template looks like this:
+更详细地写出来，模板如下：
 
 @smallexample
 @group
@@ -8072,26 +7932,14 @@ Written out more fully, the template looks like this:
 @end group
 @end smallexample
 
-When the Lisp interpreter evaluates the @code{cond} expression, it
-evaluates the first element (the @sc{car} or true-or-false-test) of
-the first expression in a series of expressions within the body of the
-@code{cond}.
+当 Lisp 解释器评估 @code{cond} 表达式时，它评估第一个元素（即第一个表达式中的 @sc{car} 或 true-or-false-test）。
 
-If the true-or-false-test returns @code{nil} the rest of that
-expression, the consequent, is skipped and  the true-or-false-test of the
-next expression is evaluated.  When an expression is found whose
-true-or-false-test returns a value that is not @code{nil}, the
-consequent of that expression is evaluated.  The consequent can be one
-or more expressions.  If the consequent consists of more than one
-expression, the expressions are evaluated in sequence and the value of
-the last one is returned.  If the expression does not have a consequent,
-the value of the true-or-false-test is returned.
+如果 true-or-false-test 返回 @code{nil}，则跳过该表达式的其余部分，即 consequent，并评估下一个表达式的 true-or-false-test。当找到一个表达式，其 true-or-false-test 返回非 @code{nil} 的值时，将评估该表达式的 consequent。consequent 可以是一个或多个表达式。如果 consequent 包含多个表达式，则按顺序评估这些表达式，并返回最后一个的值。如果表达式没有 consequent，则返回 true-or-false-test 的值。
 
-If none of the true-or-false-tests test true, the @code{cond} expression
-returns @code{nil}.
+如果没有一个 true-or-false-test 测试为真，@code{cond} 表达式返回 @code{nil}。
 
 @need 1250
-Written using @code{cond}, the @code{triangle} function looks like this:
+使用 @code{cond} 编写的 @code{triangle} 函数如下：
 
 @smallexample
 @group
@@ -8104,58 +7952,51 @@ Written using @code{cond}, the @code{triangle} function looks like this:
 @end smallexample
 
 @noindent
-In this example, the @code{cond} returns 0 if the number is less than or
-equal to 0, it returns 1 if the number is 1 and it evaluates @code{(+
-number (triangle-using-cond (1- number)))} if the number is greater than
-1.
+在这个例子中，如果数字小于等于 0，则 @code{cond} 返回 0；如果数字为 1，则返回 1；如果数字大于 1，则评估 @code{(+
+number (triangle-using-cond (1- number)))}。
 
-@node Recursive Patterns
-@subsection Recursive Patterns
-@cindex Recursive Patterns
+@node 递归模式
+@subsection 递归模式
+@cindex 递归模式
 
-Here are three common recursive patterns.  Each involves a list.
-Recursion does not need to involve lists, but Lisp is designed for lists
-and this provides a sense of its primal capabilities.
+以下是三种常见的递归模式，每一种都涉及到列表。递归不一定需要涉及列表，但Lisp是为列表设计的，这展示了其原始功能的一种感觉。
 
 @menu
-* Every::
-* Accumulate::
-* Keep::
+* 每个元素::
+* 累积::
+* 保留::
 @end menu
 
-@node Every
-@unnumberedsubsubsec Recursive Pattern: @emph{every}
-@cindex Every, type of recursive pattern
-@cindex Recursive pattern - every
+@node 每个元素
+@unnumberedsubsubsec 递归模式：@emph{每个元素}
+@cindex 每个元素，递归模式类型
+@cindex 递归模式 - 每个元素
 
-In the @code{every} recursive pattern, an action is performed on every
-element of a list.
+在@code{every}递归模式中，对列表的每个元素执行一个操作。
 
 @need 1500
-The basic pattern is:
+基本模式如下：
 
 @itemize @bullet
 @item
-If a list be empty, return @code{nil}.
+如果列表为空，则返回@code{nil}。
 @item
-Else, act on the beginning of the list (the @sc{car} of the list)
+否则，对列表的开头（列表的@sc{car}）执行操作
     @itemize @minus
     @item
-    through a recursive call by the function on the rest (the
-    @sc{cdr}) of the list,
+    通过对列表的其余部分（@sc{cdr}）进行函数的递归调用，
     @item
-    and, optionally, combine the acted-on element, using @code{cons},
-    with the results of acting on the rest.
+    并且可以选择地将执行操作的元素与对其余部分进行递归调用的结果使用@code{cons}结合。
     @end itemize
 @end itemize
 
 @need 1500
-Here is an example:
+以下是一个例子：
 
 @smallexample
 @group
 (defun square-each (numbers-list)
-  "Square each of a NUMBERS LIST, recursively."
+  "递归地计算NUMBERS LIST中的每个数字的平方。"
   (if (not numbers-list)                ; do-again-test
       nil
     (cons
@@ -8171,22 +8012,14 @@ Here is an example:
 
 @need 1200
 @noindent
-If @code{numbers-list} is empty, do nothing.  But if it has content,
-construct a list combining the square of the first number in the list
-with the result of the recursive call.
+如果@code{numbers-list}为空，则不执行任何操作。但如果它包含内容，则构造一个列表，其中包含第一个数字的平方与递归调用的结果的结合。
 
-(The example follows the pattern exactly: @code{nil} is returned if
-the numbers' list is empty.  In practice, you would write the
-conditional so it carries out the action when the numbers' list is not
-empty.)
+（该示例完全遵循该模式：如果数字列表为空，则返回@code{nil}。在实践中，您会编写条件语句，以便在数字列表不为空时执行操作。）
 
-The @code{print-elements-recursively} function (@pxref{Recursion with
-list, , Recursion with a List}) is another example of an @code{every}
-pattern, except in this case, rather than bring the results together
-using @code{cons}, we print each element of output.
+@code{print-elements-recursively}函数（@pxref{递归与列表, , Recursion with a List}）是@code{every}模式的另一个示例，不同之处在于，我们不使用@code{cons}将结果组合在一起，而是逐个打印输出的每个元素。
 
 @need 1250
-The @code{print-elements-recursively} function looks like this:
+@code{print-elements-recursively}函数如下：
 
 @smallexample
 @group
@@ -8195,8 +8028,7 @@ The @code{print-elements-recursively} function looks like this:
 
 @group
 (defun print-elements-recursively (list)
-  "Print each element of LIST on a line of its own.
-Uses recursion."
+  "逐行打印LIST中的每个元素。使用递归。"
   (when list                            ; @r{do-again-test}
         (print (car list))              ; @r{body}
         (print-elements-recursively     ; @r{recursive call}
@@ -8207,58 +8039,53 @@ Uses recursion."
 @end smallexample
 
 @need 1500
-The pattern for @code{print-elements-recursively} is:
+@code{print-elements-recursively}的模式如下：
 
 @itemize @bullet
 @item
-When the list is empty, do nothing.
+当列表为空时，不执行任何操作。
 @item
-But when the list has at least one element,
+但是当列表至少有一个元素时，
     @itemize @minus
     @item
-    act on the beginning of the list (the @sc{car} of the list),
+    对列表的开头（列表的@sc{car}）执行操作，
     @item
-    and make a recursive call on the rest (the @sc{cdr}) of the list.
+    并对列表的其余部分（@sc{cdr}）进行递归调用。
     @end itemize
 @end itemize
 
-@node Accumulate
-@unnumberedsubsubsec Recursive Pattern: @emph{accumulate}
-@cindex Accumulate, type of recursive pattern
-@cindex Recursive pattern - accumulate
+@node 累积
+@unnumberedsubsubsec 递归模式：@emph{累积}
+@cindex 累积，一种递归模式
+@cindex 递归模式 - 累积
 
-Another recursive pattern is called the @code{accumulate} pattern.  In
-the @code{accumulate} recursive pattern, an action is performed on
-every element of a list and the result of that action is accumulated
-with the results of performing the action on the other elements.
+另一种递归模式称为@code{累积}模式。在@code{累积}递归模式中，对列表的每个元素执行一个操作，并将该操作的结果与对其他元素执行的操作的结果累积在一起。
 
-This is very like the @code{every} pattern using @code{cons}, except that
-@code{cons} is not used, but some other combiner.
+这与使用@code{cons}的@code{每个}模式非常相似，只是不使用@code{cons}，而是使用其他某个组合器。
 
 @need 1500
-The pattern is:
+该模式如下：
 
 @itemize @bullet
 @item
-If a list be empty, return zero or some other constant.
+如果列表为空，则返回零或其他常数。
 @item
-Else, act on the beginning of the list (the @sc{car} of the list),
+否则，对列表的开头（列表的@sc{car}）进行操作，
     @itemize @minus
     @item
-    and combine that acted-on element, using @code{+} or
-    some other combining function, with
+    将该操作的元素与
     @item
-    a recursive call by the function on the rest (the @sc{cdr}) of the list.
+    通过对列表的其余部分（@sc{cdr}）进行递归调用的函数进行组合，使用@code{+}或其他组合函数。
     @end itemize
 @end itemize
 
 @need 1500
-Here is an example:
+以下是一个示例：
 
 @smallexample
 @group
 (defun add-elements (numbers-list)
-  "Add the elements of NUMBERS-LIST together."
+  "将NUMBERS-LIST的元素相加。"
   (if (not numbers-list)
       0
     (+ (car numbers-list) (add-elements (cdr numbers-list)))))
@@ -8270,66 +8097,63 @@ Here is an example:
 @end group
 @end smallexample
 
-@xref{Files List, , Making a List of Files}, for an example of the
-accumulate pattern.
+@xref{Files List, , 制作文件列表}，以获取累积模式的示例。
 
-@node Keep
-@unnumberedsubsubsec Recursive Pattern: @emph{keep}
-@cindex Keep, type of recursive pattern
-@cindex Recursive pattern - keep
+@node 保留
+@unnumberedsubsubsec 递归模式：@emph{保留}
+@cindex 保留，一种递归模式
+@cindex 递归模式 - 保留
 
-A third recursive pattern is called the @code{keep} pattern.
-In the @code{keep} recursive pattern, each element of a list is tested;
-the element is acted on and the results are kept only if the element
-meets a criterion.
+第三种递归模式称为@code{保留}模式。
+在@code{保留}递归模式中，测试列表的每个元素；
+只有在元素满足条件时，对该元素进行操作并仅保留结果。
 
-Again, this is very like the @code{every} pattern, except the element is
-skipped unless it meets a criterion.
+同样，这与@code{每个}模式非常相似，只是除非元素满足条件，否则将跳过该元素。
 
 @need 1500
-The pattern has three parts:
+该模式有三个部分：
 
 @itemize @bullet
 @item
-If a list be empty, return @code{nil}.
+如果列表为空，则返回@code{nil}。
 @item
-Else, if the beginning of the list (the @sc{car} of the list) passes
-        a test
+否则，如果列表的开头（列表的@sc{car}）通过
+        一个测试
     @itemize @minus
     @item
-    act on that element and combine it, using @code{cons} with
+    对该元素进行操作并使用@code{cons}与
     @item
-    a recursive call by the function on the rest (the @sc{cdr}) of the list.
+    通过对列表的其余部分（@sc{cdr}）进行递归调用的函数进行组合。
     @end itemize
 @item
-Otherwise, if the beginning of the list (the @sc{car} of the list) fails
-the test
+否则，如果列表的开头（列表的@sc{car}）未通过
+测试
     @itemize @minus
     @item
-    skip on that element,
+    跳过该元素，
     @item
-    and, recursively call the function on the rest (the @sc{cdr}) of the list.
+    并以对列表的其余部分（@sc{cdr}）进行递归调用的方式进行递归调用。
     @end itemize
 @end itemize
 
 @need 1500
-Here is an example that uses @code{cond}:
+以下是一个使用@code{cond}的示例：
 
 @smallexample
 @group
 (defun keep-three-letter-words (word-list)
-  "Keep three letter words in WORD-LIST."
+  "保留WORD-LIST中的三个字母的单词。"
   (cond
-   ;; First do-again-test: stop-condition
+   ;; 第一个再次测试：停止条件
    ((not word-list) nil)
 
-   ;; Second do-again-test: when to act
+   ;; 第二个再次测试：何时操作
    ((eq 3 (length (symbol-name (car word-list))))
-    ;; combine acted-on element with recursive call on shorter list
+    ;; 将已操作的元素与对较短列表进行递归调用的结果组合
     (cons (car word-list) (keep-three-letter-words (cdr word-list))))
 
-   ;; Third do-again-test: when to skip element;
-   ;;   recursively call shorter list with next-step expression
+   ;; 第三个再次测试：何时跳过元素；
+   ;;   以下一步表达式对较短列表进行递归调用
    (t (keep-three-letter-words (cdr word-list)))))
 @end group
 
@@ -8339,26 +8163,23 @@ Here is an example that uses @code{cond}:
 @end group
 @end smallexample
 
-It goes without saying that you need not use @code{nil} as the test for
-when to stop; and you can, of course, combine these patterns.
+毫无疑问，您无需使用@code{nil}作为停止测试的条件；当然，您可以组合这些模式。
 
-@node No Deferment
-@subsection Recursion without Deferments
-@cindex Deferment in recursion
-@cindex Recursion without Deferments
+@node 不推迟的递归
+@subsection 无推迟的递归
+@cindex 递归中的推迟
+@cindex 无推迟的递归
 
-Let's consider again what happens with the @code{triangle-recursively}
-function.  We will find that the intermediate calculations are
-deferred until all can be done.
+让我们再次考虑一下@code{triangle-recursively}函数的运行情况。我们会发现中间计算被推迟，直到所有计算都可以完成。
 
 @need 800
-Here is the function definition:
+以下是函数定义：
 
 @smallexample
 @group
 (defun triangle-recursively (number)
-  "Return the sum of the numbers 1 through NUMBER inclusive.
-Uses recursion."
+  "返回从1加到NUMBER（包括）的数字的和。
+使用递归。"
   (if (= number 1)                    ; @r{do-again-test}
       1                               ; @r{then-part}
     (+ number                         ; @r{else-part}
@@ -8367,90 +8188,64 @@ Uses recursion."
 @end group
 @end smallexample
 
-What happens when we call this function with an argument of 7?
+当我们使用参数7调用此函数时会发生什么？
 
-The first instance of the @code{triangle-recursively} function adds
-the number 7 to the value returned by a second instance of
-@code{triangle-recursively}, an instance that has been passed an
-argument of 6.  That is to say, the first calculation is:
+第一次调用@code{triangle-recursively}函数会将数字7与第二个
+@code{triangle-recursively}实例的返回值相加，该实例已被传递了一个
+参数为6。也就是说，第一次计算是：
 
 @smallexample
 (+ 7 (triangle-recursively 6))
 @end smallexample
 
 @noindent
-The first instance of @code{triangle-recursively}---you may want to
-think of it as a little robot---cannot complete its job.  It must hand
-off the calculation for @code{(triangle-recursively 6)} to a second
-instance of the program, to a second robot.  This second individual is
-completely different from the first one; it is, in the jargon, a
-``different instantiation''.  Or, put another way, it is a different
-robot.  It is the same model as the first; it calculates triangle
-numbers recursively; but it has a different serial number.
+第一次调用@code{triangle-recursively}---你可以把它想象成一个小机器人---无法完成它的工作。它必须将@code{(triangle-recursively 6)}的计算委托给程序的第二个实例，即第二个机器人。这第二个个体与第一个完全不同；它是，按行话来说，一个“不同的实例”。“换句话说，它是一个不同的机器人。它与第一个相同；它递归地计算三角形数；但它有一个不同的序列号。
 
-And what does @code{(triangle-recursively 6)} return?  It returns the
-number 6 added to the value returned by evaluating
-@code{triangle-recursively} with an argument of 5.  Using the robot
-metaphor, it asks yet another robot to help it.
+那么@code{(triangle-recursively 6)}返回什么呢？它返回数字6加上评估带有参数5的
+@code{triangle-recursively}的返回值。使用机器人的隐喻，它要求另一个机器人帮助它。
 
 @need 800
-Now the total is:
+现在总数是：
 
 @smallexample
 (+ 7 6 (triangle-recursively 5))
 @end smallexample
 
 @need 800
-And what happens next?
+接下来会发生什么？
 
 @smallexample
 (+ 7 6 5 (triangle-recursively 4))
 @end smallexample
 
-Each time @code{triangle-recursively} is called, except for the last
-time, it creates another instance of the program---another robot---and
-asks it to make a calculation.
+每次调用@code{triangle-recursively}，除了最后一次外，它都会创建程序的另一个实例---另一个机器人---并要求它进行计算。
 
 @need 800
-Eventually, the full addition is set up and performed:
+最终，完整的加法被设置并执行：
 
 @smallexample
 (+ 7 6 5 4 3 2 1)
 @end smallexample
 
-This design for the function defers the calculation of the first step
-until the second can be done, and defers that until the third can be
-done, and so on.  Each deferment means the computer must remember what
-is being waited on.  This is not a problem when there are only a few
-steps, as in this example.  But it can be a problem when there are
-more steps.
+这个函数的设计推迟了第一步的计算，直到第二步可以完成，然后推迟到第三步可以完成，依此类推。每个推迟都意味着计算机必须记住正在等待什么。在这个例子中，当步骤很少时，这不是问题。但当步骤更多时，这可能会成为问题。
 
-@node No deferment solution
-@subsection No Deferment Solution
-@cindex No deferment solution
-@cindex Solution without deferment
+@node 无推迟解决方案
+@subsection 无推迟解决方案
+@cindex 无推迟解决方案
+@cindex 无推迟的解决方案
 
-The solution to the problem of deferred operations is to write in a
-manner that does not defer operations@footnote{The phrase @dfn{tail
-recursive} is used to describe such a process, one that uses
-constant space.}.  This requires
-writing to a different pattern, often one that involves writing two
-function definitions, an initialization function and a helper
-function.
+解决推迟操作的问题的方法是以不推迟操作的方式编写代码@footnote{术语@dfn{尾递归}用来描述这种使用常量空间的过程。}。这需要编写一个不同的模式，通常涉及编写两个函数定义，一个初始化函数和一个辅助函数。
 
-The initialization function sets up the job; the helper function
-does the work.
+初始化函数设置任务；辅助函数执行工作。
 
 @need 1200
-Here are the two function definitions for adding up numbers.  They are
-so simple, I find them hard to understand.
+以下是两个求和的函数定义。它们非常简单，我发现它们很难理解。
 
 @smallexample
 @group
 (defun triangle-initialization (number)
-  "Return the sum of the numbers 1 through NUMBER inclusive.
-This is the initialization component of a two function
-duo that uses recursion."
+  "返回从1加到NUMBER（包括）的数字的和。
+这是使用递归的两个函数对的初始化组件。"
   (triangle-recursive-helper 0 0 number))
 @end group
 @end smallexample
@@ -8458,9 +8253,8 @@ duo that uses recursion."
 @smallexample
 @group
 (defun triangle-recursive-helper (sum counter number)
-  "Return SUM, using COUNTER, through NUMBER inclusive.
-This is the helper component of a two function duo
-that uses recursion."
+  "使用COUNTER返回SUM，通过NUMBER（包括）。
+这是使用递归的两个函数对的辅助组件。"
   (if (> counter number)
       sum
     (triangle-recursive-helper (+ sum counter)  ; @r{sum}
@@ -8470,8 +8264,7 @@ that uses recursion."
 @end smallexample
 
 @need 1250
-Install both function definitions by evaluating them, then call
-@code{triangle-initialization} with 2 rows:
+通过评估这两个函数定义来安装它们，然后使用2行调用@code{triangle-initialization}：
 
 @smallexample
 @group
@@ -8480,29 +8273,14 @@ Install both function definitions by evaluating them, then call
 @end group
 @end smallexample
 
-The initialization function calls the first instance of the helper
-function with three arguments: zero, zero, and a number which is the
-number of rows in the triangle.
+初始化函数使用三个参数调用辅助函数的第一个实例：零，零，以及三角形中的行数。
 
-The first two arguments passed to the helper function are
-initialization values.  These values are changed when
-@code{triangle-recursive-helper} invokes new instances.@footnote{The
-jargon is mildly confusing:  @code{triangle-recursive-helper} uses a
-process that is iterative in a procedure that is recursive.  The
-process is called iterative because the computer need only record the
-three values, @code{sum}, @code{counter}, and @code{number}; the
-procedure is recursive because the function calls itself.  On the
-other hand, both the process and the procedure used by
-@code{triangle-recursively} are called recursive.  The word
-``recursive'' has different meanings in the two contexts.}
+传递给辅助函数的前两个参数是初始化值。这些值在@code{triangle-recursive-helper}调用新实例时会更改。@footnote{术语有点混乱：@code{triangle-recursive-helper}在递归的过程中使用迭代的方式，因为计算机只需记录三个值@code{sum}、@code{counter}和@code{number}；而该过程在递归的过程中使用递归的方式，因为函数调用了自身。另一方面，@code{triangle-recursively}使用的过程和过程都被称为递归。在这两种情况下，“递归”这个词在两个上下文中有不同的含义。}
 
-Let's see what happens when we have a triangle that has one row.  (This
-triangle will have one pebble in it!)
+让我们看看当我们有一个只有一行的三角形时会发生什么。（这个三角形将有一个小石子！）
 
 @need 1200
-@code{triangle-initialization} will call its helper with
-the arguments @w{@code{0 0 1}}.  That function will run the conditional
-test whether @code{(> counter number)}:
+@code{triangle-initialization}将使用参数@w{@code{0 0 1}}调用它的辅助函数。该函数将运行条件测试，即@code{(> counter number)}：
 
 @smallexample
 (> 0 1)
@@ -8510,64 +8288,58 @@ test whether @code{(> counter number)}:
 
 @need 1200
 @noindent
-and find that the result is false, so it will invoke
-the else-part of the @code{if} clause:
+并发现结果为假，因此它将调用@code{if}子句的else部分：
 
 @smallexample
 @group
     (triangle-recursive-helper
-     (+ sum counter)  ; @r{sum plus counter} @result{} @r{sum}
-     (1+ counter)     ; @r{increment counter} @result{} @r{counter}
-     number)          ; @r{number stays the same}
+     (+ sum counter)  ; @r{sum加counter} @result{} @r{sum}
+     (1+ counter)     ; @r{增加counter} @result{} @r{counter}
+     number)          ; @r{number保持不变}
 @end group
 @end smallexample
 
 @need 800
 @noindent
-which will first compute:
+这将首先计算：
 
 @smallexample
 @group
 (triangle-recursive-helper (+ 0 0)  ; @r{sum}
                            (1+ 0)   ; @r{counter}
                            1)       ; @r{number}
-@exdent which is:
+@exdent 即：
 
 (triangle-recursive-helper 0 1 1)
 @end group
 @end smallexample
 
-Again, @code{(> counter number)} will be false, so again, the Lisp
-interpreter will evaluate @code{triangle-recursive-helper}, creating a
-new instance with new arguments.
+再次，@code{(> counter number)}将为假，因此Lisp解释器将评估@code{triangle-recursive-helper}，创建一个新实例并传递新参数。
 
 @need 800
-This new instance will be;
+这个新实例将是：
 
 @smallexample
 @group
     (triangle-recursive-helper
-     (+ sum counter)  ; @r{sum plus counter} @result{} @r{sum}
-     (1+ counter)     ; @r{increment counter} @result{} @r{counter}
-     number)          ; @r{number stays the same}
+     (+ sum counter)  ; @r{sum加counter} @result{} @r{sum}
+     (1+ counter)     ; @r{增加counter} @result{} @r{counter}
+     number)          ; @r{number保持不变}
 
-@exdent which is:
+@exdent 即：
 
 (triangle-recursive-helper 1 2 1)
 @end group
 @end smallexample
 
-In this case, the @code{(> counter number)} test will be true!  So the
-instance will return the value of the sum, which will be 1, as
-expected.
+在这种情况下，@code{(> counter number)}测试将为真！因此，该实例将返回@code{sum}的值，该值将是1，符合预期。
 
-Now, let's pass @code{triangle-initialization} an argument
-of 2, to find out how many pebbles there are in a triangle with two rows.
+现在，让我们将@code{triangle-initialization}的参数设置为2，以查看具有两行的三角形中有多少个小石子。
 
-That function calls @code{(triangle-recursive-helper 0 0 2)}.
+该函数调用@code{(triangle-recursive-helper 0 0 2)}。
 
 @need 800
-In stages, the instances called will be:
+分阶段，被调用的实例将是：
 
 @smallexample
 @group
@@ -8580,12 +8352,9 @@ In stages, the instances called will be:
 @end group
 @end smallexample
 
-When the last instance is called, the @code{(> counter number)} test
-will be true, so the instance will return the value of @code{sum},
-which will be 3.
+当调用最后一个实例时，@code{(> counter number)}测试将为真，因此该实例将返回@code{sum}的值，该值将是3。
 
-This kind of pattern helps when you are writing functions that can use
-many resources in a computer.
+这种模式在编写可能使用计算机中的许多资源的函数时很有帮助。
 
 @need 1500
 @node Looping exercise
@@ -11971,7 +11740,7 @@ Let's write a function definition to do these tasks.  We will use a
 directory, checking what needs to be done; and we will use a recursive
 call to repeat the actions on each sub-directory.  The recursive
 pattern is Accumulate
-(@pxref{Accumulate}),
+(@pxref{累积}),
 using @code{append} as the combiner.
 
 @ignore
@@ -14824,7 +14593,7 @@ Lisp Reference Manual}.
 
 @need 1250
 Here is a bugged function definition for @code{triangle-recursively}.
-@xref{Recursive triangle function, , Recursion in place of a counter},
+@xref{递归三角形函数, , Recursion in place of a counter},
 for a review of it.
 
 @smallexample

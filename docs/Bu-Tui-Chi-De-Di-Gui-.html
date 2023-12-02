@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>不推迟的递归 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="不推迟的递归 (Programming in Emacs Lisp)">
+<meta name="keywords" content="不推迟的递归 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Di-Gui-.html" rel="up" title="递归">
+<link href="Wu-Tui-Chi-Jie-Jue-Fang-An-.html" rel="next" title="无推迟解决方案">
+<link href="Di-Gui-Mo-Shi-.html" rel="prev" title="递归模式">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="g_t_4e0d_63a8_8fdf_7684_9012_5f52">
+<div class="nav-panel">
+<p>
+Next: <a href="Wu-Tui-Chi-Jie-Jue-Fang-An-.html" accesskey="n" rel="next">无推迟解决方案</a>, Previous: <a href="Di-Gui-Mo-Shi-.html" accesskey="p" rel="prev">递归模式</a>, Up: <a href="Di-Gui-.html" accesskey="u" rel="up">递归</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Wu-Tui-Chi-De-Di-Gui-">11.3.7 无推迟的递归</h4>
+<a class="index-entry-id" id="index-Di-Gui-ZhongDe-Tui-Chi-"></a>
+<a class="index-entry-id" id="index-Wu-Tui-Chi-De-Di-Gui-"></a>
+
+<p>让我们再次考虑一下<code class="code">triangle-recursively</code>函数的运行情况。我们会发现中间计算被推迟，直到所有计算都可以完成。
+</p>
+<p>以下是函数定义：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun triangle-recursively (number)
+  &quot;返回从1加到NUMBER（包括）的数字的和。
+使用递归。&quot;
+  (if (= number 1)                    ; <span class="r">do-again-test</span>
+      1                               ; <span class="r">then-part</span>
+    (+ number                         ; <span class="r">else-part</span>
+       (triangle-recursively          ; <span class="r">recursive call</span>
+        (1- number)))))               ; <span class="r">next-step-expression</span>
+</pre></div></div>
+
+<p>当我们使用参数7调用此函数时会发生什么？
+</p>
+<p>第一次调用<code class="code">triangle-recursively</code>函数会将数字7与第二个
+<code class="code">triangle-recursively</code>实例的返回值相加，该实例已被传递了一个
+参数为6。也就是说，第一次计算是：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ 7 (triangle-recursively 6))
+</pre></div>
+
+<p>第一次调用<code class="code">triangle-recursively</code>&mdash;你可以把它想象成一个小机器人&mdash;无法完成它的工作。它必须将<code class="code">(triangle-recursively 6)</code>的计算委托给程序的第二个实例，即第二个机器人。这第二个个体与第一个完全不同；它是，按行话来说，一个“不同的实例”。“换句话说，它是一个不同的机器人。它与第一个相同；它递归地计算三角形数；但它有一个不同的序列号。
+</p>
+<p>那么<code class="code">(triangle-recursively 6)</code>返回什么呢？它返回数字6加上评估带有参数5的
+<code class="code">triangle-recursively</code>的返回值。使用机器人的隐喻，它要求另一个机器人帮助它。
+</p>
+<p>现在总数是：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ 7 6 (triangle-recursively 5))
+</pre></div>
+
+<p>接下来会发生什么？
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ 7 6 5 (triangle-recursively 4))
+</pre></div>
+
+<p>每次调用<code class="code">triangle-recursively</code>，除了最后一次外，它都会创建程序的另一个实例&mdash;另一个机器人&mdash;并要求它进行计算。
+</p>
+<p>最终，完整的加法被设置并执行：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ 7 6 5 4 3 2 1)
+</pre></div>
+
+<p>这个函数的设计推迟了第一步的计算，直到第二步可以完成，然后推迟到第三步可以完成，依此类推。每个推迟都意味着计算机必须记住正在等待什么。在这个例子中，当步骤很少时，这不是问题。但当步骤更多时，这可能会成为问题。
+</p>
+</div>
+
+
+
+</body>
+</html>

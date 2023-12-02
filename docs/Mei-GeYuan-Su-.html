@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Every (Programming in Emacs Lisp)</title>
+<title>每个元素 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Every (Programming in Emacs Lisp)">
-<meta name="keywords" content="Every (Programming in Emacs Lisp)">
+<meta name="description" content="每个元素 (Programming in Emacs Lisp)">
+<meta name="keywords" content="每个元素 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Recursive-Patterns.html" rel="up" title="Recursive Patterns">
-<link href="Accumulate.html" rel="next" title="Accumulate">
+<link href="Di-Gui-Mo-Shi-.html" rel="up" title="递归模式">
+<link href="Lei-Ji-.html" rel="next" title="累积">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -54,37 +54,34 @@ ul.mark-minus {list-style-type: "\2212"}
 </head>
 
 <body lang="en">
-<div class="unnumberedsubsubsec-level-extent" id="Every">
+<div class="unnumberedsubsubsec-level-extent" id="g_t_6bcf_4e2a_5143_7d20">
 <div class="nav-panel">
 <p>
-Next: <a href="Accumulate.html" accesskey="n" rel="next">Recursive Pattern: <em class="emph">accumulate</em></a>, Up: <a href="Recursive-Patterns.html" accesskey="u" rel="up">Recursive Patterns</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Lei-Ji-.html" accesskey="n" rel="next">递归模式：<em class="emph">累积</em></a>, Up: <a href="Di-Gui-Mo-Shi-.html" accesskey="u" rel="up">递归模式</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsubsec" id="Recursive-Pattern_003a-every">Recursive Pattern: <em class="emph">every</em></h4>
-<a class="index-entry-id" id="index-Every_002c-type-of-recursive-pattern"></a>
-<a class="index-entry-id" id="index-Recursive-pattern-_002d-every"></a>
+<h4 class="unnumberedsubsubsec" id="Di-Gui-Mo-Shi-_003aMei-GeYuan-Su-">递归模式：<em class="emph">每个元素</em></h4>
+<a class="index-entry-id" id="index-Mei-GeYuan-Su-_002cDi-Gui-Mo-Shi-Lei-Xing-"></a>
+<a class="index-entry-id" id="index-Di-Gui-Mo-Shi-_002d-Mei-GeYuan-Su-"></a>
 
-<p>In the <code class="code">every</code> recursive pattern, an action is performed on every
-element of a list.
+<p>在<code class="code">every</code>递归模式中，对列表的每个元素执行一个操作。
 </p>
-<p>The basic pattern is:
+<p>基本模式如下：
 </p>
 <ul class="itemize mark-bullet">
-<li>If a list be empty, return <code class="code">nil</code>.
-</li><li>Else, act on the beginning of the list (the <small class="sc">CAR</small> of the list)
+<li>如果列表为空，则返回<code class="code">nil</code>。
+</li><li>否则，对列表的开头（列表的<small class="sc">CAR</small>）执行操作
     <ul class="itemize mark-minus">
-<li>through a recursive call by the function on the rest (the
-    <small class="sc">CDR</small>) of the list,
-    </li><li>and, optionally, combine the acted-on element, using <code class="code">cons</code>,
-    with the results of acting on the rest.
+<li>通过对列表的其余部分（<small class="sc">CDR</small>）进行函数的递归调用，
+    </li><li>并且可以选择地将执行操作的元素与对其余部分进行递归调用的结果使用<code class="code">cons</code>结合。
     </li></ul>
 </li></ul>
 
-<p>Here is an example:
+<p>以下是一个例子：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun square-each (numbers-list)
-  &quot;Square each of a NUMBERS LIST, recursively.&quot;
+  &quot;递归地计算NUMBERS LIST中的每个数字的平方。&quot;
   (if (not numbers-list)                ; do-again-test
       nil
     (cons
@@ -96,28 +93,20 @@ element of a list.
     &rArr; (1 4 9)
 </pre></div></div>
 
-<p>If <code class="code">numbers-list</code> is empty, do nothing.  But if it has content,
-construct a list combining the square of the first number in the list
-with the result of the recursive call.
+<p>如果<code class="code">numbers-list</code>为空，则不执行任何操作。但如果它包含内容，则构造一个列表，其中包含第一个数字的平方与递归调用的结果的结合。
 </p>
-<p>(The example follows the pattern exactly: <code class="code">nil</code> is returned if
-the numbers&rsquo; list is empty.  In practice, you would write the
-conditional so it carries out the action when the numbers&rsquo; list is not
-empty.)
+<p>（该示例完全遵循该模式：如果数字列表为空，则返回<code class="code">nil</code>。在实践中，您会编写条件语句，以便在数字列表不为空时执行操作。）
 </p>
-<p>The <code class="code">print-elements-recursively</code> function (see <a class="pxref" href="Recursion-with-list.html">Recursion with a List</a>) is another example of an <code class="code">every</code>
-pattern, except in this case, rather than bring the results together
-using <code class="code">cons</code>, we print each element of output.
+<p><code class="code">print-elements-recursively</code>函数（see <a class="pxref" href="Di-Gui-Yu-Lie-Biao-.html">Recursion with a List</a>）是<code class="code">every</code>模式的另一个示例，不同之处在于，我们不使用<code class="code">cons</code>将结果组合在一起，而是逐个打印输出的每个元素。
 </p>
-<p>The <code class="code">print-elements-recursively</code> function looks like this:
+<p><code class="code">print-elements-recursively</code>函数如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">(defun print-elements-recursively (list)
-  &quot;Print each element of LIST on a line of its own.
-Uses recursion.&quot;
+  &quot;逐行打印LIST中的每个元素。使用递归。&quot;
   (when list                            ; <span class="r">do-again-test</span>
         (print (car list))              ; <span class="r">body</span>
         (print-elements-recursively     ; <span class="r">recursive call</span>
@@ -126,22 +115,17 @@ Uses recursion.&quot;
 (print-elements-recursively animals)
 </pre></div></div>
 
-<p>The pattern for <code class="code">print-elements-recursively</code> is:
+<p><code class="code">print-elements-recursively</code>的模式如下：
 </p>
 <ul class="itemize mark-bullet">
-<li>When the list is empty, do nothing.
-</li><li>But when the list has at least one element,
+<li>当列表为空时，不执行任何操作。
+</li><li>但是当列表至少有一个元素时，
     <ul class="itemize mark-minus">
-<li>act on the beginning of the list (the <small class="sc">CAR</small> of the list),
-    </li><li>and make a recursive call on the rest (the <small class="sc">CDR</small>) of the list.
+<li>对列表的开头（列表的<small class="sc">CAR</small>）执行操作，
+    </li><li>并对列表的其余部分（<small class="sc">CDR</small>）进行递归调用。
     </li></ul>
 </li></ul>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Accumulate.html">Recursive Pattern: <em class="emph">accumulate</em></a>, Up: <a href="Recursive-Patterns.html">Recursive Patterns</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

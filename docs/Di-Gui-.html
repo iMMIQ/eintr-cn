@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Recursion (Programming in Emacs Lisp)</title>
+<title>递归 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Recursion (Programming in Emacs Lisp)">
-<meta name="keywords" content="Recursion (Programming in Emacs Lisp)">
+<meta name="description" content="递归 (Programming in Emacs Lisp)">
+<meta name="keywords" content="递归 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -51,36 +51,29 @@ ISBN 1-882114-43-4
 </head>
 
 <body lang="en">
-<div class="section-level-extent" id="Recursion">
+<div class="section-level-extent" id="g_t_9012_5f52">
 <div class="nav-panel">
 <p>
 Next: <a href="Looping-exercise.html" accesskey="n" rel="next">Looping Exercise</a>, Previous: <a href="dolist-dotimes.html" accesskey="p" rel="prev">节省时间：<code class="code">dolist</code> 和 <code class="code">dotimes</code></a>, Up: <a href="Xun-Huan-Yu-Di-Gui-.html" accesskey="u" rel="up">循环和递归</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Recursion-1">11.3 Recursion</h3>
-<a class="index-entry-id" id="index-Recursion"></a>
+<h3 class="section" id="Di-Gui-">11.3 递归</h3>
+<a class="index-entry-id" id="index-Di-Gui-"></a>
 
-<p>A recursive function contains code that tells the Lisp interpreter to
-call a program that runs exactly like itself, but with slightly
-different arguments.  The code runs exactly the same because it has
-the same name.  However, even though the program has the same name, it
-is not the same entity.  It is different.  In the jargon, it is a
-different &ldquo;instance&rdquo;.
+<p>一个递归函数包含代码，告诉Lisp解释器调用一个与自身完全相同但具有略有不同参数的程序。代码运行完全相同，因为它具有相同的名称。然而，即使程序具有相同的名称，它也不是相同的实体。它是不同的。在行话中，它是一个不同的“实例”。
 </p>
-<p>Eventually, if the program is written correctly, the slightly
-different arguments will become sufficiently different from the first
-arguments that the final instance will stop.
+<p>最终，如果程序被正确编写，稍微不同的参数将与第一个参数足够不同，以至于最终的实例将停止。
 </p>
 
 <ul class="mini-toc">
-<li><a href="Building-Robots.html" accesskey="1">Building Robots: Extending the Metaphor</a></li>
-<li><a href="Recursive-Definition-Parts.html" accesskey="2">The Parts of a Recursive Definition</a></li>
-<li><a href="Recursion-with-list.html" accesskey="3">Recursion with a List</a></li>
-<li><a href="Recursive-triangle-function.html" accesskey="4">Recursion in Place of a Counter</a></li>
-<li><a href="Recursion-with-cond.html" accesskey="5">Recursion Example Using <code class="code">cond</code></a></li>
-<li><a href="Recursive-Patterns.html" accesskey="6">Recursive Patterns</a></li>
-<li><a href="No-Deferment.html" accesskey="7">Recursion without Deferments</a></li>
-<li><a href="No-deferment-solution.html" accesskey="8">No Deferment Solution</a></li>
+<li><a href="Gou-Jian-Ji-Qi-Ren-.html" accesskey="1">构建机器人：扩展隐喻</a></li>
+<li><a href="Di-Gui-Ding-Yi-De-Bu-Fen-.html" accesskey="2">递归定义的组成部分</a></li>
+<li><a href="Di-Gui-Yu-Lie-Biao-.html" accesskey="3">列表递归</a></li>
+<li><a href="Di-Gui-San-Jiao-Xing-Han-Shu-.html" accesskey="4">使用递归替代计数器</a></li>
+<li><a href="Yong-cond-Jin-Xing-Di-Gui-.html" accesskey="5">使用 <code class="code">cond</code> 进行递归的例子</a></li>
+<li><a href="Di-Gui-Mo-Shi-.html" accesskey="6">递归模式</a></li>
+<li><a href="Bu-Tui-Chi-De-Di-Gui-.html" accesskey="7">无推迟的递归</a></li>
+<li><a href="Wu-Tui-Chi-Jie-Jue-Fang-An-.html" accesskey="8">无推迟解决方案</a></li>
 </ul>
 </div>
 

@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Accumulate (Programming in Emacs Lisp)</title>
+<title>累积 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Accumulate (Programming in Emacs Lisp)">
-<meta name="keywords" content="Accumulate (Programming in Emacs Lisp)">
+<meta name="description" content="累积 (Programming in Emacs Lisp)">
+<meta name="keywords" content="累积 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -38,9 +38,9 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Recursive-Patterns.html" rel="up" title="Recursive Patterns">
-<link href="Keep.html" rel="next" title="Keep">
-<link href="Every.html" rel="prev" title="Every">
+<link href="Di-Gui-Mo-Shi-.html" rel="up" title="递归模式">
+<link href="Bao-Liu-.html" rel="next" title="保留">
+<link href="Mei-GeYuan-Su-.html" rel="prev" title="每个元素">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -54,41 +54,36 @@ ul.mark-minus {list-style-type: "\2212"}
 </head>
 
 <body lang="en">
-<div class="unnumberedsubsubsec-level-extent" id="Accumulate">
+<div class="unnumberedsubsubsec-level-extent" id="g_t_7d2f_79ef">
 <div class="nav-panel">
 <p>
-Next: <a href="Keep.html" accesskey="n" rel="next">Recursive Pattern: <em class="emph">keep</em></a>, Previous: <a href="Every.html" accesskey="p" rel="prev">Recursive Pattern: <em class="emph">every</em></a>, Up: <a href="Recursive-Patterns.html" accesskey="u" rel="up">Recursive Patterns</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Bao-Liu-.html" accesskey="n" rel="next">递归模式：<em class="emph">保留</em></a>, Previous: <a href="Mei-GeYuan-Su-.html" accesskey="p" rel="prev">递归模式：<em class="emph">每个元素</em></a>, Up: <a href="Di-Gui-Mo-Shi-.html" accesskey="u" rel="up">递归模式</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsubsec" id="Recursive-Pattern_003a-accumulate">Recursive Pattern: <em class="emph">accumulate</em></h4>
-<a class="index-entry-id" id="index-Accumulate_002c-type-of-recursive-pattern"></a>
-<a class="index-entry-id" id="index-Recursive-pattern-_002d-accumulate"></a>
+<h4 class="unnumberedsubsubsec" id="Di-Gui-Mo-Shi-_003aLei-Ji-">递归模式：<em class="emph">累积</em></h4>
+<a class="index-entry-id" id="index-Lei-Ji-_002cYiChong-Di-Gui-Mo-Shi-"></a>
+<a class="index-entry-id" id="index-Di-Gui-Mo-Shi-_002d-Lei-Ji-"></a>
 
-<p>Another recursive pattern is called the <code class="code">accumulate</code> pattern.  In
-the <code class="code">accumulate</code> recursive pattern, an action is performed on
-every element of a list and the result of that action is accumulated
-with the results of performing the action on the other elements.
+<p>另一种递归模式称为<code class="code">累积</code>模式。在<code class="code">累积</code>递归模式中，对列表的每个元素执行一个操作，并将该操作的结果与对其他元素执行的操作的结果累积在一起。
 </p>
-<p>This is very like the <code class="code">every</code> pattern using <code class="code">cons</code>, except that
-<code class="code">cons</code> is not used, but some other combiner.
+<p>这与使用<code class="code">cons</code>的<code class="code">每个</code>模式非常相似，只是不使用<code class="code">cons</code>，而是使用其他某个组合器。
 </p>
-<p>The pattern is:
+<p>该模式如下：
 </p>
 <ul class="itemize mark-bullet">
-<li>If a list be empty, return zero or some other constant.
-</li><li>Else, act on the beginning of the list (the <small class="sc">CAR</small> of the list),
+<li>如果列表为空，则返回零或其他常数。
+</li><li>否则，对列表的开头（列表的<small class="sc">CAR</small>）进行操作，
     <ul class="itemize mark-minus">
-<li>and combine that acted-on element, using <code class="code">+</code> or
-    some other combining function, with
-    </li><li>a recursive call by the function on the rest (the <small class="sc">CDR</small>) of the list.
+<li>将该操作的元素与
+    </li><li>通过对列表的其余部分（<small class="sc">CDR</small>）进行递归调用的函数进行组合，使用<code class="code">+</code>或其他组合函数。
     </li></ul>
 </li></ul>
 
-<p>Here is an example:
+<p>以下是一个示例：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun add-elements (numbers-list)
-  &quot;Add the elements of NUMBERS-LIST together.&quot;
+  &quot;将NUMBERS-LIST的元素相加。&quot;
   (if (not numbers-list)
       0
     (+ (car numbers-list) (add-elements (cdr numbers-list)))))
@@ -98,8 +93,7 @@ with the results of performing the action on the other elements.
     &rArr; 10
 </pre></div></div>
 
-<p>See <a class="xref" href="Files-List.html">Making a List of Files</a>, for an example of the
-accumulate pattern.
+<p>See <a class="xref" href="Files-List.html">制作文件列表</a>，以获取累积模式的示例。
 </p>
 </div>
 
