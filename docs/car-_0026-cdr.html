@@ -58,74 +58,40 @@ div.example {margin-left: 3.2em}
 Next: <a href="cons.html" accesskey="n" rel="next"><code class="code">cons</code></a>, Previous: <a href="Strange-Names.html" accesskey="p" rel="prev">Strange Names</a>, Up: <a href="car-cdr-_0026-cons.html" accesskey="u" rel="up"><code class="code">car</code>、<code class="code">cdr</code> 和 <code class="code">cons</code>：基本函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="car-and-cdr">7.1 <code class="code">car</code> and <code class="code">cdr</code></h3>
+<h3 class="section" id="car-He-cdr">7.1 <code class="code">car</code> 和 <code class="code">cdr</code></h3>
 
-<p>The <small class="sc">CAR</small> of a list is, quite simply, the first item in the list.
-Thus the <small class="sc">CAR</small> of the list <code class="code">(rose violet daisy buttercup)</code> is
-<code class="code">rose</code>.
+<p>列表的 <small class="sc">CAR</small>（首元素）简单地就是列表中的第一个项。因此，列表 <code class="code">(rose violet daisy buttercup)</code> 的 <small class="sc">CAR</small> 就是 <code class="code">rose</code>。
 </p>
-<p>If you are reading this in Info in GNU Emacs, you can see this by
-evaluating the following:
+<p>如果你在 GNU Emacs 的 Info 中阅读此文档，你可以通过执行以下命令来验证：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(car '(rose violet daisy buttercup))
 </pre></div>
 
-<p>After evaluating the expression, <code class="code">rose</code> will appear in the echo
-area.
+<p>在执行此表达式之后，<code class="code">rose</code> 将会出现在回显区域。
 </p>
-<p><code class="code">car</code> does not remove the first item from the list; it only reports
-what it is.  After <code class="code">car</code> has been applied to a list, the list is
-still the same as it was.  In the jargon, <code class="code">car</code> is
-&ldquo;non-destructive&rdquo;.  This feature turns out to be important.
+<p><code class="code">car</code> 不会从列表中删除第一个项；它只是报告这个项是什么。在术语中，<code class="code">car</code> 是“非破坏性”的。这一特性事实上变得很重要。
 </p>
-<p>The <small class="sc">CDR</small> of a list is the rest of the list, that is, the
-<code class="code">cdr</code> function returns the part of the list that follows the
-first item.  Thus, while the <small class="sc">CAR</small> of the list <code class="code">'(rose violet
-daisy buttercup)</code> is <code class="code">rose</code>, the rest of the list, the value
-returned by the <code class="code">cdr</code> function, is <code class="code">(violet daisy
-buttercup)</code>.
+<p>列表的 <small class="sc">CDR</small>（剩余元素）是列表中剩下的部分，即 <code class="code">cdr</code> 函数返回紧随第一个项之后的列表部分。因此，虽然列表 <code class="code">'(rose violet daisy buttercup)</code> 的 <small class="sc">CAR</small> 是 <code class="code">rose</code>，但列表的其余部分，即 <code class="code">cdr</code> 函数返回的值，是 <code class="code">(violet daisy buttercup)</code>。
 </p>
-<p>You can see this by evaluating the following in the usual way:
+<p>你可以通过以通常的方式执行以下命令来验证这一点：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(cdr '(rose violet daisy buttercup))
 </pre></div>
 
-<p>When you evaluate this, <code class="code">(violet daisy buttercup)</code> will appear in
-the echo area.
+<p>当你执行此命令时，<code class="code">(violet daisy buttercup)</code> 将会出现在回显区域。
 </p>
-<p>Like <code class="code">car</code>, <code class="code">cdr</code> does not remove any elements from the
-list&mdash;it just returns a report of what the second and subsequent
-elements are.
+<p>与 <code class="code">car</code> 一样，<code class="code">cdr</code> 也不会从列表中移除任何元素，它只是返回第二个及后续元素的报告。
 </p>
-<p>Incidentally, in the example, the list of flowers is quoted.  If it were
-not, the Lisp interpreter would try to evaluate the list by calling
-<code class="code">rose</code> as a function.  In this example, we do not want to do that.
+<p>顺便说一下，在例子中，花卉列表是被引用的。如果没有引用，Lisp 解释器会尝试通过调用 <code class="code">rose</code> 作为函数来评估列表。在这个例子中，我们不想这样做。
 </p>
-<p>For operating on lists, the names <code class="code">first</code> and <code class="code">rest</code> would
-make more sense than the names <code class="code">car</code> and <code class="code">cdr</code>.  Indeed,
-some programmers define <code class="code">first</code> and <code class="code">rest</code> as aliases for
-<code class="code">car</code> and <code class="code">cdr</code>, then write <code class="code">first</code> and <code class="code">rest</code> in
-their code.
+<p>在处理列表时，使用 <code class="code">first</code> 和 <code class="code">rest</code> 这样的名称可能比 <code class="code">car</code> 和 <code class="code">cdr</code> 更有意义。事实上，一些程序员会将 <code class="code">first</code> 和 <code class="code">rest</code> 定义为 <code class="code">car</code> 和 <code class="code">cdr</code> 的别名，然后在代码中使用 <code class="code">first</code> 和 <code class="code">rest</code>。
 </p>
-<p>However, lists in Lisp are built using a lower-level structure known
-as &ldquo;cons cells&rdquo; (see <a class="pxref" href="List-Implementation.html">How Lists are Implemented</a>), in which there is no
-such thing as &ldquo;first&rdquo; or &ldquo;rest&rdquo;, and the <small class="sc">CAR</small> and the <small class="sc">CDR</small>
-are symmetrical.  Lisp does not try to hide the existence of cons
-cells, and programs do use them for things other than lists.  For this
-reason, the names are helpful for reminding programmers that
-<code class="code">car</code> and <code class="code">cdr</code> are in fact symmetrical, despite the
-asymmetrical way they are used in lists.
+<p>然而，在Lisp中，列表是使用称为“cons单元”（see <a class="pxref" href="List-Implementation.html">How Lists are Implemented</a>）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 <small class="sc">CAR</small> 和 <small class="sc">CDR</small> 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 <code class="code">car</code> 和 <code class="code">cdr</code> 实际上是对称的。
 </p>
 
-<p>When <code class="code">car</code> and <code class="code">cdr</code> are applied to a list made up of symbols,
-such as the list <code class="code">(pine fir oak maple)</code>, the element of the list
-returned by the function <code class="code">car</code> is the symbol <code class="code">pine</code> without
-any parentheses around it.  <code class="code">pine</code> is the first element in the
-list.  However, the <small class="sc">CDR</small> of the list is a list itself, <code class="code">(fir
-oak maple)</code>, as you can see by evaluating the following expressions in
-the usual way:
+<p>当 <code class="code">car</code> 和 <code class="code">cdr</code> 应用于由符号组成的列表时（例如，列表 <code class="code">(pine fir oak maple)</code>），函数 <code class="code">car</code> 返回的列表元素是符号 <code class="code">pine</code> 而没有括号。<code class="code">pine</code> 是列表中的第一个元素。然而，列表的 <small class="sc">CDR</small> 本身是一个列表，即 <code class="code">(fir oak maple)</code>，你可以通过以通常的方式执行以下表达式来验证：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(car '(pine fir oak maple))
@@ -133,10 +99,7 @@ the usual way:
 (cdr '(pine fir oak maple))
 </pre></div></div>
 
-<p>On the other hand, in a list of lists, the first element is itself a
-list.  <code class="code">car</code> returns this first element as a list.  For example,
-the following list contains three sub-lists, a list of carnivores, a
-list of herbivores and a list of sea mammals:
+<p>另一方面，在列表的列表中，第一个元素本身是一个列表。例如，以下列表包含三个子列表，一个肉食动物列表，一个食草动物列表和一个海洋哺乳动物列表：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(car '((lion tiger cheetah)
@@ -144,9 +107,7 @@ list of herbivores and a list of sea mammals:
        (whale dolphin seal)))
 </pre></div></div>
 
-<p>In this example, the first element or <small class="sc">CAR</small> of the list is the list of
-carnivores, <code class="code">(lion tiger cheetah)</code>, and the rest of the list is
-<code class="code">((gazelle antelope zebra) (whale dolphin seal))</code>.
+<p>在这个例子中，列表的第一个元素或 <small class="sc">CAR</small> 是肉食动物列表 <code class="code">(lion tiger cheetah)</code>，而列表的其余部分是 <code class="code">((gazelle antelope zebra) (whale dolphin seal))</code>。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(cdr '((lion tiger cheetah)
@@ -154,22 +115,9 @@ carnivores, <code class="code">(lion tiger cheetah)</code>, and the rest of the 
        (whale dolphin seal)))
 </pre></div></div>
 
-<p>It is worth saying again that <code class="code">car</code> and <code class="code">cdr</code> are
-non-destructive&mdash;that is, they do not modify or change lists to which
-they are applied.  This is very important for how they are used.
+<p>值得再次强调的是，<code class="code">car</code> 和 <code class="code">cdr</code> 是非破坏性的——也就是说，它们不会修改或改变应用到它们的列表。这对它们的使用非常重要。
 </p>
-<p>Also, in the first chapter, in the discussion about atoms, I said that
-in Lisp, certain kinds of atom, such as an array, can be separated
-into parts; but the mechanism for doing this is different from the
-mechanism for splitting a list.  As far as Lisp is concerned, the
-atoms of a list are unsplittable.  (See <a class="xref" href="Lisp-Atoms.html">Lisp原子</a>.)  The
-<code class="code">car</code> and <code class="code">cdr</code> functions are used for splitting lists and
-are considered fundamental to Lisp.  Since they cannot split or gain
-access to the parts of an array, an array is considered an atom.
-Conversely, the other fundamental function, <code class="code">cons</code>, can put
-together or construct a list, but not an array.  (Arrays are handled
-by array-specific functions.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Arrays.html#Arrays">Arrays</a> in <cite class="cite">The GNU
-Emacs Lisp Reference Manual</cite>.)
+<p>另外，在第一章中，关于原子的讨论中，我提到在Lisp中，某些类型的原子，例如数组，可以被分解成部分；但这个机制与拆分列表的机制不同。就Lisp而言，列表的原子是不可分割的。(See <a class="xref" href="Lisp-Atoms.html">Lisp原子</a>.) <code class="code">car</code> 和 <code class="code">cdr</code> 函数用于拆分列表，被认为是Lisp的基本功能。由于它们不能拆分或访问数组的部分，数组被认为是原子。相反，另一个基本函数 <code class="code">cons</code> 可以组合或构造列表，但不能构造数组。 （数组由数组特定的函数处理。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Arrays.html#Arrays">Arrays</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
 </p>
 </div>
 <hr>

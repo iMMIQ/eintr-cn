@@ -4534,89 +4534,49 @@ GNU Emacs 22
 IBM 704 在历史上留下了痕迹，但这些名字现在已经成为 Lisp 珍爱的传统。
 
 @node car & cdr
-@section @code{car} and @code{cdr}
+@section @code{car} 和 @code{cdr}
 
-The @sc{car} of a list is, quite simply, the first item in the list.
-Thus the @sc{car} of the list @code{(rose violet daisy buttercup)} is
-@code{rose}.
+列表的 @sc{car}（首元素）简单地就是列表中的第一个项。因此，列表 @code{(rose violet daisy buttercup)} 的 @sc{car} 就是 @code{rose}。
 
 @need 1200
-If you are reading this in Info in GNU Emacs, you can see this by
-evaluating the following:
+如果你在 GNU Emacs 的 Info 中阅读此文档，你可以通过执行以下命令来验证：
 
 @smallexample
 (car '(rose violet daisy buttercup))
 @end smallexample
 
 @noindent
-After evaluating the expression, @code{rose} will appear in the echo
-area.
+在执行此表达式之后，@code{rose} 将会出现在回显区域。
 
-@code{car} does not remove the first item from the list; it only reports
-what it is.  After @code{car} has been applied to a list, the list is
-still the same as it was.  In the jargon, @code{car} is
-``non-destructive''.  This feature turns out to be important.
+@code{car} 不会从列表中删除第一个项；它只是报告这个项是什么。在术语中，@code{car} 是“非破坏性”的。这一特性事实上变得很重要。
 
-The @sc{cdr} of a list is the rest of the list, that is, the
-@code{cdr} function returns the part of the list that follows the
-first item.  Thus, while the @sc{car} of the list @code{'(rose violet
-daisy buttercup)} is @code{rose}, the rest of the list, the value
-returned by the @code{cdr} function, is @code{(violet daisy
-buttercup)}.
+列表的 @sc{cdr}（剩余元素）是列表中剩下的部分，即 @code{cdr} 函数返回紧随第一个项之后的列表部分。因此，虽然列表 @code{'(rose violet daisy buttercup)} 的 @sc{car} 是 @code{rose}，但列表的其余部分，即 @code{cdr} 函数返回的值，是 @code{(violet daisy buttercup)}。
 
 @need 800
-You can see this by evaluating the following in the usual way:
+你可以通过以通常的方式执行以下命令来验证这一点：
 
 @smallexample
 (cdr '(rose violet daisy buttercup))
 @end smallexample
 
 @noindent
-When you evaluate this, @code{(violet daisy buttercup)} will appear in
-the echo area.
+当你执行此命令时，@code{(violet daisy buttercup)} 将会出现在回显区域。
 
-Like @code{car}, @code{cdr} does not remove any elements from the
-list---it just returns a report of what the second and subsequent
-elements are.
+与 @code{car} 一样，@code{cdr} 也不会从列表中移除任何元素，它只是返回第二个及后续元素的报告。
 
-Incidentally, in the example, the list of flowers is quoted.  If it were
-not, the Lisp interpreter would try to evaluate the list by calling
-@code{rose} as a function.  In this example, we do not want to do that.
+顺便说一下，在例子中，花卉列表是被引用的。如果没有引用，Lisp 解释器会尝试通过调用 @code{rose} 作为函数来评估列表。在这个例子中，我们不想这样做。
 
-For operating on lists, the names @code{first} and @code{rest} would
-make more sense than the names @code{car} and @code{cdr}.  Indeed,
-some programmers define @code{first} and @code{rest} as aliases for
-@code{car} and @code{cdr}, then write @code{first} and @code{rest} in
-their code.
+在处理列表时，使用 @code{first} 和 @code{rest} 这样的名称可能比 @code{car} 和 @code{cdr} 更有意义。事实上，一些程序员会将 @code{first} 和 @code{rest} 定义为 @code{car} 和 @code{cdr} 的别名，然后在代码中使用 @code{first} 和 @code{rest}。
 
-However, lists in Lisp are built using a lower-level structure known
-as ``cons cells'' (@pxref{List Implementation}), in which there is no
-such thing as ``first'' or ``rest'', and the @sc{car} and the @sc{cdr}
-are symmetrical.  Lisp does not try to hide the existence of cons
-cells, and programs do use them for things other than lists.  For this
-reason, the names are helpful for reminding programmers that
-@code{car} and @code{cdr} are in fact symmetrical, despite the
-asymmetrical way they are used in lists.
+然而，在Lisp中，列表是使用称为“cons单元”（@pxref{List Implementation}）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 @sc{car} 和 @sc{cdr} 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 @code{car} 和 @code{cdr} 实际上是对称的。
 
 @ignore
-Clearly, a more reasonable name for @code{cdr} would be @code{rest}.
+很显然，对于 @code{cdr} 来说，一个更合理的名字应该是 @code{rest}。
 
-(There is a lesson here: when you name new functions, consider very
-carefully what you are doing, since you may be stuck with the names
-for far longer than you expect.  The reason this document perpetuates
-these names is that the Emacs Lisp source code uses them, and if I did
-not use them, you would have a hard time reading the code; but do,
-please, try to avoid using these terms yourself.  The people who come
-after you will be grateful to you.)
+（这里有一个教训：当给新函数命名时，要非常谨慎，因为你可能会一直使用这些名称的时间比你预期的长。这份文档之所以延续使用这些名称，是因为 Emacs Lisp 源代码使用了它们，如果我不使用它们，你将很难阅读代码；但请尽量避免在自己的代码中使用这些术语。以后的人会感激你的。）
 @end ignore
 
-When @code{car} and @code{cdr} are applied to a list made up of symbols,
-such as the list @code{(pine fir oak maple)}, the element of the list
-returned by the function @code{car} is the symbol @code{pine} without
-any parentheses around it.  @code{pine} is the first element in the
-list.  However, the @sc{cdr} of the list is a list itself, @code{(fir
-oak maple)}, as you can see by evaluating the following expressions in
-the usual way:
+当 @code{car} 和 @code{cdr} 应用于由符号组成的列表时（例如，列表 @code{(pine fir oak maple)}），函数 @code{car} 返回的列表元素是符号 @code{pine} 而没有括号。@code{pine} 是列表中的第一个元素。然而，列表的 @sc{cdr} 本身是一个列表，即 @code{(fir oak maple)}，你可以通过以通常的方式执行以下表达式来验证：
 
 @smallexample
 @group
@@ -4626,10 +4586,7 @@ the usual way:
 @end group
 @end smallexample
 
-On the other hand, in a list of lists, the first element is itself a
-list.  @code{car} returns this first element as a list.  For example,
-the following list contains three sub-lists, a list of carnivores, a
-list of herbivores and a list of sea mammals:
+另一方面，在列表的列表中，第一个元素本身是一个列表。例如，以下列表包含三个子列表，一个肉食动物列表，一个食草动物列表和一个海洋哺乳动物列表：
 
 @smallexample
 @group
@@ -4640,9 +4597,7 @@ list of herbivores and a list of sea mammals:
 @end smallexample
 
 @noindent
-In this example, the first element or @sc{car} of the list is the list of
-carnivores, @code{(lion tiger cheetah)}, and the rest of the list is
-@code{((gazelle antelope zebra) (whale dolphin seal))}.
+在这个例子中，列表的第一个元素或 @sc{car} 是肉食动物列表 @code{(lion tiger cheetah)}，而列表的其余部分是 @code{((gazelle antelope zebra) (whale dolphin seal))}。
 
 @smallexample
 @group
@@ -4652,22 +4607,9 @@ carnivores, @code{(lion tiger cheetah)}, and the rest of the list is
 @end group
 @end smallexample
 
-It is worth saying again that @code{car} and @code{cdr} are
-non-destructive---that is, they do not modify or change lists to which
-they are applied.  This is very important for how they are used.
+值得再次强调的是，@code{car} 和 @code{cdr} 是非破坏性的——也就是说，它们不会修改或改变应用到它们的列表。这对它们的使用非常重要。
 
-Also, in the first chapter, in the discussion about atoms, I said that
-in Lisp, certain kinds of atom, such as an array, can be separated
-into parts; but the mechanism for doing this is different from the
-mechanism for splitting a list.  As far as Lisp is concerned, the
-atoms of a list are unsplittable.  (@xref{Lisp Atoms}.)  The
-@code{car} and @code{cdr} functions are used for splitting lists and
-are considered fundamental to Lisp.  Since they cannot split or gain
-access to the parts of an array, an array is considered an atom.
-Conversely, the other fundamental function, @code{cons}, can put
-together or construct a list, but not an array.  (Arrays are handled
-by array-specific functions.  @xref{Arrays, , Arrays, elisp, The GNU
-Emacs Lisp Reference Manual}.)
+另外，在第一章中，关于原子的讨论中，我提到在Lisp中，某些类型的原子，例如数组，可以被分解成部分；但这个机制与拆分列表的机制不同。就Lisp而言，列表的原子是不可分割的。(@xref{Lisp Atoms}.) @code{car} 和 @code{cdr} 函数用于拆分列表，被认为是Lisp的基本功能。由于它们不能拆分或访问数组的部分，数组被认为是原子。相反，另一个基本函数 @code{cons} 可以组合或构造列表，但不能构造数组。 （数组由数组特定的函数处理。@xref{Arrays, , Arrays, elisp, The GNU Emacs Lisp Reference Manual}。）
 
 @node cons
 @section @code{cons}
