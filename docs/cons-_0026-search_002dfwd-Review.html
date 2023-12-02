@@ -60,15 +60,14 @@ Next: <a href="search-Exercises.html" accesskey="n" rel="next">Searching Exercis
 <hr>
 <h3 class="section" id="Review-1">8.6 Review</h3>
 
-<p>Here is a brief summary of some recently introduced functions.
+<p>这里是一些最近引入的函数的简要概述。
 </p>
 <dl class="table">
 <dt><code class="code">car</code></dt>
 <dt><code class="code">cdr</code></dt>
-<dd><p><code class="code">car</code> returns the first element of a list; <code class="code">cdr</code> returns the
-second and subsequent elements of a list.
+<dd><p><code class="code">car</code> 返回列表的第一个元素；<code class="code">cdr</code> 返回列表的第二个及后续元素。
 </p>
-<p>For example:
+<p>例如：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(car '(1 2 3 4 5 6 7))
@@ -79,10 +78,9 @@ second and subsequent elements of a list.
 
 </dd>
 <dt><code class="code">cons</code></dt>
-<dd><p><code class="code">cons</code> constructs a list by prepending its first argument to its
-second argument.
+<dd><p><code class="code">cons</code>通过将其第一个参数添加到其第二个参数前构造一个列表。
 </p>
-<p>For example:
+<p>例如：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(cons 1 '(2 3 4))
@@ -91,15 +89,14 @@ second argument.
 
 </dd>
 <dt><code class="code">funcall</code></dt>
-<dd><p><code class="code">funcall</code> evaluates its first argument as a function.  It passes
-its remaining arguments to its first argument.
+<dd><p><code class="code">funcall</code> 将其第一个参数作为函数求值，并将其余参数传递给其第一个参数。
 </p>
 </dd>
 <dt><code class="code">nthcdr</code></dt>
-<dd><p>Return the result of taking <small class="sc">CDR</small> <var class="var">n</var> times on a list.
-The &ldquo;rest of the rest&rdquo;, as it were.
+<dd><p>返回在列表上对 <small class="sc">CDR</small> 进行 <var class="var">n</var> 次操作的结果。
+可以看作是“剩下的剩下”。
 </p>
-<p>For example:
+<p>例如：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(nthcdr 3 '(1 2 3 4 5 6 7))
@@ -109,10 +106,9 @@ The &ldquo;rest of the rest&rdquo;, as it were.
 </dd>
 <dt><code class="code">setcar</code></dt>
 <dt><code class="code">setcdr</code></dt>
-<dd><p><code class="code">setcar</code> changes the first element of a list; <code class="code">setcdr</code>
-changes the second and subsequent elements of a list.
+<dd><p><code class="code">setcar</code> 改变列表的第一个元素；<code class="code">setcdr</code> 改变列表的第二个及后续元素。
 </p>
-<p>For example:
+<p>例如：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq triple (list 1 2 3))
@@ -130,10 +126,9 @@ triple
 
 </dd>
 <dt><code class="code">progn</code></dt>
-<dd><p>Evaluate each argument in sequence and then return the value of the
-last.
+<dd><p>按顺序评估每个参数，然后返回最后一个的值。
 </p>
-<p>For example:
+<p>例如：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(progn 1 2 3 4)
@@ -142,29 +137,23 @@ last.
 
 </dd>
 <dt><code class="code">save-restriction</code></dt>
-<dd><p>Record whatever narrowing is in effect in the current buffer, if any,
-and restore that narrowing after evaluating the arguments.
+<dd><p>记录当前缓冲区中生效的任何缩小范围，并在评估参数后恢复该缩小。
 </p>
 </dd>
 <dt><code class="code">search-forward</code></dt>
-<dd><p>Search for a string, and if the string is found, move point.  With a
-regular expression, use the similar <code class="code">re-search-forward</code>.
-(See <a class="xref" href="Regexp-Search.html">Regular Expression Searches</a>, for an
-explanation of regular expression patterns and searches.)
+<dd><p>搜索字符串，如果找到，移动点。使用正则表达式时，请使用类似的 <code class="code">re-search-forward</code>。
+(See <a class="xref" href="Regexp-Search.html">正则表达式搜索</a>，了解正则表达式模式和搜索的解释。)
 </p>
-<p><code class="code">search-forward</code> and <code class="code">re-search-forward</code> take four
-arguments:
+<p><code class="code">search-forward</code> 和 <code class="code">re-search-forward</code> 需要四个参数：
 </p>
 <ol class="enumerate">
-<li> The string or regular expression to search for.
+<li> 要搜索的字符串或正则表达式。
 
-</li><li> Optionally, the limit of the search.
+</li><li> 可选地，搜索的限制。
 
-</li><li> Optionally, what to do if the search fails, return <code class="code">nil</code> or an
-error message.
+</li><li> 可选地，如果搜索失败，返回 <code class="code">nil</code> 或错误消息。
 
-</li><li> Optionally, how many times to repeat the search; if negative, the
-search goes backwards.
+</li><li> 可选地，重复搜索的次数；如果为负数，则向后搜索。
 </li></ol>
 
 </dd>
@@ -172,25 +161,15 @@ search goes backwards.
 <dt><code class="code">delete-and-extract-region</code></dt>
 <dt><code class="code">copy-region-as-kill</code></dt>
 <dd>
-<p><code class="code">kill-region</code> cuts the text between point and mark from the
-buffer and stores that text in the kill ring, so you can get it back
-by yanking.
+<p><code class="code">kill-region</code> 剪切点和标记之间的文本，并将该文本存储在kill ring中，因此您可以通过粘贴将其取回。
 </p>
-<p><code class="code">copy-region-as-kill</code> copies the text between point and mark into
-the kill ring, from which you can get it by yanking.  The function
-does not cut or remove the text from the buffer.
-</p></dd>
+<p><code class="code">copy-region-as-kill</code> 将点和标记之间的文本复制到kill ring中，可以通过粘贴获取。该函数不会从缓冲区中删除文本。
+</p>
+</dd>
 </dl>
 
-<p><code class="code">delete-and-extract-region</code> removes the text between point and
-mark from the buffer and throws it away.  You cannot get it back.
-(This is not an interactive command.)
+<p><code class="code">delete-and-extract-region</code> 从缓冲区中移除点和标记之间的文本并将其丢弃。您无法再获取它。 (这不是一个交互式命令。)
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="search-Exercises.html">Searching Exercises</a>, Previous: <a href="defvar.html">使用 <code class="code">defvar</code> 初始化变量</a>, Up: <a href="Jian-Qie-Yu-Cun-Chu-WenBen-.html">剪切与存储文本</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -6292,16 +6292,15 @@ delete-and-extract-region是用C语言编写的。
 @node cons & search-fwd Review
 @section Review
 
-Here is a brief summary of some recently introduced functions.
+这里是一些最近引入的函数的简要概述。
 
 @table @code
 @item car
 @itemx cdr
-@code{car} returns the first element of a list; @code{cdr} returns the
-second and subsequent elements of a list.
+@code{car} 返回列表的第一个元素；@code{cdr} 返回列表的第二个及后续元素。
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -6313,11 +6312,10 @@ For example:
 @end smallexample
 
 @item cons
-@code{cons} constructs a list by prepending its first argument to its
-second argument.
+@code{cons}通过将其第一个参数添加到其第二个参数前构造一个列表。
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -6327,22 +6325,21 @@ For example:
 @end smallexample
 
 @item funcall
-@code{funcall} evaluates its first argument as a function.  It passes
-its remaining arguments to its first argument.
+@code{funcall} 将其第一个参数作为函数求值，并将其余参数传递给其第一个参数。
 
 @item nthcdr
-Return the result of taking @sc{cdr} @var{n} times on a list.
+返回在列表上对 @sc{cdr} 进行 @var{n} 次操作的结果。
 @iftex
-The
+这是
 @tex
 $n^{th}$
 @end tex
-@code{cdr}.
+@code{cdr}。
 @end iftex
-The ``rest of the rest'', as it were.
+可以看作是“剩下的剩下”。
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -6353,11 +6350,10 @@ For example:
 
 @item setcar
 @itemx setcdr
-@code{setcar} changes the first element of a list; @code{setcdr}
-changes the second and subsequent elements of a list.
+@code{setcar} 改变列表的第一个元素；@code{setcdr} 改变列表的第二个及后续元素。
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -6376,11 +6372,10 @@ triple
 @end smallexample
 
 @item progn
-Evaluate each argument in sequence and then return the value of the
-last.
+按顺序评估每个参数，然后返回最后一个的值。
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -6390,52 +6385,41 @@ For example:
 @end smallexample
 
 @item save-restriction
-Record whatever narrowing is in effect in the current buffer, if any,
-and restore that narrowing after evaluating the arguments.
+记录当前缓冲区中生效的任何缩小范围，并在评估参数后恢复该缩小。
 
 @item search-forward
-Search for a string, and if the string is found, move point.  With a
-regular expression, use the similar @code{re-search-forward}.
-(@xref{Regexp Search, , Regular Expression Searches}, for an
-explanation of regular expression patterns and searches.)
+搜索字符串，如果找到，移动点。使用正则表达式时，请使用类似的 @code{re-search-forward}。
+(@xref{Regexp Search, , 正则表达式搜索}，了解正则表达式模式和搜索的解释。)
 
 @need 1250
 @noindent
-@code{search-forward} and @code{re-search-forward} take four
-arguments:
+@code{search-forward} 和 @code{re-search-forward} 需要四个参数：
 
 @enumerate
 @item
-The string or regular expression to search for.
+要搜索的字符串或正则表达式。
 
 @item
-Optionally, the limit of the search.
+可选地，搜索的限制。
 
 @item
-Optionally, what to do if the search fails, return @code{nil} or an
-error message.
+可选地，如果搜索失败，返回 @code{nil} 或错误消息。
 
 @item
-Optionally, how many times to repeat the search; if negative, the
-search goes backwards.
+可选地，重复搜索的次数；如果为负数，则向后搜索。
 @end enumerate
 
 @item kill-region
 @itemx delete-and-extract-region
 @itemx copy-region-as-kill
 
-@code{kill-region} cuts the text between point and mark from the
-buffer and stores that text in the kill ring, so you can get it back
-by yanking.
+@code{kill-region} 剪切点和标记之间的文本，并将该文本存储在kill ring中，因此您可以通过粘贴将其取回。
 
-@code{copy-region-as-kill} copies the text between point and mark into
-the kill ring, from which you can get it by yanking.  The function
-does not cut or remove the text from the buffer.
+@code{copy-region-as-kill} 将点和标记之间的文本复制到kill ring中，可以通过粘贴获取。该函数不会从缓冲区中删除文本。
+
 @end table
 
-@code{delete-and-extract-region} removes the text between point and
-mark from the buffer and throws it away.  You cannot get it back.
-(This is not an interactive command.)
+@code{delete-and-extract-region} 从缓冲区中移除点和标记之间的文本并将其丢弃。您无法再获取它。 (这不是一个交互式命令。)
 
 @need 1500
 @node search Exercises
