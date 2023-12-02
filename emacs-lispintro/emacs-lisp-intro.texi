@@ -3065,77 +3065,54 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 顺便说一下，包含Lisp代码的文件通常被称为@dfn{库}。这个比喻来源于专业图书馆的概念，比如法律图书馆或工程图书馆，而不是普通图书馆。每个库或文件都包含与特定主题或活动相关的函数，比如处理缩写和其他输入快捷方式的@file{abbrev.el}，以及用于帮助的@file{help.el}。（有时，多个库提供单个活动的代码，就像各种@file{rmail@dots{}}文件提供阅读电子邮件的代码一样。）在@cite{The GNU Emacs Manual}中，你会看到类似“@kbd{C-h p}命令允许你按主题关键字搜索标准的Emacs Lisp库。”的句子。
 
 @node simplified-beginning-of-buffer
-@section A Simplified @code{beginning-of-buffer} Definition
+@section 一个简化的 @code{beginning-of-buffer} 定义
 @findex simplified-beginning-of-buffer
 
-The @code{beginning-of-buffer} command is a good function to start with
-since you are likely to be familiar with it and it is easy to
-understand.  Used as an interactive command, @code{beginning-of-buffer}
-moves the cursor to the beginning of the buffer, leaving the mark at the
-previous position.  It is generally bound to @kbd{M-<}.
+@code{beginning-of-buffer} 命令是一个很好的起点函数，因为你可能熟悉它，并且它易于理解。作为交互式命令使用时，@code{beginning-of-buffer} 将光标移动到缓冲区的开头，同时在先前的位置留下标记。通常绑定到 @kbd{M-<}。
 
-In this section, we will discuss a shortened version of the function
-that shows how it is most frequently used.  This shortened function
-works as written, but it does not contain the code for a complex option.
-In another section, we will describe the entire function.
-(@xref{beginning-of-buffer, , Complete Definition of
-@code{beginning-of-buffer}}.)
+在这一节中，我们将讨论该函数的一个简化版本，展示它最常用的形式。这个简化的函数按原样工作，但不包含复杂选项的代码。在另一节中，我们将描述整个函数。(@xref{beginning-of-buffer, , @code{beginning-of-buffer} 的完整定义}。)
 
-Before looking at the code, let's consider what the function
-definition has to contain: it must include an expression that makes
-the function interactive so it can be called by typing @kbd{M-x
-beginning-of-buffer} or by typing a keychord such as @kbd{M-<}; it
-must include code to leave a mark at the original position in the
-buffer; and it must include code to move the cursor to the beginning
-of the buffer.
+在查看代码之前，让我们考虑函数定义必须包含的内容：必须包括一个使函数可交互的表达式，以便通过键入 @kbd{M-x beginning-of-buffer} 或键入键序（如 @kbd{M-<}）来调用它；必须包括代码以在缓冲区中原始位置留下一个标记；必须包括将光标移动到缓冲区开头的代码。
 
 @need 1250
-Here is the complete text of the shortened version of the function:
+以下是该函数简化版本的完整文本：
 
 @smallexample
 @group
 (defun simplified-beginning-of-buffer ()
-  "Move point to the beginning of the buffer;
-leave mark at previous position."
+  "将光标移动到缓冲区开头；在先前位置留下标记。"
   (interactive)
   (push-mark)
   (goto-char (point-min)))
 @end group
 @end smallexample
 
-Like all function definitions, this definition has five parts following
-the macro @code{defun}:
+与所有函数定义一样，此定义在宏 @code{defun} 之后有五个部分：
 
 @enumerate
 @item
-The name: in this example, @code{simplified-beginning-of-buffer}.
+名称：在这个例子中是 @code{simplified-beginning-of-buffer}。
 
 @item
-A list of the arguments: in this example, an empty list, @code{()},
+参数列表：在这个例子中是一个空列表，@code{()}。
 
 @item
-The documentation string.
+文档字符串。
 
 @item
-The interactive expression.
+交互表达式。
 
 @item
-The body.
+主体。
 @end enumerate
 
 @noindent
-In this function definition, the argument list is empty; this means that
-this function does not require any arguments.  (When we look at the
-definition for the complete function, we will see that it may be passed
-an optional argument.)
+在此函数定义中，参数列表为空，这意味着此函数不需要任何参数。 （当我们查看完整函数定义时，我们将看到它可以传递一个可选参数。）
 
-The interactive expression tells Emacs that the function is intended to
-be used interactively.  In this example, @code{interactive} does not have
-an argument because @code{simplified-beginning-of-buffer} does not
-require one.
+交互式表达式告诉Emacs该函数旨在以交互方式使用。在这个例子中，@code{interactive} 没有参数，因为 @code{simplified-beginning-of-buffer} 不需要参数。
 
 @need 800
-The body of the function consists of the two lines:
+函数的主体包括两行：
 
 @smallexample
 @group
@@ -3144,53 +3121,31 @@ The body of the function consists of the two lines:
 @end group
 @end smallexample
 
-The first of these lines is the expression, @code{(push-mark)}.  When
-this expression is evaluated by the Lisp interpreter, it sets a mark at
-the current position of the cursor, wherever that may be.  The position
-of this mark is saved in the mark ring.
+这些行中的第一行是表达式 @code{(push-mark)}。当Lisp解释器评估此表达式时，它在光标当前位置设置一个标记，无论光标在哪里。该标记的位置保存在标记环中。
 
-The next line is @code{(goto-char (point-min))}.  This expression
-jumps the cursor to the minimum point in the buffer, that is, to the
-beginning of the buffer (or to the beginning of the accessible portion
-of the buffer if it is narrowed.  @xref{Narrowing & Widening, ,
-Narrowing and Widening}.)
+接下来的一行是 @code{(goto-char (point-min))}。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。@xref{Narrowing & Widening, , 缩小和扩大}.)
 
-The @code{push-mark} command sets a mark at the place where the cursor
-was located before it was moved to the beginning of the buffer by the
-@code{(goto-char (point-min))} expression.  Consequently, you can, if
-you wish, go back to where you were originally by typing @kbd{C-x C-x}.
+@code{push-mark} 命令在光标被 @code{(goto-char (point-min))} 表达式移动到缓冲区开头之前的位置设置一个标记。因此，如果愿意，可以通过键入 @kbd{C-x C-x} 返回到最初的位置。
 
-That is all there is to the function definition!
+这就是整个函数定义的全部内容！
 
 @findex describe-function
-When you are reading code such as this and come upon an unfamiliar
-function, such as @code{goto-char}, you can find out what it does by
-using the @code{describe-function} command.  To use this command, type
-@kbd{C-h f} and then type in the name of the function and press
-@key{RET}.  The @code{describe-function} command will print the
-function's documentation string in a @file{*Help*} window.  For
-example, the documentation for @code{goto-char} is:
+当阅读这样的代码并遇到不熟悉的函数时，比如 @code{goto-char}，可以使用 @code{describe-function} 命令了解它的作用。要使用此命令，输入 @kbd{C-h f}，然后输入函数的名称并按 @key{RET}。@code{describe-function} 命令将在 @file{*Help*} 窗口中打印函数的文档字符串。例如，@code{goto-char} 的文档如下：
 
 @smallexample
 @group
-Set point to POSITION, a number or marker.
-Beginning of buffer is position (point-min), end is (point-max).
+将点设置为 POSITION，一个数字或标记。
+缓冲区的开头是位置 (point-min)，结束是 (point-max)。
 @end group
 @end smallexample
 
 @noindent
-The function's one argument is the desired position.
+函数的一个参数是所需的位置。
 
 @noindent
-(The prompt for @code{describe-function} will offer you the symbol
-under or preceding the cursor, so you can save typing by positioning
-the cursor right over or after the function and then typing @kbd{C-h f
-@key{RET}}.)
+（对于 @code{describe-function} 的提示将提供光标下或之前的符号，因此您可以通过将光标直接定位到函数上方或之后，然后键入 @kbd{C-h f @key{RET}} 以节省输入。）
 
-The @code{end-of-buffer} function definition is written in the same way as
-the @code{beginning-of-buffer} definition except that the body of the
-function contains the expression @code{(goto-char (point-max))} in place
-of @code{(goto-char (point-min))}.
+@code{end-of-buffer} 函数定义与 @code{beginning-of-buffer} 定义的方式相同，只是函数的主体包含 @code{(goto-char (point-max))} 表达式，而不是 @code{(goto-char (point-min))}。
 
 @node mark-whole-buffer
 @section The Definition of @code{mark-whole-buffer}
