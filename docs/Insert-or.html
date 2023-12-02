@@ -55,66 +55,35 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="Insert-or">
 <div class="nav-panel">
 <p>
-Next: <a href="Insert-let.html" accesskey="n" rel="next">The <code class="code">let</code> Expression in <code class="code">insert-buffer</code></a>, Previous: <a href="if-_0026-or.html" accesskey="p" rel="prev"><code class="code">insert-buffer</code> With an <code class="code">if</code> Instead of an <code class="code">or</code></a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Insert-let.html" accesskey="n" rel="next"><code class="code">insert-buffer</code> 中的 <code class="code">let</code> 表达式</a>, Previous: <a href="if-_0026-or.html" accesskey="p" rel="prev">使用 <code class="code">if</code> 替代 <code class="code">or</code> 的 <code class="code">insert-buffer</code></a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">函数 <code class="code">insert-buffer</code> 的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-or-in-the-Body">5.2.4 The <code class="code">or</code> in the Body</h4>
+<h4 class="subsection" id="insert_002dbuffer-ZhongDe-or-Biao-Da-Shi-">5.2.4 <code class="code">insert-buffer</code> 中的 <code class="code">or</code> 表达式</h4>
 
-<p>The purpose of the <code class="code">or</code> expression in the <code class="code">insert-buffer</code>
-function is to ensure that the argument <code class="code">buffer</code> is bound to a
-buffer and not just to the name of a buffer.  The previous section shows
-how the job could have been done using an <code class="code">if</code> expression.
-However, the <code class="code">insert-buffer</code> function actually uses <code class="code">or</code>.
-To understand this, it is necessary to understand how <code class="code">or</code> works.
+<p><code class="code">insert-buffer</code> 函数中 <code class="code">or</code> 表达式的目的是确保参数 <code class="code">buffer</code> 绑定到一个缓冲区，而不仅仅是缓冲区的名称。前一节展示了如何使用 <code class="code">if</code> 表达式完成此任务。然而，<code class="code">insert-buffer</code> 函数实际上使用了 <code class="code">or</code>。要理解这一点，有必要了解 <code class="code">or</code> 的工作原理。
 </p>
 <a class="index-entry-id" id="index-or"></a>
-<p>An <code class="code">or</code> function can have any number of arguments.  It evaluates
-each argument in turn and returns the value of the first of its
-arguments that is not <code class="code">nil</code>.  Also, and this is a crucial feature
-of <code class="code">or</code>, it does not evaluate any subsequent arguments after
-returning the first non-<code class="code">nil</code> value.
+<p>一个 <code class="code">or</code> 函数可以有任意数量的参数。它依次评估每个参数，并返回其参数中第一个不是 <code class="code">nil</code> 的值。此外，这是 <code class="code">or</code> 的一个关键特性，即在返回第一个非 <code class="code">nil</code> 值后，它不再评估任何后续参数。
 </p>
-<p>The <code class="code">or</code> expression looks like this:
+<p><code class="code">or</code> 表达式如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(or (bufferp buffer)
     (setq buffer (get-buffer buffer)))
 </pre></div></div>
 
-<p>The first argument to <code class="code">or</code> is the expression <code class="code">(bufferp buffer)</code>.
-This expression returns true (a non-<code class="code">nil</code> value) if the buffer is
-actually a buffer, and not just the name of a buffer.  In the <code class="code">or</code>
-expression, if this is the case, the <code class="code">or</code> expression returns this
-true value and does not evaluate the next expression&mdash;and this is fine
-with us, since we do not want to do anything to the value of
-<code class="code">buffer</code> if it really is a buffer.
+<p><code class="code">or</code> 的第一个参数是表达式 <code class="code">(bufferp buffer)</code>。如果缓冲区实际上是一个缓冲区而不仅仅是缓冲区的名称，则此表达式返回 true（一个非 <code class="code">nil</code> 值）。在 <code class="code">or</code> 表达式中，如果是这种情况，<code class="code">or</code> 表达式返回这个 true 值，并且不评估下一个表达式——这对我们来说是可以的，因为如果它确实是一个缓冲区，我们就不希望对 <code class="code">buffer</code> 的值做任何操作。
 </p>
-<p>On the other hand, if the value of <code class="code">(bufferp buffer)</code> is <code class="code">nil</code>,
-which it will be if the value of <code class="code">buffer</code> is the name of a buffer,
-the Lisp interpreter evaluates the next element of the <code class="code">or</code>
-expression.  This is the expression <code class="code">(setq buffer (get-buffer
-buffer))</code>.  This expression returns a non-<code class="code">nil</code> value, which
-is the value to which it sets the variable <code class="code">buffer</code>&mdash;and this
-value is a buffer itself, not the name of a buffer.
+<p>另一方面，如果 <code class="code">(bufferp buffer)</code> 的值是 <code class="code">nil</code>，那么如果 <code class="code">buffer</code> 的值是缓冲区的名称，Lisp 解释器将评估 <code class="code">or</code> 表达式的下一个元素。这是表达式 <code class="code">(setq buffer (get-buffer buffer))</code>。此表达式返回一个非 <code class="code">nil</code> 值，这是它设置变量 <code class="code">buffer</code> 的值——并且这个值是缓冲区本身，而不是缓冲区的名称。
 </p>
-<p>The result of all this is that the symbol <code class="code">buffer</code> is always
-bound to a buffer itself rather than to the name of a buffer.  All
-this is necessary because the <code class="code">set-buffer</code> function in a
-following line only works with a buffer itself, not with the name to a
-buffer.
+<p>所有这些的结果是，符号 <code class="code">buffer</code> 总是绑定到缓冲区本身而不是缓冲区的名称。所有这些是必要的，因为后面的一行中的 <code class="code">set-buffer</code> 函数只能与缓冲区本身一起使用，而不能与缓冲区的名称一起使用。
 </p>
-<p>Incidentally, using <code class="code">or</code>, the situation with the usher would be
-written like this:
+<p>顺便说一下，使用 <code class="code">or</code>，引座员的情况可以写成这样：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(or (holding-on-to-guest) (find-and-take-arm-of-guest))
 </pre></div>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Insert-let.html">The <code class="code">let</code> Expression in <code class="code">insert-buffer</code></a>, Previous: <a href="if-_0026-or.html"><code class="code">insert-buffer</code> With an <code class="code">if</code> Instead of an <code class="code">or</code></a>, Up: <a href="insert_002dbuffer.html">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

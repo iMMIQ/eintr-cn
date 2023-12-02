@@ -55,16 +55,16 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="subsection-level-extent" id="New-insert_002dbuffer">
 <div class="nav-panel">
 <p>
-Previous: <a href="Insert-let.html" accesskey="p" rel="prev">The <code class="code">let</code> Expression in <code class="code">insert-buffer</code></a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Insert-let.html" accesskey="p" rel="prev"><code class="code">insert-buffer</code> 中的 <code class="code">let</code> 表达式</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">函数 <code class="code">insert-buffer</code> 的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="New-Body-for-insert_002dbuffer">5.2.6 New Body for <code class="code">insert-buffer</code></h4>
-<a class="index-entry-id" id="index-insert_002dbuffer_002c-new-version-body"></a>
-<a class="index-entry-id" id="index-new-version-body-for-insert_002dbuffer"></a>
+<h4 class="subsection" id="insert_002dbuffer-De-Xin-Zhu-Ti-">5.2.6 <code class="code">insert-buffer</code> 的新主体</h4>
+<a class="index-entry-id" id="index-insert_002dbuffer_002c-Xin-Ban-Ben-Zhu-Ti-"></a>
+<a class="index-entry-id" id="index-insert_002dbuffer-De-Xin-Ban-Ben-Zhu-Ti-"></a>
 
-<p>The body in the GNU Emacs 22 version is more confusing than the original.
+<p>GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 </p>
-<p>It consists of two expressions,
+<p>它包含两个表达式，
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">  (push-mark
@@ -75,21 +75,11 @@ Previous: <a href="Insert-let.html" accesskey="p" rel="prev">The <code class="co
    nil
 </pre></div></div>
 
-<p>except, and this is what confuses novices, very important work is done
-inside the <code class="code">push-mark</code> expression.
+<p>除外，这是使初学者困惑的地方，<code class="code">push-mark</code> 表达式内部执行了非常重要的工作。
 </p>
-<p>The <code class="code">get-buffer</code> function returns a buffer with the name
-provided.  You will note that the function is <em class="emph">not</em> called
-<code class="code">get-buffer-create</code>; it does not create a buffer if one does not
-already exist.  The buffer returned by <code class="code">get-buffer</code>, an existing
-buffer, is passed to <code class="code">insert-buffer-substring</code>, which inserts the
-whole of the buffer (since you did not specify anything else).
+<p><code class="code">get-buffer</code> 函数返回一个以提供的名称命名的缓冲区。请注意，该函数并<em class="emph">不</em>被称为 <code class="code">get-buffer-create</code>；如果不存在缓冲区，则不会创建一个。由 <code class="code">get-buffer</code> 返回的缓冲区（已存在的缓冲区）被传递给 <code class="code">insert-buffer-substring</code>，该函数插入整个缓冲区（因为您没有指定其他内容）。
 </p>
-<p>The location into which the buffer is inserted is recorded by
-<code class="code">push-mark</code>.  Then the function returns <code class="code">nil</code>, the value of
-its last command.  Put another way, the <code class="code">insert-buffer</code> function
-exists only to produce a side effect, inserting another buffer, not to
-return any value.
+<p><code class="code">push-mark</code> 记录插入缓冲区的位置。然后，该函数返回 <code class="code">nil</code>，即其最后一条命令的值。换句话说，<code class="code">insert-buffer</code> 函数仅用于产生副作用，即插入另一个缓冲区，而不是返回任何值。
 </p>
 </div>
 

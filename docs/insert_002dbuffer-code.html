@@ -54,18 +54,18 @@ div.example {margin-left: 3.2em}
 <div class="unnumberedsubsec-level-extent" id="insert_002dbuffer-code">
 <div class="nav-panel">
 <p>
-Next: <a href="insert_002dbuffer-interactive.html" accesskey="n" rel="next">The Interactive Expression in <code class="code">insert-buffer</code></a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="insert_002dbuffer-interactive.html" accesskey="n" rel="next"><code class="code">insert-buffer</code> 函数中的交互表达式</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">函数 <code class="code">insert-buffer</code> 的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-Code-for-insert_002dbuffer">The Code for <code class="code">insert-buffer</code></h4>
+<h4 class="unnumberedsubsec" id="insert_002dbuffer-De-Dai-Ma-"><code class="code">insert-buffer</code> 的代码</h4>
 
-<p>Here is the earlier code:
+<p>以下是早期的代码：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun insert-buffer (buffer)
-  &quot;Insert after point the contents of BUFFER.
-Puts mark after the inserted text.
-BUFFER may be a buffer or a buffer name.&quot;
+  &quot;在点之后插入缓冲区的内容。
+在插入的文本之后设置标记。
+BUFFER 可以是缓冲区或缓冲区名称。&quot;
   (interactive &quot;*bInsert buffer: &quot;)
 </pre></div><div class="group"><pre class="example-preformatted">  (or (bufferp buffer)
       (setq buffer (get-buffer buffer)))
@@ -79,8 +79,7 @@ BUFFER may be a buffer or a buffer name.&quot;
     (push-mark newmark)))
 </pre></div></div>
 
-<p>As with other function definitions, you can use a template to see an
-outline of the function:
+<p>与其他函数定义一样，您可以使用模板查看函数的轮廓：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun insert-buffer (buffer)

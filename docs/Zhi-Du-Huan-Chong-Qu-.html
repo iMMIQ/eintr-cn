@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>insert-buffer interactive (Programming in Emacs Lisp)</title>
+<title>只读缓冲区 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="insert-buffer interactive (Programming in Emacs Lisp)">
-<meta name="keywords" content="insert-buffer interactive (Programming in Emacs Lisp)">
+<meta name="description" content="只读缓冲区 (Programming in Emacs Lisp)">
+<meta name="keywords" content="只读缓冲区 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -38,9 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="insert_002dbuffer.html" rel="up" title="insert-buffer">
-<link href="insert_002dbuffer-body.html" rel="next" title="insert-buffer body">
-<link href="insert_002dbuffer-code.html" rel="prev" title="insert-buffer code">
+<link href="insert_002dbuffer-interactive.html" rel="up" title="insert-buffer interactive">
+<link href="b-Yong-Yu-Jiao-Hu-.html" rel="next" title="b 用于交互">
 <style type="text/css">
 <!--
 span.r {font-family: initial; font-weight: normal; font-style: normal}
@@ -52,22 +51,19 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 </head>
 
 <body lang="en">
-<div class="subsection-level-extent" id="insert_002dbuffer-interactive">
+<div class="unnumberedsubsubsec-level-extent" id="g_t_53ea_8bfb_7f13_51b2_533a">
 <div class="nav-panel">
 <p>
-Next: <a href="insert_002dbuffer-body.html" accesskey="n" rel="next"><code class="code">insert-buffer</code> 函数的主体</a>, Previous: <a href="insert_002dbuffer-code.html" accesskey="p" rel="prev"><code class="code">insert-buffer</code> 的代码</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">函数 <code class="code">insert-buffer</code> 的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="b-Yong-Yu-Jiao-Hu-.html" accesskey="n" rel="next">交互表达式中的 &lsquo;<samp class="samp">b</samp>&rsquo;</a>, Up: <a href="insert_002dbuffer-interactive.html" accesskey="u" rel="up"><code class="code">insert-buffer</code> 函数中的交互表达式</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="insert_002dbuffer-Han-Shu-ZhongDe-Jiao-Hu-Biao-Da-Shi-">5.2.1 <code class="code">insert-buffer</code> 函数中的交互表达式</h4>
-<a class="index-entry-id" id="index-interactive_002c-Yong-Fa-ShiLi"></a>
+<h4 class="unnumberedsubsubsec" id="Zhi-Du-Huan-Chong-Qu-">只读缓冲区</h4>
+<a class="index-entry-id" id="index-Zhi-Du-Huan-Chong-Qu-"></a>
+<a class="index-entry-id" id="index-Yong-Yu-Zhi-Du-Huan-Chong-Qu-De-Xing-Hao-"></a>
+<a class="index-entry-id" id="index-_002a-Yong-Yu-Zhi-Du-Huan-Chong-Qu-"></a>
 
-<p>在 <code class="code">insert-buffer</code> 中，<code class="code">interactive</code> 声明的参数有两部分，一个星号 &lsquo;<samp class="samp">*</samp>&rsquo; 和 &lsquo;<samp class="samp">bInsert buffer: </samp>&rsquo;。
+<p>星号用于当前缓冲区为只读缓冲区的情况&mdash;无法修改的缓冲区。如果在当前缓冲区为只读时调用 <code class="code">insert-buffer</code>，将在回显区打印相应的消息，并且终端可能会发出哔声或闪烁；您将无法将任何内容插入当前缓冲区。星号后无需加换行符以将其与下一个参数分隔开。
 </p>
-
-<ul class="mini-toc">
-<li><a href="Zhi-Du-Huan-Chong-Qu-.html" accesskey="1">只读缓冲区</a></li>
-<li><a href="b-Yong-Yu-Jiao-Hu-.html" accesskey="2">交互表达式中的 &lsquo;<samp class="samp">b</samp>&rsquo;</a></li>
-</ul>
 </div>
 
 

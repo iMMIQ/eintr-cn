@@ -57,22 +57,14 @@ kbd.key {font-style: normal}
 <div class="subsection-level-extent" id="Insert-let">
 <div class="nav-panel">
 <p>
-Next: <a href="New-insert_002dbuffer.html" accesskey="n" rel="next">New Body for <code class="code">insert-buffer</code></a>, Previous: <a href="Insert-or.html" accesskey="p" rel="prev">The <code class="code">or</code> in the Body</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="New-insert_002dbuffer.html" accesskey="n" rel="next"><code class="code">insert-buffer</code> 的新主体</a>, Previous: <a href="Insert-or.html" accesskey="p" rel="prev"><code class="code">insert-buffer</code> 中的 <code class="code">or</code> 表达式</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">函数 <code class="code">insert-buffer</code> 的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-let-Expression-in-insert_002dbuffer">5.2.5 The <code class="code">let</code> Expression in <code class="code">insert-buffer</code></h4>
+<h4 class="subsection" id="insert_002dbuffer-ZhongDe-let-Biao-Da-Shi-">5.2.5 <code class="code">insert-buffer</code> 中的 <code class="code">let</code> 表达式</h4>
 
-<p>After ensuring that the variable <code class="code">buffer</code> refers to a buffer itself
-and not just to the name of a buffer, the <code class="code">insert-buffer</code> function
-continues with a <code class="code">let</code> expression.  This specifies three local
-variables, <code class="code">start</code>, <code class="code">end</code>, and <code class="code">newmark</code> and binds them
-to the initial value <code class="code">nil</code>.  These variables are used inside the
-remainder of the <code class="code">let</code> and temporarily hide any other occurrence of
-variables of the same name in Emacs until the end of the <code class="code">let</code>.
+<p>在确保变量 <code class="code">buffer</code> 引用的是缓冲区本身而不仅仅是缓冲区的名称后，<code class="code">insert-buffer</code> 函数继续使用 <code class="code">let</code> 表达式。这个表达式指定了三个局部变量 <code class="code">start</code>、<code class="code">end</code> 和 <code class="code">newmark</code>，并将它们绑定到初始值 <code class="code">nil</code>。这些变量在 <code class="code">let</code> 的其余部分中被使用，并在 <code class="code">let</code> 结束之前暂时隐藏了任何同名变量的其他出现。
 </p>
-<p>The body of the <code class="code">let</code> contains two <code class="code">save-excursion</code>
-expressions.  First, we will look at the inner <code class="code">save-excursion</code>
-expression in detail.  The expression looks like this:
+<p><code class="code">let</code> 的主体包含两个 <code class="code">save-excursion</code> 表达式。首先，我们将详细查看内部 <code class="code">save-excursion</code> 表达式。表达式如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(save-excursion
@@ -80,22 +72,11 @@ expression in detail.  The expression looks like this:
   (setq start (point-min) end (point-max)))
 </pre></div></div>
 
-<p>The expression <code class="code">(set-buffer buffer)</code> changes Emacs&rsquo;s attention
-from the current buffer to the one from which the text will copied.
-In that buffer, the variables <code class="code">start</code> and <code class="code">end</code> are set to
-the beginning and end of the buffer, using the commands
-<code class="code">point-min</code> and <code class="code">point-max</code>.  Note that we have here an
-illustration of how <code class="code">setq</code> is able to set two variables in the
-same expression.  The first argument of <code class="code">setq</code> is set to the
-value of its second, and its third argument is set to the value of its
-fourth.
+<p>表达式 <code class="code">(set-buffer buffer)</code> 将 Emacs 的注意力从当前缓冲区切换到将要复制文本的缓冲区。在该缓冲区中，使用命令 <code class="code">point-min</code> 和 <code class="code">point-max</code> 将变量 <code class="code">start</code> 和 <code class="code">end</code> 设置为缓冲区的开始和结束。请注意，这里演示了 <code class="code">setq</code> 如何能够在同一个表达式中设置两个变量。<code class="code">setq</code> 的第一个参数设置为其第二个参数的值，其第三个参数设置为其第四个参数的值。
 </p>
-<p>After the body of the inner <code class="code">save-excursion</code> is evaluated, the
-<code class="code">save-excursion</code> restores the original buffer, but <code class="code">start</code> and
-<code class="code">end</code> remain set to the values of the beginning and end of the
-buffer from which the text will be copied.
+<p>在内部 <code class="code">save-excursion</code> 的主体被评估之后，<code class="code">save-excursion</code> 会恢复原始缓冲区，但是 <code class="code">start</code> 和 <code class="code">end</code> 仍然设置为将要复制文本的缓冲区的开始和结束的值。
 </p>
-<p>The outer <code class="code">save-excursion</code> expression looks like this:
+<p>外部 <code class="code">save-excursion</code> 表达式如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(save-excursion
@@ -105,29 +86,13 @@ buffer from which the text will be copied.
   (setq newmark (point)))
 </pre></div></div>
 
-<p>The <code class="code">insert-buffer-substring</code> function copies the text
-<em class="emph">into</em> the current buffer <em class="emph">from</em> the region indicated by
-<code class="code">start</code> and <code class="code">end</code> in <code class="code">buffer</code>.  Since the whole of the
-second buffer lies between <code class="code">start</code> and <code class="code">end</code>, the whole of
-the second buffer is copied into the buffer you are editing.  Next,
-the value of point, which will be at the end of the inserted text, is
-recorded in the variable <code class="code">newmark</code>.
+<p><code class="code">insert-buffer-substring</code> 函数将文本从 <code class="code">buffer</code> 中的 <code class="code">start</code> 和 <code class="code">end</code> 位置插入到当前缓冲区中。由于第二个缓冲区的整体位于 <code class="code">start</code> 和 <code class="code">end</code> 之间，第二个缓冲区的整体被复制到你正在编辑的缓冲区中。接下来，点的值，它将位于插入文本的末尾，被记录在变量 <code class="code">newmark</code> 中。
 </p>
-<p>After the body of the outer <code class="code">save-excursion</code> is evaluated, point
-is relocated to its original place.
+<p>在外部 <code class="code">save-excursion</code> 的主体被评估之后，点被重新定位到其原始位置。
 </p>
-<p>However, it is convenient to locate a mark at the end of the newly
-inserted text and locate point at its beginning.  The <code class="code">newmark</code>
-variable records the end of the inserted text.  In the last line of
-the <code class="code">let</code> expression, the <code class="code">(push-mark newmark)</code> expression
-function sets a mark to this location.  (The previous location of the
-mark is still accessible; it is recorded on the mark ring and you can
-go back to it with <kbd class="kbd">C-u C-<kbd class="key">SPC</kbd></kbd>.)  Meanwhile, point is
-located at the beginning of the inserted text, which is where it was
-before you called the insert function, the position of which was saved
-by the first <code class="code">save-excursion</code>.
+<p>然而，方便的是在新插入的文本的末尾放置一个标记，并将点定位在其开头。<code class="code">newmark</code> 变量记录了插入文本的末尾。在 <code class="code">let</code> 表达式的最后一行中，<code class="code">(push-mark newmark)</code> 表达式函数将标记设置为此位置。（标记的先前位置仍然可访问；它记录在标记环上，你可以使用 <kbd class="kbd">C-u C-<kbd class="key">SPC</kbd></kbd> 返回到它。）与此同时，点位于插入文本的开头，这是你调用插入函数之前的位置，该位置由第一个 <code class="code">save-excursion</code> 保存。
 </p>
-<p>The whole <code class="code">let</code> expression looks like this:
+<p>整个 <code class="code">let</code> 表达式如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(let (start end newmark)
@@ -140,17 +105,8 @@ by the first <code class="code">save-excursion</code>.
   (push-mark newmark))
 </pre></div></div>
 
-<p>Like the <code class="code">append-to-buffer</code> function, the <code class="code">insert-buffer</code>
-function uses <code class="code">let</code>, <code class="code">save-excursion</code>, and
-<code class="code">set-buffer</code>.  In addition, the function illustrates one way to
-use <code class="code">or</code>.  All these functions are building blocks that we will
-find and use again and again.
+<p>与 <code class="code">append-to-buffer</code> 函数一样，<code class="code">insert-buffer</code> 函数使用了 <code class="code">let</code>、<code class="code">save-excursion</code> 和 <code class="code">set-buffer</code>。此外，该函数演示了使用 <code class="code">or</code> 的一种方式。所有这些函数都是我们将一遍又一遍找到并使用的构建块。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="New-insert_002dbuffer.html">New Body for <code class="code">insert-buffer</code></a>, Previous: <a href="Insert-or.html">The <code class="code">or</code> in the Body</a>, Up: <a href="insert_002dbuffer.html">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

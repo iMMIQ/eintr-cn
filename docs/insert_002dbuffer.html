@@ -57,33 +57,26 @@ ISBN 1-882114-43-4
 Next: <a href="beginning_002dof_002dbuffer.html" accesskey="n" rel="next">Complete Definition of <code class="code">beginning-of-buffer</code></a>, Previous: <a href="copy_002dto_002dbuffer.html" accesskey="p" rel="prev">函数 <code class="code">copy-to-buffer</code> 的定义</a>, Up: <a href="Fu-Za-YiXie-.html" accesskey="u" rel="up">几个更复杂的函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-Definition-of-insert_002dbuffer">5.2 The Definition of <code class="code">insert-buffer</code></h3>
+<h3 class="section" id="Han-Shu-insert_002dbuffer-De-Ding-Yi-">5.2 函数 <code class="code">insert-buffer</code> 的定义</h3>
 <a class="index-entry-id" id="index-insert_002dbuffer"></a>
 
-<p><code class="code">insert-buffer</code> is yet another buffer-related function.  This
-command copies another buffer <em class="emph">into</em> the current buffer.  It is the
-reverse of <code class="code">append-to-buffer</code> or <code class="code">copy-to-buffer</code>, since they
-copy a region of text <em class="emph">from</em> the current buffer to another buffer.
+<p><code class="code">insert-buffer</code> 是另一个与缓冲区相关的函数。该命令将另一个缓冲区的内容<em class="emph">插入</em>到当前缓冲区中。它是 <code class="code">append-to-buffer</code> 或 <code class="code">copy-to-buffer</code> 的反向操作，因为它们将文本区域从当前缓冲区<em class="emph">复制到</em>另一个缓冲区。
 </p>
-<p>Here is a discussion based on the original code.  The code was
-simplified in 2003 and is harder to understand.
+<p>以下讨论基于原始代码。该代码在2003年进行了简化，变得更难理解。
 </p>
-<p>(See <a class="xref" href="New-insert_002dbuffer.html">New Body for <code class="code">insert-buffer</code></a>, to see
-a discussion of the new body.)
+<p>(See <a class="xref" href="New-insert_002dbuffer.html"><code class="code">insert-buffer</code> 的新主体</a>, 以查看新主体的讨论。)
 </p>
-<p>In addition, this code illustrates the use of <code class="code">interactive</code> with a
-buffer that might be <em class="dfn">read-only</em> and the important distinction
-between the name of an object and the object actually referred to.
+<p>此外，这段代码说明了与可能是<em class="dfn">只读</em>的缓冲区一起使用<code class="code">interactive</code>的用法，以及对象名称与实际引用的对象之间的重要区别。
 </p>
 
 <ul class="mini-toc">
-<li><a href="insert_002dbuffer-code.html" accesskey="1">The Code for <code class="code">insert-buffer</code></a></li>
-<li><a href="insert_002dbuffer-interactive.html" accesskey="2">The Interactive Expression in <code class="code">insert-buffer</code></a></li>
-<li><a href="insert_002dbuffer-body.html" accesskey="3">The Body of the <code class="code">insert-buffer</code> Function</a></li>
-<li><a href="if-_0026-or.html" accesskey="4"><code class="code">insert-buffer</code> With an <code class="code">if</code> Instead of an <code class="code">or</code></a></li>
-<li><a href="Insert-or.html" accesskey="5">The <code class="code">or</code> in the Body</a></li>
-<li><a href="Insert-let.html" accesskey="6">The <code class="code">let</code> Expression in <code class="code">insert-buffer</code></a></li>
-<li><a href="New-insert_002dbuffer.html" accesskey="7">New Body for <code class="code">insert-buffer</code></a></li>
+<li><a href="insert_002dbuffer-code.html" accesskey="1"><code class="code">insert-buffer</code> 的代码</a></li>
+<li><a href="insert_002dbuffer-interactive.html" accesskey="2"><code class="code">insert-buffer</code> 函数中的交互表达式</a></li>
+<li><a href="insert_002dbuffer-body.html" accesskey="3"><code class="code">insert-buffer</code> 函数的主体</a></li>
+<li><a href="if-_0026-or.html" accesskey="4">使用 <code class="code">if</code> 替代 <code class="code">or</code> 的 <code class="code">insert-buffer</code></a></li>
+<li><a href="Insert-or.html" accesskey="5"><code class="code">insert-buffer</code> 中的 <code class="code">or</code> 表达式</a></li>
+<li><a href="Insert-let.html" accesskey="6"><code class="code">insert-buffer</code> 中的 <code class="code">let</code> 表达式</a></li>
+<li><a href="New-insert_002dbuffer.html" accesskey="7"><code class="code">insert-buffer</code> 的新主体</a></li>
 </ul>
 </div>
 

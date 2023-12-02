@@ -55,20 +55,14 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="insert_002dbuffer-body">
 <div class="nav-panel">
 <p>
-Next: <a href="if-_0026-or.html" accesskey="n" rel="next"><code class="code">insert-buffer</code> With an <code class="code">if</code> Instead of an <code class="code">or</code></a>, Previous: <a href="insert_002dbuffer-interactive.html" accesskey="p" rel="prev">The Interactive Expression in <code class="code">insert-buffer</code></a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="if-_0026-or.html" accesskey="n" rel="next">使用 <code class="code">if</code> 替代 <code class="code">or</code> 的 <code class="code">insert-buffer</code></a>, Previous: <a href="insert_002dbuffer-interactive.html" accesskey="p" rel="prev"><code class="code">insert-buffer</code> 函数中的交互表达式</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">函数 <code class="code">insert-buffer</code> 的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-Body-of-the-insert_002dbuffer-Function">5.2.2 The Body of the <code class="code">insert-buffer</code> Function</h4>
+<h4 class="subsection" id="insert_002dbuffer-Han-Shu-De-Zhu-Ti-">5.2.2 <code class="code">insert-buffer</code> 函数的主体</h4>
 
-<p>The body of the <code class="code">insert-buffer</code> function has two major parts: an
-<code class="code">or</code> expression and a <code class="code">let</code> expression.  The purpose of the
-<code class="code">or</code> expression is to ensure that the argument <code class="code">buffer</code> is
-bound to a buffer and not just the name of a buffer.  The body of the
-<code class="code">let</code> expression contains the code which copies the other buffer
-into the current buffer.
+<p><code class="code">insert-buffer</code> 函数的主体有两个主要部分：一个 <code class="code">or</code> 表达式和一个 <code class="code">let</code> 表达式。 <code class="code">or</code> 表达式的目的是确保参数 <code class="code">buffer</code> 绑定到一个缓冲区，而不仅仅是缓冲区的名称。 <code class="code">let</code> 表达式的主体包含将另一个缓冲区复制到当前缓冲区的代码。
 </p>
-<p>In outline, the two expressions fit into the <code class="code">insert-buffer</code>
-function like this:
+<p>简而言之，这两个表达式适合于 <code class="code">insert-buffer</code> 函数，如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun insert-buffer (buffer)
@@ -80,12 +74,9 @@ function like this:
       <var class="var">body-of-</var><code class="code">let</code>&hellip; )
 </pre></div></div>
 
-<p>To understand how the <code class="code">or</code> expression ensures that the argument
-<code class="code">buffer</code> is bound to a buffer and not to the name of a buffer, it
-is first necessary to understand the <code class="code">or</code> function.
+<p>要理解 <code class="code">or</code> 表达式如何确保参数 <code class="code">buffer</code> 绑定到一个缓冲区而不是缓冲区的名称，首先需要了解 <code class="code">or</code> 函数。
 </p>
-<p>Before doing this, let me rewrite this part of the function using
-<code class="code">if</code> so that you can see what is done in a manner that will be familiar.
+<p>在这之前，让我使用 <code class="code">if</code> 重新编写此函数的一部分，以便您可以以熟悉的方式看到所做的事情。
 </p>
 </div>
 

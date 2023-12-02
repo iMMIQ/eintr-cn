@@ -57,82 +57,47 @@ span.w-nolinebreak-text {white-space: nowrap}
 <div class="subsection-level-extent" id="if-_0026-or">
 <div class="nav-panel">
 <p>
-Next: <a href="Insert-or.html" accesskey="n" rel="next">The <code class="code">or</code> in the Body</a>, Previous: <a href="insert_002dbuffer-body.html" accesskey="p" rel="prev">The Body of the <code class="code">insert-buffer</code> Function</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Insert-or.html" accesskey="n" rel="next"><code class="code">insert-buffer</code> 中的 <code class="code">or</code> 表达式</a>, Previous: <a href="insert_002dbuffer-body.html" accesskey="p" rel="prev"><code class="code">insert-buffer</code> 函数的主体</a>, Up: <a href="insert_002dbuffer.html" accesskey="u" rel="up">函数 <code class="code">insert-buffer</code> 的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="insert_002dbuffer-With-an-if-Instead-of-an-or">5.2.3 <code class="code">insert-buffer</code> With an <code class="code">if</code> Instead of an <code class="code">or</code></h4>
+<h4 class="subsection" id="Shi-Yong-if-Ti-Dai-or-De-insert_002dbuffer">5.2.3 使用 <code class="code">if</code> 替代 <code class="code">or</code> 的 <code class="code">insert-buffer</code></h4>
 
-<p>The job to be done is to make sure the value of <code class="code">buffer</code> is a
-buffer itself and not the name of a buffer.  If the value is the name,
-then the buffer itself must be got.
+<p>要完成的任务是确保 <code class="code">buffer</code> 的值是一个缓冲区本身，而不是缓冲区的名称。如果值是名称，则必须获取缓冲区本身。
 </p>
-<p>You can imagine yourself at a conference where an usher is wandering
-around holding a list with your name on it and looking for you: the
-usher is bound to your name, not to you; but when the usher finds
-you and takes your arm, the usher becomes bound to you.
+<p>你可以想象自己在一个会议上，一个引座员正拿着一张带有你的名字的名单四处寻找你：引座员与你的名字绑定，而不是与你绑定；但当引座员找到你并搀扶你的手臂时，引座员就与你绑定了。
 </p>
-<p>In Lisp, you might describe this situation like this:
+<p>在 Lisp 中，你可以这样描述这种情况：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(if (not (holding-on-to-guest))
     (find-and-take-arm-of-guest))
 </pre></div></div>
 
-<p>We want to do the same thing with a buffer&mdash;if we do not have the
-buffer itself, we want to get it.
+<p>我们想要使用缓冲区做同样的事情——如果我们没有缓冲区本身，我们就希望获取它。
 </p>
-<p>Using a predicate called <code class="code">bufferp</code> that tells us whether we have a
-buffer (rather than its name), we can write the code like this:
+<p>使用一个叫做 <code class="code">bufferp</code> 的谓词，它告诉我们是否有一个缓冲区（而不是它的名称），我们可以这样编写代码：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(if (not (bufferp buffer))              ; <span class="r">if-part</span>
-    (setq buffer (get-buffer buffer)))  ; <span class="r">then-part</span>
+<div class="group"><pre class="example-preformatted">(if (not (bufferp buffer))              ; <span class="r">if-部分</span>
+    (setq buffer (get-buffer buffer)))  ; <span class="r">then-部分</span>
 </pre></div></div>
 
-<p>Here, the true-or-false-test of the <code class="code">if</code> expression is
-<code class="code">(not&nbsp;(bufferp&nbsp;buffer))</code><!-- /@w -->; and the then-part is the expression
-<code class="code">(setq&nbsp;buffer&nbsp;<span class="w-nolinebreak-text">(get-buffer</span>&nbsp;buffer))</code><!-- /@w -->.
+<p>这里，<code class="code">if</code> 表达式的真假测试是 <code class="code">(not&nbsp;(bufferp&nbsp;buffer))</code><!-- /@w -->；然后部分是表达式 <code class="code">(setq&nbsp;buffer&nbsp;<span class="w-nolinebreak-text">(get-buffer</span>&nbsp;buffer))</code><!-- /@w -->。
 </p>
-<p>In the test, the function <code class="code">bufferp</code> returns true if its argument is
-a buffer&mdash;but false if its argument is the name of the buffer.  (The
-last character of the function name <code class="code">bufferp</code> is the character
-&lsquo;<samp class="samp">p</samp>&rsquo;; as we saw earlier, such use of &lsquo;<samp class="samp">p</samp>&rsquo; is a convention that
-indicates that the function is a predicate, which is a term that means
-that the function will determine whether some property is true or false.
-See <a class="xref" href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html">使用错误类型的对象作为参数</a>.)
+<p>在测试中，函数 <code class="code">bufferp</code> 如果其参数是一个缓冲区，则返回 true——但如果其参数是缓冲区的名称，则返回 false。 （函数名 <code class="code">bufferp</code> 的最后一个字符是字符 &lsquo;<samp class="samp">p</samp>&rsquo;；正如我们前面看到的，&lsquo;<samp class="samp">p</samp>&rsquo; 的这种用法是一个约定，表示该函数是一个谓词，这是一个术语，表示该函数将确定某个属性是真还是假。See <a class="xref" href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html">使用错误类型的对象作为参数</a>.)
 </p>
-<p>The function <code class="code">not</code> precedes the expression <code class="code">(bufferp buffer)</code>,
-so the true-or-false-test looks like this:
+<p>函数 <code class="code">not</code> 位于表达式 <code class="code">(bufferp buffer)</code> 之前，因此真假测试看起来像这样：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(not (bufferp buffer))
 </pre></div>
 
-<p><code class="code">not</code> is a function that returns true if its argument is false
-and false if its argument is true.  So if <code class="code">(bufferp buffer)</code>
-returns true, the <code class="code">not</code> expression returns false and vice versa.
+<p><code class="code">not</code> 是一个函数，如果其参数为 false，则返回 true；如果其参数为 true，则返回 false。因此，如果 <code class="code">(bufferp buffer)</code> 返回 true，则 <code class="code">not</code> 表达式返回 false，反之亦然。
 </p>
-<p>Using this test, the <code class="code">if</code> expression works as follows: when the
-value of the variable <code class="code">buffer</code> is actually a buffer rather than
-its name, the true-or-false-test returns false and the <code class="code">if</code>
-expression does not evaluate the then-part.  This is fine, since we do
-not need to do anything to the variable <code class="code">buffer</code> if it really is
-a buffer.
+<p>使用这个测试，<code class="code">if</code> 表达式的工作方式如下：当变量 <code class="code">buffer</code> 的值实际上是一个缓冲区而不是其名称时，真假测试返回 false，<code class="code">if</code> 表达式不会评估 then-部分。这是可以的，因为如果它确实是一个缓冲区，我们就不需要对变量 <code class="code">buffer</code> 做任何操作。
 </p>
-<p>On the other hand, when the value of <code class="code">buffer</code> is not a buffer
-itself, but the name of a buffer, the true-or-false-test returns true
-and the then-part of the expression is evaluated.  In this case, the
-then-part is <code class="code">(setq buffer (get-buffer buffer))</code>.  This
-expression uses the <code class="code">get-buffer</code> function to return an actual
-buffer itself, given its name.  The <code class="code">setq</code> then sets the variable
-<code class="code">buffer</code> to the value of the buffer itself, replacing its previous
-value (which was the name of the buffer).
+<p>另一方面，当 <code class="code">buffer</code> 的值不是一个缓冲区本身，而是缓冲区的名称时，真假测试返回 true，并且评估表达式的 then-部分。在这种情况下，then-部分是 <code class="code">(setq buffer (get-buffer buffer))</code>。该表达式使用 <code class="code">get-buffer</code> 函数通过名称返回实际的缓冲区本身。然后，<code class="code">setq</code> 将变量 <code class="code">buffer</code> 设置为缓冲区本身的值，替换其先前的值（该值是缓冲区的名称）。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Insert-or.html">The <code class="code">or</code> in the Body</a>, Previous: <a href="insert_002dbuffer-body.html">The Body of the <code class="code">insert-buffer</code> Function</a>, Up: <a href="insert_002dbuffer.html">The Definition of <code class="code">insert-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

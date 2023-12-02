@@ -3661,48 +3661,41 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 @end smallexample
 
 @node insert-buffer
-@section The Definition of @code{insert-buffer}
+@section 函数 @code{insert-buffer} 的定义
 @findex insert-buffer
 
-@code{insert-buffer} is yet another buffer-related function.  This
-command copies another buffer @emph{into} the current buffer.  It is the
-reverse of @code{append-to-buffer} or @code{copy-to-buffer}, since they
-copy a region of text @emph{from} the current buffer to another buffer.
+@code{insert-buffer} 是另一个与缓冲区相关的函数。该命令将另一个缓冲区的内容@emph{插入}到当前缓冲区中。它是 @code{append-to-buffer} 或 @code{copy-to-buffer} 的反向操作，因为它们将文本区域从当前缓冲区@emph{复制到}另一个缓冲区。
 
-Here is a discussion based on the original code.  The code was
-simplified in 2003 and is harder to understand.
+以下讨论基于原始代码。该代码在2003年进行了简化，变得更难理解。
 
-(@xref{New insert-buffer, , New Body for @code{insert-buffer}}, to see
-a discussion of the new body.)
+(@xref{New insert-buffer, , @code{insert-buffer} 的新主体}, 以查看新主体的讨论。)
 
-In addition, this code illustrates the use of @code{interactive} with a
-buffer that might be @dfn{read-only} and the important distinction
-between the name of an object and the object actually referred to.
+此外，这段代码说明了与可能是@dfn{只读}的缓冲区一起使用@code{interactive}的用法，以及对象名称与实际引用的对象之间的重要区别。
 
 @menu
 * insert-buffer code::
-* insert-buffer interactive::   When you can read, but not write.
-* insert-buffer body::          The body has an @code{or} and a @code{let}.
-* if & or::                     Using an @code{if} instead of an @code{or}.
-* Insert or::                   How the @code{or} expression works.
-* Insert let::                  Two @code{save-excursion} expressions.
+* insert-buffer interactive::   当您能读取但无法写入时。
+* insert-buffer body::          主体包含一个 @code{or} 和一个 @code{let}。
+* if & or::                     使用 @code{if} 而不是 @code{or}。
+* Insert or::                   @code{or} 表达式的工作原理。
+* Insert let::                  两个 @code{save-excursion} 表达式。
 * New insert-buffer::
 @end menu
 
 @ifnottex
 @node insert-buffer code
-@unnumberedsubsec The Code for @code{insert-buffer}
+@unnumberedsubsec @code{insert-buffer} 的代码
 @end ifnottex
 
 @need 800
-Here is the earlier code:
+以下是早期的代码：
 
 @smallexample
 @group
 (defun insert-buffer (buffer)
-  "Insert after point the contents of BUFFER.
-Puts mark after the inserted text.
-BUFFER may be a buffer or a buffer name."
+  "在点之后插入缓冲区的内容。
+在插入的文本之后设置标记。
+BUFFER 可以是缓冲区或缓冲区名称。"
   (interactive "*bInsert buffer:@: ")
 @end group
 @group
@@ -3722,8 +3715,7 @@ BUFFER may be a buffer or a buffer name."
 @end smallexample
 
 @need 1200
-As with other function definitions, you can use a template to see an
-outline of the function:
+与其他函数定义一样，您可以使用模板查看函数的轮廓：
 
 @smallexample
 @group
@@ -3735,65 +3727,38 @@ outline of the function:
 @end smallexample
 
 @node insert-buffer interactive
-@subsection The Interactive Expression in @code{insert-buffer}
-@findex interactive@r{, example use of}
+@subsection @code{insert-buffer} 函数中的交互表达式
+@findex interactive@r{, 用法示例}
 
-In @code{insert-buffer}, the argument to the @code{interactive}
-declaration has two parts, an asterisk, @samp{*}, and @samp{bInsert
-buffer:@: }.
+在 @code{insert-buffer} 中，@code{interactive} 声明的参数有两部分，一个星号 @samp{*} 和 @samp{bInsert buffer:@: }。
 
 @menu
-* Read-only buffer::            When a buffer cannot be modified.
-* b for interactive::           An existing buffer or else its name.
+* 只读缓冲区::            当缓冲区无法修改时。
+* b 用于交互::             存在的缓冲区或其名称。
 @end menu
 
-@node Read-only buffer
-@unnumberedsubsubsec A Read-only Buffer
-@cindex Read-only buffer
-@cindex Asterisk for read-only buffer
-@findex * @r{for read-only buffer}
+@node 只读缓冲区
+@unnumberedsubsubsec 只读缓冲区
+@cindex 只读缓冲区
+@cindex 用于只读缓冲区的星号
+@findex * @r{用于只读缓冲区}
 
-The asterisk is for the situation when the current buffer is a
-read-only buffer---a buffer that cannot be modified.  If
-@code{insert-buffer} is called when the current buffer is read-only, a
-message to this effect is printed in the echo area and the terminal
-may beep or blink at you; you will not be permitted to insert anything
-into current buffer.  The asterisk does not need to be followed by a
-newline to separate it from the next argument.
+星号用于当前缓冲区为只读缓冲区的情况---无法修改的缓冲区。如果在当前缓冲区为只读时调用 @code{insert-buffer}，将在回显区打印相应的消息，并且终端可能会发出哔声或闪烁；您将无法将任何内容插入当前缓冲区。星号后无需加换行符以将其与下一个参数分隔开。
 
-@node b for interactive
-@unnumberedsubsubsec @samp{b} in an Interactive Expression
+@node b 用于交互
+@unnumberedsubsubsec 交互表达式中的 @samp{b}
 
-The next argument in the interactive expression starts with a lower
-case @samp{b}.  (This is different from the code for
-@code{append-to-buffer}, which uses an upper-case @samp{B}.
-@xref{append-to-buffer, , The Definition of @code{append-to-buffer}}.)
-The lower-case @samp{b} tells the Lisp interpreter that the argument
-for @code{insert-buffer} should be an existing buffer or else its
-name.  (The upper-case @samp{B} option provides for the possibility
-that the buffer does not exist.)  Emacs will prompt you for the name
-of the buffer, offering you a default buffer, with name completion
-enabled.  If the buffer does not exist, you receive a message that
-says ``No match''; your terminal may beep at you as well.
+交互表达式中的下一个参数以小写 @samp{b} 开头。 （这与 @code{append-to-buffer} 的代码不同，后者使用大写 @samp{B}。@xref{append-to-buffer, , @code{append-to-buffer} 的定义}。）小写 @samp{b} 表示 Lisp 解释器应该将 @code{insert-buffer} 的参数绑定到一个现有缓冲区，否则应该绑定到其名称。Emacs 将提示您输入缓冲区的名称，并提供默认缓冲区，并启用名称补全。如果缓冲区不存在，您将收到消息“没有匹配”；终端也可能会哔哔作响。
 
-The new and simplified code generates a list for @code{interactive}.
-It uses the @code{barf-if-buffer-read-only} and @code{read-buffer}
-functions with which we are already familiar and the @code{progn}
-special form with which we are not.  (It will be described later.)
+新的简化代码生成了 @code{interactive} 的列表。它使用我们已经熟悉的 @code{barf-if-buffer-read-only} 和 @code{read-buffer} 函数以及我们尚不熟悉的 @code{progn} 特殊形式（稍后将进行描述）。
 
 @node insert-buffer body
-@subsection The Body of the @code{insert-buffer} Function
+@subsection @code{insert-buffer} 函数的主体
 
-The body of the @code{insert-buffer} function has two major parts: an
-@code{or} expression and a @code{let} expression.  The purpose of the
-@code{or} expression is to ensure that the argument @code{buffer} is
-bound to a buffer and not just the name of a buffer.  The body of the
-@code{let} expression contains the code which copies the other buffer
-into the current buffer.
+@code{insert-buffer} 函数的主体有两个主要部分：一个 @code{or} 表达式和一个 @code{let} 表达式。 @code{or} 表达式的目的是确保参数 @code{buffer} 绑定到一个缓冲区，而不仅仅是缓冲区的名称。 @code{let} 表达式的主体包含将另一个缓冲区复制到当前缓冲区的代码。
 
 @need 1250
-In outline, the two expressions fit into the @code{insert-buffer}
-function like this:
+简而言之，这两个表达式适合于 @code{insert-buffer} 函数，如下所示：
 
 @smallexample
 @group
@@ -3809,27 +3774,19 @@ function like this:
 @end group
 @end smallexample
 
-To understand how the @code{or} expression ensures that the argument
-@code{buffer} is bound to a buffer and not to the name of a buffer, it
-is first necessary to understand the @code{or} function.
+要理解 @code{or} 表达式如何确保参数 @code{buffer} 绑定到一个缓冲区而不是缓冲区的名称，首先需要了解 @code{or} 函数。
 
-Before doing this, let me rewrite this part of the function using
-@code{if} so that you can see what is done in a manner that will be familiar.
+在这之前，让我使用 @code{if} 重新编写此函数的一部分，以便您可以以熟悉的方式看到所做的事情。
 
 @node if & or
-@subsection @code{insert-buffer} With an @code{if} Instead of an @code{or}
+@subsection 使用 @code{if} 替代 @code{or} 的 @code{insert-buffer}
 
-The job to be done is to make sure the value of @code{buffer} is a
-buffer itself and not the name of a buffer.  If the value is the name,
-then the buffer itself must be got.
+要完成的任务是确保 @code{buffer} 的值是一个缓冲区本身，而不是缓冲区的名称。如果值是名称，则必须获取缓冲区本身。
 
-You can imagine yourself at a conference where an usher is wandering
-around holding a list with your name on it and looking for you: the
-usher is bound to your name, not to you; but when the usher finds
-you and takes your arm, the usher becomes bound to you.
+你可以想象自己在一个会议上，一个引座员正拿着一张带有你的名字的名单四处寻找你：引座员与你的名字绑定，而不是与你绑定；但当引座员找到你并搀扶你的手臂时，引座员就与你绑定了。
 
 @need 800
-In Lisp, you might describe this situation like this:
+在 Lisp 中，你可以这样描述这种情况：
 
 @smallexample
 @group
@@ -3838,81 +3795,47 @@ In Lisp, you might describe this situation like this:
 @end group
 @end smallexample
 
-We want to do the same thing with a buffer---if we do not have the
-buffer itself, we want to get it.
+我们想要使用缓冲区做同样的事情——如果我们没有缓冲区本身，我们就希望获取它。
 
 @need 1200
-Using a predicate called @code{bufferp} that tells us whether we have a
-buffer (rather than its name), we can write the code like this:
+使用一个叫做 @code{bufferp} 的谓词，它告诉我们是否有一个缓冲区（而不是它的名称），我们可以这样编写代码：
 
 @smallexample
 @group
-(if (not (bufferp buffer))              ; @r{if-part}
-    (setq buffer (get-buffer buffer)))  ; @r{then-part}
+(if (not (bufferp buffer))              ; @r{if-部分}
+    (setq buffer (get-buffer buffer)))  ; @r{then-部分}
 @end group
 @end smallexample
 
 @noindent
-Here, the true-or-false-test of the @code{if} expression is
-@w{@code{(not (bufferp buffer))}}; and the then-part is the expression
-@w{@code{(setq buffer (get-buffer buffer))}}.
+这里，@code{if} 表达式的真假测试是 @w{@code{(not (bufferp buffer))}}；然后部分是表达式 @w{@code{(setq buffer (get-buffer buffer))}}。
 
-In the test, the function @code{bufferp} returns true if its argument is
-a buffer---but false if its argument is the name of the buffer.  (The
-last character of the function name @code{bufferp} is the character
-@samp{p}; as we saw earlier, such use of @samp{p} is a convention that
-indicates that the function is a predicate, which is a term that means
-that the function will determine whether some property is true or false.
-@xref{错误类型的参数, , 使用错误类型的对象作为参数}.)
+在测试中，函数 @code{bufferp} 如果其参数是一个缓冲区，则返回 true——但如果其参数是缓冲区的名称，则返回 false。 （函数名 @code{bufferp} 的最后一个字符是字符 @samp{p}；正如我们前面看到的，@samp{p} 的这种用法是一个约定，表示该函数是一个谓词，这是一个术语，表示该函数将确定某个属性是真还是假。@xref{错误类型的参数, , 使用错误类型的对象作为参数}.)
 
 @need 1200
-The function @code{not} precedes the expression @code{(bufferp buffer)},
-so the true-or-false-test looks like this:
+函数 @code{not} 位于表达式 @code{(bufferp buffer)} 之前，因此真假测试看起来像这样：
 
 @smallexample
 (not (bufferp buffer))
 @end smallexample
 
 @noindent
-@code{not} is a function that returns true if its argument is false
-and false if its argument is true.  So if @code{(bufferp buffer)}
-returns true, the @code{not} expression returns false and vice versa.
+@code{not} 是一个函数，如果其参数为 false，则返回 true；如果其参数为 true，则返回 false。因此，如果 @code{(bufferp buffer)} 返回 true，则 @code{not} 表达式返回 false，反之亦然。
 
-Using this test, the @code{if} expression works as follows: when the
-value of the variable @code{buffer} is actually a buffer rather than
-its name, the true-or-false-test returns false and the @code{if}
-expression does not evaluate the then-part.  This is fine, since we do
-not need to do anything to the variable @code{buffer} if it really is
-a buffer.
+使用这个测试，@code{if} 表达式的工作方式如下：当变量 @code{buffer} 的值实际上是一个缓冲区而不是其名称时，真假测试返回 false，@code{if} 表达式不会评估 then-部分。这是可以的，因为如果它确实是一个缓冲区，我们就不需要对变量 @code{buffer} 做任何操作。
 
-On the other hand, when the value of @code{buffer} is not a buffer
-itself, but the name of a buffer, the true-or-false-test returns true
-and the then-part of the expression is evaluated.  In this case, the
-then-part is @code{(setq buffer (get-buffer buffer))}.  This
-expression uses the @code{get-buffer} function to return an actual
-buffer itself, given its name.  The @code{setq} then sets the variable
-@code{buffer} to the value of the buffer itself, replacing its previous
-value (which was the name of the buffer).
+另一方面，当 @code{buffer} 的值不是一个缓冲区本身，而是缓冲区的名称时，真假测试返回 true，并且评估表达式的 then-部分。在这种情况下，then-部分是 @code{(setq buffer (get-buffer buffer))}。该表达式使用 @code{get-buffer} 函数通过名称返回实际的缓冲区本身。然后，@code{setq} 将变量 @code{buffer} 设置为缓冲区本身的值，替换其先前的值（该值是缓冲区的名称）。
 
 @node Insert or
-@subsection The @code{or} in the Body
+@subsection @code{insert-buffer} 中的 @code{or} 表达式
 
-The purpose of the @code{or} expression in the @code{insert-buffer}
-function is to ensure that the argument @code{buffer} is bound to a
-buffer and not just to the name of a buffer.  The previous section shows
-how the job could have been done using an @code{if} expression.
-However, the @code{insert-buffer} function actually uses @code{or}.
-To understand this, it is necessary to understand how @code{or} works.
+@code{insert-buffer} 函数中 @code{or} 表达式的目的是确保参数 @code{buffer} 绑定到一个缓冲区，而不仅仅是缓冲区的名称。前一节展示了如何使用 @code{if} 表达式完成此任务。然而，@code{insert-buffer} 函数实际上使用了 @code{or}。要理解这一点，有必要了解 @code{or} 的工作原理。
 
 @findex or
-An @code{or} function can have any number of arguments.  It evaluates
-each argument in turn and returns the value of the first of its
-arguments that is not @code{nil}.  Also, and this is a crucial feature
-of @code{or}, it does not evaluate any subsequent arguments after
-returning the first non-@code{nil} value.
+一个 @code{or} 函数可以有任意数量的参数。它依次评估每个参数，并返回其参数中第一个不是 @code{nil} 的值。此外，这是 @code{or} 的一个关键特性，即在返回第一个非 @code{nil} 值后，它不再评估任何后续参数。
 
 @need 800
-The @code{or} expression looks like this:
+@code{or} 表达式如下：
 
 @smallexample
 @group
@@ -3922,51 +3845,26 @@ The @code{or} expression looks like this:
 @end smallexample
 
 @noindent
-The first argument to @code{or} is the expression @code{(bufferp buffer)}.
-This expression returns true (a non-@code{nil} value) if the buffer is
-actually a buffer, and not just the name of a buffer.  In the @code{or}
-expression, if this is the case, the @code{or} expression returns this
-true value and does not evaluate the next expression---and this is fine
-with us, since we do not want to do anything to the value of
-@code{buffer} if it really is a buffer.
+@code{or} 的第一个参数是表达式 @code{(bufferp buffer)}。如果缓冲区实际上是一个缓冲区而不仅仅是缓冲区的名称，则此表达式返回 true（一个非 @code{nil} 值）。在 @code{or} 表达式中，如果是这种情况，@code{or} 表达式返回这个 true 值，并且不评估下一个表达式——这对我们来说是可以的，因为如果它确实是一个缓冲区，我们就不希望对 @code{buffer} 的值做任何操作。
 
-On the other hand, if the value of @code{(bufferp buffer)} is @code{nil},
-which it will be if the value of @code{buffer} is the name of a buffer,
-the Lisp interpreter evaluates the next element of the @code{or}
-expression.  This is the expression @code{(setq buffer (get-buffer
-buffer))}.  This expression returns a non-@code{nil} value, which
-is the value to which it sets the variable @code{buffer}---and this
-value is a buffer itself, not the name of a buffer.
+另一方面，如果 @code{(bufferp buffer)} 的值是 @code{nil}，那么如果 @code{buffer} 的值是缓冲区的名称，Lisp 解释器将评估 @code{or} 表达式的下一个元素。这是表达式 @code{(setq buffer (get-buffer buffer))}。此表达式返回一个非 @code{nil} 值，这是它设置变量 @code{buffer} 的值——并且这个值是缓冲区本身，而不是缓冲区的名称。
 
-The result of all this is that the symbol @code{buffer} is always
-bound to a buffer itself rather than to the name of a buffer.  All
-this is necessary because the @code{set-buffer} function in a
-following line only works with a buffer itself, not with the name to a
-buffer.
+所有这些的结果是，符号 @code{buffer} 总是绑定到缓冲区本身而不是缓冲区的名称。所有这些是必要的，因为后面的一行中的 @code{set-buffer} 函数只能与缓冲区本身一起使用，而不能与缓冲区的名称一起使用。
 
 @need 1250
-Incidentally, using @code{or}, the situation with the usher would be
-written like this:
+顺便说一下，使用 @code{or}，引座员的情况可以写成这样：
 
 @smallexample
 (or (holding-on-to-guest) (find-and-take-arm-of-guest))
 @end smallexample
 
 @node Insert let
-@subsection The @code{let} Expression in @code{insert-buffer}
+@subsection @code{insert-buffer} 中的 @code{let} 表达式
 
-After ensuring that the variable @code{buffer} refers to a buffer itself
-and not just to the name of a buffer, the @code{insert-buffer} function
-continues with a @code{let} expression.  This specifies three local
-variables, @code{start}, @code{end}, and @code{newmark} and binds them
-to the initial value @code{nil}.  These variables are used inside the
-remainder of the @code{let} and temporarily hide any other occurrence of
-variables of the same name in Emacs until the end of the @code{let}.
+在确保变量 @code{buffer} 引用的是缓冲区本身而不仅仅是缓冲区的名称后，@code{insert-buffer} 函数继续使用 @code{let} 表达式。这个表达式指定了三个局部变量 @code{start}、@code{end} 和 @code{newmark}，并将它们绑定到初始值 @code{nil}。这些变量在 @code{let} 的其余部分中被使用，并在 @code{let} 结束之前暂时隐藏了任何同名变量的其他出现。
 
 @need 1200
-The body of the @code{let} contains two @code{save-excursion}
-expressions.  First, we will look at the inner @code{save-excursion}
-expression in detail.  The expression looks like this:
+@code{let} 的主体包含两个 @code{save-excursion} 表达式。首先，我们将详细查看内部 @code{save-excursion} 表达式。表达式如下：
 
 @smallexample
 @group
@@ -3977,23 +3875,12 @@ expression in detail.  The expression looks like this:
 @end smallexample
 
 @noindent
-The expression @code{(set-buffer buffer)} changes Emacs's attention
-from the current buffer to the one from which the text will copied.
-In that buffer, the variables @code{start} and @code{end} are set to
-the beginning and end of the buffer, using the commands
-@code{point-min} and @code{point-max}.  Note that we have here an
-illustration of how @code{setq} is able to set two variables in the
-same expression.  The first argument of @code{setq} is set to the
-value of its second, and its third argument is set to the value of its
-fourth.
+表达式 @code{(set-buffer buffer)} 将 Emacs 的注意力从当前缓冲区切换到将要复制文本的缓冲区。在该缓冲区中，使用命令 @code{point-min} 和 @code{point-max} 将变量 @code{start} 和 @code{end} 设置为缓冲区的开始和结束。请注意，这里演示了 @code{setq} 如何能够在同一个表达式中设置两个变量。@code{setq} 的第一个参数设置为其第二个参数的值，其第三个参数设置为其第四个参数的值。
 
-After the body of the inner @code{save-excursion} is evaluated, the
-@code{save-excursion} restores the original buffer, but @code{start} and
-@code{end} remain set to the values of the beginning and end of the
-buffer from which the text will be copied.
+在内部 @code{save-excursion} 的主体被评估之后，@code{save-excursion} 会恢复原始缓冲区，但是 @code{start} 和 @code{end} 仍然设置为将要复制文本的缓冲区的开始和结束的值。
 
 @need 1250
-The outer @code{save-excursion} expression looks like this:
+外部 @code{save-excursion} 表达式如下：
 
 @smallexample
 @group
@@ -4006,30 +3893,14 @@ The outer @code{save-excursion} expression looks like this:
 @end smallexample
 
 @noindent
-The @code{insert-buffer-substring} function copies the text
-@emph{into} the current buffer @emph{from} the region indicated by
-@code{start} and @code{end} in @code{buffer}.  Since the whole of the
-second buffer lies between @code{start} and @code{end}, the whole of
-the second buffer is copied into the buffer you are editing.  Next,
-the value of point, which will be at the end of the inserted text, is
-recorded in the variable @code{newmark}.
+@code{insert-buffer-substring} 函数将文本从 @code{buffer} 中的 @code{start} 和 @code{end} 位置插入到当前缓冲区中。由于第二个缓冲区的整体位于 @code{start} 和 @code{end} 之间，第二个缓冲区的整体被复制到你正在编辑的缓冲区中。接下来，点的值，它将位于插入文本的末尾，被记录在变量 @code{newmark} 中。
 
-After the body of the outer @code{save-excursion} is evaluated, point
-is relocated to its original place.
+在外部 @code{save-excursion} 的主体被评估之后，点被重新定位到其原始位置。
 
-However, it is convenient to locate a mark at the end of the newly
-inserted text and locate point at its beginning.  The @code{newmark}
-variable records the end of the inserted text.  In the last line of
-the @code{let} expression, the @code{(push-mark newmark)} expression
-function sets a mark to this location.  (The previous location of the
-mark is still accessible; it is recorded on the mark ring and you can
-go back to it with @kbd{C-u C-@key{SPC}}.)  Meanwhile, point is
-located at the beginning of the inserted text, which is where it was
-before you called the insert function, the position of which was saved
-by the first @code{save-excursion}.
+然而，方便的是在新插入的文本的末尾放置一个标记，并将点定位在其开头。@code{newmark} 变量记录了插入文本的末尾。在 @code{let} 表达式的最后一行中，@code{(push-mark newmark)} 表达式函数将标记设置为此位置。（标记的先前位置仍然可访问；它记录在标记环上，你可以使用 @kbd{C-u C-@key{SPC}} 返回到它。）与此同时，点位于插入文本的开头，这是你调用插入函数之前的位置，该位置由第一个 @code{save-excursion} 保存。
 
 @need 1250
-The whole @code{let} expression looks like this:
+整个 @code{let} 表达式如下：
 
 @smallexample
 @group
@@ -4044,21 +3915,17 @@ The whole @code{let} expression looks like this:
 @end group
 @end smallexample
 
-Like the @code{append-to-buffer} function, the @code{insert-buffer}
-function uses @code{let}, @code{save-excursion}, and
-@code{set-buffer}.  In addition, the function illustrates one way to
-use @code{or}.  All these functions are building blocks that we will
-find and use again and again.
+与 @code{append-to-buffer} 函数一样，@code{insert-buffer} 函数使用了 @code{let}、@code{save-excursion} 和 @code{set-buffer}。此外，该函数演示了使用 @code{or} 的一种方式。所有这些函数都是我们将一遍又一遍找到并使用的构建块。
 
 @node New insert-buffer
-@subsection New Body for @code{insert-buffer}
-@findex insert-buffer@r{, new version body}
-@cindex new version body for @code{insert-buffer}
+@subsection @code{insert-buffer} 的新主体
+@findex insert-buffer@r{, 新版本主体}
+@cindex @code{insert-buffer} 的新版本主体
 
-The body in the GNU Emacs 22 version is more confusing than the original.
+GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 
 @need 1250
-It consists of two expressions,
+它包含两个表达式，
 
 @smallexample
 @group
@@ -4072,21 +3939,11 @@ It consists of two expressions,
 @end smallexample
 
 @noindent
-except, and this is what confuses novices, very important work is done
-inside the @code{push-mark} expression.
+除外，这是使初学者困惑的地方，@code{push-mark} 表达式内部执行了非常重要的工作。
 
-The @code{get-buffer} function returns a buffer with the name
-provided.  You will note that the function is @emph{not} called
-@code{get-buffer-create}; it does not create a buffer if one does not
-already exist.  The buffer returned by @code{get-buffer}, an existing
-buffer, is passed to @code{insert-buffer-substring}, which inserts the
-whole of the buffer (since you did not specify anything else).
+@code{get-buffer} 函数返回一个以提供的名称命名的缓冲区。请注意，该函数并@emph{不}被称为 @code{get-buffer-create}；如果不存在缓冲区，则不会创建一个。由 @code{get-buffer} 返回的缓冲区（已存在的缓冲区）被传递给 @code{insert-buffer-substring}，该函数插入整个缓冲区（因为您没有指定其他内容）。
 
-The location into which the buffer is inserted is recorded by
-@code{push-mark}.  Then the function returns @code{nil}, the value of
-its last command.  Put another way, the @code{insert-buffer} function
-exists only to produce a side effect, inserting another buffer, not to
-return any value.
+@code{push-mark} 记录插入缓冲区的位置。然后，该函数返回 @code{nil}，即其最后一条命令的值。换句话说，@code{insert-buffer} 函数仅用于产生副作用，即插入另一个缓冲区，而不是返回任何值。
 
 @node beginning-of-buffer
 @section Complete Definition of @code{beginning-of-buffer}
