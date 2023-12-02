@@ -4744,27 +4744,17 @@ Lisp error: (wrong-number-of-arguments length 0)
 @section @code{nthcdr}
 @findex nthcdr
 
-The @code{nthcdr} function is associated with the @code{cdr} function.
-What it does is take the @sc{cdr} of a list repeatedly.
+函数 @code{nthcdr} 与函数 @code{cdr} 相关联。它的作用是重复地取一个列表的 @sc{cdr}。
 
-If you take the @sc{cdr} of the list @code{(pine fir
-oak maple)}, you will be returned the list @code{(fir oak maple)}.  If you
-repeat this on what was returned, you will be returned the list
-@code{(oak maple)}.  (Of course, repeated @sc{cdr}ing on the original
-list will just give you the original @sc{cdr} since the function does
-not change the list.  You need to evaluate the @sc{cdr} of the
-@sc{cdr} and so on.)  If you continue this, eventually you will be
-returned an empty list, which in this case, instead of being shown as
-@code{()} is shown as @code{nil}.
+如果对列表 @code{(pine fir oak maple)} 进行 @sc{cdr} 操作，将得到列表 @code{(fir oak maple)}。如果在这个结果上再进行一次 @sc{cdr}，将得到列表 @code{(oak maple)}。当然，对原始列表反复 @sc{cdr} 只会得到原始的 @sc{cdr}，因为该函数不会改变列表。需要对 @sc{cdr} 进行评估，然后继续操作。最终，你将得到一个空列表，在这个例子中，它显示为 @code{nil} 而非 @code{()}。
 
 @need 1200
-For review, here is a series of repeated @sc{cdr}s, the text following
-the @samp{@result{}} shows what is returned.
+为了复习，以下是一系列重复的 @sc{cdr} 操作，@samp{@result{}} 后的文本显示了返回的结果。
 
 @smallexample
 @group
 (cdr '(pine fir oak maple))
-     @result{}(fir oak maple)
+     @result{} (fir oak maple)
 @end group
 
 @group
@@ -4774,7 +4764,7 @@ the @samp{@result{}} shows what is returned.
 
 @group
 (cdr '(oak maple))
-     @result{}(maple)
+     @result{} (maple)
 @end group
 
 @group
@@ -4794,8 +4784,7 @@ the @samp{@result{}} shows what is returned.
 @end smallexample
 
 @need 1200
-You can also do several @sc{cdr}s without printing the values in
-between, like this:
+你也可以进行多次 @sc{cdr} 操作而不打印中间值，像这样：
 
 @smallexample
 @group
@@ -4805,20 +4794,9 @@ between, like this:
 @end smallexample
 
 @noindent
-In this example, the Lisp interpreter evaluates the innermost list first.
-The innermost list is quoted, so it just passes the list as it is to the
-innermost @code{cdr}.  This @code{cdr} passes a list made up of the
-second and subsequent elements of the list to the outermost @code{cdr},
-which produces a list composed of the third and subsequent elements of
-the original list.  In this example, the @code{cdr} function is repeated
-and returns a list that consists of the original list without its
-first two elements.
+在这个例子中，Lisp 解释器首先评估最内层的列表。最内层的列表被引用，因此它只是将列表传递给最内层的 @code{cdr}。这个 @code{cdr} 将由列表的第二个及之后的元素组成的列表传递给最外层的 @code{cdr}，产生一个由原始列表的第三个及之后的元素组成的列表。在这个例子中，重复调用 @code{cdr} 函数并返回一个由原始列表的前两个元素之外的元素组成的列表。
 
-The @code{nthcdr} function does the same as repeating the call to
-@code{cdr}.  In the following example, the argument 2 is passed to the
-function @code{nthcdr}, along with the list, and the value returned is
-the list without its first two items, which is exactly the same
-as repeating @code{cdr} twice on the list:
+函数 @code{nthcdr} 的作用与重复调用 @code{cdr} 相同。在下面的例子中，参数 2 被传递给函数 @code{nthcdr}，连同列表一起传递，返回的值是没有前两个项的列表，这与在列表上连续调用两次 @code{cdr} 是一样的：
 
 @smallexample
 @group
@@ -4828,37 +4806,35 @@ as repeating @code{cdr} twice on the list:
 @end smallexample
 
 @need 1200
-Using the original four element list, we can see what happens when
-various numeric arguments are passed to @code{nthcdr}, including 0, 1,
-and 5:
+使用原始的四个元素列表，我们可以看到当传递不同的数值参数给 @code{nthcdr} 时会发生什么，包括 0、1 和 5：
 
 @smallexample
 @group
-;; @r{Leave the list as it was.}
+;; @r{保留列表不变。}
 (nthcdr 0 '(pine fir oak maple))
      @result{} (pine fir oak maple)
 @end group
 
 @group
-;; @r{Return a copy without the first element.}
+;; @r{返回去掉第一个元素的列表副本。}
 (nthcdr 1 '(pine fir oak maple))
      @result{} (fir oak maple)
 @end group
 
 @group
-;; @r{Return a copy of the list without three elements.}
+;; @r{返回去掉三个元素的列表副本。}
 (nthcdr 3 '(pine fir oak maple))
      @result{} (maple)
 @end group
 
 @group
-;; @r{Return a copy lacking all four elements.}
+;; @r{返回去掉所有四个元素的列表副本。}
 (nthcdr 4 '(pine fir oak maple))
      @result{} nil
 @end group
 
 @group
-;; @r{Return a copy lacking all elements.}
+;; @r{返回去掉所有元素的列表副本。}
 (nthcdr 5 '(pine fir oak maple))
      @result{} nil
 @end group

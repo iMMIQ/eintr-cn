@@ -62,25 +62,15 @@ Next: <a href="nth.html" accesskey="n" rel="next"><code class="code">nth</code><
 <h3 class="section" id="nthcdr-1">7.3 <code class="code">nthcdr</code></h3>
 <a class="index-entry-id" id="index-nthcdr"></a>
 
-<p>The <code class="code">nthcdr</code> function is associated with the <code class="code">cdr</code> function.
-What it does is take the <small class="sc">CDR</small> of a list repeatedly.
+<p>函数 <code class="code">nthcdr</code> 与函数 <code class="code">cdr</code> 相关联。它的作用是重复地取一个列表的 <small class="sc">CDR</small>。
 </p>
-<p>If you take the <small class="sc">CDR</small> of the list <code class="code">(pine fir
-oak maple)</code>, you will be returned the list <code class="code">(fir oak maple)</code>.  If you
-repeat this on what was returned, you will be returned the list
-<code class="code">(oak maple)</code>.  (Of course, repeated <small class="sc">CDR</small>ing on the original
-list will just give you the original <small class="sc">CDR</small> since the function does
-not change the list.  You need to evaluate the <small class="sc">CDR</small> of the
-<small class="sc">CDR</small> and so on.)  If you continue this, eventually you will be
-returned an empty list, which in this case, instead of being shown as
-<code class="code">()</code> is shown as <code class="code">nil</code>.
+<p>如果对列表 <code class="code">(pine fir oak maple)</code> 进行 <small class="sc">CDR</small> 操作，将得到列表 <code class="code">(fir oak maple)</code>。如果在这个结果上再进行一次 <small class="sc">CDR</small>，将得到列表 <code class="code">(oak maple)</code>。当然，对原始列表反复 <small class="sc">CDR</small> 只会得到原始的 <small class="sc">CDR</small>，因为该函数不会改变列表。需要对 <small class="sc">CDR</small> 进行评估，然后继续操作。最终，你将得到一个空列表，在这个例子中，它显示为 <code class="code">nil</code> 而非 <code class="code">()</code>。
 </p>
-<p>For review, here is a series of repeated <small class="sc">CDR</small>s, the text following
-the &lsquo;<samp class="samp">&rArr;</samp>&rsquo; shows what is returned.
+<p>为了复习，以下是一系列重复的 <small class="sc">CDR</small> 操作，&lsquo;<samp class="samp">&rArr;</samp>&rsquo; 后的文本显示了返回的结果。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(cdr '(pine fir oak maple))
-     &rArr;(fir oak maple)
+     &rArr; (fir oak maple)
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">(cdr '(fir oak maple))
@@ -88,7 +78,7 @@ the &lsquo;<samp class="samp">&rArr;</samp>&rsquo; shows what is returned.
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">(cdr '(oak maple))
-     &rArr;(maple)
+     &rArr; (maple)
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">(cdr '(maple))
@@ -103,60 +93,46 @@ the &lsquo;<samp class="samp">&rArr;</samp>&rsquo; shows what is returned.
      &rArr; nil
 </pre></div></div>
 
-<p>You can also do several <small class="sc">CDR</small>s without printing the values in
-between, like this:
+<p>你也可以进行多次 <small class="sc">CDR</small> 操作而不打印中间值，像这样：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(cdr (cdr '(pine fir oak maple)))
      &rArr; (oak maple)
 </pre></div></div>
 
-<p>In this example, the Lisp interpreter evaluates the innermost list first.
-The innermost list is quoted, so it just passes the list as it is to the
-innermost <code class="code">cdr</code>.  This <code class="code">cdr</code> passes a list made up of the
-second and subsequent elements of the list to the outermost <code class="code">cdr</code>,
-which produces a list composed of the third and subsequent elements of
-the original list.  In this example, the <code class="code">cdr</code> function is repeated
-and returns a list that consists of the original list without its
-first two elements.
+<p>在这个例子中，Lisp 解释器首先评估最内层的列表。最内层的列表被引用，因此它只是将列表传递给最内层的 <code class="code">cdr</code>。这个 <code class="code">cdr</code> 将由列表的第二个及之后的元素组成的列表传递给最外层的 <code class="code">cdr</code>，产生一个由原始列表的第三个及之后的元素组成的列表。在这个例子中，重复调用 <code class="code">cdr</code> 函数并返回一个由原始列表的前两个元素之外的元素组成的列表。
 </p>
-<p>The <code class="code">nthcdr</code> function does the same as repeating the call to
-<code class="code">cdr</code>.  In the following example, the argument 2 is passed to the
-function <code class="code">nthcdr</code>, along with the list, and the value returned is
-the list without its first two items, which is exactly the same
-as repeating <code class="code">cdr</code> twice on the list:
+<p>函数 <code class="code">nthcdr</code> 的作用与重复调用 <code class="code">cdr</code> 相同。在下面的例子中，参数 2 被传递给函数 <code class="code">nthcdr</code>，连同列表一起传递，返回的值是没有前两个项的列表，这与在列表上连续调用两次 <code class="code">cdr</code> 是一样的：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(nthcdr 2 '(pine fir oak maple))
      &rArr; (oak maple)
 </pre></div></div>
 
-<p>Using the original four element list, we can see what happens when
-various numeric arguments are passed to <code class="code">nthcdr</code>, including 0, 1,
-and 5:
+<p>使用原始的四个元素列表，我们可以看到当传递不同的数值参数给 <code class="code">nthcdr</code> 时会发生什么，包括 0、1 和 5：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;; <span class="r">Leave the list as it was.</span>
+<div class="group"><pre class="example-preformatted">;; <span class="r">保留列表不变。</span>
 (nthcdr 0 '(pine fir oak maple))
      &rArr; (pine fir oak maple)
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Return a copy without the first element.</span>
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">返回去掉第一个元素的列表副本。</span>
 (nthcdr 1 '(pine fir oak maple))
      &rArr; (fir oak maple)
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Return a copy of the list without three elements.</span>
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">返回去掉三个元素的列表副本。</span>
 (nthcdr 3 '(pine fir oak maple))
      &rArr; (maple)
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Return a copy lacking all four elements.</span>
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">返回去掉所有四个元素的列表副本。</span>
 (nthcdr 4 '(pine fir oak maple))
      &rArr; nil
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Return a copy lacking all elements.</span>
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">返回去掉所有元素的列表副本。</span>
 (nthcdr 5 '(pine fir oak maple))
      &rArr; nil
 </pre></div></div>
