@@ -4251,47 +4251,32 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 @noindent
 如果使用@kbd{C-u}指定命令，但没有数字，也就是说，原始前缀参数只是一个cons单元，该命令将光标放在第二行的开头。
 
-@node Second Buffer Related Review
-@section Review
+@node 第二缓冲区相关复习
+@section 复习
 
-Here is a brief summary of some of the topics covered in this chapter.
+这里是对本章涵盖的一些主题的简要总结。
 
 @table @code
 @item or
-Evaluate each argument in sequence, and return the value of the first
-argument that is not @code{nil}; if none return a value that is not
-@code{nil}, return @code{nil}.  In brief, return the first true value
-of the arguments; return a true value if one @emph{or} any of the
-others are true.
+依次评估每个参数，并返回第一个不是 @code{nil} 的参数的值；如果没有返回一个不是 @code{nil} 的值，则返回 @code{nil}。简言之，返回参数中的第一个真值；如果其中任何一个是真值，则返回真值。
 
 @item and
-Evaluate each argument in sequence, and if any are @code{nil}, return
-@code{nil}; if none are @code{nil}, return the value of the last
-argument.  In brief, return a true value only if all the arguments are
-true; return a true value if one @emph{and} each of the others is
-true.
+依次评估每个参数，并且如果任何一个是 @code{nil}，则返回 @code{nil}；如果没有一个是 @code{nil}，则返回最后一个参数的值。简言之，只有当所有参数都为真时才返回真值；如果其中任何一个为真，则返回真值。
 
 @item &optional
-A keyword used to indicate that an argument to a function definition
-is optional; this means that the function can be evaluated without the
-argument, if desired.
+用于指示函数定义中的参数是可选的关键字；这意味着如果需要，可以在不提供参数的情况下评估函数。
 
 @item prefix-numeric-value
-Convert the raw prefix argument produced by @code{(interactive
-"P")} to a numeric value.
+将由 @code{(interactive "P")} 生成的原始前缀参数转换为数值。
 
 @item forward-line
-Move point forward to the beginning of the next line, or if the argument
-is greater than one, forward that many lines.  If it can't move as far
-forward as it is supposed to, @code{forward-line} goes forward as far as
-it can and then returns a count of the number of additional lines it was
-supposed to move but couldn't.
+将点移动到下一行的开头，或者如果参数大于一，则向前移动那么多行。如果无法移动到应该移动到的位置，@code{forward-line} 将尽量向前移动，并返回无法移动的额外行数的计数。
 
 @item erase-buffer
-Delete the entire contents of the current buffer.
+删除当前缓冲区的所有内容。
 
 @item bufferp
-Return @code{t} if its argument is a buffer; otherwise return @code{nil}.
+如果其参数是缓冲区，则返回 @code{t}；否则返回 @code{nil}。
 @end table
 
 @node optional Exercise
@@ -6768,7 +6753,7 @@ arguments returns a value of @code{nil}, the value resulting from
 evaluating the last argument is returned.  (Since such a value is not
 @code{nil}, it is considered true in Emacs Lisp.)  In other words, an
 @code{and} expression returns a true value only if all its arguments
-are true.  (@xref{Second Buffer Related Review}.)
+are true.  (@xref{第二缓冲区相关复习}.)
 
 The expression determines whether the second argument to
 @code{menu-bar-update-yank-menu} is true or not.
