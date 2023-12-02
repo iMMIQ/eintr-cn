@@ -2001,7 +2001,7 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 对我而言，在这个位置，point的值是66043，这意味着两个表达式之间有319个字符（包括空格）。 （毫无疑问，由于我首次评估point后进行了编辑，你可能会看到不同的数字。）
 
 @cindex @samp{narrowing}定义
-函数@code{point-min}与@code{point}有些相似，但它返回当前缓冲区中point的最小允许值。这个值是1，除非启用了@dfn{narrowing}。（Narrowing是一种机制，通过它，您可以将自己或程序限制在仅对缓冲区的一部分进行操作。@xref{Narrowing & Widening, , 窄化和扩展}。）同样，函数@code{point-max}返回当前缓冲区中point的最大允许值。
+函数@code{point-min}与@code{point}有些相似，但它返回当前缓冲区中point的最小允许值。这个值是1，除非启用了@dfn{narrowing}。（Narrowing是一种机制，通过它，您可以将自己或程序限制在仅对缓冲区的一部分进行操作。@xref{缩窄与扩大, , 窄化和扩展}。）同样，函数@code{point-max}返回当前缓冲区中point的最大允许值。
 
 @node 评估练习
 @section 练习
@@ -3123,7 +3123,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 这些行中的第一行是表达式 @code{(push-mark)}。当Lisp解释器评估此表达式时，它在光标当前位置设置一个标记，无论光标在哪里。该标记的位置保存在标记环中。
 
-接下来的一行是 @code{(goto-char (point-min))}。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。@xref{Narrowing & Widening, , 缩小和扩大}.)
+接下来的一行是 @code{(goto-char (point-min))}。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。@xref{缩窄与扩大, , 缩小和扩大}.)
 
 @code{push-mark} 命令在光标被 @code{(goto-char (point-min))} 表达式移动到缓冲区开头之前的位置设置一个标记。因此，如果愿意，可以通过键入 @kbd{C-x C-x} 返回到最初的位置。
 
@@ -3218,7 +3218,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 我不知道为什么 @code{mark-whole-buffer} 中的表达式写为 @code{(push-mark (point))}，而在 @code{beginning-of-buffer} 中的表达式写为 @code{(push-mark)}。也许编写代码的人不知道 @code{push-mark} 的参数是可选的，如果 @code{push-mark} 没有传递参数，该函数默认会在点的位置自动设置标记。或者也许该表达式是为了与下一行的结构相呼应而写的。无论如何，这行使Emacs确定点的位置并在那里设置一个标记。
 
-在GNU Emacs的早期版本中，@code{mark-whole-buffer} 的下一行是 @code{(push-mark (point-max))}。此表达式在缓冲区中具有最大编号的地方设置一个标记。这将是缓冲区的末尾（或者，如果缓冲区被缩小，缓冲区的可访问部分的末尾。有关缩小的更多信息，请参见 @xref{Narrowing & Widening, , Narrowing and Widening}）。设置了此标记后，前一个标记（在点处设置的标记）不再设置，但Emacs记住了其位置，就像始终记住所有其他最近的标记一样。这意味着您可以通过键入 @kbd{C-u C-@key{SPC}} 两次返回到该位置，如果您愿意的话。
+在GNU Emacs的早期版本中，@code{mark-whole-buffer} 的下一行是 @code{(push-mark (point-max))}。此表达式在缓冲区中具有最大编号的地方设置一个标记。这将是缓冲区的末尾（或者，如果缓冲区被缩小，缓冲区的可访问部分的末尾。有关缩小的更多信息，请参见 @xref{缩窄与扩大, , Narrowing and Widening}）。设置了此标记后，前一个标记（在点处设置的标记）不再设置，但Emacs记住了其位置，就像始终记住所有其他最近的标记一样。这意味着您可以通过键入 @kbd{C-u C-@key{SPC}} 两次返回到该位置，如果您愿意的话。
 
 @need 1250
 在GNU Emacs 22中，@code{(point-max)} 稍微复杂一些。该行读取
@@ -4284,22 +4284,19 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 
 编写一个交互式函数，该函数带有一个可选参数，用于测试其参数（一个数字）是否大于或等于 @code{fill-column} 的值，否则，小于该值，并通过消息告诉您结果。然而，如果您没有向函数传递参数，则使用默认值56。
 
-@node Narrowing & Widening
-@chapter Narrowing and Widening
-@cindex Focusing attention (narrowing)
-@cindex Narrowing
-@cindex Widening
+@node 缩窄与扩大
+@chapter 缩窄与扩大
+@cindex 焦点集中（缩窄）
+@cindex 缩窄
+@cindex 扩大
 
-Narrowing is a feature of Emacs that makes it possible for you to focus
-on a specific part of a buffer, and work without accidentally changing
-other parts.  Narrowing is normally disabled since it can confuse
-novices.
+缩窄是Emacs的一个功能，使您能够专注于缓冲区的特定部分，并且在不小心更改其他部分的情况下工作。通常情况下，缩窄是禁用的，因为它可能使初学者感到困惑。
 
 @menu
-* Narrowing advantages::        The advantages of narrowing
-* save-restriction::            The @code{save-restriction} special form.
-* what-line::                   The number of the line that point is on.
-* narrow Exercise::
+* 缩窄的优势::              缩窄的优势
+* save-restriction::        @code{save-restriction} 特殊形式。
+* what-line::               光标所在行的行号。
+* 缩窄练习::
 @end menu
 
 @ifnottex

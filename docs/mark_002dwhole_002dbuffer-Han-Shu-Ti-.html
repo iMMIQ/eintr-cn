@@ -75,7 +75,7 @@ Previous: <a href="mark_002dwhole_002dbuffer-Gai-Shu-.html" accesskey="p" rel="p
 </p>
 <p>我不知道为什么 <code class="code">mark-whole-buffer</code> 中的表达式写为 <code class="code">(push-mark (point))</code>，而在 <code class="code">beginning-of-buffer</code> 中的表达式写为 <code class="code">(push-mark)</code>。也许编写代码的人不知道 <code class="code">push-mark</code> 的参数是可选的，如果 <code class="code">push-mark</code> 没有传递参数，该函数默认会在点的位置自动设置标记。或者也许该表达式是为了与下一行的结构相呼应而写的。无论如何，这行使Emacs确定点的位置并在那里设置一个标记。
 </p>
-<p>在GNU Emacs的早期版本中，<code class="code">mark-whole-buffer</code> 的下一行是 <code class="code">(push-mark (point-max))</code>。此表达式在缓冲区中具有最大编号的地方设置一个标记。这将是缓冲区的末尾（或者，如果缓冲区被缩小，缓冲区的可访问部分的末尾。有关缩小的更多信息，请参见 See <a class="xref" href="Narrowing-_0026-Widening.html">Narrowing and Widening</a>）。设置了此标记后，前一个标记（在点处设置的标记）不再设置，但Emacs记住了其位置，就像始终记住所有其他最近的标记一样。这意味着您可以通过键入 <kbd class="kbd">C-u C-<kbd class="key">SPC</kbd></kbd> 两次返回到该位置，如果您愿意的话。
+<p>在GNU Emacs的早期版本中，<code class="code">mark-whole-buffer</code> 的下一行是 <code class="code">(push-mark (point-max))</code>。此表达式在缓冲区中具有最大编号的地方设置一个标记。这将是缓冲区的末尾（或者，如果缓冲区被缩小，缓冲区的可访问部分的末尾。有关缩小的更多信息，请参见 See <a class="xref" href="Suo-Zhai-Yu-Kuo-Da-.html">Narrowing and Widening</a>）。设置了此标记后，前一个标记（在点处设置的标记）不再设置，但Emacs记住了其位置，就像始终记住所有其他最近的标记一样。这意味着您可以通过键入 <kbd class="kbd">C-u C-<kbd class="key">SPC</kbd></kbd> 两次返回到该位置，如果您愿意的话。
 </p>
 <p>在GNU Emacs 22中，<code class="code">(point-max)</code> 稍微复杂一些。该行读取
 </p>

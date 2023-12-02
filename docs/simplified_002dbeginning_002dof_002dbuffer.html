@@ -106,7 +106,7 @@ Next: <a href="mark_002dwhole_002dbuffer.html" accesskey="n" rel="next">定义 <
 
 <p>这些行中的第一行是表达式 <code class="code">(push-mark)</code>。当Lisp解释器评估此表达式时，它在光标当前位置设置一个标记，无论光标在哪里。该标记的位置保存在标记环中。
 </p>
-<p>接下来的一行是 <code class="code">(goto-char (point-min))</code>。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。See <a class="xref" href="Narrowing-_0026-Widening.html">缩小和扩大</a>.)
+<p>接下来的一行是 <code class="code">(goto-char (point-min))</code>。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。See <a class="xref" href="Suo-Zhai-Yu-Kuo-Da-.html">缩小和扩大</a>.)
 </p>
 <p><code class="code">push-mark</code> 命令在光标被 <code class="code">(goto-char (point-min))</code> 表达式移动到缓冲区开头之前的位置设置一个标记。因此，如果愿意，可以通过键入 <kbd class="kbd">C-x C-x</kbd> 返回到最初的位置。
 </p>
