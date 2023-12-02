@@ -6849,34 +6849,26 @@ bouquet                       flowers
 要开始理解 @code{yank} 和 @code{yank-pop} 如何工作，首先需要查看 @code{kill-ring-yank-pointer} 变量。
 
 @node kill-ring-yank-pointer
-@section The @code{kill-ring-yank-pointer} Variable
+@section 变量 @code{kill-ring-yank-pointer}
 
-@code{kill-ring-yank-pointer} is a variable, just as @code{kill-ring} is
-a variable.  It points to something by being bound to the value of what
-it points to, like any other Lisp variable.
+@code{kill-ring-yank-pointer} 是一个变量，就像 @code{kill-ring} 一样是一个变量。它通过绑定到它所指向的值来指向某个东西，就像任何其他 Lisp 变量一样。
 
 @need 1000
-Thus, if the value of the kill ring is:
+因此，如果 kill 环的值为：
 
 @smallexample
-("some text" "a different piece of text" "yet more text")
+("一些文本" "另一段文本" "更多文本")
 @end smallexample
 
 @need 1250
 @noindent
-and the @code{kill-ring-yank-pointer} points to the second clause, the
-value of @code{kill-ring-yank-pointer} is:
+而 @code{kill-ring-yank-pointer} 指向第二个元素，那么 @code{kill-ring-yank-pointer} 的值就是：
 
 @smallexample
-("a different piece of text" "yet more text")
+("另一段文本" "更多文本")
 @end smallexample
 
-As explained in the previous chapter (@pxref{列表实现}), the
-computer does not keep two different copies of the text being pointed to
-by both the @code{kill-ring} and the @code{kill-ring-yank-pointer}.  The
-words ``a different piece of text'' and ``yet more text'' are not
-duplicated.  Instead, the two Lisp variables point to the same pieces of
-text.  Here is a diagram:
+如前一章节所解释的（@pxref{列表实现}），计算机并不保留被 @code{kill-ring} 和 @code{kill-ring-yank-pointer} 指向的文本的两个不同副本。"另一段文本"和"更多文本"这两个词不会被复制。相反，这两个 Lisp 变量指向相同的文本片段。以下是一个图示：
 
 @c cons-cell-diagram #5
 @ifnottex
@@ -6889,11 +6881,11 @@ kill-ring     kill-ring-yank-pointer
           |___|___|----> |___|___|--> |___|___|--> nil
             |              |            |
             |              |            |
-            |              |             --> "yet more text"
+            |              |             --> "更多文本"
             |              |
-            |               --> "a different piece of text"
+            |               --> "另一段文本"
             |
-             --> "some text"
+             --> "一些文本"
 @end group
 @end smallexample
 @sp 1
@@ -6916,58 +6908,42 @@ kill-ring     kill-ring-yank-pointer
           |___|___|----> |___|___|--> |___|___|--> nil
             |              |            |
             |              |            |
-            |              |             --> "yet more text"
+            |              |             --> "更多文本"
             |              |
-            |               --> "a different piece of text"
+            |               --> "另一段文本"
             |
-             --> "some text"
+             --> "一些文本"
 @end group
 @end smallexample
 @sp 1
 @end iftex
 @end ifclear
 
-Both the variable @code{kill-ring} and the variable
-@code{kill-ring-yank-pointer} are pointers.  But the kill ring itself is
-usually described as if it were actually what it is composed of.  The
-@code{kill-ring} is spoken of as if it were the list rather than that it
-points to the list.  Conversely, the @code{kill-ring-yank-pointer} is
-spoken of as pointing to a list.
-
-These two ways of talking about the same thing sound confusing at first but
-make sense on reflection.  The kill ring is generally thought of as the
-complete structure of data that holds the information of what has recently
-been cut out of the Emacs buffers.  The @code{kill-ring-yank-pointer}
-on the other hand, serves to indicate---that is, to point to---that part
-of the kill ring of which the first element (the @sc{car}) will be
-inserted.
+变量 @code{kill-ring} 和变量 @code{kill-ring-yank-pointer} 都是指针。但是 kill 环本身通常被描述成它实际由什么组成。@code{kill-ring} 通常被视为保存最近从 Emacs 缓冲区中剪切的信息的完整数据结构。另一方面，@code{kill-ring-yank-pointer} 用于指示——即指向——kill 环的哪一部分将被插入。
 
 @ignore
-In GNU Emacs 22, the @code{kill-new} function calls
+在 GNU Emacs 22 中，@code{kill-new} 函数调用：
 
 @code{(setq kill-ring-yank-pointer kill-ring)}
 
 (defun rotate-yank-pointer (arg)
-  "Rotate the yanking point in the kill ring.
-With argument, rotate that many kills forward (or backward, if negative)."
+  "旋转 kill 环的插入点。
+带有参数时，向前旋转（如果是负数则向后旋转）那么多个插入点。"
   (interactive "p")
   (current-kill arg))
 
 (defun current-kill (n &optional do-not-move)
-  "Rotate the yanking point by N places, and then return that kill.
-If N is zero, `interprogram-paste-function' is set, and calling it
-returns a string, then that string is added to the front of the
-kill ring and returned as the latest kill.
-If optional arg DO-NOT-MOVE is non-nil, then don't actually move the
-yanking point; just return the Nth kill forward."
+  "将插入点旋转 N 个位置，然后返回该插入点的值。
+如果 N 为零，`interprogram-paste-function' 被设置，并且调用它返回一个字符串，
+则将该字符串添加到 kill 环的前面，并作为最新的插入点返回。
+如果可选参数 DO-NOT-MOVE 非空，则不要实际移动插入点；只返回向前第 N 个插入点。"
   (let ((interprogram-paste (and (= n 0)
                                  interprogram-paste-function
                                  (funcall interprogram-paste-function))))
     (if interprogram-paste
         (progn
-          ;; Disable the interprogram cut function when we add the new
-          ;; text to the kill ring, so Emacs doesn't try to own the
-          ;; selection, with identical text.
+          ;; 在我们将新文本添加到 kill 环时禁用 interprogram cut 函数，
+          ;; 以便 Emacs 不尝试拥有相同的文本选择。
           (let ((interprogram-cut-function nil))
             (kill-new interprogram-paste))
           interprogram-paste)
