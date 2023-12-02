@@ -57,15 +57,12 @@ div.example {margin-left: 3.2em}
 Next: <a href="insert_002dbuffer.html" accesskey="n" rel="next">The Definition of <code class="code">insert-buffer</code></a>, Up: <a href="Fu-Za-YiXie-.html" accesskey="u" rel="up">几个更复杂的函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-Definition-of-copy_002dto_002dbuffer">5.1 The Definition of <code class="code">copy-to-buffer</code></h3>
+<h3 class="section" id="Han-Shu-copy_002dto_002dbuffer-De-Ding-Yi-">5.1 函数 <code class="code">copy-to-buffer</code> 的定义</h3>
 <a class="index-entry-id" id="index-copy_002dto_002dbuffer"></a>
 
-<p>After understanding how <code class="code">append-to-buffer</code> works, it is easy to
-understand <code class="code">copy-to-buffer</code>.  This function copies text into a
-buffer, but instead of adding to the second buffer, it replaces all the
-previous text in the second buffer.
+<p>在理解了 <code class="code">append-to-buffer</code> 的工作原理后，很容易理解 <code class="code">copy-to-buffer</code>。这个函数将文本复制到一个缓冲区，但与其向第二个缓冲区添加文本不同，它替换了第二个缓冲区中的所有先前文本。
 </p>
-<p>The body of <code class="code">copy-to-buffer</code> looks like this,
+<p><code class="code">copy-to-buffer</code> 的主体如下，
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">&hellip;
@@ -78,45 +75,27 @@ previous text in the second buffer.
       (insert-buffer-substring oldbuf start end)))))
 </pre></div></div>
 
-<p>The <code class="code">copy-to-buffer</code> function has a simpler <code class="code">interactive</code>
-expression than <code class="code">append-to-buffer</code>.
+<p>与 <code class="code">append-to-buffer</code> 不同，<code class="code">copy-to-buffer</code> 函数的交互表达式更简单。
 </p>
-<p>The definition then says
+<p>接下来的定义如下
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(with-current-buffer (get-buffer-create buffer) &hellip;
 </pre></div>
 
-<p>First, look at the earliest inner expression; that is evaluated first.
-That expression starts with <code class="code">get-buffer-create buffer</code>.  The
-function tells the computer to use the buffer with the name specified
-as the one to which you are copying, or if such a buffer does not
-exist, to create it.  Then, the <code class="code">with-current-buffer</code> function
-evaluates its body with that buffer temporarily current.
+<p>首先，看最内部的表达式；它首先被评估。该表达式以 <code class="code">get-buffer-create buffer</code> 开头。该函数告诉计算机使用指定为要复制到的缓冲区的名称，或者如果不存在这样的缓冲区，则创建它。然后，<code class="code">with-current-buffer</code> 函数使用该缓冲区临时作为当前缓冲区来评估其主体。
 </p>
-<p>(This demonstrates another way to shift the computer&rsquo;s attention but
-not the user&rsquo;s.  The <code class="code">append-to-buffer</code> function showed how to do
-the same with <code class="code">save-excursion</code> and <code class="code">set-buffer</code>.
-<code class="code">with-current-buffer</code> is a newer, and arguably easier,
-mechanism.)
+<p>（这展示了另一种改变计算机注意力但不改变用户注意力的方法。<code class="code">append-to-buffer</code> 函数展示了如何使用 <code class="code">save-excursion</code> 和 <code class="code">set-buffer</code> 来实现相同的效果。<code class="code">with-current-buffer</code> 是一种较新、可能更简单的机制。）
 </p>
-<p>The <code class="code">barf-if-buffer-read-only</code> function sends you an error
-message saying the buffer is read-only if you cannot modify it.
+<p><code class="code">barf-if-buffer-read-only</code> 函数在您无法修改缓冲区时发送错误消息，指示该缓冲区为只读。
 </p>
-<p>The next line has the <code class="code">erase-buffer</code> function as its sole
-contents.  That function erases the buffer.
+<p>接下来的一行只包含 <code class="code">erase-buffer</code> 函数。该函数擦除缓冲区。
 </p>
-<p>Finally, the last two lines contain the <code class="code">save-excursion</code>
-expression with <code class="code">insert-buffer-substring</code> as its body.
-The  <code class="code">insert-buffer-substring</code> expression copies the text from
-the buffer you are in (and you have not seen the computer shift its
-attention, so you don&rsquo;t know that that buffer is now called
-<code class="code">oldbuf</code>).
+<p>最后，最后两行包含 <code class="code">save-excursion</code> 表达式，其主体是 <code class="code">insert-buffer-substring</code>。<code class="code">insert-buffer-substring</code> 表达式将文本从当前缓冲区复制到另一个缓冲区（您并没有看到计算机改变其注意力，因此您不知道该缓冲区现在被称为 <code class="code">oldbuf</code>）。
 </p>
-<p>Incidentally, this is what is meant by &ldquo;replacement&rdquo;.  To replace text,
-Emacs erases the previous text and then inserts new text.
+<p>顺便说一下，这就是“替换”的含义。为了替换文本，Emacs 先擦除先前的文本，然后插入新文本。
 </p>
-<p>In outline, the body of <code class="code">copy-to-buffer</code> looks like this:
+<p>大致上，<code class="code">copy-to-buffer</code> 的主体如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(let (<var class="var">bind-</var><code class="code">oldbuf</code><var class="var">-to-value-of-</var><code class="code">current-buffer</code>)
@@ -127,11 +106,6 @@ Emacs erases the previous text and then inserts new text.
         <var class="var">insert-substring-from-</var><code class="code">oldbuf</code><var class="var">-into-buffer</var>)))
 </pre></div></div>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="insert_002dbuffer.html">The Definition of <code class="code">insert-buffer</code></a>, Up: <a href="Fu-Za-YiXie-.html">几个更复杂的函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

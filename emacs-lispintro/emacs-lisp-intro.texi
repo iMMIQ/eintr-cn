@@ -3604,16 +3604,13 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 @end menu
 
 @node copy-to-buffer
-@section The Definition of @code{copy-to-buffer}
+@section 函数 @code{copy-to-buffer} 的定义
 @findex copy-to-buffer
 
-After understanding how @code{append-to-buffer} works, it is easy to
-understand @code{copy-to-buffer}.  This function copies text into a
-buffer, but instead of adding to the second buffer, it replaces all the
-previous text in the second buffer.
+在理解了 @code{append-to-buffer} 的工作原理后，很容易理解 @code{copy-to-buffer}。这个函数将文本复制到一个缓冲区，但与其向第二个缓冲区添加文本不同，它替换了第二个缓冲区中的所有先前文本。
 
 @need 800
-The body of @code{copy-to-buffer} looks like this,
+@code{copy-to-buffer} 的主体如下，
 
 @smallexample
 @group
@@ -3628,47 +3625,29 @@ The body of @code{copy-to-buffer} looks like this,
 @end group
 @end smallexample
 
-The @code{copy-to-buffer} function has a simpler @code{interactive}
-expression than @code{append-to-buffer}.
+与 @code{append-to-buffer} 不同，@code{copy-to-buffer} 函数的交互表达式更简单。
 
 @need 800
-The definition then says
+接下来的定义如下
 
 @smallexample
 (with-current-buffer (get-buffer-create buffer) @dots{}
 @end smallexample
 
-First, look at the earliest inner expression; that is evaluated first.
-That expression starts with @code{get-buffer-create buffer}.  The
-function tells the computer to use the buffer with the name specified
-as the one to which you are copying, or if such a buffer does not
-exist, to create it.  Then, the @code{with-current-buffer} function
-evaluates its body with that buffer temporarily current.
+首先，看最内部的表达式；它首先被评估。该表达式以 @code{get-buffer-create buffer} 开头。该函数告诉计算机使用指定为要复制到的缓冲区的名称，或者如果不存在这样的缓冲区，则创建它。然后，@code{with-current-buffer} 函数使用该缓冲区临时作为当前缓冲区来评估其主体。
 
-(This demonstrates another way to shift the computer's attention but
-not the user's.  The @code{append-to-buffer} function showed how to do
-the same with @code{save-excursion} and @code{set-buffer}.
-@code{with-current-buffer} is a newer, and arguably easier,
-mechanism.)
+（这展示了另一种改变计算机注意力但不改变用户注意力的方法。@code{append-to-buffer} 函数展示了如何使用 @code{save-excursion} 和 @code{set-buffer} 来实现相同的效果。@code{with-current-buffer} 是一种较新、可能更简单的机制。）
 
-The @code{barf-if-buffer-read-only} function sends you an error
-message saying the buffer is read-only if you cannot modify it.
+@code{barf-if-buffer-read-only} 函数在您无法修改缓冲区时发送错误消息，指示该缓冲区为只读。
 
-The next line has the @code{erase-buffer} function as its sole
-contents.  That function erases the buffer.
+接下来的一行只包含 @code{erase-buffer} 函数。该函数擦除缓冲区。
 
-Finally, the last two lines contain the @code{save-excursion}
-expression with @code{insert-buffer-substring} as its body.
-The  @code{insert-buffer-substring} expression copies the text from
-the buffer you are in (and you have not seen the computer shift its
-attention, so you don't know that that buffer is now called
-@code{oldbuf}).
+最后，最后两行包含 @code{save-excursion} 表达式，其主体是 @code{insert-buffer-substring}。@code{insert-buffer-substring} 表达式将文本从当前缓冲区复制到另一个缓冲区（您并没有看到计算机改变其注意力，因此您不知道该缓冲区现在被称为 @code{oldbuf}）。
 
-Incidentally, this is what is meant by ``replacement''.  To replace text,
-Emacs erases the previous text and then inserts new text.
+顺便说一下，这就是“替换”的含义。为了替换文本，Emacs 先擦除先前的文本，然后插入新文本。
 
 @need 1250
-In outline, the body of @code{copy-to-buffer} looks like this:
+大致上，@code{copy-to-buffer} 的主体如下：
 
 @smallexample
 @group
