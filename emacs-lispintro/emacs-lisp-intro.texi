@@ -4300,39 +4300,17 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 @end menu
 
 @ifnottex
-@node Narrowing advantages
-@unnumberedsec The Advantages of Narrowing
+@node 缩小的优势
+@unnumberedsec 缩小的优势
 @end ifnottex
 
-With narrowing, the rest of a buffer is made invisible, as if it weren't
-there.  This is an advantage if, for example, you want to replace a word
-in one part of a buffer but not in another: you narrow to the part you want
-and the replacement is carried out only in that section, not in the rest
-of the buffer.  Searches will only work within a narrowed region, not
-outside of one, so if you are fixing a part of a document, you can keep
-yourself from accidentally finding parts you do not need to fix by
-narrowing just to the region you want.
-(The key binding for @code{narrow-to-region} is @kbd{C-x n n}.)
+通过缩小，缓冲区的其余部分被隐藏起来，就好像它们不存在一样。这是一个优势，例如，如果你想替换缓冲区的某个部分中的一个单词，而不影响其他部分，你可以缩小到你想要的部分，替换只在该部分进行，而不影响缓冲区的其余部分。搜索也仅在缩小的区域内工作，而不在外部，因此如果你正在修复文档的一部分，你可以通过缩小到你想要的区域来防止意外地找到不需要修复的部分。
+（@code{narrow-to-region}的键绑定是@kbd{C-x n n}。）
 
-However, narrowing does make the rest of the buffer invisible, which
-can scare people who inadvertently invoke narrowing and think they
-have deleted a part of their file.  Moreover, the @code{undo} command
-(which is usually bound to @kbd{C-x u}) does not turn off narrowing
-(nor should it), so people can become quite desperate if they do not
-know that they can return the rest of a buffer to visibility with the
-@code{widen} command.
-(The key binding for @code{widen} is @kbd{C-x n w}.)
+然而，缩小会使缓冲区的其余部分变得不可见，这可能会吓到那些不小心调用缩小并认为已删除文件的一部分的人。此外，@code{undo}命令（通常绑定到@kbd{C-x u}）不会取消缩小（也不应该取消），所以如果人们不知道可以使用@code{widen}命令将缓冲区的其余部分恢复为可见状态，他们可能会变得相当绝望。
+（@code{widen}的键绑定是@kbd{C-x n w}。）
 
-Narrowing is just as useful to the Lisp interpreter as to a human.
-Often, an Emacs Lisp function is designed to work on just part of a
-buffer; or conversely, an Emacs Lisp function needs to work on all of a
-buffer that has been narrowed.  The @code{what-line} function, for
-example, removes the narrowing from a buffer, if it has any narrowing
-and when it has finished its job, restores the narrowing to what it was.
-On the other hand, the @code{count-lines} function
-uses narrowing to restrict itself to just that portion
-of the buffer in which it is interested and then restores the previous
-situation.
+缩小对Lisp解释器和人类一样有用。通常，Emacs Lisp函数被设计为仅在缓冲区的一部分上工作；或者相反，Emacs Lisp函数需要在已经缩小的整个缓冲区上工作。例如，@code{what-line}函数会在缓冲区存在缩小的情况下移除缩小，并在完成工作后将缩小恢复到原来的状态。另一方面，@code{count-lines}函数使用缩小来限制自己只在其感兴趣的缓冲区部分中运行，然后恢复到先前的情况。
 
 @node save-restriction
 @section The @code{save-restriction} Special Form

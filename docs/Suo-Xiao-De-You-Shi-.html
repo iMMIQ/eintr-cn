@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>缩小的优势 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="缩小的优势 (Programming in Emacs Lisp)">
+<meta name="keywords" content="缩小的优势 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Suo-Zhai-Yu-Kuo-Da-.html" rel="up" title="缩窄与扩大">
+<link href="save_002drestriction.html" rel="next" title="save-restriction">
+<style type="text/css">
+<!--
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsec-level-extent" id="g_t_7f29_5c0f_7684_4f18_52bf">
+<div class="nav-panel">
+<p>
+Next: <a href="save_002drestriction.html" accesskey="n" rel="next">The <code class="code">save-restriction</code> Special Form</a>, Up: <a href="Suo-Zhai-Yu-Kuo-Da-.html" accesskey="u" rel="up">缩窄与扩大</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="unnumberedsec" id="Suo-Xiao-De-You-Shi-">缩小的优势</h3>
+
+<p>通过缩小，缓冲区的其余部分被隐藏起来，就好像它们不存在一样。这是一个优势，例如，如果你想替换缓冲区的某个部分中的一个单词，而不影响其他部分，你可以缩小到你想要的部分，替换只在该部分进行，而不影响缓冲区的其余部分。搜索也仅在缩小的区域内工作，而不在外部，因此如果你正在修复文档的一部分，你可以通过缩小到你想要的区域来防止意外地找到不需要修复的部分。
+（<code class="code">narrow-to-region</code>的键绑定是<kbd class="kbd">C-x n n</kbd>。）
+</p>
+<p>然而，缩小会使缓冲区的其余部分变得不可见，这可能会吓到那些不小心调用缩小并认为已删除文件的一部分的人。此外，<code class="code">undo</code>命令（通常绑定到<kbd class="kbd">C-x u</kbd>）不会取消缩小（也不应该取消），所以如果人们不知道可以使用<code class="code">widen</code>命令将缓冲区的其余部分恢复为可见状态，他们可能会变得相当绝望。
+（<code class="code">widen</code>的键绑定是<kbd class="kbd">C-x n w</kbd>。）
+</p>
+<p>缩小对Lisp解释器和人类一样有用。通常，Emacs Lisp函数被设计为仅在缓冲区的一部分上工作；或者相反，Emacs Lisp函数需要在已经缩小的整个缓冲区上工作。例如，<code class="code">what-line</code>函数会在缓冲区存在缩小的情况下移除缩小，并在完成工作后将缩小恢复到原来的状态。另一方面，<code class="code">count-lines</code>函数使用缩小来限制自己只在其感兴趣的缓冲区部分中运行，然后恢复到先前的情况。
+</p>
+</div>
+
+
+
+</body>
+</html>
