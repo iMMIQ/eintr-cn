@@ -4495,27 +4495,14 @@ GNU Emacs 22
 在@code{count-lines}完成其工作并且消息已经在回显区打印后，@code{save-excursion}将点还原到其原始位置；@code{save-restriction}恢复原始的缩小（如果有的话）。
 
 @node narrow Exercise
-@section Exercise with Narrowing
+@section 使用 Narrowing 进行练习
 
-Write a function that will display the first 60 characters of the
-current buffer, even if you have narrowed the buffer to its latter
-half so that the first line is inaccessible.  Restore point, mark, and
-narrowing.  For this exercise, you need to use a whole potpourri of
-functions, including @code{save-restriction}, @code{widen},
-@code{goto-char}, @code{point-min}, @code{message}, and
-@code{buffer-substring}.
+编写一个函数，即使将缓冲区缩小到其后半部分以至于第一行不可访问，也能显示当前缓冲区的前60个字符。需要使用一系列函数，包括 @code{save-restriction}、@code{widen}、@code{goto-char}、@code{point-min}、@code{message} 和 @code{buffer-substring}。
 
-@cindex Properties, mention of @code{buffer-substring-no-properties}
-(@code{buffer-substring} is a previously unmentioned function you will
-have to investigate yourself; or perhaps you will have to use
-@code{buffer-substring-no-properties} or
-@code{filter-buffer-substring} @dots{}, yet other functions.  Text
-properties are a feature otherwise not discussed here.  @xref{Text
-Properties, , Text Properties, elisp, The GNU Emacs Lisp Reference
-Manual}.)
+@cindex 属性提及 @code{buffer-substring-no-properties}
+（@code{buffer-substring} 是一个先前未提及的函数，您需要自行查阅；或者您可能需要使用 @code{buffer-substring-no-properties} 或 @code{filter-buffer-substring} @dots{}，还有其他函数。文本属性是本文未讨论的另一个功能。@xref{文本属性, , 文本属性, elisp, The GNU Emacs Lisp Reference Manual}。）
 
-Additionally, do you really need @code{goto-char} or @code{point-min}?
-Or can you write the function without them?
+另外，是否真的需要 @code{goto-char} 或 @code{point-min}？或者您能否在不使用它们的情况下编写该函数？
 
 @node car cdr & cons
 @chapter @code{car}, @code{cdr}, @code{cons}: Fundamental Functions

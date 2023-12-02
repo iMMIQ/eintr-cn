@@ -56,26 +56,14 @@ ISBN 1-882114-43-4
 Previous: <a href="Xing-Hao-.html" accesskey="p" rel="prev"><code class="code">what-line</code></a>, Up: <a href="Suo-Zhai-Yu-Kuo-Da-.html" accesskey="u" rel="up">缩窄与扩大</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Exercise-with-Narrowing">6.3 Exercise with Narrowing</h3>
+<h3 class="section" id="Shi-Yong-Narrowing-Jin-Xing-Lian-Xi-">6.3 使用 Narrowing 进行练习</h3>
 
-<p>Write a function that will display the first 60 characters of the
-current buffer, even if you have narrowed the buffer to its latter
-half so that the first line is inaccessible.  Restore point, mark, and
-narrowing.  For this exercise, you need to use a whole potpourri of
-functions, including <code class="code">save-restriction</code>, <code class="code">widen</code>,
-<code class="code">goto-char</code>, <code class="code">point-min</code>, <code class="code">message</code>, and
-<code class="code">buffer-substring</code>.
+<p>编写一个函数，即使将缓冲区缩小到其后半部分以至于第一行不可访问，也能显示当前缓冲区的前60个字符。需要使用一系列函数，包括 <code class="code">save-restriction</code>、<code class="code">widen</code>、<code class="code">goto-char</code>、<code class="code">point-min</code>、<code class="code">message</code> 和 <code class="code">buffer-substring</code>。
 </p>
-<a class="index-entry-id" id="index-Properties_002c-mention-of-buffer_002dsubstring_002dno_002dproperties"></a>
-<p>(<code class="code">buffer-substring</code> is a previously unmentioned function you will
-have to investigate yourself; or perhaps you will have to use
-<code class="code">buffer-substring-no-properties</code> or
-<code class="code">filter-buffer-substring</code> &hellip;, yet other functions.  Text
-properties are a feature otherwise not discussed here.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-Properties.html#Text-Properties">Text Properties</a> in <cite class="cite">The GNU Emacs Lisp Reference
-Manual</cite>.)
+<a class="index-entry-id" id="index-Shu-Xing-Ti-Ji-buffer_002dsubstring_002dno_002dproperties"></a>
+<p>（<code class="code">buffer-substring</code> 是一个先前未提及的函数，您需要自行查阅；或者您可能需要使用 <code class="code">buffer-substring-no-properties</code> 或 <code class="code">filter-buffer-substring</code> &hellip;，还有其他函数。文本属性是本文未讨论的另一个功能。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/_6587_672c_5c5e_6027.html#g_t_6587_672c_5c5e_6027">文本属性</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
 </p>
-<p>Additionally, do you really need <code class="code">goto-char</code> or <code class="code">point-min</code>?
-Or can you write the function without them?
+<p>另外，是否真的需要 <code class="code">goto-char</code> 或 <code class="code">point-min</code>？或者您能否在不使用它们的情况下编写该函数？
 </p>
 </div>
 
