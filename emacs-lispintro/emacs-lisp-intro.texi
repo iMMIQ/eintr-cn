@@ -4505,26 +4505,22 @@ GNU Emacs 22
 另外，是否真的需要 @code{goto-char} 或 @code{point-min}？或者您能否在不使用它们的情况下编写该函数？
 
 @node car cdr & cons
-@chapter @code{car}, @code{cdr}, @code{cons}: Fundamental Functions
+@chapter @code{car}、@code{cdr} 和 @code{cons}：基本函数
 @findex car@r{, introduced}
 @findex cdr@r{, introduced}
 
-In Lisp, @code{car}, @code{cdr}, and @code{cons} are fundamental
-functions.  The @code{cons} function is used to construct lists, and
-the @code{car} and @code{cdr} functions are used to take them apart.
+在 Lisp 中，@code{car}、@code{cdr} 和 @code{cons} 是基本函数。@code{cons} 函数用于构建列表，而 @code{car} 和 @code{cdr} 函数用于分解列表。
 
-In the walk through of the @code{copy-region-as-kill} function, we
-will see @code{cons} as well as two variants on @code{cdr},
-namely, @code{setcdr} and @code{nthcdr}.  (@xref{copy-region-as-kill}.)
+在 @code{copy-region-as-kill} 函数的演练中，我们将看到 @code{cons} 以及两个变体的 @code{cdr}，即 @code{setcdr} 和 @code{nthcdr}。(@xref{copy-region-as-kill}.)
 
 @menu
-* Strange Names::               A historical aside: why the strange names?
-* car & cdr::                   Functions for extracting part of a list.
-* cons::                        Constructing a list.
-* nthcdr::                      Calling @code{cdr} repeatedly.
+* Strange Names::               一个历史插曲：为什么是这些奇怪的名字？
+* car & cdr::                   用于提取列表的部分的函数。
+* cons::                        构建列表。
+* nthcdr::                      反复调用 @code{cdr}。
 * nth::
-* setcar::                      Changing the first element of a list.
-* setcdr::                      Changing the rest of a list.
+* setcar::                      更改列表的第一个元素。
+* setcdr::                      更改列表的其余部分。
 * cons Exercise::
 @end menu
 
@@ -4533,17 +4529,9 @@ namely, @code{setcdr} and @code{nthcdr}.  (@xref{copy-region-as-kill}.)
 @unnumberedsec Strange Names
 @end ifnottex
 
-The name of the @code{cons} function is not unreasonable: it is an
-abbreviation of the word ``construct''.  The origins of the names for
-@code{car} and @code{cdr}, on the other hand, are esoteric: @code{car}
-is an acronym from the phrase ``Contents of the Address part of the
-Register''; and @code{cdr} (pronounced ``could-er'') is an acronym
-from the phrase ``Contents of the Decrement part of the Register''.
-These phrases refer to the IBM 704 computer on which the original Lisp
-was developed.
+@code{cons} 函数的名称并不无道理：它是“construct”一词的缩写。另一方面，@code{car} 和 @code{cdr} 的命名起源有些深奥：@code{car} 是短语“Contents of the Address part of the Register”的首字母缩写；而 @code{cdr}（发音为“could-er”）是短语“Contents of the Decrement part of the Register”的首字母缩写。这些短语指的是原始 Lisp 开发时使用的 IBM 704 计算机。
 
-The IBM 704 is a footnote in history, but these names are now beloved
-traditions of Lisp.
+IBM 704 在历史上留下了痕迹，但这些名字现在已经成为 Lisp 珍爱的传统。
 
 @node car & cdr
 @section @code{car} and @code{cdr}
