@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>kill-new 函数 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="kill-new 函数 (Programming in Emacs Lisp)">
+<meta name="keywords" content="kill-new 函数 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="copy_002dregion_002das_002dkill-body.html" rel="up" title="copy-region-as-kill body">
+<link href="kill_002dappend-Han-Shu-.html" rel="prev" title="kill-append 函数">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span.w-nolinebreak-text {white-space: nowrap}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="kill_002dnew-_51fd_6570">
+<div class="nav-panel">
+<p>
+Previous: <a href="kill_002dappend-Han-Shu-.html" accesskey="p" rel="prev"><code class="code">kill-append</code> 函数</a>, Up: <a href="copy_002dregion_002das_002dkill-body.html" accesskey="u" rel="up"><code class="code">copy-region-as-kill</code>的主体</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="kill_002dnew-Han-Shu-"><code class="code">kill-new</code> 函数</h4>
+<a class="index-entry-id" id="index-kill_002dnew"></a>
+
+<p>在版本22中，<code class="code">kill-new</code> 函数的定义如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun kill-new (string &amp;optional replace yank-handler)
+  &quot;将STRING设为kill环中的最新kill。
+将`kill-ring-yank-pointer'设为指向它。
+
+如果`interprogram-cut-function'非nil，则将其应用于STRING。
+可选的第二个参数REPLACE非nil表示STRING将替换
+kill环的最前面，而不是被添加到列表中。
+&hellip;&quot;
+</pre></div><div class="group"><pre class="example-preformatted">  (if (&gt; (length string) 0)
+      (if yank-handler
+          (put-text-property 0 (length string)
+                             'yank-handler yank-handler string))
+    (if yank-handler
+        (signal 'args-out-of-range
+                (list string &quot;yank-handler specified for empty string&quot;))))
+</pre></div><div class="group"><pre class="example-preformatted">  (if (fboundp 'menu-bar-update-yank-menu)
+      (menu-bar-update-yank-menu string (and replace (car kill-ring))))
+</pre></div><div class="group"><pre class="example-preformatted">  (if (and replace kill-ring)
+      (setcar kill-ring string)
+    (push string kill-ring)
+    (if (&gt; (length kill-ring) kill-ring-max)
+        (setcdr (nthcdr (1- kill-ring-max) kill-ring) nil)))
+</pre></div><div class="group"><pre class="example-preformatted">  (setq kill-ring-yank-pointer kill-ring)
+  (if interprogram-cut-function
+      (funcall interprogram-cut-function string (not replace))))
+</pre></div></div>
+
+<p>（注意，此函数不是交互式的。）
+</p>
+<p>和往常一样，我们可以将这个函数分为几个部分来看。
+</p>
+<p>函数定义有一个可选的<code class="code">yank-handler</code>参数，
+当调用时告诉函数如何处理添加到文本中的属性，比如粗体或斜体。我们将跳过这一点。
+</p>
+<p>文档的第一行有意义：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">将STRING设为kill环中的最新kill。
+</pre></div>
+
+<p>让我们暂时跳过文档的其余部分。
+</p>
+<p>同样，让我们跳过初始的<code class="code">if</code>表达式以及涉及<code class="code">menu-bar-update-yank-menu</code>的那些行代码。我们将在下面解释它们。
+</p>
+<p>关键的代码在这里：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">  (if (and replace kill-ring)
+      ;; <span class="r">然后</span>
+      (setcar kill-ring string)
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">否则</span>
+    (push string kill-ring)
+</pre></div><div class="group"><pre class="example-preformatted">    (if (&gt; (length kill-ring) kill-ring-max)
+        ;; <span class="r">避免kill环过长</span>
+        (setcdr (nthcdr (1- kill-ring-max) kill-ring) nil)))
+</pre></div><div class="group"><pre class="example-preformatted">  (setq kill-ring-yank-pointer kill-ring)
+  (if interprogram-cut-function
+      (funcall interprogram-cut-function string (not replace))))
+</pre></div></div>
+
+<p>条件测试是 <code class="code">(and&nbsp;replace&nbsp;<span class="w-nolinebreak-text">kill-ring)</span></code><!-- /@w -->。
+当满足两个条件时，这将为真：kill环中有内容，并且<code class="code">replace</code>变量为真。
+</p>
+<p>当<code class="code">kill-append</code>函数将<code class="code">replace</code>设置为真时，且kill环中至少有一项时，将执行<code class="code">setcar</code>表达式：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setcar kill-ring string)
+</pre></div>
+
+<p><code class="code">setcar</code>函数实际上将<code class="code">kill-ring</code>列表的第一个元素更改为<code class="code">string</code>的值。它替换第一个元素。
+</p>
+<p>另一方面，如果kill环为空，或者replace为假，则执行条件的else部分：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(push string kill-ring)
+</pre></div>
+
+<p><code class="code">push</code>将其第一个参数推入第二个参数。它类似于较旧的
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq kill-ring (cons string kill-ring))
+</pre></div>
+
+<p>或者较新的
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(add-to-list kill-ring string)
+</pre></div>
+
+<p>当为假时，表达式首先通过将要被杀死的字符串作为新元素添加到旧kill环中构造了新版本的kill环（这就是<code class="code">push</code>的作用）。然后它执行第二个<code class="code">if</code>子句。这第二个<code class="code">if</code>子句防止kill环变得过长。
+</p>
+<p>让我们按顺序查看这两个表达式。
+</p>
+<p><code class="code">push</code> else-part的行将新的kill环的值设置为将要被杀死的字符串添加到旧kill环中得到的值。
+</p>
+<p>通过以下示例，我们可以看到它是如何工作的。
+</p>
+<p>首先，
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq example-list '(&quot;here is a clause&quot; &quot;another clause&quot;))
+</pre></div>
+
+<p>通过使用<kbd class="kbd">C-x C-e</kbd>评估此表达式后，您可以评估<code class="code">example-list</code>并查看其返回值：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">example-list
+     &rArr; (&quot;here is a clause&quot; &quot;another clause&quot;)
+</pre></div></div>
+
+<p>现在，我们可以通过评估以下表达式将一个新元素添加到此列表中：
+<a class="index-entry-id" id="index-push_002c-example"></a>
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(push &quot;a third clause&quot; example-list)
+</pre></div>
+
+<p>当我们评估<code class="code">example-list</code>时，我们发现其值为：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">example-list
+     &rArr; (&quot;a third clause&quot; &quot;here is a clause&quot; &quot;another clause&quot;)
+</pre></div></div>
+
+<p>因此，通过<code class="code">push</code>添加了第三个子句。
+</p>
+<p>现在是<code class="code">if</code>子句的第二部分。此表达式防止kill环变得过长。它看起来是这样的：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(if (&gt; (length kill-ring) kill-ring-max)
+    (setcdr (nthcdr (1- kill-ring-max) kill-ring) nil))
+</pre></div></div>
+
+<p>代码检查kill环的长度是否大于允许的最大长度。这是<code class="code">kill-ring-max</code>（默认为120）的值。如果kill环的长度太长，则此代码将最后一个元素设置为<code class="code">nil</code>。它通过使用两个函数<code class="code">nthcdr</code>和<code class="code">setcdr</code>来实现。
+</p>
+<p>我们之前看过<code class="code">setcdr</code>（see <a class="pxref" href="setcdr.html"><code class="code">setcdr</code></a>）。它设置列表的<small class="sc">CDR</small>，就像<code class="code">setcar</code>设置列表的<small class="sc">CAR</small>一样。但是，在这种情况下，<code class="code">setcdr</code>不会设置整个kill环的<small class="sc">CDR</small>；<code class="code">nthcdr</code>函数用于使其设置kill环的倒数第二个元素的<small class="sc">CDR</small>——这意味着由于倒数第二个元素的<small class="sc">CDR</small>是kill环的最后一个元素，它将设置kill环的最后一个元素。
+</p>
+<a class="index-entry-id" id="index-nthcdr_002c-example"></a>
+<p><code class="code">nthcdr</code>函数通过重复获取列表的<small class="sc">CDR</small>来工作——它获取<small class="sc">CDR</small>的<small class="sc">CDR</small>的<small class="sc">CDR</small>等等。它这样做<var class="var">N</var>次并返回结果。(See <a class="xref" href="nthcdr.html"><code class="code">nthcdr</code></a>.)
+</p>
+<a class="index-entry-id" id="index-setcdr_002c-example"></a>
+<p>因此，如果我们有一个应该是三个元素长的四个元素列表，我们可以将倒数第二个元素的<small class="sc">CDR</small>设置为<code class="code">nil</code>，从而缩短列表。（如果将最后一个元素设置为除<code class="code">nil</code>之外的其他值，您可以这样做，那么您将不会缩短列表。See <a class="xref" href="setcdr.html"><code class="code">setcdr</code></a>.）
+</p>
+<p>通过依次评估以下三个表达式，您可以看到缩短的效果。首先将<code class="code">trees</code>的值设置为<code class="code">(maple oak pine birch)</code>，然后将其第二个<small class="sc">CDR</small>的<small class="sc">CDR</small>设置为<code class="code">nil</code>，然后找到<code class="code">trees</code>的值：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq trees (list 'maple 'oak 'pine 'birch))
+     &rArr; (maple oak pine birch)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(setcdr (nthcdr 2 trees) nil)
+     &rArr; nil
+
+trees
+     &rArr; (maple oak pine)
+</pre></div></div>
+
+<p>(<code class="code">setcdr</code>表达式返回的值为<code class="code">nil</code>，因为它将<small class="sc">CDR</small>设置为<code class="code">nil</code>。)
+</p>
+<p>重申一下，在<code class="code">kill-new</code>中，<code class="code">nthcdr</code>函数取kill环的最大允许大小减一的次数，<code class="code">setcdr</code>函数将其<small class="sc">CDR</small>设置为那个元素（这意味着由于倒数第二个元素的<small class="sc">CDR</small>是kill环的最后一个元素，它将设置kill环的最后一个元素）。这样可以防止kill环变得过长。
+</p>
+<p><code class="code">kill-new</code>函数中倒数第二个表达式是
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq kill-ring-yank-pointer kill-ring)
+</pre></div>
+
+<p><code class="code">kill-ring-yank-pointer</code>是一个全局变量，被设置为<code class="code">kill-ring</code>。
+</p>
+<p>尽管<code class="code">kill-ring-yank-pointer</code>被称为&lsquo;<samp class="samp">指针</samp>&rsquo;，但它和kill环一样是一个变量。但是，为了帮助人们理解该变量的用法，选择了这个名称。
+</p>
+<p>现在，回到函数体中的早期表达式：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">  (if (fboundp 'menu-bar-update-yank-menu)
+       (menu-bar-update-yank-menu string (and replace (car kill-ring))))
+</pre></div></div>
+
+<p>它以一个<code class="code">if</code>表达式开始
+</p>
+<p>在这种情况下，该表达式首先测试<code class="code">menu-bar-update-yank-menu</code>是否存在作为函数，并且如果存在，则调用它。<code class="code">fboundp</code>函数返回true，如果它测试的符号具有非空的函数定义。如果符号的函数定义为空，我们将收到错误消息，就像我们故意创建错误一样（see <a class="pxref" href="Making-Errors.html">生成错误消息</a>）。
+</p>
+<p>然后部分包含一个表达式，其第一个元素是<code class="code">and</code>函数。
+</p>
+<a class="index-entry-id" id="index-and"></a>
+<p>特殊形式 <code class="code">and</code> 对其每个参数进行求值，直到其中一个参数返回值为 <code class="code">nil</code> 为止，此时 <code class="code">and</code> 表达式返回 <code class="code">nil</code>；然而，如果没有任何参数返回 <code class="code">nil</code>，则返回最后一个参数的求值结果。 （由于这样的值不是 <code class="code">nil</code>，在Emacs Lisp中被视为真值。）换句话说，只有当所有参数都为真时，<code class="code">and</code> 表达式才返回真值。(See <a class="xref" href="DiEr-Huan-Chong-Qu-Xiang-Guan-Fu-Xi-.html">复习</a>.)
+</p>
+<p>该表达式确定了 <code class="code">menu-bar-update-yank-menu</code> 的第二个参数是否为真。
+</p>
+<p><code class="code">menu-bar-update-yank-menu</code> 是使得可以在菜单条的编辑项目的“选择和粘贴”菜单中使用的函数之一；使用鼠标，您可以查看已保存的各种文本片段，并选择一个片段进行粘贴。
+</p>
+<p><code class="code">kill-new</code> 函数中的最后一个表达式将新复制的字符串添加到用于在窗口系统中运行的不同程序之间复制和粘贴的任何设施中。例如，在X Windowing系统中，<code class="code">x-select-text</code> 函数将字符串存储在由X操作的内存中。您可以在另一个程序中粘贴该字符串，例如Xterm。
+</p>
+<p>该表达式如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">  (if interprogram-cut-function
+      (funcall interprogram-cut-function string (not replace))))
+</pre></div></div>
+
+<p>如果存在 <code class="code">interprogram-cut-function</code>，则Emacs执行 <code class="code">funcall</code>，它又调用其第一个参数作为函数，并将其余参数传递给它。 （顺便说一下，就我所看到的，此 <code class="code">if</code> 表达式可以被类似于函数第一部分的 <code class="code">and</code> 表达式替代。）
+</p>
+<p>我们不打算进一步讨论窗口系统和其他程序，只是注意到这是一种使GNU Emacs能够轻松而有效地与其他程序协同工作的机制。
+</p>
+<p>这段代码用于将文本放入kill环中，可以是与现有元素连接，也可以是作为新元素。这引导我们进入了从缓冲区中删除文本的代码——yank命令。但在讨论yank命令之前，最好先了解计算机中列表是如何实现的。这将解释“指针”一词的使用。但在此之前，我们将离题讨论C。
+</p>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="kill_002dappend-Han-Shu-.html"><code class="code">kill-append</code> 函数</a>, Up: <a href="copy_002dregion_002das_002dkill-body.html"><code class="code">copy-region-as-kill</code>的主体</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

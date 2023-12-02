@@ -54,20 +54,18 @@ div.example {margin-left: 3.2em}
 <div class="unnumberedsubsec-level-extent" id="Complete-copy_002dregion_002das_002dkill">
 <div class="nav-panel">
 <p>
-Next: <a href="copy_002dregion_002das_002dkill-body.html" accesskey="n" rel="next">The Body of <code class="code">copy-region-as-kill</code></a>, Up: <a href="copy_002dregion_002das_002dkill.html" accesskey="u" rel="up"><code class="code">copy-region-as-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="copy_002dregion_002das_002dkill-body.html" accesskey="n" rel="next"><code class="code">copy-region-as-kill</code>的主体</a>, Up: <a href="copy_002dregion_002das_002dkill.html" accesskey="u" rel="up"><code class="code">copy-region-as-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-complete-copy_002dregion_002das_002dkill-function-definition">The complete <code class="code">copy-region-as-kill</code> function definition</h4>
+<h4 class="unnumberedsubsec" id="copy_002dregion_002das_002dkillHan-Shu-De-Wan-Zheng-Ding-Yi-"><code class="code">copy-region-as-kill</code>函数的完整定义</h4>
 
-<p>Here is the complete text of the version 22 <code class="code">copy-region-as-kill</code>
-function:
+<p>以下是版本22的<code class="code">copy-region-as-kill</code>函数的完整文本：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun copy-region-as-kill (beg end)
-  &quot;Save the region as if killed, but don't kill it.
-In Transient Mark mode, deactivate the mark.
-If `interprogram-cut-function' is non-nil, also save the text for a window
-system cut and paste.&quot;
+  &quot;将区域保存为已杀死，但不要杀死它。
+在瞬时标记模式下，取消激活标记。
+如果`interprogram-cut-function'非空，还为窗口系统剪切和粘贴保存文本。&quot;
   (interactive &quot;r&quot;)
 </pre></div><div class="group"><pre class="example-preformatted">  (if (eq last-command 'kill-region)
       (kill-append (filter-buffer-substring beg end) (&lt; end beg))
@@ -77,7 +75,7 @@ system cut and paste.&quot;
   nil)
 </pre></div></div>
 
-<p>As usual, this function can be divided into its component parts:
+<p>像往常一样，此函数可以分为其组成部分：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun copy-region-as-kill (<var class="var">argument-list</var>)
@@ -86,48 +84,18 @@ system cut and paste.&quot;
   <var class="var">body</var>&hellip;)
 </pre></div></div>
 
-<p>The arguments are <code class="code">beg</code> and <code class="code">end</code> and the function is
-interactive with <code class="code">&quot;r&quot;</code>, so the two arguments must refer to the
-beginning and end of the region.  If you have been reading through this
-document from the beginning, understanding these parts of a function is
-almost becoming routine.
+<p>参数是<code class="code">beg</code>和<code class="code">end</code>，函数以<code class="code">&quot;r&quot;</code>交互，因此两个参数必须引用区域的起始和结束。如果您从文档开头阅读到这里，理解函数的这些部分几乎变得很常规。
 </p>
-<p>The documentation is somewhat confusing unless you remember that the
-word &ldquo;kill&rdquo; has a meaning different from usual.  The Transient Mark
-and <code class="code">interprogram-cut-function</code> comments explain certain
-side-effects.
+<p>文档有点令人困惑，除非您记得“kill”一词的意义与通常不同。瞬时标记和<code class="code">interprogram-cut-function</code>的注释解释了某些副作用。
 </p>
-<p>After you once set a mark, a buffer always contains a region.  If you
-wish, you can use Transient Mark mode to highlight the region
-temporarily.  (No one wants to highlight the region all the time, so
-Transient Mark mode highlights it only at appropriate times.  Many
-people turn off Transient Mark mode, so the region is never
-highlighted.)
+<p>一旦设置了标记，缓冲区始终包含一个区域。如果愿意，可以使用瞬时标记模式临时突出显示区域。 （没有人希望一直突出显示区域，因此瞬时标记模式仅在适当的时候突出显示。许多人关闭瞬时标记模式，因此区域永远不会被突出显示。）
 </p>
-<p>Also, a windowing system allows you to copy, cut, and paste among
-different programs.  In the X windowing system, for example, the
-<code class="code">interprogram-cut-function</code> function is <code class="code">x-select-text</code>,
-which works with the windowing system&rsquo;s equivalent of the Emacs kill
-ring.
+<p>此外，窗口系统允许在不同程序之间复制、剪切和粘贴。例如，在X窗口系统中，<code class="code">interprogram-cut-function</code>函数是<code class="code">x-select-text</code>，它与窗口系统的Emacs kill环的等价物一起工作。
 </p>
-<p>The body of the <code class="code">copy-region-as-kill</code> function starts with an
-<code class="code">if</code> clause.  What this clause does is distinguish between two
-different situations: whether or not this command is executed
-immediately after a previous <code class="code">kill-region</code> command.  In the first
-case, the new region is appended to the previously copied text.
-Otherwise, it is inserted into the beginning of the kill ring as a
-separate piece of text from the previous piece.
+<p><code class="code">copy-region-as-kill</code>函数的主体以一个<code class="code">if</code>子句开始。该子句的作用是区分两种不同的情况：是否立即在先前的<code class="code">kill-region</code>命令之后执行此命令。在第一种情况下，新区域将附加到先前复制的文本。否则，它将作为一个独立的文本片段插入到kill环的开头。
 </p>
-<p>The last two lines of the function prevent the region from lighting up
-if Transient Mark mode is turned on.
+<p>函数的最后两行阻止区域在瞬时标记模式打开时突出显示。
 </p>
-<p>The body of <code class="code">copy-region-as-kill</code> merits discussion in detail.
-</p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="copy_002dregion_002das_002dkill-body.html">The Body of <code class="code">copy-region-as-kill</code></a>, Up: <a href="copy_002dregion_002das_002dkill.html"><code class="code">copy-region-as-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

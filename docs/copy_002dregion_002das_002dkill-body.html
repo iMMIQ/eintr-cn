@@ -53,30 +53,20 @@ ISBN 1-882114-43-4
 <div class="subsection-level-extent" id="copy_002dregion_002das_002dkill-body">
 <div class="nav-panel">
 <p>
-Previous: <a href="Complete-copy_002dregion_002das_002dkill.html" accesskey="p" rel="prev">The complete <code class="code">copy-region-as-kill</code> function definition</a>, Up: <a href="copy_002dregion_002das_002dkill.html" accesskey="u" rel="up"><code class="code">copy-region-as-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Complete-copy_002dregion_002das_002dkill.html" accesskey="p" rel="prev"><code class="code">copy-region-as-kill</code>函数的完整定义</a>, Up: <a href="copy_002dregion_002das_002dkill.html" accesskey="u" rel="up"><code class="code">copy-region-as-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-Body-of-copy_002dregion_002das_002dkill">8.3.1 The Body of <code class="code">copy-region-as-kill</code></h4>
+<h4 class="subsection" id="copy_002dregion_002das_002dkillDe-Zhu-Ti-">8.3.1 <code class="code">copy-region-as-kill</code>的主体</h4>
 
-<p>The <code class="code">copy-region-as-kill</code> function works in much the same way as
-the <code class="code">kill-region</code> function.  Both are written so that two or more
-kills in a row combine their text into a single entry.  If you yank
-back the text from the kill ring, you get it all in one piece.
-Moreover, kills that kill forward from the current position of the
-cursor are added to the end of the previously copied text and commands
-that copy text backwards add it to the beginning of the previously
-copied text.  This way, the words in the text stay in the proper
-order.
+<p><code class="code">copy-region-as-kill</code>函数的工作方式与<code class="code">kill-region</code>函数类似。两者都被编写为使连续两次或更多次的杀死将它们的文本组合成单个条目。如果从kill环粘贴文本，则会得到一个整体。此外，从当前光标位置向前杀死的杀死将添加到先前复制的文本的末尾，而将文本向后复制的命令将其添加到先前复制的文本的开头。这样，文本中的单词保持正确的顺序。
 </p>
-<p>Like <code class="code">kill-region</code>, the <code class="code">copy-region-as-kill</code> function makes
-use of the <code class="code">last-command</code> variable that keeps track of the
-previous Emacs command.
+<p>与<code class="code">kill-region</code>一样，<code class="code">copy-region-as-kill</code>函数利用了<code class="code">last-command</code>变量，该变量跟踪先前的Emacs命令。
 </p>
 
 <ul class="mini-toc">
-<li><a href="last_002dcommand-_0026-this_002dcommand.html" accesskey="1"><code class="code">last-command</code> and <code class="code">this-command</code></a></li>
-<li><a href="kill_002dappend-function.html" accesskey="2">The <code class="code">kill-append</code> function</a></li>
-<li><a href="kill_002dnew-function.html" accesskey="3">The <code class="code">kill-new</code> function</a></li>
+<li><a href="last_002dcommand-_0026-this_002dcommand.html" accesskey="1"><code class="code">last-command</code>和<code class="code">this-command</code></a></li>
+<li><a href="kill_002dappend-Han-Shu-.html" accesskey="2"><code class="code">kill-append</code> 函数</a></li>
+<li><a href="kill_002dnew-Han-Shu-.html" accesskey="3"><code class="code">kill-new</code> 函数</a></li>
 </ul>
 </div>
 

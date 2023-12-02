@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>kill-append 函数 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="kill-append 函数 (Programming in Emacs Lisp)">
+<meta name="keywords" content="kill-append 函数 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="copy_002dregion_002das_002dkill-body.html" rel="up" title="copy-region-as-kill body">
+<link href="kill_002dnew-Han-Shu-.html" rel="next" title="kill-new 函数">
+<link href="last_002dcommand-_0026-this_002dcommand.html" rel="prev" title="last-command &amp; this-command">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="kill_002dappend-_51fd_6570">
+<div class="nav-panel">
+<p>
+Next: <a href="kill_002dnew-Han-Shu-.html" accesskey="n" rel="next"><code class="code">kill-new</code> 函数</a>, Previous: <a href="last_002dcommand-_0026-this_002dcommand.html" accesskey="p" rel="prev"><code class="code">last-command</code>和<code class="code">this-command</code></a>, Up: <a href="copy_002dregion_002das_002dkill-body.html" accesskey="u" rel="up"><code class="code">copy-region-as-kill</code>的主体</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="kill_002dappend-Han-Shu-"><code class="code">kill-append</code> 函数</h4>
+<a class="index-entry-id" id="index-kill_002dappend"></a>
+
+<p><code class="code">kill-append</code> 函数的定义如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun kill-append (string before-p &amp;optional yank-handler)
+  &quot;将STRING追加到kill环中最新的kill的末尾。
+如果BEFORE-P非空，则将STRING插入到kill的开头。
+&hellip; &quot;
+  (let* ((cur (car kill-ring)))
+    (kill-new (if before-p (concat string cur) (concat cur string))
+              (or (= (length cur) 0)
+                  (equal yank-handler
+                         (get-text-property 0 'yank-handler cur)))
+              yank-handler)))
+</pre></div></div>
+
+
+<p><code class="code">kill-append</code> 函数非常直观。它使用了稍后我们将详细讨论的 <code class="code">kill-new</code> 函数。
+</p>
+<p>（此外，该函数提供了一个可选的参数叫做 <code class="code">yank-handler</code>；当调用时，此参数告诉函数如何处理添加到文本的属性，比如粗体或斜体。）
+</p>
+<p>它使用 <code class="code">let*</code> 函数将kill环的第一个元素的值设置为 <code class="code">cur</code>。（我不知道为什么函数不使用 <code class="code">let</code> 替代；表达式中只设置了一个值。也许这是一个不会产生问题的bug？）
+</p>
+<p>考虑到条件语句是 <code class="code">kill-new</code> 的两个参数之一。它使用 <code class="code">concat</code> 将新文本连接到kill环的 <small class="sc">CAR</small>（第一个元素）。无论是插入还是追加文本，都取决于 <code class="code">if</code> 表达式的结果：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(if before-p                            ; <span class="r">if-part</span>
+    (concat string cur)                 ; <span class="r">then-part</span>
+  (concat cur string))                  ; <span class="r">else-part</span>
+</pre></div></div>
+
+<p>如果要删除的区域位于上一次命令中删除的区域之前，那么它应该插入到之前保存的文本之前；反之，如果删除的文本跟随刚刚删除的文本，它应该追加到先前的文本之后。 <code class="code">if</code> 表达式依赖于谓词 <code class="code">before-p</code> 来决定新保存的文本是应该放在先前保存的文本之前还是之后。
+</p>
+<p>符号 <code class="code">before-p</code> 是 <code class="code">kill-append</code> 函数的参数之一的名称。当评估 <code class="code">kill-append</code> 函数时，它被绑定到通过评估实际参数返回的值。在这种情况下，这是表达式 <code class="code">(&lt; end beg)</code>。此表达式不直接确定此命令中删除的文本是在上次命令中删除的文本之前还是之后；它的作用是确定变量 <code class="code">end</code> 的值是否小于变量 <code class="code">beg</code> 的值。如果是，这意味着用户很可能朝着缓冲区的开头前进。此外，谓词表达式 <code class="code">(&lt; end beg)</code> 的评估结果将为真，文本将在先前文本之前插入。另一方面，如果变量 <code class="code">end</code> 的值大于变量 <code class="code">beg</code> 的值，则文本将在先前文本之后追加。
+</p>
+<p>当新保存的文本将被插入时，字符串与新文本将被连接到旧文本之前：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(concat string cur)
+</pre></div>
+
+<p>但如果文本将被追加，它将在旧文本之后连接：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(concat cur string))
+</pre></div>
+
+<p>为了理解这是如何工作的，我们首先需要复习一下 <code class="code">concat</code> 函数。<code class="code">concat</code> 函数将两个文本字符串链接或合并在一起。结果是一个字符串。例如：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(concat &quot;abc&quot; &quot;def&quot;)
+     &rArr; &quot;abcdef&quot;
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(concat &quot;new &quot;
+        (car '(&quot;first element&quot; &quot;second element&quot;)))
+     &rArr; &quot;new first element&quot;
+
+(concat (car
+        '(&quot;first element&quot; &quot;second element&quot;)) &quot; modified&quot;)
+     &rArr; &quot;first element modified&quot;
+</pre></div></div>
+
+<p>现在我们可以理解 <code class="code">kill-append</code>：它修改了kill环的内容。kill环是一个列表，其中每个元素都是保存的文本。<code class="code">kill-append</code> 函数使用 <code class="code">kill-new</code> 函数，后者又使用 <code class="code">setcar</code> 函数。
+</p>
+</div>
+
+
+
+</body>
+</html>

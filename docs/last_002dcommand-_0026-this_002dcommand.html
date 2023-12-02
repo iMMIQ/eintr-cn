@@ -39,7 +39,7 @@ ISBN 1-882114-43-4
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="copy_002dregion_002das_002dkill-body.html" rel="up" title="copy-region-as-kill body">
-<link href="kill_002dappend-function.html" rel="next" title="kill-append function">
+<link href="kill_002dappend-Han-Shu-.html" rel="next" title="kill-append 函数">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -55,29 +55,16 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsubsec-level-extent" id="last_002dcommand-_0026-this_002dcommand">
 <div class="nav-panel">
 <p>
-Next: <a href="kill_002dappend-function.html" accesskey="n" rel="next">The <code class="code">kill-append</code> function</a>, Up: <a href="copy_002dregion_002das_002dkill-body.html" accesskey="u" rel="up">The Body of <code class="code">copy-region-as-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="kill_002dappend-Han-Shu-.html" accesskey="n" rel="next"><code class="code">kill-append</code> 函数</a>, Up: <a href="copy_002dregion_002das_002dkill-body.html" accesskey="u" rel="up"><code class="code">copy-region-as-kill</code>的主体</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsubsec" id="last_002dcommand-and-this_002dcommand"><code class="code">last-command</code> and <code class="code">this-command</code></h4>
+<h4 class="unnumberedsubsubsec" id="last_002dcommandHe-this_002dcommand"><code class="code">last-command</code>和<code class="code">this-command</code></h4>
 
-<p>Normally, whenever a function is executed, Emacs sets the value of
-<code class="code">this-command</code> to the function being executed (which in this case
-would be <code class="code">copy-region-as-kill</code>).  At the same time, Emacs sets
-the value of <code class="code">last-command</code> to the previous value of
-<code class="code">this-command</code>.
+<p>通常情况下，每当执行函数时，Emacs将<code class="code">this-command</code>的值设置为正在执行的函数（在本例中将是<code class="code">copy-region-as-kill</code>）。同时，Emacs将<code class="code">last-command</code>的值设置为<code class="code">this-command</code>的先前值。
 </p>
-<p>In the first part of the body of the <code class="code">copy-region-as-kill</code>
-function, an <code class="code">if</code> expression determines whether the value of
-<code class="code">last-command</code> is <code class="code">kill-region</code>.  If so, the then-part of
-the <code class="code">if</code> expression is evaluated; it uses the <code class="code">kill-append</code>
-function to concatenate the text copied at this call to the function
-with the text already in the first element (the <small class="sc">CAR</small>) of the kill
-ring.  On the other hand, if the value of <code class="code">last-command</code> is not
-<code class="code">kill-region</code>, then the <code class="code">copy-region-as-kill</code> function
-attaches a new element to the kill ring using the <code class="code">kill-new</code>
-function.
+<p>在<code class="code">copy-region-as-kill</code>函数的主体的第一部分中，一个<code class="code">if</code>表达式确定<code class="code">last-command</code>的值是否为<code class="code">kill-region</code>。如果是，<code class="code">if</code>表达式的then-part将被评估；它使用<code class="code">kill-append</code>函数将此次调用函数时复制的文本与kill环的第一个元素（<small class="sc">CAR</small>）中已有的文本连接起来。另一方面，如果<code class="code">last-command</code>的值不是<code class="code">kill-region</code>，那么<code class="code">copy-region-as-kill</code>函数将使用<code class="code">kill-new</code>函数将一个新元素附加到kill环中。
 </p>
-<p>The <code class="code">if</code> expression reads as follows; it uses <code class="code">eq</code>:
+<p><code class="code">if</code>表达式如下所示；它使用<code class="code">eq</code>：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">  (if (eq last-command 'kill-region)
@@ -88,30 +75,13 @@ function.
 </pre></div></div>
 
 <a class="index-entry-id" id="index-filter_002dbuffer_002dsubstring"></a>
-<p>(The <code class="code">filter-buffer-substring</code> function returns a filtered
-substring of the buffer, if any.  Optionally&mdash;the arguments are not
-here, so neither is done&mdash;the function may delete the initial text or
-return the text without its properties; this function is a replacement
-for the older <code class="code">buffer-substring</code> function, which came before text
-properties were implemented.)
+<p>（<code class="code">filter-buffer-substring</code>函数返回缓冲区的过滤子字符串，如果有的话。可选地——这里没有参数，因此也没有做任何事——该函数可以删除初始文本或返回不带其属性的文本；此函数是较早的<code class="code">buffer-substring</code>函数的替代，该函数在实现文本属性之前出现。）
 </p>
-<a class="index-entry-id" id="index-eq-_0028example-of-use_0029"></a>
-<p>The <code class="code">eq</code> function tests whether its first argument is the same Lisp
-object as its second argument.  The <code class="code">eq</code> function is similar to the
-<code class="code">equal</code> function in that it is used to test for equality, but
-differs in that it determines whether two representations are actually
-the same object inside the computer, but with different names.
-<code class="code">equal</code> determines whether the structure and contents of two
-expressions are the same.
+<a class="index-entry-id" id="index-eq-_0028Yong-Fa-ShiLi_0029"></a>
+<p><code class="code">eq</code>函数测试其第一个参数是否与其第二个参数相同的Lisp对象。<code class="code">eq</code>函数类似于<code class="code">equal</code>函数，因为它用于测试相等性，但不同之处在于它确定两个表示实际上是计算机内部相同对象，只是具有不同的名称。<code class="code">equal</code>确定两个表达式的结构和内容是否相同。
 </p>
-<p>If the previous command was <code class="code">kill-region</code>, then the Emacs Lisp
-interpreter calls the <code class="code">kill-append</code> function
+<p>如果先前的命令是<code class="code">kill-region</code>，则Emacs Lisp解释器调用<code class="code">kill-append</code>函数。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="kill_002dappend-function.html">The <code class="code">kill-append</code> function</a>, Up: <a href="copy_002dregion_002das_002dkill-body.html">The Body of <code class="code">copy-region-as-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

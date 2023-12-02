@@ -4937,7 +4937,7 @@ animals
 
 @code{setcdr}函数类似于@code{setcar}函数，不同之处在于该函数替换列表的第二个及其后的元素，而不是第一个元素。
 
-(要了解如何更改列表的最后一个元素，请查看@ref{kill-new function, , The @code{kill-new} function}，该函数使用@code{nthcdr}和@code{setcdr}函数。)
+(要了解如何更改列表的最后一个元素，请查看@ref{kill-new 函数, , @code{kill-new} 函数}，该函数使用@code{nthcdr}和@code{setcdr}函数。)
 
 @need 1200
 为了了解它是如何工作的，请通过评估以下表达式将变量的值设置为一组驯养的动物：
@@ -5589,38 +5589,29 @@ Emacs Lisp Reference Manual}。C编程语言也提供宏。它们是不同的，
 @findex copy-region-as-kill
 @findex nthcdr
 
-The @code{copy-region-as-kill} function copies a region of text from a
-buffer and (via either @code{kill-append} or @code{kill-new}) saves it
-in the @code{kill-ring}.
+@code{copy-region-as-kill}函数将文本缓冲区中的一段文本复制并（通过@code{kill-append}或@code{kill-new}）保存在@code{kill-ring}中。
 
-If you call @code{copy-region-as-kill} immediately after a
-@code{kill-region} command, Emacs appends the newly copied text to the
-previously copied text.  This means that if you yank back the text, you
-get it all, from both this and the previous operation.  On the other
-hand, if some other command precedes the @code{copy-region-as-kill},
-the function copies the text into a separate entry in the kill ring.
+如果在执行@code{kill-region}命令之后立即调用@code{copy-region-as-kill}，Emacs将新复制的文本附加到先前复制的文本上。这意味着如果您粘贴文本，则会得到来自此次和上一次操作的所有文本。另一方面，如果在@code{copy-region-as-kill}之前执行了其他命令，则该函数将文本复制到kill环中的一个单独条目中。
 
 @menu
-* Complete copy-region-as-kill::  The complete function definition.
-* copy-region-as-kill body::      The body of @code{copy-region-as-kill}.
+* Complete copy-region-as-kill::  @code{copy-region-as-kill}函数的完整定义。
+* copy-region-as-kill body::      @code{copy-region-as-kill}的主体部分。
 @end menu
 
 @ifnottex
 @node Complete copy-region-as-kill
-@unnumberedsubsec The complete @code{copy-region-as-kill} function definition
+@unnumberedsubsec @code{copy-region-as-kill}函数的完整定义
 @end ifnottex
 
 @need 1200
-Here is the complete text of the version 22 @code{copy-region-as-kill}
-function:
+以下是版本22的@code{copy-region-as-kill}函数的完整文本：
 
 @smallexample
 @group
 (defun copy-region-as-kill (beg end)
-  "Save the region as if killed, but don't kill it.
-In Transient Mark mode, deactivate the mark.
-If `interprogram-cut-function' is non-nil, also save the text for a window
-system cut and paste."
+  "将区域保存为已杀死，但不要杀死它。
+在瞬时标记模式下，取消激活标记。
+如果`interprogram-cut-function'非空，还为窗口系统剪切和粘贴保存文本。"
   (interactive "r")
 @end group
 @group
@@ -5636,7 +5627,7 @@ system cut and paste."
 @end smallexample
 
 @need 800
-As usual, this function can be divided into its component parts:
+像往常一样，此函数可以分为其组成部分：
 
 @smallexample
 @group
@@ -5647,90 +5638,42 @@ As usual, this function can be divided into its component parts:
 @end group
 @end smallexample
 
-The arguments are @code{beg} and @code{end} and the function is
-interactive with @code{"r"}, so the two arguments must refer to the
-beginning and end of the region.  If you have been reading through this
-document from the beginning, understanding these parts of a function is
-almost becoming routine.
+参数是@code{beg}和@code{end}，函数以@code{"r"}交互，因此两个参数必须引用区域的起始和结束。如果您从文档开头阅读到这里，理解函数的这些部分几乎变得很常规。
 
-The documentation is somewhat confusing unless you remember that the
-word ``kill'' has a meaning different from usual.  The Transient Mark
-and @code{interprogram-cut-function} comments explain certain
-side-effects.
+文档有点令人困惑，除非您记得“kill”一词的意义与通常不同。瞬时标记和@code{interprogram-cut-function}的注释解释了某些副作用。
 
-After you once set a mark, a buffer always contains a region.  If you
-wish, you can use Transient Mark mode to highlight the region
-temporarily.  (No one wants to highlight the region all the time, so
-Transient Mark mode highlights it only at appropriate times.  Many
-people turn off Transient Mark mode, so the region is never
-highlighted.)
+一旦设置了标记，缓冲区始终包含一个区域。如果愿意，可以使用瞬时标记模式临时突出显示区域。 （没有人希望一直突出显示区域，因此瞬时标记模式仅在适当的时候突出显示。许多人关闭瞬时标记模式，因此区域永远不会被突出显示。）
 
-Also, a windowing system allows you to copy, cut, and paste among
-different programs.  In the X windowing system, for example, the
-@code{interprogram-cut-function} function is @code{x-select-text},
-which works with the windowing system's equivalent of the Emacs kill
-ring.
+此外，窗口系统允许在不同程序之间复制、剪切和粘贴。例如，在X窗口系统中，@code{interprogram-cut-function}函数是@code{x-select-text}，它与窗口系统的Emacs kill环的等价物一起工作。
 
-The body of the @code{copy-region-as-kill} function starts with an
-@code{if} clause.  What this clause does is distinguish between two
-different situations: whether or not this command is executed
-immediately after a previous @code{kill-region} command.  In the first
-case, the new region is appended to the previously copied text.
-Otherwise, it is inserted into the beginning of the kill ring as a
-separate piece of text from the previous piece.
+@code{copy-region-as-kill}函数的主体以一个@code{if}子句开始。该子句的作用是区分两种不同的情况：是否立即在先前的@code{kill-region}命令之后执行此命令。在第一种情况下，新区域将附加到先前复制的文本。否则，它将作为一个独立的文本片段插入到kill环的开头。
 
-The last two lines of the function prevent the region from lighting up
-if Transient Mark mode is turned on.
-
-The body of @code{copy-region-as-kill} merits discussion in detail.
+函数的最后两行阻止区域在瞬时标记模式打开时突出显示。
 
 @node copy-region-as-kill body
-@subsection The Body of @code{copy-region-as-kill}
+@subsection @code{copy-region-as-kill}的主体
 
-The @code{copy-region-as-kill} function works in much the same way as
-the @code{kill-region} function.  Both are written so that two or more
-kills in a row combine their text into a single entry.  If you yank
-back the text from the kill ring, you get it all in one piece.
-Moreover, kills that kill forward from the current position of the
-cursor are added to the end of the previously copied text and commands
-that copy text backwards add it to the beginning of the previously
-copied text.  This way, the words in the text stay in the proper
-order.
+@code{copy-region-as-kill}函数的工作方式与@code{kill-region}函数类似。两者都被编写为使连续两次或更多次的杀死将它们的文本组合成单个条目。如果从kill环粘贴文本，则会得到一个整体。此外，从当前光标位置向前杀死的杀死将添加到先前复制的文本的末尾，而将文本向后复制的命令将其添加到先前复制的文本的开头。这样，文本中的单词保持正确的顺序。
 
-Like @code{kill-region}, the @code{copy-region-as-kill} function makes
-use of the @code{last-command} variable that keeps track of the
-previous Emacs command.
+与@code{kill-region}一样，@code{copy-region-as-kill}函数利用了@code{last-command}变量，该变量跟踪先前的Emacs命令。
 
 @menu
 * last-command & this-command::
-* kill-append function::
-* kill-new function::
+* kill-append函数::
+* kill-new函数::
 @end menu
 
 @ifnottex
 @node last-command & this-command
-@unnumberedsubsubsec @code{last-command} and @code{this-command}
+@unnumberedsubsubsec @code{last-command}和@code{this-command}
 @end ifnottex
 
-Normally, whenever a function is executed, Emacs sets the value of
-@code{this-command} to the function being executed (which in this case
-would be @code{copy-region-as-kill}).  At the same time, Emacs sets
-the value of @code{last-command} to the previous value of
-@code{this-command}.
+通常情况下，每当执行函数时，Emacs将@code{this-command}的值设置为正在执行的函数（在本例中将是@code{copy-region-as-kill}）。同时，Emacs将@code{last-command}的值设置为@code{this-command}的先前值。
 
-In the first part of the body of the @code{copy-region-as-kill}
-function, an @code{if} expression determines whether the value of
-@code{last-command} is @code{kill-region}.  If so, the then-part of
-the @code{if} expression is evaluated; it uses the @code{kill-append}
-function to concatenate the text copied at this call to the function
-with the text already in the first element (the @sc{car}) of the kill
-ring.  On the other hand, if the value of @code{last-command} is not
-@code{kill-region}, then the @code{copy-region-as-kill} function
-attaches a new element to the kill ring using the @code{kill-new}
-function.
+在@code{copy-region-as-kill}函数的主体的第一部分中，一个@code{if}表达式确定@code{last-command}的值是否为@code{kill-region}。如果是，@code{if}表达式的then-part将被评估；它使用@code{kill-append}函数将此次调用函数时复制的文本与kill环的第一个元素（@sc{car}）中已有的文本连接起来。另一方面，如果@code{last-command}的值不是@code{kill-region}，那么@code{copy-region-as-kill}函数将使用@code{kill-new}函数将一个新元素附加到kill环中。
 
 @need 1250
-The @code{if} expression reads as follows; it uses @code{eq}:
+@code{if}表达式如下所示；它使用@code{eq}：
 
 @smallexample
 @group
@@ -5743,39 +5686,27 @@ The @code{if} expression reads as follows; it uses @code{eq}:
 @end smallexample
 
 @findex filter-buffer-substring
-(The @code{filter-buffer-substring} function returns a filtered
-substring of the buffer, if any.  Optionally---the arguments are not
-here, so neither is done---the function may delete the initial text or
-return the text without its properties; this function is a replacement
-for the older @code{buffer-substring} function, which came before text
-properties were implemented.)
+（@code{filter-buffer-substring}函数返回缓冲区的过滤子字符串，如果有的话。可选地——这里没有参数，因此也没有做任何事——该函数可以删除初始文本或返回不带其属性的文本；此函数是较早的@code{buffer-substring}函数的替代，该函数在实现文本属性之前出现。）
 
-@findex eq @r{(example of use)}
+@findex eq @r{（用法示例）}
 @noindent
-The @code{eq} function tests whether its first argument is the same Lisp
-object as its second argument.  The @code{eq} function is similar to the
-@code{equal} function in that it is used to test for equality, but
-differs in that it determines whether two representations are actually
-the same object inside the computer, but with different names.
-@code{equal} determines whether the structure and contents of two
-expressions are the same.
+@code{eq}函数测试其第一个参数是否与其第二个参数相同的Lisp对象。@code{eq}函数类似于@code{equal}函数，因为它用于测试相等性，但不同之处在于它确定两个表示实际上是计算机内部相同对象，只是具有不同的名称。@code{equal}确定两个表达式的结构和内容是否相同。
 
-If the previous command was @code{kill-region}, then the Emacs Lisp
-interpreter calls the @code{kill-append} function
+如果先前的命令是@code{kill-region}，则Emacs Lisp解释器调用@code{kill-append}函数。
 
-@node kill-append function
-@unnumberedsubsubsec The @code{kill-append} function
+@node kill-append 函数
+@unnumberedsubsubsec @code{kill-append} 函数
 @findex kill-append
 
 @need 800
-The @code{kill-append} function looks like this:
+@code{kill-append} 函数的定义如下：
 
-@c in GNU Emacs 22
+@c 在GNU Emacs 22中
 @smallexample
 @group
 (defun kill-append (string before-p &optional yank-handler)
-  "Append STRING to the end of the latest kill in the kill ring.
-If BEFORE-P is non-nil, prepend STRING to the kill.
+  "将STRING追加到kill环中最新的kill的末尾。
+如果BEFORE-P非空，则将STRING插入到kill的开头。
 @dots{} "
   (let* ((cur (car kill-ring)))
     (kill-new (if before-p (concat string cur) (concat cur string))
@@ -5787,12 +5718,11 @@ If BEFORE-P is non-nil, prepend STRING to the kill.
 @end smallexample
 
 @ignore
-was:
+曾经的定义:
 (defun kill-append (string before-p)
-  "Append STRING to the end of the latest kill in the kill ring.
-If BEFORE-P is non-nil, prepend STRING to the kill.
-If `interprogram-cut-function' is set, pass the resulting kill to
-it."
+  "将STRING追加到kill环中最新的kill的末尾。
+如果BEFORE-P非空，则将STRING插入到kill的开头。
+如果`interprogram-cut-function'已设置，则将生成的kill传递给它。"
   (kill-new (if before-p
                 (concat string (car kill-ring))
               (concat (car kill-ring) string))
@@ -5800,25 +5730,14 @@ it."
 @end ignore
 
 @noindent
-The @code{kill-append} function is fairly straightforward.  It uses
-the @code{kill-new} function, which we will discuss in more detail in
-a moment.
+@code{kill-append} 函数非常直观。它使用了稍后我们将详细讨论的 @code{kill-new} 函数。
 
-(Also, the function provides an optional argument called
-@code{yank-handler}; when invoked, this argument tells the function
-how to deal with properties added to the text, such as bold or
-italics.)
+（此外，该函数提供了一个可选的参数叫做 @code{yank-handler}；当调用时，此参数告诉函数如何处理添加到文本的属性，比如粗体或斜体。）
 
-@c !!! bug in GNU Emacs 22 version of  kill-append ?
-It has a @code{let*} function to set the value of the first element of
-the kill ring to @code{cur}.  (I do not know why the function does not
-use @code{let} instead; only one value is set in the expression.
-Perhaps this is a bug that produces no problems?)
+@c !!! GNU Emacs 22版本中 kill-append 函数的bug？
+它使用 @code{let*} 函数将kill环的第一个元素的值设置为 @code{cur}。（我不知道为什么函数不使用 @code{let} 替代；表达式中只设置了一个值。也许这是一个不会产生问题的bug？）
 
-Consider the conditional that is one of the two arguments to
-@code{kill-new}.  It uses @code{concat} to concatenate the new text to
-the @sc{car} of the kill ring.  Whether it prepends or appends the
-text depends on the results of an @code{if} expression:
+考虑到条件语句是 @code{kill-new} 的两个参数之一。它使用 @code{concat} 将新文本连接到kill环的 @sc{car}（第一个元素）。无论是插入还是追加文本，都取决于 @code{if} 表达式的结果：
 
 @smallexample
 @group
@@ -5829,32 +5748,12 @@ text depends on the results of an @code{if} expression:
 @end smallexample
 
 @noindent
-If the region being killed is before the region that was killed in the
-last command, then it should be prepended before the material that was
-saved in the previous kill; and conversely, if the killed text follows
-what was just killed, it should be appended after the previous text.
-The @code{if} expression depends on the predicate @code{before-p} to
-decide whether the newly saved text should be put before or after the
-previously saved text.
+如果要删除的区域位于上一次命令中删除的区域之前，那么它应该插入到之前保存的文本之前；反之，如果删除的文本跟随刚刚删除的文本，它应该追加到先前的文本之后。 @code{if} 表达式依赖于谓词 @code{before-p} 来决定新保存的文本是应该放在先前保存的文本之前还是之后。
 
-The symbol @code{before-p} is the name of one of the arguments to
-@code{kill-append}.  When the @code{kill-append} function is
-evaluated, it is bound to the value returned by evaluating the actual
-argument.  In this case, this is the expression @code{(< end beg)}.
-This expression does not directly determine whether the killed text in
-this command is located before or after the kill text of the last
-command; what it does is determine whether the value of the variable
-@code{end} is less than the value of the variable @code{beg}.  If it
-is, it means that the user is most likely heading towards the
-beginning of the buffer.  Also, the result of evaluating the predicate
-expression, @code{(< end beg)}, will be true and the text will be
-prepended before the previous text.  On the other hand, if the value of
-the variable @code{end} is greater than the value of the variable
-@code{beg}, the text will be appended after the previous text.
+符号 @code{before-p} 是 @code{kill-append} 函数的参数之一的名称。当评估 @code{kill-append} 函数时，它被绑定到通过评估实际参数返回的值。在这种情况下，这是表达式 @code{(< end beg)}。此表达式不直接确定此命令中删除的文本是在上次命令中删除的文本之前还是之后；它的作用是确定变量 @code{end} 的值是否小于变量 @code{beg} 的值。如果是，这意味着用户很可能朝着缓冲区的开头前进。此外，谓词表达式 @code{(< end beg)} 的评估结果将为真，文本将在先前文本之前插入。另一方面，如果变量 @code{end} 的值大于变量 @code{beg} 的值，则文本将在先前文本之后追加。
 
 @need 800
-When the newly saved text will be prepended, then the string with the new
-text will be concatenated before the old text:
+当新保存的文本将被插入时，字符串与新文本将被连接到旧文本之前：
 
 @smallexample
 (concat string cur)
@@ -5862,16 +5761,13 @@ text will be concatenated before the old text:
 
 @need 1200
 @noindent
-But if the text will be appended, it will be concatenated
-after the old text:
+但如果文本将被追加，它将在旧文本之后连接：
 
 @smallexample
 (concat cur string))
 @end smallexample
 
-To understand how this works, we first need to review the
-@code{concat} function.  The @code{concat} function links together or
-unites two strings of text.  The result is a string.  For example:
+为了理解这是如何工作的，我们首先需要复习一下 @code{concat} 函数。@code{concat} 函数将两个文本字符串链接或合并在一起。结果是一个字符串。例如：
 
 @smallexample
 @group
@@ -5890,27 +5786,24 @@ unites two strings of text.  The result is a string.  For example:
 @end group
 @end smallexample
 
-We can now make sense of @code{kill-append}: it modifies the contents
-of the kill ring.  The kill ring is a list, each element of which is
-saved text.  The @code{kill-append} function uses the @code{kill-new}
-function which in turn uses the @code{setcar} function.
+现在我们可以理解 @code{kill-append}：它修改了kill环的内容。kill环是一个列表，其中每个元素都是保存的文本。@code{kill-append} 函数使用 @code{kill-new} 函数，后者又使用 @code{setcar} 函数。
 
-@node kill-new function
-@unnumberedsubsubsec The @code{kill-new} function
+@node kill-new 函数
+@unnumberedsubsubsec @code{kill-new} 函数
 @findex kill-new
 
 @need 1200
-In version 22 the @code{kill-new} function looks like this:
+在版本22中，@code{kill-new} 函数的定义如下：
 
 @smallexample
 @group
 (defun kill-new (string &optional replace yank-handler)
-  "Make STRING the latest kill in the kill ring.
-Set `kill-ring-yank-pointer' to point to it.
+  "将STRING设为kill环中的最新kill。
+将`kill-ring-yank-pointer'设为指向它。
 
-If `interprogram-cut-function' is non-nil, apply it to STRING.
-Optional second argument REPLACE non-nil means that STRING will replace
-the front of the kill ring, rather than being added to the list.
+如果`interprogram-cut-function'非nil，则将其应用于STRING。
+可选的第二个参数REPLACE非nil表示STRING将替换
+kill环的最前面，而不是被添加到列表中。
 @dots{}"
 @end group
 @group
@@ -5940,13 +5833,13 @@ the front of the kill ring, rather than being added to the list.
 @end group
 @end smallexample
 @ignore
-was:
+原先的定义：
 (defun kill-new (string &optional replace)
-  "Make STRING the latest kill in the kill ring.
-Set the kill-ring-yank pointer to point to it.
-If `interprogram-cut-function' is non-nil, apply it to STRING.
-Optional second argument REPLACE non-nil means that STRING will replace
-the front of the kill ring, rather than being added to the list."
+  "将STRING设为kill环中的最新kill。
+将kill-ring-yank指针设为指向它。
+如果`interprogram-cut-function'非nil，则将其应用于STRING。
+可选的第二个参数REPLACE非nil表示STRING将替换
+kill环的最前面，而不是被添加到列表中。"
   (and (fboundp 'menu-bar-update-yank-menu)
        (menu-bar-update-yank-menu string (and replace (car kill-ring))))
   (if (and replace kill-ring)
@@ -5959,45 +5852,42 @@ the front of the kill ring, rather than being added to the list."
       (funcall interprogram-cut-function string (not replace))))
 @end ignore
 
-(Notice that the function is not interactive.)
+（注意，此函数不是交互式的。）
 
-As usual, we can look at this function in parts.
+和往常一样，我们可以将这个函数分为几个部分来看。
 
-The function definition has an optional @code{yank-handler} argument,
-which when invoked tells the function how to deal with properties
-added to the text, such as bold or italics.  We will skip that.
+函数定义有一个可选的@code{yank-handler}参数，
+当调用时告诉函数如何处理添加到文本中的属性，比如粗体或斜体。我们将跳过这一点。
 
 @need 1200
-The first line of the documentation makes sense:
+文档的第一行有意义：
 
 @smallexample
-Make STRING the latest kill in the kill ring.
+将STRING设为kill环中的最新kill。
 @end smallexample
 
 @noindent
-Let's skip over the rest of the documentation for the moment.
+让我们暂时跳过文档的其余部分。
 
 @noindent
-Also, let's skip over the initial @code{if} expression and those lines
-of code involving @code{menu-bar-update-yank-menu}.  We will explain
-them below.
+同样，让我们跳过初始的@code{if}表达式以及涉及@code{menu-bar-update-yank-menu}的那些行代码。我们将在下面解释它们。
 
 @need 1200
-The critical lines are these:
+关键的代码在这里：
 
 @smallexample
 @group
   (if (and replace kill-ring)
-      ;; @r{then}
+      ;; @r{然后}
       (setcar kill-ring string)
 @end group
 @group
-    ;; @r{else}
+    ;; @r{否则}
     (push string kill-ring)
 @end group
 @group
     (if (> (length kill-ring) kill-ring-max)
-        ;; @r{avoid overly long kill ring}
+        ;; @r{避免kill环过长}
         (setcdr (nthcdr (1- kill-ring-max) kill-ring) nil)))
 @end group
 @group
@@ -6007,26 +5897,20 @@ The critical lines are these:
 @end group
 @end smallexample
 
-The conditional test is @w{@code{(and replace kill-ring)}}.
-This will be true when two conditions are met:  the kill ring has
-something in it, and the @code{replace} variable is true.
+条件测试是 @w{@code{(and replace kill-ring)}}。
+当满足两个条件时，这将为真：kill环中有内容，并且@code{replace}变量为真。
 
 @need 1250
-When the @code{kill-append} function sets @code{replace} to be true
-and when the kill ring has at least one item in it, the @code{setcar}
-expression is executed:
+当@code{kill-append}函数将@code{replace}设置为真时，且kill环中至少有一项时，将执行@code{setcar}表达式：
 
 @smallexample
 (setcar kill-ring string)
 @end smallexample
 
-The @code{setcar} function actually changes the first element of the
-@code{kill-ring} list to the value of @code{string}.  It replaces the
-first element.
+@code{setcar}函数实际上将@code{kill-ring}列表的第一个元素更改为@code{string}的值。它替换第一个元素。
 
 @need 1250
-On the other hand, if the kill ring is empty, or replace is false, the
-else-part of the condition is executed:
+另一方面，如果kill环为空，或者replace为假，则执行条件的else部分：
 
 @smallexample
 (push string kill-ring)
@@ -6034,8 +5918,7 @@ else-part of the condition is executed:
 
 @noindent
 @need 1250
-@code{push} puts its first argument onto the second.  It is similar to
-the older
+@code{push}将其第一个参数推入第二个参数。它类似于较旧的
 
 @smallexample
 (setq kill-ring (cons string kill-ring))
@@ -6043,29 +5926,23 @@ the older
 
 @noindent
 @need 1250
-or the newer
+或者较新的
 
 @smallexample
 (add-to-list kill-ring string)
 @end smallexample
 
 @noindent
-When it is false, the expression first constructs a new version of the
-kill ring by prepending @code{string} to the existing kill ring as a
-new element (that is what the @code{push} does).  Then it executes a
-second @code{if} clause.  This second @code{if} clause keeps the kill
-ring from growing too long.
+当为假时，表达式首先通过将要被杀死的字符串作为新元素添加到旧kill环中构造了新版本的kill环（这就是@code{push}的作用）。然后它执行第二个@code{if}子句。这第二个@code{if}子句防止kill环变得过长。
 
-Let's look at these two expressions in order.
+让我们按顺序查看这两个表达式。
 
-The @code{push} line of the else-part sets the new value of the kill
-ring to what results from adding the string being killed to the old
-kill ring.
+@code{push} else-part的行将新的kill环的值设置为将要被杀死的字符串添加到旧kill环中得到的值。
 
-We can see how this works with an example.
+通过以下示例，我们可以看到它是如何工作的。
 
 @need 800
-First,
+首先，
 
 @smallexample
 (setq example-list '("here is a clause" "another clause"))
@@ -6073,8 +5950,7 @@ First,
 
 @need 1200
 @noindent
-After evaluating this expression with @kbd{C-x C-e}, you can evaluate
-@code{example-list} and see what it returns:
+通过使用@kbd{C-x C-e}评估此表达式后，您可以评估@code{example-list}并查看其返回值：
 
 @smallexample
 @group
@@ -6085,8 +5961,7 @@ example-list
 
 @need 1200
 @noindent
-Now, we can add a new element on to this list by evaluating the
-following expression:
+现在，我们可以通过评估以下表达式将一个新元素添加到此列表中：
 @findex push@r{, example}
 
 @smallexample
@@ -6095,7 +5970,7 @@ following expression:
 
 @need 800
 @noindent
-When we evaluate @code{example-list}, we find its value is:
+当我们评估@code{example-list}时，我们发现其值为：
 
 @smallexample
 @group
@@ -6105,11 +5980,10 @@ example-list
 @end smallexample
 
 @noindent
-Thus, the third clause is added to the list by @code{push}.
+因此，通过@code{push}添加了第三个子句。
 
 @need 1200
-Now for the second part of the @code{if} clause.  This expression
-keeps the kill ring from growing too long.  It looks like this:
+现在是@code{if}子句的第二部分。此表达式防止kill环变得过长。它看起来是这样的：
 
 @smallexample
 @group
@@ -6118,40 +5992,17 @@ keeps the kill ring from growing too long.  It looks like this:
 @end group
 @end smallexample
 
-The code checks whether the length of the kill ring is greater than
-the maximum permitted length.  This is the value of
-@code{kill-ring-max} (which is 120, by default).  If the length of the
-kill ring is too long, then this code sets the last element of the
-kill ring to @code{nil}.  It does this by using two functions,
-@code{nthcdr} and @code{setcdr}.
+代码检查kill环的长度是否大于允许的最大长度。这是@code{kill-ring-max}（默认为120）的值。如果kill环的长度太长，则此代码将最后一个元素设置为@code{nil}。它通过使用两个函数@code{nthcdr}和@code{setcdr}来实现。
 
-We looked at @code{setcdr} earlier (@pxref{setcdr, , @code{setcdr}}).
-It sets the @sc{cdr} of a list, just as @code{setcar} sets the
-@sc{car} of a list.  In this case, however, @code{setcdr} will not be
-setting the @sc{cdr} of the whole kill ring; the @code{nthcdr}
-function is used to cause it to set the @sc{cdr} of the next to last
-element of the kill ring---this means that since the @sc{cdr} of the
-next to last element is the last element of the kill ring, it will set
-the last element of the kill ring.
+我们之前看过@code{setcdr}（@pxref{setcdr, , @code{setcdr}}）。它设置列表的@sc{cdr}，就像@code{setcar}设置列表的@sc{car}一样。但是，在这种情况下，@code{setcdr}不会设置整个kill环的@sc{cdr}；@code{nthcdr}函数用于使其设置kill环的倒数第二个元素的@sc{cdr}——这意味着由于倒数第二个元素的@sc{cdr}是kill环的最后一个元素，它将设置kill环的最后一个元素。
 
 @findex nthcdr@r{, example}
-The @code{nthcdr} function works by repeatedly taking the @sc{cdr} of a
-list---it takes the @sc{cdr} of the @sc{cdr} of the @sc{cdr}
-@dots{}  It does this @var{N} times and returns the results.
-(@xref{nthcdr, , @code{nthcdr}}.)
+@code{nthcdr}函数通过重复获取列表的@sc{cdr}来工作——它获取@sc{cdr}的@sc{cdr}的@sc{cdr}等等。它这样做@var{N}次并返回结果。(@xref{nthcdr, , @code{nthcdr}}.)
 
 @findex setcdr@r{, example}
-Thus, if we had a four element list that was supposed to be three
-elements long, we could set the @sc{cdr} of the next to last element
-to @code{nil}, and thereby shorten the list.  (If you set the last
-element to some other value than @code{nil}, which you could do, then
-you would not have shortened the list.  @xref{setcdr, ,
-@code{setcdr}}.)
+因此，如果我们有一个应该是三个元素长的四个元素列表，我们可以将倒数第二个元素的@sc{cdr}设置为@code{nil}，从而缩短列表。（如果将最后一个元素设置为除@code{nil}之外的其他值，您可以这样做，那么您将不会缩短列表。@xref{setcdr, , @code{setcdr}}.）
 
-You can see shortening by evaluating the following three expressions
-in turn.  First set the value of @code{trees} to @code{(maple oak pine
-birch)}, then set the @sc{cdr} of its second @sc{cdr} to @code{nil}
-and then find the value of @code{trees}:
+通过依次评估以下三个表达式，您可以看到缩短的效果。首先将@code{trees}的值设置为@code{(maple oak pine birch)}，然后将其第二个@sc{cdr}的@sc{cdr}设置为@code{nil}，然后找到@code{trees}的值：
 
 @smallexample
 @group
@@ -6169,31 +6020,23 @@ trees
 @end smallexample
 
 @noindent
-(The value returned by the @code{setcdr} expression is @code{nil} since
-that is what the @sc{cdr} is set to.)
+(@code{setcdr}表达式返回的值为@code{nil}，因为它将@sc{cdr}设置为@code{nil}。)
 
-To repeat, in @code{kill-new}, the @code{nthcdr} function takes the
-@sc{cdr} a number of times that is one less than the maximum permitted
-size of the kill ring and @code{setcdr} sets the @sc{cdr} of that
-element (which will be the rest of the elements in the kill ring) to
-@code{nil}.  This prevents the kill ring from growing too long.
+重申一下，在@code{kill-new}中，@code{nthcdr}函数取kill环的最大允许大小减一的次数，@code{setcdr}函数将其@sc{cdr}设置为那个元素（这意味着由于倒数第二个元素的@sc{cdr}是kill环的最后一个元素，它将设置kill环的最后一个元素）。这样可以防止kill环变得过长。
 
 @need 800
-The next to last expression in the @code{kill-new} function is
+@code{kill-new}函数中倒数第二个表达式是
 
 @smallexample
 (setq kill-ring-yank-pointer kill-ring)
 @end smallexample
 
-The @code{kill-ring-yank-pointer} is a global variable that is set to be
-the @code{kill-ring}.
+@code{kill-ring-yank-pointer}是一个全局变量，被设置为@code{kill-ring}。
 
-Even though the @code{kill-ring-yank-pointer} is called a
-@samp{pointer}, it is a variable just like the kill ring.  However, the
-name has been chosen to help humans understand how the variable is used.
+尽管@code{kill-ring-yank-pointer}被称为@samp{指针}，但它和kill环一样是一个变量。但是，为了帮助人们理解该变量的用法，选择了这个名称。
 
 @need 1200
-Now, to return to an early expression in the body of the function:
+现在，回到函数体中的早期表达式：
 
 @smallexample
 @group
@@ -6203,51 +6046,27 @@ Now, to return to an early expression in the body of the function:
 @end smallexample
 
 @noindent
-It starts with an @code{if} expression
+它以一个@code{if}表达式开始
 
-In this case, the expression tests first to see whether
-@code{menu-bar-update-yank-menu} exists as a function, and if so,
-calls it.  The @code{fboundp} function returns true if the symbol it
-is testing has a function definition that is not void.  If the
-symbol's function definition were void, we would receive an error
-message, as we did when we created errors intentionally (@pxref{Making
-Errors, , Generate an Error Message}).
+在这种情况下，该表达式首先测试@code{menu-bar-update-yank-menu}是否存在作为函数，并且如果存在，则调用它。@code{fboundp}函数返回true，如果它测试的符号具有非空的函数定义。如果符号的函数定义为空，我们将收到错误消息，就像我们故意创建错误一样（@pxref{Making Errors, , 生成错误消息}）。
 
 @noindent
-The then-part contains an expression whose first element is the
-function @code{and}.
+然后部分包含一个表达式，其第一个元素是@code{and}函数。
 
 @findex and
-The @code{and} special form evaluates each of its arguments until one
-of the arguments returns a value of @code{nil}, in which case the
-@code{and} expression returns @code{nil}; however, if none of the
-arguments returns a value of @code{nil}, the value resulting from
-evaluating the last argument is returned.  (Since such a value is not
-@code{nil}, it is considered true in Emacs Lisp.)  In other words, an
-@code{and} expression returns a true value only if all its arguments
-are true.  (@xref{第二缓冲区相关复习}.)
+特殊形式 @code{and} 对其每个参数进行求值，直到其中一个参数返回值为 @code{nil} 为止，此时 @code{and} 表达式返回 @code{nil}；然而，如果没有任何参数返回 @code{nil}，则返回最后一个参数的求值结果。 （由于这样的值不是 @code{nil}，在Emacs Lisp中被视为真值。）换句话说，只有当所有参数都为真时，@code{and} 表达式才返回真值。(@xref{第二缓冲区相关复习}.)
 
-The expression determines whether the second argument to
-@code{menu-bar-update-yank-menu} is true or not.
+该表达式确定了 @code{menu-bar-update-yank-menu} 的第二个参数是否为真。
 @ignore
-    ;; If we're supposed to be extending an existing string, and that
-    ;; string really is at the front of the menu, then update it in place.
+    ;; 如果我们应该扩展现有字符串，并且该字符串确实位于菜单的前面，则原地更新它。
 @end ignore
 
-@code{menu-bar-update-yank-menu} is one of the functions that make it
-possible to use the ``Select and Paste'' menu in the Edit item of a menu
-bar; using a mouse, you can look at the various pieces of text you
-have saved and select one piece to paste.
+@code{menu-bar-update-yank-menu} 是使得可以在菜单条的编辑项目的“选择和粘贴”菜单中使用的函数之一；使用鼠标，您可以查看已保存的各种文本片段，并选择一个片段进行粘贴。
 
-The last expression in the @code{kill-new} function adds the newly
-copied string to whatever facility exists for copying and pasting
-among different programs running in a windowing system.  In the X
-Windowing system, for example, the @code{x-select-text} function takes
-the string and stores it in memory operated by X@.  You can paste the
-string in another program, such as an Xterm.
+@code{kill-new} 函数中的最后一个表达式将新复制的字符串添加到用于在窗口系统中运行的不同程序之间复制和粘贴的任何设施中。例如，在X Windowing系统中，@code{x-select-text} 函数将字符串存储在由X操作的内存中。您可以在另一个程序中粘贴该字符串，例如Xterm。
 
 @need 1200
-The expression looks like this:
+该表达式如下：
 
 @smallexample
 @group
@@ -6256,59 +6075,35 @@ The expression looks like this:
 @end group
 @end smallexample
 
-If an @code{interprogram-cut-function} exists, then Emacs executes
-@code{funcall}, which in turn calls its first argument as a function
-and passes the remaining arguments to it.  (Incidentally, as far as I
-can see, this @code{if} expression could be replaced by an @code{and}
-expression similar to the one in the first part of the function.)
+如果存在 @code{interprogram-cut-function}，则Emacs执行 @code{funcall}，它又调用其第一个参数作为函数，并将其余参数传递给它。 （顺便说一下，就我所看到的，此 @code{if} 表达式可以被类似于函数第一部分的 @code{and} 表达式替代。）
 
-We are not going to discuss windowing systems and other programs
-further, but merely note that this is a mechanism that enables GNU
-Emacs to work easily and well with other programs.
+我们不打算进一步讨论窗口系统和其他程序，只是注意到这是一种使GNU Emacs能够轻松而有效地与其他程序协同工作的机制。
 
-This code for placing text in the kill ring, either concatenated with
-an existing element or as a new element, leads us to the code for
-bringing back text that has been cut out of the buffer---the yank
-commands.  However, before discussing the yank commands, it is better
-to learn how lists are implemented in a computer.  This will make
-clear such mysteries as the use of the term ``pointer''.  But before
-that, we will digress into C.
+这段代码用于将文本放入kill环中，可以是与现有元素连接，也可以是作为新元素。这引导我们进入了从缓冲区中删除文本的代码——yank命令。但在讨论yank命令之前，最好先了解计算机中列表是如何实现的。这将解释“指针”一词的使用。但在此之前，我们将离题讨论C。
 
 @ignore
-@c is this true in Emacs 22?   Does not seems to be
+@c 这在Emacs 22中是真的吗？似乎不是
 
-  (If the @w{@code{(< end beg))}}
-expression is true, @code{kill-append} prepends the string to the just
-previously clipped text.  For a detailed discussion, see
-@ref{kill-append function, , The @code{kill-append} function}.)
+  （如果表达式 @w{@code{(< end beg))}} 为真，则 @code{kill-append} 将字符串前置到刚刚剪切的文本之前。有关详细讨论，请参阅 @ref{kill-append function, , The @code{kill-append} function}.）
 
-If you then yank back the text, i.e., paste it, you get both
-pieces of text at once.  That way, if you delete two words in a row,
-and then yank them back, you get both words, in their proper order,
-with one yank.  (The @w{@code{(< end beg))}} expression makes sure the
-order is correct.)
+如果然后将文本还原，即粘贴它，则可以同时获得两个文本片段。这样，如果您连续删除两个单词，然后将它们还原，您将以正确的顺序获得两个单词，一次性粘贴。（表达式 @w{@code{(< end beg))}} 确保顺序正确。）
 
-On the other hand, if the previous command is not @code{kill-region},
-then the @code{kill-new} function is called, which adds the text to
-the kill ring as the latest item, and sets the
-@code{kill-ring-yank-pointer} variable to point to it.
+另一方面，如果前一个命令不是 @code{kill-region}，那么将调用 @code{kill-new} 函数，该函数将文本添加到kill环中作为最新的项，并将 @code{kill-ring-yank-pointer} 变量设置为指向它。
 @end ignore
 @ignore
 
-@c Evidently, changed for Emacs 22. The zap-to-char command does not
-@c use the delete-and-extract-region function
+@c 显然，Emacs 22有所更改。zap-to-char命令不使用delete-and-extract-region函数
 
-2006 Oct 26, the Digression into C is now OK but should come after
-copy-region-as-kill and filter-buffer-substring
+2006年10月26日，C离题现在可以了，但应该在copy-region-as-kill和filter-buffer-substring之后
 
-2006 Oct 24
-In Emacs 22,
-copy-region-as-kill is short, 12 lines, and uses
-filter-buffer-substring, which is longer, 39 lines
-and has delete-and-extract-region in it.
-delete-and-extract-region is written in C.
+2006年10月24日
+在Emacs 22中，
+copy-region-as-kill很短，12行，使用
+filter-buffer-substring，它更长，有39行
+并包含其中的delete-and-extract-region。
+delete-and-extract-region是用C编写的。
 
-see Initializing a Variable with @code{defvar}
+参见使用 @code{defvar} 初始化变量
 @end ignore
 
 @node Digression into C
@@ -10258,8 +10053,7 @@ evaluating the following list:
 @noindent
 This is an expression whose first element is the @code{and} special form.
 
-As we learned earlier (@pxref{kill-new function, , The @code{kill-new}
-function}), the @code{and} special form evaluates each of its
+As we learned earlier (@pxref{kill-new 函数, , @code{kill-new} 函数}), the @code{and} special form evaluates each of its
 arguments until one of the arguments returns a value of @code{nil}, in
 which case the @code{and} expression returns @code{nil}; however, if
 none of the arguments returns a value of @code{nil}, the value
@@ -16201,7 +15995,7 @@ indirectly: @code{kill-append}, @code{copy-region-as-kill},
 
 @need 1500
 Here is the line in @code{kill-new}, which is explained in
-@ref{kill-new function, , The @code{kill-new} function}.
+@ref{kill-new 函数, , @code{kill-new} 函数}.
 
 @smallexample
 (setq kill-ring-yank-pointer kill-ring)
@@ -16257,8 +16051,7 @@ The @code{if} expression has two parts, one if there exists
 @need 2000
 Let us consider the else-part of the @code{current-kill}
 function.  (The then-part uses the @code{kill-new} function, which
-we have already described.  @xref{kill-new function, , The
-@code{kill-new} function}.)
+we have already described.  @xref{kill-new 函数, , @code{kill-new} 函数}.)
 
 @smallexample
 @group
