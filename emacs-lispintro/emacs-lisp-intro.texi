@@ -4001,7 +4001,7 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 
 该函数类似于 @code{simplified-beginning-of-buffer} 函数，只是 @code{interactive} 表达式的参数是 @code{"P"}，并且 @code{goto-char} 函数后面跟着一个 if-then-else 表达式，用于确定如果有一个不是 cons cell 的参数，光标应该放在哪里。
 
-（由于我在很多章节里都没有解释 cons cell，请考虑忽略函数 @code{consp}。@xref{List Implementation, , How Lists are Implemented}，以及 @ref{Cons Cell Type, , Cons Cell and List Types, elisp, The GNU Emacs Lisp Reference Manual}。）
+（由于我在很多章节里都没有解释 cons cell，请考虑忽略函数 @code{consp}。@xref{列表实现, , 如何实现列表}，以及 @ref{Cons Cell Type, , Cons Cell and List Types, elisp, The GNU Emacs Lisp Reference Manual}。）
 
 @code{interactive} 表达式中的 @code{"P"} 告诉 Emacs 将前缀参数（如果有的话）以原始形式传递给函数。前缀参数是通过按 @key{META} 键后面跟一个数字，或者按 @kbd{C-u} 然后是一个数字来生成的。（如果不输入数字，@kbd{C-u} 默认为带有 4 的 cons cell。在 @code{interactive} 表达式中的小写 @code{"p"} 会导致函数将前缀参数转换为数字。）
 
@@ -4568,7 +4568,7 @@ IBM 704 在历史上留下了痕迹，但这些名字现在已经成为 Lisp 珍
 
 在处理列表时，使用 @code{first} 和 @code{rest} 这样的名称可能比 @code{car} 和 @code{cdr} 更有意义。事实上，一些程序员会将 @code{first} 和 @code{rest} 定义为 @code{car} 和 @code{cdr} 的别名，然后在代码中使用 @code{first} 和 @code{rest}。
 
-然而，在Lisp中，列表是使用称为“cons单元”（@pxref{List Implementation}）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 @sc{car} 和 @sc{cdr} 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 @code{car} 和 @code{cdr} 实际上是对称的。
+然而，在Lisp中，列表是使用称为“cons单元”（@pxref{列表实现}）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 @sc{car} 和 @sc{cdr} 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 @code{car} 和 @code{cdr} 实际上是对称的。
 
 @ignore
 很显然，对于 @code{cdr} 来说，一个更合理的名字应该是 @code{rest}。
@@ -6433,49 +6433,31 @@ triple
 编写一个函数，在回显区域打印剪切环的第三个元素（如果存在）；如果剪切环不包含第三个元素，则打印相应的消息。
 @end itemize
 
-@node List Implementation
-@chapter How Lists are Implemented
-@cindex Lists in a computer
+@node 列表实现
+@chapter 如何实现列表
+@cindex 计算机中的列表
 
-In Lisp, atoms are recorded in a straightforward fashion; if the
-implementation is not straightforward in practice, it is, nonetheless,
-straightforward in theory.  The atom @samp{rose}, for example, is
-recorded as the four contiguous letters @samp{r}, @samp{o}, @samp{s},
-@samp{e}.  A list, on the other hand, is kept differently.  The mechanism
-is equally simple, but it takes a moment to get used to the idea.  A
-list is kept using a series of pairs of pointers.  In the series, the
-first pointer in each pair points to an atom or to another list, and the
-second pointer in each pair points to the next pair, or to the symbol
-@code{nil}, which marks the end of the list.
+在Lisp中，原子以一种直截了当的方式记录；如果在实践中实现不够直截了当，理论上仍然是直截了当的。例如，原子 @samp{rose} 被记录为四个连续的字母 @samp{r}、@samp{o}、@samp{s}、@samp{e}。然而，列表的存储方式不同。机制同样简单，但需要一些时间来适应这个概念。列表使用一系列指针对来维护。在这个系列中，每对中的第一个指针指向一个原子或另一个列表，而每对中的第二个指针指向下一对，或者指向表示列表结束的符号 @code{nil}。
 
-A pointer itself is quite simply the electronic address of what is
-pointed to.  Hence, a list is kept as a series of electronic addresses.
+指针本身就是指向所指对象的电子地址。因此，列表被保存为一系列电子地址。
 
 @menu
-* Lists diagrammed::
-* Symbols as Chest::            Exploring a powerful metaphor.
-* List Exercise::
+* 列表示意图::
+* 符号作为箱子::       探索一个强有力的隐喻。
+* 列表练习::
 @end menu
 
 @ifnottex
-@node Lists diagrammed
-@unnumberedsec Lists diagrammed
+@node 列表示意图
+@unnumberedsec 列表示意图
 @end ifnottex
 
-For example, the list @code{(rose violet buttercup)} has three
-elements, @samp{rose}, @samp{violet}, and @samp{buttercup}.  In the
-computer, the electronic address of @samp{rose} is recorded in a
-segment of computer memory called a @dfn{cons cell} (because it's what
-the function @code{cons} actually creates).  That cons cell also holds
-the address of a second cons cell, whose @sc{car} is the atom
-@samp{violet}; and that address (the one that tells where to find
-@samp{violet}) is kept along with the address of a third cons cell
-which holds the address for the atom @samp{buttercup}.
+例如，列表 @code{(rose violet buttercup)} 有三个元素，@samp{rose}、@samp{violet} 和 @samp{buttercup}。在计算机中，@samp{rose} 的电子地址记录在称为 @dfn{cons cell}（因为它实际上是函数 @code{cons} 创建的东西）的计算机内存段中。该 cons cell 还保存了指向第二个 cons cell 的地址，其 @sc{car} 是原子 @samp{violet}；而该地址（指示如何找到 @samp{violet} 的地址）与保存原子 @samp{buttercup} 的地址一起保存在第三个 cons cell 的地址中。
 
 @need 1200
-This sounds more complicated than it is and is easier seen in a diagram:
+这听起来比实际上更复杂，但在图表中更容易理解：
 
-@c clear print-postscript-figures
+@c 清除打印后期图形
 @c !!! cons-cell-diagram #1
 @ifnottex
 @smallexample
@@ -6510,20 +6492,10 @@ This sounds more complicated than it is and is easier seen in a diagram:
 @end ifclear
 
 @noindent
-In the diagram, each box represents a word of computer memory that
-holds a Lisp object, usually in the form of a memory address.  The boxes,
-i.e., the addresses, are in pairs.  Each arrow points to what the address
-is the address of, either an atom or another pair of addresses.  The
-first box is the electronic address of @samp{rose} and the arrow points
-to @samp{rose}; the second box is the address of the next pair of boxes,
-the first part of which is the address of @samp{violet} and the second
-part of which is the address of the next pair.  The very last box
-points to the symbol @code{nil}, which marks the end of the list.
+在图表中，每个框表示计算机内存中的一个字，通常以内存地址的形式保存一个Lisp对象。框，即地址，是成对出现的。每个箭头指向地址所指的内容，要么是一个原子，要么是另一对地址。第一个框是 @samp{rose} 的电子地址，箭头指向 @samp{rose}；第二个框是下一对框的地址，其第一部分是 @samp{violet} 的地址，第二部分是下一对的地址。最后一个框指向符号 @code{nil}，表示列表的结束。
 
 @need 1200
-When a variable is set to a list with an operation such as @code{setq},
-it stores the address of the first box in the variable.  Thus,
-evaluation of the expression
+当变量使用诸如 @code{setq} 这样的操作设置为列表时，它将存储在变量中的第一个框的地址。因此，表达式的求值
 
 @smallexample
 (setq bouquet '(rose violet buttercup))
@@ -6531,7 +6503,7 @@ evaluation of the expression
 
 @need 1250
 @noindent
-creates a situation like this:
+会创建这样的情况：
 
 @c cons-cell-diagram #2
 @ifnottex
@@ -6571,12 +6543,10 @@ bouquet
 @end ifclear
 
 @noindent
-In this example, the symbol @code{bouquet} holds the address of the first
-pair of boxes.
+在此示例中，符号 @code{bouquet} 持有第一对框的地址。
 
 @need 1200
-This same list can be illustrated in a different sort of box notation
-like this:
+相同的列表可以用不同类型的框符号表示，如下所示：
 
 @c cons-cell-diagram #2a
 @ifnottex
@@ -6615,20 +6585,9 @@ bouquet
 @end iftex
 @end ifclear
 
-(Symbols consist of more than pairs of addresses, but the structure of
-a symbol is made up of addresses.  Indeed, the symbol @code{bouquet}
-consists of a group of address-boxes, one of which is the address of
-the printed word @samp{bouquet}, a second of which is the address of a
-function definition attached to the symbol, if any, a third of which
-is the address of the first pair of address-boxes for the list
-@code{(rose violet buttercup)}, and so on.  Here we are showing that
-the symbol's third address-box points to the first pair of
-address-boxes for the list.)
+（符号由不仅仅是地址对组成，但符号的结构由地址组成。实际上，符号 @code{bouquet} 由一组地址框组成，其中一个是打印字 @samp{bouquet} 的地址，第二个是附加到符号的函数定义的地址（如果有的话），第三个是列表 @code{(rose violet buttercup)} 的地址的第一对地址框，依此类推。这里我们显示符号的第三个地址框指向列表的第一对地址框。）
 
-If a symbol is set to the @sc{cdr} of a list, the list itself is not
-changed; the symbol simply has an address further down the list.  (In
-the jargon, @sc{car} and @sc{cdr} are ``non-destructive''.)  Thus,
-evaluation of the following expression
+如果将符号设置为列表的 @sc{cdr}，列表本身不会改变；符号只是具有列表中更远地址的地址。 （在行话中，@sc{car} 和 @sc{cdr} 是“非破坏性的”）因此，对以下表达式的求值
 
 @smallexample
 (setq flowers (cdr bouquet))
@@ -6636,7 +6595,7 @@ evaluation of the following expression
 
 @need 800
 @noindent
-produces this:
+会产生：
 
 @c cons-cell-diagram #3
 @ifnottex
@@ -6681,24 +6640,16 @@ bouquet        flowers
 @end iftex
 @end ifclear
 
+@need 1200
 @noindent
-The value of @code{flowers} is @code{(violet buttercup)}, which is
-to say, the symbol @code{flowers} holds the address of the pair of
-address-boxes, the first of which holds the address of @code{violet},
-and the second of which holds the address of @code{buttercup}.
+变量 @code{flowers} 的值是 @code{(violet buttercup)}，也就是说，符号 @code{flowers} 持有地址的对应的框，其中第一个框持有 @code{violet} 的地址，第二个框持有 @code{buttercup} 的地址。
 
-@cindex dotted pair
+@cindex 点对
 @cindex cons cell
-A pair of address-boxes is called a @dfn{cons cell} or @dfn{dotted
-pair}.  @xref{Cons Cell Type, , Cons Cell and List Types, elisp, The GNU Emacs Lisp
-Reference Manual}, and @ref{Dotted Pair Notation, , Dotted Pair
-Notation, elisp, The GNU Emacs Lisp Reference Manual}, for more
-information about cons cells and dotted pairs.
+一对地址框称为 @dfn{cons cell} 或 @dfn{点对}。有关 cons cell 和点对的更多信息，请参见 @xref{Cons Cell Type, , Cons Cell and List Types, elisp, The GNU Emacs Lisp Reference Manual}，以及 @ref{Dotted Pair Notation, , Dotted Pair Notation, elisp, The GNU Emacs Lisp Reference Manual}。
 
 @need 1200
-The function @code{cons} adds a new pair of addresses to the front of
-a series of addresses like that shown above.  For example, evaluating
-the expression
+函数 @code{cons} 将一个新的地址对添加到上面所示的地址系列的前面。例如，对以下表达式的求值
 
 @smallexample
 (setq bouquet (cons 'lily bouquet))
@@ -6706,7 +6657,7 @@ the expression
 
 @need 1500
 @noindent
-produces:
+产生：
 
 @c cons-cell-diagram #4
 @ifnottex
@@ -6753,33 +6704,22 @@ bouquet                       flowers
 
 @need 1200
 @noindent
-However, this does not change the value of the symbol
-@code{flowers}, as you can see by evaluating the following,
+然而，这并不会改变符号 @code{flowers} 的值，可以通过求值以下表达式来查看：
 
 @smallexample
 (eq (cdr (cdr bouquet)) flowers)
 @end smallexample
 
 @noindent
-which returns @code{t} for true.
+这会返回 @code{t}，表示为真。
 
-Until it is reset, @code{flowers} still has the value
-@code{(violet buttercup)}; that is, it has the address of the cons
-cell whose first address is of @code{violet}.  Also, this does not
-alter any of the pre-existing cons cells; they are all still there.
+在被重新设置之前，@code{flowers} 仍然具有值 @code{(violet buttercup)}；也就是说，它持有第一个框的地址，该框的第一个地址是 @code{violet}。
 
-Thus, in Lisp, to get the @sc{cdr} of a list, you just get the address
-of the next cons cell in the series; to get the @sc{car} of a list,
-you get the address of the first element of the list; to @code{cons} a
-new element on a list, you add a new cons cell to the front of the list.
-That is all there is to it!  The underlying structure of Lisp is
-brilliantly simple!
+总而言之，在Lisp中，要获得列表的 @sc{cdr}，只需获取系列中下一个 cons cell 的地址；要获取列表的 @sc{car}，只需获取列表的第一个元素的地址；要在列表前面添加新元素，只需在列表的前面添加一个新的 cons cell。就是这样！Lisp的底层结构非常简单！
 
-And what does the last address in a series of cons cells refer to?  It
-is the address of the empty list, of @code{nil}.
+而在一系列 cons 单元中，最后一个地址指向什么呢？它指向空列表，即 @code{nil} 的地址。
 
-In summary, when a Lisp variable is set to a value, it is provided with
-the address of the list to which the variable refers.
+总之，当一个 Lisp 变量被设置为某个值时，它会被赋予指向该变量所引用的列表的地址。
 
 @node Symbols as Chest
 @section Symbols as a Chest of Drawers
@@ -6983,7 +6923,7 @@ value of @code{kill-ring-yank-pointer} is:
 ("a different piece of text" "yet more text")
 @end smallexample
 
-As explained in the previous chapter (@pxref{List Implementation}), the
+As explained in the previous chapter (@pxref{列表实现}), the
 computer does not keep two different copies of the text being pointed to
 by both the @code{kill-ring} and the @code{kill-ring-yank-pointer}.  The
 words ``a different piece of text'' and ``yet more text'' are not

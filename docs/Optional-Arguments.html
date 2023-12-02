@@ -94,7 +94,7 @@ Next: <a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="n" rel="next
 
 <p>该函数类似于 <code class="code">simplified-beginning-of-buffer</code> 函数，只是 <code class="code">interactive</code> 表达式的参数是 <code class="code">&quot;P&quot;</code>，并且 <code class="code">goto-char</code> 函数后面跟着一个 if-then-else 表达式，用于确定如果有一个不是 cons cell 的参数，光标应该放在哪里。
 </p>
-<p>（由于我在很多章节里都没有解释 cons cell，请考虑忽略函数 <code class="code">consp</code>。See <a class="xref" href="List-Implementation.html">How Lists are Implemented</a>，以及 <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Cons-Cell-Type.html#Cons-Cell-Type">Cons Cell and List Types</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
+<p>（由于我在很多章节里都没有解释 cons cell，请考虑忽略函数 <code class="code">consp</code>。See <a class="xref" href="Lie-Biao-Shi-Xian-.html">如何实现列表</a>，以及 <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Cons-Cell-Type.html#Cons-Cell-Type">Cons Cell and List Types</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
 </p>
 <p><code class="code">interactive</code> 表达式中的 <code class="code">&quot;P&quot;</code> 告诉 Emacs 将前缀参数（如果有的话）以原始形式传递给函数。前缀参数是通过按 <kbd class="key">META</kbd> 键后面跟一个数字，或者按 <kbd class="kbd">C-u</kbd> 然后是一个数字来生成的。（如果不输入数字，<kbd class="kbd">C-u</kbd> 默认为带有 4 的 cons cell。在 <code class="code">interactive</code> 表达式中的小写 <code class="code">&quot;p&quot;</code> 会导致函数将前缀参数转换为数字。）
 </p>

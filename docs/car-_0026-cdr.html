@@ -88,7 +88,7 @@ Next: <a href="cons.html" accesskey="n" rel="next"><code class="code">cons</code
 </p>
 <p>在处理列表时，使用 <code class="code">first</code> 和 <code class="code">rest</code> 这样的名称可能比 <code class="code">car</code> 和 <code class="code">cdr</code> 更有意义。事实上，一些程序员会将 <code class="code">first</code> 和 <code class="code">rest</code> 定义为 <code class="code">car</code> 和 <code class="code">cdr</code> 的别名，然后在代码中使用 <code class="code">first</code> 和 <code class="code">rest</code>。
 </p>
-<p>然而，在Lisp中，列表是使用称为“cons单元”（see <a class="pxref" href="List-Implementation.html">How Lists are Implemented</a>）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 <small class="sc">CAR</small> 和 <small class="sc">CDR</small> 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 <code class="code">car</code> 和 <code class="code">cdr</code> 实际上是对称的。
+<p>然而，在Lisp中，列表是使用称为“cons单元”（see <a class="pxref" href="Lie-Biao-Shi-Xian-.html">如何实现列表</a>）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 <small class="sc">CAR</small> 和 <small class="sc">CDR</small> 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 <code class="code">car</code> 和 <code class="code">cdr</code> 实际上是对称的。
 </p>
 
 <p>当 <code class="code">car</code> 和 <code class="code">cdr</code> 应用于由符号组成的列表时（例如，列表 <code class="code">(pine fir oak maple)</code>），函数 <code class="code">car</code> 返回的列表元素是符号 <code class="code">pine</code> 而没有括号。<code class="code">pine</code> 是列表中的第一个元素。然而，列表的 <small class="sc">CDR</small> 本身是一个列表，即 <code class="code">(fir oak maple)</code>，你可以通过以通常的方式执行以下表达式来验证：
