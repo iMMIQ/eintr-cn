@@ -9211,19 +9211,17 @@ GNU Emacs 21
 
 如果您在 GNU Emacs 中阅读此内容并想查看整个函数，请键入 @kbd{C-h f}（@code{describe-function}）和函数的名称。这会给您函数文档和包含函数源代码的库的名称。将点放在库的名称上，然后按 @key{RET} 键；您将直接转到源代码。（确保安装了源代码！没有源代码，您就像闭着眼睛开车的人一样！）
 
-@node Regexp Review
-@section Review
+@node 正则表达式复习
+@section 复习
 
-Here is a brief summary of some recently introduced functions.
+以下是一些最近引入的函数的简要概述。
 
 @table @code
 @item while
-Repeatedly evaluate the body of the expression so long as the first
-element of the body tests true.  Then return @code{nil}.  (The
-expression is evaluated only for its side effects.)
+重复评估表达式体的主体，只要体的第一个元素测试为真。然后返回@code{nil}。（仅为了其副作用而评估表达式。）
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -9239,43 +9237,33 @@ For example:
 @end smallexample
 
 @noindent
-(The @code{insert} function inserts its arguments at point; the
-@code{format} function returns a string formatted from its arguments
-the way @code{message} formats its arguments; @code{\n} produces a new
-line.)
+（@code{insert}函数在光标处插入其参数；@code{format}函数根据其参数的方式返回一个字符串，就像@code{message}格式化其参数一样；@code{\n}产生一个新行。）
 
 @item re-search-forward
-Search for a pattern, and if the pattern is found, move point to rest
-just after it.
+搜索模式，如果找到模式，则将光标移动到其后。
 
 @noindent
-Takes four arguments, like @code{search-forward}:
+与@code{search-forward}相似，接受四个参数：
 
 @enumerate
 @item
-A regular expression that specifies the pattern to search for.
-(Remember to put quotation marks around this argument!)
+一个正则表达式，指定要搜索的模式。（记得在这个参数周围加上引号！）
 
 @item
-Optionally, the limit of the search.
+可选的搜索限制。
 
 @item
-Optionally, what to do if the search fails, return @code{nil} or an
-error message.
+可选的，如果搜索失败，返回@code{nil}或错误消息。
 
 @item
-Optionally, how many times to repeat the search; if negative, the
-search goes backwards.
+可选的，重复搜索的次数；如果为负数，则进行反向搜索。
 @end enumerate
 
 @item let*
-Bind some variables locally to particular values,
-and then evaluate the remaining arguments, returning the value of the
-last one.  While binding the local variables, use the local values of
-variables bound earlier, if any.
+在本地将一些变量绑定到特定值，然后评估其余参数，返回最后一个的值。在绑定本地变量时，使用先前绑定的变量的本地值（如果有）。
 
 @need 1250
-For example:
+例如：
 
 @smallexample
 @group
@@ -9287,37 +9275,25 @@ For example:
 @end smallexample
 
 @item match-beginning
-Return the position of the start of the text found by the last regular
-expression search.
+返回由上一次正则表达式搜索找到的文本的起始位置。
 
 @item looking-at
-Return @code{t} for true if the text after point matches the argument,
-which should be a regular expression.
+如果光标后的文本与参数匹配（应为正则表达式），则返回@code{t}为真。
 
 @item eobp
-Return @code{t} for true if point is at the end of the accessible part
-of a buffer.  The end of the accessible part is the end of the buffer
-if the buffer is not narrowed; it is the end of the narrowed part if
-the buffer is narrowed.
+如果光标位于缓冲区的可访问部分的末尾，则返回@code{t}为真。如果缓冲区没有缩小，则可访问部分的末尾是缓冲区的末尾；如果缓冲区已经缩小，则可访问部分的末尾是缩小部分的末尾。
 @end table
 
 @need 1500
 @node re-search Exercises
-@section Exercises with @code{re-search-forward}
+@section 使用@code{re-search-forward}的练习
 
 @itemize @bullet
 @item
-Write a function to search for a regular expression that matches two
-or more blank lines in sequence.
+编写一个函数来搜索与正则表达式匹配的两个或更多空白行。
 
 @item
-Write a function to search for duplicated words, such as ``the the''.
-@xref{Regexps, , Syntax of Regular Expressions, emacs, The GNU Emacs
-Manual}, for information on how to write a regexp (a regular
-expression) to match a string that is composed of two identical
-halves.  You can devise several regexps; some are better than others.
-The function I use is described in an appendix, along with several
-regexps.  @xref{the-the, , @code{the-the} Duplicated Words Function}.
+编写一个函数来搜索重复的单词，例如“the the”。有关如何编写匹配由两个相同部分组成的字符串的正则表达式（regexp）的信息，请参阅@xref{Regexps, , Syntax of Regular Expressions, emacs, The GNU Emacs Manual}。您可以设计几个正则表达式；有些比其他的好。我使用的函数在附录中有描述，以及几个正则表达式。@xref{the-the, , @code{the-the} Duplicated Words Function}。
 @end itemize
 
 @node Counting Words
