@@ -3021,25 +3021,19 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @end itemize
 
 @node Buffer Walk Through
-@chapter A Few Buffer-Related Functions
+@chapter 几个与缓冲区相关的函数
 
-In this chapter we study in detail several of the functions used in GNU
-Emacs.  This is called a ``walk-through''.  These functions are used as
-examples of Lisp code, but are not imaginary examples; with the
-exception of the first, simplified function definition, these functions
-show the actual code used in GNU Emacs.  You can learn a great deal from
-these definitions.  The functions described here are all related to
-buffers.  Later, we will study other functions.
+在这一章中，我们详细研究了GNU Emacs中使用的几个函数。这被称为“步进演示”。这些函数被用作Lisp代码的示例，但它们并不是虚构的例子；除了第一个简化的函数定义之外，这些函数展示了GNU Emacs中实际使用的代码。你可以从这些定义中学到很多东西。这里描述的函数都与缓冲区有关。稍后，我们将研究其他函数。
 
 @menu
-* Finding More::                How to find more information.
-* simplified-beginning-of-buffer::  Shows @code{goto-char},
-                                @code{point-min}, and @code{push-mark}.
-* mark-whole-buffer::           Almost the same as @code{beginning-of-buffer}.
-* append-to-buffer::            Uses @code{save-excursion} and
-                                @code{insert-buffer-substring}.
-* Buffer Related Review::       Review.
-* Buffer Exercises::
+* 查找更多信息::                  如何查找更多信息。
+* simplified-beginning-of-buffer::  展示了 @code{goto-char}、
+                                  @code{point-min} 和 @code{push-mark}。
+* mark-whole-buffer::             几乎与 @code{beginning-of-buffer} 相同。
+* append-to-buffer::              使用 @code{save-excursion} 和
+                                  @code{insert-buffer-substring}。
+* 缓冲区相关回顾::                  回顾。
+* 缓冲区练习::
 @end menu
 
 @node Finding More
