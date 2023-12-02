@@ -4409,95 +4409,55 @@ and the greater of them is not at the start of a line."
         (- (buffer-size) (forward-line (buffer-size)))))))
 @end ignore
 
-@node what-line
+@node 行号
 @section @code{what-line}
 @findex what-line
-@cindex Widening, example of
+@cindex 扩展，示例
 
-The @code{what-line} command tells you the number of the line in which
-the cursor is located.  The function illustrates the use of the
-@code{save-restriction} and @code{save-excursion} commands.  Here is the
-original text of the function:
+@code{what-line}命令告诉您光标所在位置的行号。该函数演示了@code{save-restriction}和@code{save-excursion}命令的用法。以下是该函数的原始文本：
 
 @smallexample
 @group
 (defun what-line ()
-  "Print the current line number (in the buffer) of point."
+  "打印光标所在位置（在缓冲区中）的当前行号。"
   (interactive)
   (save-restriction
     (widen)
     (save-excursion
       (beginning-of-line)
-      (message "Line %d"
+      (message "第%d行"
                (1+ (count-lines 1 (point)))))))
 @end group
 @end smallexample
 
-(In modern versions of GNU Emacs, the @code{what-line} function has
-been expanded to tell you your line number in a narrowed buffer as
-well as your line number in a widened buffer.  The modern version is
-more complex than the version shown here.  If you feel adventurous,
-you might want to look at it after figuring out how this version
-works.  You will probably need to use @kbd{C-h f}
-(@code{describe-function}).  The newer version uses a conditional to
-determine whether the buffer has been narrowed.
+（在GNU Emacs的现代版本中，@code{what-line}函数已经扩展，不仅告诉您在扩展缓冲区中的行号，还告诉您在狭窄缓冲区中的行号。现代版本比这里展示的版本更复杂。如果您感到有冒险精神，可以在弄清楚此版本的工作原理后查看它。您可能需要使用@kbd{C-h f}（@code{describe-function}）。新版本使用条件判断确定缓冲区是否已经被狭窄。
 
-Also, the modern version of @code{what-line} uses
-@code{line-number-at-pos}, which among other simple expressions, such
-as @code{(goto-char (point-min))}, moves point to the beginning of the
-current line with @code{(forward-line 0)} rather than
-@code{beginning-of-line}.)
+此外，@code{what-line}的现代版本使用@code{line-number-at-pos}，它除了简单的表达式（例如@code{(goto-char (point-min))}）外，还使用@code{(forward-line 0)}将光标移动到当前行的开头，而不是@code{beginning-of-line}。）
 
-The @code{what-line} function as shown here has a documentation line
-and is interactive, as you would expect.  The next two lines use the
-functions @code{save-restriction} and @code{widen}.
+这里展示的@code{what-line}函数具有文档行并且是交互式的，正如您所期望的那样。接下来的两行使用了@code{save-restriction}和@code{widen}函数。
 
-The @code{save-restriction} special form notes whatever narrowing is in
-effect, if any, in the current buffer and restores that narrowing after
-the code in the body of the @code{save-restriction} has been evaluated.
+@code{save-restriction}特殊形式记录当前缓冲区中任何有效的缩小范围（如果有的话），并在@code{save-restriction}的主体代码被评估后恢复该缩小范围。
 
-The @code{save-restriction} special form is followed by @code{widen}.
-This function undoes any narrowing the current buffer may have had
-when @code{what-line} was called.  (The narrowing that was there is
-the narrowing that @code{save-restriction} remembers.)  This widening
-makes it possible for the line counting commands to count from the
-beginning of the buffer.  Otherwise, they would have been limited to
-counting within the accessible region.  Any original narrowing is
-restored just before the completion of the function by the
-@code{save-restriction} special form.
+@code{save-restriction}特殊形式后跟@code{widen}。此函数撤消了在调用@code{what-line}时当前缓冲区可能存在的任何缩小。 （@code{save-restriction}记住的是存在的缩小。）这种扩展使得行计数命令能够从缓冲区的开头计数。否则，它们将受限于在可访问区域内计数。任何原始缩小都在@code{save-restriction}特殊形式完成函数后立即恢复。
 
-The call to @code{widen} is followed by @code{save-excursion}, which
-saves the location of the cursor (i.e., of point), and
-restores it after the code in the body of the @code{save-excursion}
-uses the @code{beginning-of-line} function to move point.
+对@code{widen}的调用后跟@code{save-excursion}，该函数保存光标（即点）的位置，并在@code{save-excursion}的主体代码使用@code{beginning-of-line}函数移动点后恢复它。
 
-(Note that the @code{(widen)} expression comes between the
-@code{save-restriction} and @code{save-excursion} special forms.  When
-you write the two @code{save- @dots{}} expressions in sequence, write
-@code{save-excursion} outermost.)
+（请注意，@code{(widen)}表达式位于@code{save-restriction}和@code{save-excursion}特殊形式之间。当您按顺序编写两个@code{save- @dots{}}表达式时，将@code{save-excursion}写在最外层。）
 
 @need 1200
-The last two lines of the @code{what-line} function are functions to
-count the number of lines in the buffer and then print the number in the
-echo area.
+@code{what-line}函数的最后两行是用于计算缓冲区中行数然后在回显区打印该数字的函数。
 
 @smallexample
 @group
-(message "Line %d"
+(message "第%d行"
          (1+ (count-lines 1 (point)))))))
 @end group
 @end smallexample
 
-The @code{message} function prints a one-line message at the bottom of
-the Emacs screen.  The first argument is inside of quotation marks and
-is printed as a string of characters.  However, it may contain a
-@samp{%d} expression to print a following argument.  @samp{%d} prints
-the argument as a decimal, so the message will say something such as
-@samp{Line 243}.
+@code{message}函数在Emacs屏幕底部打印一行消息。第一个参数位于引号中，被打印为一个字符串。但是，它可能包含@samp{%d}表达式，以打印后续参数。@samp{%d}将参数打印为十进制数，因此消息将显示类似于@samp{第243行}的内容。
 
 @need 1200
-The number that is printed in place of the @samp{%d} is computed by the
-last line of the function:
+替换@samp{%d}的位置打印的数字由函数的最后一行计算：
 
 @smallexample
 (1+ (count-lines 1 (point)))
@@ -4507,10 +4467,9 @@ last line of the function:
 GNU Emacs 22
 
 (defun count-lines (start end)
-  "Return number of lines between START and END.
-This is usually the number of newlines between them,
-but can be one more if START is not equal to END
-and the greater of them is not at the start of a line."
+  "返回START和END之间的行数。
+通常这是它们之间的换行符数，
+但是如果START不等于END并且它们中的较大者不在行的开头，则可能多一行。"
   (save-excursion
     (save-restriction
       (narrow-to-region start end)
@@ -4531,17 +4490,9 @@ and the greater of them is not at the start of a line."
 @end ignore
 
 @noindent
-What this does is count the lines from the first position of the
-buffer, indicated by the @code{1}, up to @code{(point)}, and then add
-one to that number.  (The @code{1+} function adds one to its
-argument.)  We add one to it because line 2 has only one line before
-it, and @code{count-lines} counts only the lines @emph{before} the
-current line.
+这是从缓冲区的第一个位置（由@code{1}指示）到@code{(point)}的行数，然后将其加一。 （@code{1+}函数将其参数加一。）我们加一是因为第2行之前只有一行，而@code{count-lines}只计算当前行之前的行。
 
-After @code{count-lines} has done its job, and the message has been
-printed in the echo area, the @code{save-excursion} restores point to
-its original position; and @code{save-restriction} restores
-the original narrowing, if any.
+在@code{count-lines}完成其工作并且消息已经在回显区打印后，@code{save-excursion}将点还原到其原始位置；@code{save-restriction}恢复原始的缩小（如果有的话）。
 
 @node narrow Exercise
 @section Exercise with Narrowing

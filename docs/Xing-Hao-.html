@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>行号 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="行号 (Programming in Emacs Lisp)">
+<meta name="keywords" content="行号 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Suo-Zhai-Yu-Kuo-Da-.html" rel="up" title="缩窄与扩大">
+<link href="narrow-Exercise.html" rel="next" title="narrow Exercise">
+<link href="save_002drestriction.html" rel="prev" title="save-restriction">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_884c_53f7">
+<div class="nav-panel">
+<p>
+Next: <a href="narrow-Exercise.html" accesskey="n" rel="next">Exercise with Narrowing</a>, Previous: <a href="save_002drestriction.html" accesskey="p" rel="prev">特殊形式 <code class="code">save-restriction</code></a>, Up: <a href="Suo-Zhai-Yu-Kuo-Da-.html" accesskey="u" rel="up">缩窄与扩大</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="what_002dline">6.2 <code class="code">what-line</code></h3>
+<a class="index-entry-id" id="index-what_002dline"></a>
+<a class="index-entry-id" id="index-Kuo-Zhan-_002cShiLi"></a>
+
+<p><code class="code">what-line</code>命令告诉您光标所在位置的行号。该函数演示了<code class="code">save-restriction</code>和<code class="code">save-excursion</code>命令的用法。以下是该函数的原始文本：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun what-line ()
+  &quot;打印光标所在位置（在缓冲区中）的当前行号。&quot;
+  (interactive)
+  (save-restriction
+    (widen)
+    (save-excursion
+      (beginning-of-line)
+      (message &quot;第%d行&quot;
+               (1+ (count-lines 1 (point)))))))
+</pre></div></div>
+
+<p>（在GNU Emacs的现代版本中，<code class="code">what-line</code>函数已经扩展，不仅告诉您在扩展缓冲区中的行号，还告诉您在狭窄缓冲区中的行号。现代版本比这里展示的版本更复杂。如果您感到有冒险精神，可以在弄清楚此版本的工作原理后查看它。您可能需要使用<kbd class="kbd">C-h f</kbd>（<code class="code">describe-function</code>）。新版本使用条件判断确定缓冲区是否已经被狭窄。
+</p>
+<p>此外，<code class="code">what-line</code>的现代版本使用<code class="code">line-number-at-pos</code>，它除了简单的表达式（例如<code class="code">(goto-char (point-min))</code>）外，还使用<code class="code">(forward-line 0)</code>将光标移动到当前行的开头，而不是<code class="code">beginning-of-line</code>。）
+</p>
+<p>这里展示的<code class="code">what-line</code>函数具有文档行并且是交互式的，正如您所期望的那样。接下来的两行使用了<code class="code">save-restriction</code>和<code class="code">widen</code>函数。
+</p>
+<p><code class="code">save-restriction</code>特殊形式记录当前缓冲区中任何有效的缩小范围（如果有的话），并在<code class="code">save-restriction</code>的主体代码被评估后恢复该缩小范围。
+</p>
+<p><code class="code">save-restriction</code>特殊形式后跟<code class="code">widen</code>。此函数撤消了在调用<code class="code">what-line</code>时当前缓冲区可能存在的任何缩小。 （<code class="code">save-restriction</code>记住的是存在的缩小。）这种扩展使得行计数命令能够从缓冲区的开头计数。否则，它们将受限于在可访问区域内计数。任何原始缩小都在<code class="code">save-restriction</code>特殊形式完成函数后立即恢复。
+</p>
+<p>对<code class="code">widen</code>的调用后跟<code class="code">save-excursion</code>，该函数保存光标（即点）的位置，并在<code class="code">save-excursion</code>的主体代码使用<code class="code">beginning-of-line</code>函数移动点后恢复它。
+</p>
+<p>（请注意，<code class="code">(widen)</code>表达式位于<code class="code">save-restriction</code>和<code class="code">save-excursion</code>特殊形式之间。当您按顺序编写两个<code class="code">save- &hellip;</code>表达式时，将<code class="code">save-excursion</code>写在最外层。）
+</p>
+<p><code class="code">what-line</code>函数的最后两行是用于计算缓冲区中行数然后在回显区打印该数字的函数。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(message &quot;第%d行&quot;
+         (1+ (count-lines 1 (point)))))))
+</pre></div></div>
+
+<p><code class="code">message</code>函数在Emacs屏幕底部打印一行消息。第一个参数位于引号中，被打印为一个字符串。但是，它可能包含&lsquo;<samp class="samp">%d</samp>&rsquo;表达式，以打印后续参数。&lsquo;<samp class="samp">%d</samp>&rsquo;将参数打印为十进制数，因此消息将显示类似于&lsquo;<samp class="samp">第243行</samp>&rsquo;的内容。
+</p>
+<p>替换&lsquo;<samp class="samp">%d</samp>&rsquo;的位置打印的数字由函数的最后一行计算：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(1+ (count-lines 1 (point)))
+</pre></div>
+
+
+<p>这是从缓冲区的第一个位置（由<code class="code">1</code>指示）到<code class="code">(point)</code>的行数，然后将其加一。 （<code class="code">1+</code>函数将其参数加一。）我们加一是因为第2行之前只有一行，而<code class="code">count-lines</code>只计算当前行之前的行。
+</p>
+<p>在<code class="code">count-lines</code>完成其工作并且消息已经在回显区打印后，<code class="code">save-excursion</code>将点还原到其原始位置；<code class="code">save-restriction</code>恢复原始的缩小（如果有的话）。
+</p>
+</div>
+
+
+
+</body>
+</html>
