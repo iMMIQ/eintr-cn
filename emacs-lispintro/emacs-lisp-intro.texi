@@ -3576,21 +3576,18 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 @end table
 
 @need 1500
-@node Buffer Exercises
-@section Exercises
+@node 缓冲区练习
+@section 练习
 
 @itemize @bullet
 @item
-Write your own @code{simplified-end-of-buffer} function definition;
-then test it to see whether it works.
+编写自己的 @code{simplified-end-of-buffer} 函数定义；然后测试它是否有效。
 
 @item
-Use @code{if} and @code{get-buffer} to write a function that prints a
-message telling you whether a buffer exists.
+使用 @code{if} 和 @code{get-buffer} 编写一个函数，该函数打印一条消息，告诉您缓冲区是否存在。
 
 @item
-Using @code{xref-find-definitions}, find the source for the
-@code{copy-to-buffer} function.
+使用 @code{xref-find-definitions} 查找 @code{copy-to-buffer} 函数的源代码。
 @end itemize
 
 @node More Complex
