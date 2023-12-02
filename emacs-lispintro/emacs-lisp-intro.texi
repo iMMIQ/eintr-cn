@@ -5241,46 +5241,39 @@ Goes backward if ARG is negative; error if CHAR not found."
 @section @code{kill-region}
 @findex kill-region
 
-The @code{zap-to-char} function uses the @code{kill-region} function.
-This function clips text from a region and copies that text to
-the kill ring, from which it may be retrieved.
+@code{zap-to-char} 函数使用 @code{kill-region} 函数。这个函数从一个区域裁剪文本并将其复制到 kill ring 中，然后可以从中检索该文本。
 
 @ignore
 GNU Emacs 22:
 
 (defun kill-region (beg end &optional yank-handler)
-  "Kill (\"cut\") text between point and mark.
-This deletes the text from the buffer and saves it in the kill ring.
-The command \\[yank] can retrieve it from there.
-\(If you want to kill and then yank immediately, use \\[kill-ring-save].)
+  "杀死（\"cut\"）点和标记之间的文本。
+这会从缓冲区中删除文本并将其保存在 kill ring 中。
+命令 \\[yank] 可以从中检索它。
+\(如果你想要立即杀死然后粘贴，使用 \\[kill-ring-save]。)
 
-If you want to append the killed region to the last killed text,
-use \\[append-next-kill] before \\[kill-region].
+如果你想将被杀死的区域追加到上次被杀死的文本中，
+在 \\[kill-region] 之前使用 \\[append-next-kill]。
 
-If the buffer is read-only, Emacs will beep and refrain from deleting
-the text, but put the text in the kill ring anyway.  This means that
-you can use the killing commands to copy text from a read-only buffer.
+如果缓冲区是只读的，Emacs 会响铃并且不会删除文本，但仍会将文本放入 kill ring 中。
+这意味着你可以使用删除命令从只读缓冲区复制文本。
 
-This is the primitive for programs to kill text (as opposed to deleting it).
-Supply two arguments, character positions indicating the stretch of text
- to be killed.
-Any command that calls this function is a \"kill command\".
-If the previous command was also a kill command,
-the text killed this time appends to the text killed last time
-to make one entry in the kill ring.
+这是程序用于杀死文本的原语（与删除不同）。
+提供两个参数，指示要杀死的文本范围的字符位置。
+调用此函数的任何命令都是“杀死命令”。
+如果上一个命令也是杀死命令，
+这次被杀死的文本将追加到上次被杀死的文本中，
+形成 kill ring 中的一个条目。
 
-In Lisp code, optional third arg YANK-HANDLER, if non-nil,
-specifies the yank-handler text property to be set on the killed
-text.  See `insert-for-yank'."
-  ;; Pass point first, then mark, because the order matters
-  ;; when calling kill-append.
+在 Lisp 代码中，可选的第三个参数 YANK-HANDLER，如果非空，指定要设置在被杀死文本上的 yank-handler 文本属性。参见 `insert-for-yank'。"
+  ;; 传递 point 先，然后是 mark，因为在调用 kill-append 时顺序很重要。
   (interactive (list (point) (mark)))
   (unless (and beg end)
-    (error "The mark is not set now, so there is no region"))
+    (error "当前未设置标记，因此没有区域"))
   (condition-case nil
       (let ((string (filter-buffer-substring beg end t)))
-        (when string                        ;STRING is nil if BEG = END
-          ;; Add that string to the kill ring, one way or another.
+        (when string                        ;如果 BEG = END，则 STRING 为 nil
+          ;; 以某种方式将该字符串添加到 kill ring 中。
           (if (eq last-command 'kill-region)
               (kill-append string (< end beg) yank-handler)
             (kill-new string nil yank-handler)))
@@ -5288,48 +5281,38 @@ text.  See `insert-for-yank'."
           (setq this-command 'kill-region))
         nil)
     ((buffer-read-only text-read-only)
-     ;; The code above failed because the buffer, or some of the characters
-     ;; in the region, are read-only.
-     ;; We should beep, in case the user just isn't aware of this.
-     ;; However, there's no harm in putting
-     ;; the region's text in the kill ring, anyway.
+     ;; 上面的代码失败，因为缓冲区或区域中的某些字符是只读的。
+     ;; 我们应该响铃，以防用户不知道这一点。
+     ;; 但是无论如何，将区域的文本放入 kill ring 中都没有害处。
      (copy-region-as-kill beg end)
-     ;; Set this-command now, so it will be set even if we get an error.
+     ;; 现在设置 this-command，以便即使出现错误也会设置它。
      (setq this-command 'kill-region)
-     ;; This should barf, if appropriate, and give us the correct error.
+     ;; 如果 kill-read-only-ok 为真，则不会发生错误，而是发出消息。
      (if kill-read-only-ok
-         (progn (message "Read only text copied to kill ring") nil)
-       ;; Signal an error if the buffer is read-only.
+         (progn (message "只读文本已复制到 kill ring") nil)
+       ;; 如果缓冲区是只读的，则发出错误。
        (barf-if-buffer-read-only)
-       ;; If the buffer isn't read-only, the text is.
+       ;; 如果缓冲区不是只读的，那么文本是只读的。
        (signal 'text-read-only (list (current-buffer)))))))
 @end ignore
 
-The Emacs 22 version of that function uses @code{condition-case} and
-@code{copy-region-as-kill}, both of which we will explain.
-@code{condition-case} is an important special form.
+该函数的 Emacs 22 版本使用了 @code{condition-case} 和 @code{copy-region-as-kill}，我们将对两者进行解释。@code{condition-case} 是一个重要的特殊形式。
 
-In essence, the @code{kill-region} function calls
-@code{condition-case}, which takes three arguments.  In this function,
-the first argument does nothing.  The second argument contains the
-code that does the work when all goes well.  The third argument
-contains the code that is called in the event of an error.
+实质上，@code{kill-region} 函数调用 @code{condition-case}，它接受三个参数。在这个函数中，第一个参数什么也不做。第二个参数包含当一切顺利时执行的代码。第三个参数包含在出现错误时调用的代码。
 
 @menu
-* Complete kill-region::        The function definition.
-* condition-case::              Dealing with a problem.
+* Complete kill-region::        函数定义。
+* condition-case::              处理问题。
 * Lisp macro::
 @end menu
 
 @ifnottex
-@node Complete kill-region
-@unnumberedsubsec The Complete @code{kill-region} Definition
+@node 完整的 kill-region
+@unnumberedsubsec 完整的 @code{kill-region} 定义
 @end ifnottex
 
 @need 1200
-We will go through the @code{condition-case} code in a moment.  First,
-let us look at the definition of @code{kill-region}, with comments
-added:
+我们将逐步讲解 @code{condition-case} 代码。首先，让我们看一下 @code{kill-region} 的定义，附带注释：
 
 @c GNU Emacs 22:
 @smallexample
@@ -5341,62 +5324,55 @@ The command \\[yank] can retrieve it from there. @dots{} "
 @end group
 
 @group
-  ;; @bullet{} Since order matters, pass point first.
+  ;; @bullet{} 由于顺序很重要，首先传递 point。
   (interactive (list (point) (mark)))
-  ;; @bullet{} And tell us if we cannot cut the text.
-  ;; 'unless' is an 'if' without a then-part.
+  ;; @bullet{} 并告诉我们如果无法剪切文本要怎么办。
+  ;; 'unless' 是没有 then 部分的 'if'。
   (unless (and beg end)
     (error "The mark is not set now, so there is no region"))
 @end group
 
 @group
-  ;; @bullet{} 'condition-case' takes three arguments.
-  ;;    If the first argument is nil, as it is here,
-  ;;    information about the error signal is not
-  ;;    stored for use by another function.
+  ;; @bullet{} 'condition-case' 接受三个参数。
+  ;;    如果第一个参数是 nil，就像这里一样，
+  ;;    错误信号的信息就不会被存储以供其他函数使用。
   (condition-case nil
 @end group
 
 @group
-      ;; @bullet{} The second argument to 'condition-case' tells the
-      ;;    Lisp interpreter what to do when all goes well.
+      ;; @bullet{} 'condition-case' 的第二个参数告诉 Lisp 解释器
+      ;;    一切正常时要做什么。
 @end group
 
 @group
-      ;;    It starts with a 'let' function that extracts the string
-      ;;    and tests whether it exists.  If so (that is what the
-      ;;    'when' checks), it calls an 'if' function that determines
-      ;;    whether the previous command was another call to
-      ;;    'kill-region'; if it was, then the new text is appended to
-      ;;    the previous text; if not, then a different function,
-      ;;    'kill-new', is called.
+      ;;    它以一个 'let' 函数开始，提取字符串并测试它是否存在。
+      ;;    如果存在（这是 'when' 检查的内容），它调用一个 'if' 函数，
+      ;;    用于确定前一个命令是否是对 'kill-region' 的另一个调用；
+      ;;    如果是，则新文本附加到先前的文本；如果不是，则调用
+      ;;    另一个函数 'kill-new'。
 @end group
 
 @group
-      ;;    The 'kill-append' function concatenates the new string and
-      ;;    the old.  The 'kill-new' function inserts text into a new
-      ;;    item in the kill ring.
+      ;;    'kill-append' 函数连接新字符串和旧字符串。
+      ;;    'kill-new' 函数将文本插入到 kill 环中的新项目中。
 @end group
 
 @group
-      ;;    'when' is an 'if' without an else-part.  The second 'when'
-      ;;    again checks whether the current string exists; in
-      ;;    addition, it checks whether the previous command was
-      ;;    another call to 'kill-region'.  If one or the other
-      ;;    condition is true, then it sets the current command to
-      ;;    be 'kill-region'.
+      ;;    'when' 是没有 else 部分的 'if'。
+      ;;    第二个 'when' 再次检查当前字符串是否存在；
+      ;;    此外，它还检查前一个命令是否是对 'kill-region' 的另一个调用。
+      ;;    如果其中一个条件为真，则将当前命令设置为 'kill-region'。
 @end group
 @group
       (let ((string (filter-buffer-substring beg end t)))
-        (when string                    ;STRING is nil if BEG = END
-          ;; Add that string to the kill ring, one way or another.
+        (when string                    ; 如果 BEG = END，则 STRING 为 nil
+          ;; 将该字符串添加到 kill ring 中，以某种方式。
           (if (eq last-command 'kill-region)
 @end group
 @group
-              ;;    @minus{} 'yank-handler' is an optional argument to
-              ;;    'kill-region' that tells the 'kill-append' and
-              ;;    'kill-new' functions how deal with properties
-              ;;    added to the text, such as 'bold' or 'italics'.
+              ;;    @minus{} 'yank-handler' 是传递给 'kill-region' 的可选参数，
+              ;;    告诉 'kill-append' 和 'kill-new' 函数如何处理添加到文本中的属性，
+              ;;    例如 'bold' 或 'italics'。
               (kill-append string (< end beg) yank-handler)
             (kill-new string nil yank-handler)))
         (when (or string (eq last-command 'kill-region))
@@ -5405,34 +5381,30 @@ The command \\[yank] can retrieve it from there. @dots{} "
 @end group
 
 @group
-    ;;  @bullet{} The third argument to 'condition-case' tells the interpreter
-    ;;    what to do with an error.
+    ;;  @bullet{} 'condition-case' 的第三个参数告诉解释器
+    ;;    发生错误时要做什么。
 @end group
 @group
-    ;;    The third argument has a conditions part and a body part.
-    ;;    If the conditions are met (in this case,
-    ;;             if text or buffer are read-only)
-    ;;    then the body is executed.
+    ;;    第三个参数有一个条件部分和一个体部分。
+    ;;    如果满足条件（在这种情况下，如果文本或缓冲区是只读的）
+    ;;    那么就执行体部分。
 @end group
 @group
-    ;;    The first part of the third argument is the following:
-    ((buffer-read-only text-read-only) ;; the if-part
-     ;; @dots{}  the then-part
+    ((buffer-read-only text-read-only) ;; 条件部分
+     ;; @dots{} 体部分
      (copy-region-as-kill beg end)
 @end group
 @group
-     ;;    Next, also as part of the then-part, set this-command, so
-     ;;    it will be set in an error
+     ;;    接下来，同样作为体部分的一部分，设置 this-command，
+     ;;    这样它将在错误中被设置。
      (setq this-command 'kill-region)
-     ;;    Finally, in the then-part, send a message if you may copy
-     ;;    the text to the kill ring without signaling an error, but
-     ;;    don't if you may not.
+     ;;    最后，在体部分，如果可以在不发出错误的情况下将文本复制到 kill ring 中，则发送消息，否则不发送。
 @end group
 @group
      (if kill-read-only-ok
          (progn (message "Read only text copied to kill ring") nil)
        (barf-if-buffer-read-only)
-       ;; If the buffer isn't read-only, the text is.
+       ;; 如果缓冲区不是只读的，则文本是只读的。
        (signal 'text-read-only (list (current-buffer)))))))
 @end group
 @end smallexample
@@ -5448,62 +5420,59 @@ The text is deleted but saved in the kill ring."
 @end group
 
 @group
-  ;; 1. 'condition-case' takes three arguments.
-  ;;    If the first argument is nil, as it is here,
-  ;;    information about the error signal is not
-  ;;    stored for use by another function.
+  ;; 1. 'condition-case' 接受三个参数。
+  ;;    如果第一个参数是 nil，就像这里一样，
+  ;;    错误信号的信息就不会被存储以供其他函数使用。
   (condition-case nil
 @end group
 
 @group
-      ;; 2. The second argument to 'condition-case'
-      ;;    tells the Lisp interpreter what to do when all goes well.
+      ;; 2. 'condition-case' 的第二个参数告诉 Lisp 解释器
+      ;;    一切正常时要做什么。
 @end group
 
 @group
-      ;;    The 'delete-and-extract-region' function usually does the
-      ;;    work.  If the beginning and ending of the region are both
-      ;;    the same, then the variable 'string' will be empty, or nil
+      ;;    'delete-and-extract-region' 函数通常执行工作。
+      ;;    如果区域的开头和结尾都相同，则变量 'string' 将为空，或 nil。
       (let ((string (delete-and-extract-region beg end)))
 @end group
 
 @group
-        ;; 'when' is an 'if' clause that cannot take an 'else-part'.
-        ;; Emacs normally sets the value of 'last-command' to the
-        ;; previous command.
+        ;; 'when' 是一个不能有 'else-part' 的 'if' 子句。
+        ;; Emacs 通常将 'last-command' 的值设置为前一个命令。
 @end group
 @group
-        ;; 'kill-append' concatenates the new string and the old.
-        ;; 'kill-new' inserts text into a new item in the kill ring.
+        ;; 'kill-append' 连接新字符串和旧字符串。
+        ;; 'kill-new' 在 kill 环中的新项目中插入文本。
         (when string
           (if (eq last-command 'kill-region)
-              ;; if true, prepend string
+              ;; 如果为真，则在字符串之前添加字符串
               (kill-append string (< end beg))
             (kill-new string)))
         (setq this-command 'kill-region))
 @end group
 
 @group
-    ;; 3. The third argument to 'condition-case' tells the interpreter
-    ;;    what to do with an error.
+    ;; 3. 'condition-case' 的第三个参数告诉解释器
+    ;;    发生错误时要做什么。
 @end group
 @group
-    ;;    The third argument has a conditions part and a body part.
-    ;;    If the conditions are met (in this case,
-    ;;             if text or buffer are read-only)
-    ;;    then the body is executed.
+    ;;    第三个参数有一个条件部分和一个体部分。
+    ;;    如果满足条件（在这种情况下，
+    ;;             如果文本或缓冲区是只读的）
+    ;;    那么就执行体部分。
 @end group
 @group
-    ((buffer-read-only text-read-only) ;; this is the if-part
-     ;; then...
+    ((buffer-read-only text-read-only) ;; 这是条件部分
+     ;; 然后...
      (copy-region-as-kill beg end)
 @end group
 @group
-     (if kill-read-only-ok            ;; usually this variable is nil
+     (if kill-read-only-ok            ;; 通常这个变量是 nil
          (message "Read only text copied to kill ring")
-       ;; or else, signal an error if the buffer is read-only;
+       ;; 否则，如果缓冲区是只读的，发出错误信号；
        (barf-if-buffer-read-only)
-       ;; and, in any case, signal that the text is read-only.
+       ;; 并且，在任何情况下，都发出文本是只读的信号。
        (signal 'text-read-only (list (current-buffer)))))))
 @end group
 @end smallexample
@@ -5513,22 +5482,13 @@ The text is deleted but saved in the kill ring."
 @subsection @code{condition-case}
 @findex condition-case
 
-As we have seen earlier (@pxref{Making Errors, , Generate an Error
-Message}), when the Emacs Lisp interpreter has trouble evaluating an
-expression, it provides you with help; in the jargon, this is called
-``signaling an error''.  Usually, the computer stops the program and
-shows you a message.
+正如我们之前所看到的（@pxref{Making Errors, , Generate an Error
+Message}），当Emacs Lisp解释器在评估表达式时遇到问题时，它会为您提供帮助；在行话中，这被称为“发出错误信号”。通常，计算机会停止程序并显示一条消息。
 
-However, some programs undertake complicated actions.  They should not
-simply stop on an error.  In the @code{kill-region} function, the most
-likely error is that you will try to kill text that is read-only and
-cannot be removed.  So the @code{kill-region} function contains code
-to handle this circumstance.  This code, which makes up the body of
-the @code{kill-region} function, is inside of a @code{condition-case}
-special form.
+然而，一些程序执行复杂的操作。它们在发生错误时不应该简单地停止。在@code{kill-region}函数中，最可能的错误是您尝试删除只读且无法删除的文本。因此，@code{kill-region}函数包含处理此情况的代码。这段代码构成了@code{kill-region}函数的主体，位于@code{condition-case}特殊形式中。
 
 @need 800
-The template for @code{condition-case} looks like this:
+@code{condition-case}的模板如下：
 
 @smallexample
 @group
@@ -5539,59 +5499,41 @@ The template for @code{condition-case} looks like this:
 @end group
 @end smallexample
 
-The second argument, @var{bodyform}, is straightforward.  The
-@code{condition-case} special form causes the Lisp interpreter to
-evaluate the code in @var{bodyform}.  If no error occurs, the special
-form returns the code's value and produces the side-effects, if any.
+第二个参数，@var{bodyform}，很直观。@code{condition-case}特殊形式导致Lisp解释器评估@var{bodyform}中的代码。如果没有错误发生，特殊形式将返回代码的值并产生副作用（如果有的话）。
 
-In short, the @var{bodyform} part of a @code{condition-case}
-expression determines what should happen when everything works
-correctly.
+简而言之，@code{condition-case}表达式的@var{bodyform}部分决定一切正常时应该发生什么。
 
-However, if an error occurs, among its other actions, the function
-generating the error signal will define one or more error condition
-names.
+然而，如果发生错误，除了其他动作，生成错误信号的函数还将定义一个或多个错误条件名。
 
-An error handler is the third argument to @code{condition-case}.
-An error handler has two parts, a @var{condition-name} and a
-@var{body}.  If the @var{condition-name} part of an error handler
-matches a condition name generated by an error, then the @var{body}
-part of the error handler is run.
+错误处理程序是@code{condition-case}的第三个参数。错误处理程序有两个部分，一个是@var{condition-name}，另一个是@var{body}。如果错误处理程序的@var{condition-name}部分与错误生成的条件名匹配，那么将运行错误处理程序的@var{body}部分。
 
-As you will expect, the @var{condition-name} part of an error handler
-may be either a single condition name or a list of condition names.
+正如您所期望的那样，错误处理程序的@var{condition-name}部分可以是单个条件名或条件名列表。
 
-Also, a complete @code{condition-case} expression may contain more
-than one error handler.  When an error occurs, the first applicable
-handler is run.
+此外，完整的@code{condition-case}表达式可能包含多个错误处理程序。当发生错误时，将运行第一个适用的处理程序。
 
-Lastly, the first argument to the @code{condition-case} expression,
-the @var{var} argument, is sometimes bound to a variable that contains
-information about the error.  However, if that argument is @code{nil},
-as is the case in @code{kill-region}, that information is discarded.
+最后，@code{condition-case}表达式的第一个参数，@var{var}参数，有时绑定到包含有关错误的信息的变量。但是，如果该参数为@code{nil}，如在@code{kill-region}中的情况，该信息将被丢弃。
 
 @need 1200
-In brief, in the @code{kill-region} function, the code
-@code{condition-case} works like this:
+简而言之，在@code{kill-region}函数中，@code{condition-case}的代码如下：
 
 @smallexample
 @group
-@var{If no errors}, @var{run only this code}
-    @var{but}, @var{if errors}, @var{run this other code}.
+@var{如果没有错误，运行仅此代码}
+    @var{但是，如果发生错误，运行另一段代码}。
 @end group
 @end smallexample
 
 @ignore
-2006 Oct 24
-In Emacs 22,
-copy-region-as-kill is short, 12 lines, and uses
-filter-buffer-substring, which is longer, 39 lines
-and has delete-and-extract-region in it.
-delete-and-extract-region is written in C.
+2006年10月24日
+在Emacs 22中，
+copy-region-as-kill很短，12行，并使用
+filter-buffer-substring，它更长，39行
+其中包含delete-and-extract-region。
+delete-and-extract-region是用C编写的。
 
-see Initializing a Variable with @code{defvar}
-this is line 8054
-Initializing a Variable with @code{defvar} includes line 8350
+见使用@code{defvar}初始化变量
+这是第8054行
+使用@code{defvar}初始化变量包括第8350行
 @end ignore
 
 @node Lisp macro
@@ -5599,40 +5541,24 @@ Initializing a Variable with @code{defvar} includes line 8350
 @cindex Macro, lisp
 @cindex Lisp macro
 
-The part of the @code{condition-case} expression that is evaluated in
-the expectation that all goes well has a @code{when}.  The code uses
-@code{when} to determine whether the @code{string} variable points to
-text that exists.
+在期望一切顺利的情况下评估的@code{condition-case}表达式的一部分具有@code{when}。该代码使用@code{when}来确定@code{string}变量是否指向存在的文本。
 
-A @code{when} expression is simply a programmers' convenience.  It is
-an @code{if} without the possibility of an else clause.  In your mind,
-you can replace @code{when} with @code{if} and understand what goes
-on.  That is what the Lisp interpreter does.
+@code{when}表达式只是程序员的便利。它是一个没有else子句可能性的@code{if}。在你的脑海中，你可以用@code{if}替换@code{when}并理解发生了什么。这就是Lisp解释器所做的。
 
-Technically speaking, @code{when} is a Lisp macro.  A Lisp macro
-enables you to define new control constructs and other language
-features.  It tells the interpreter how to compute another Lisp
-expression which will in turn compute the value.  In this case, the
-other expression is an @code{if} expression.
+从技术上讲，@code{when}是一个Lisp宏。Lisp宏使您能够定义新的控制结构和其他语言功能。它告诉解释器如何计算另一个Lisp表达式，该表达式将进而计算值。在这种情况下，另一个表达式是一个@code{if}表达式。
 
-The @code{kill-region} function definition also has an @code{unless}
-macro; it is the converse of @code{when}.  The @code{unless} macro is
-an @code{if} without a then clause
+@code{kill-region}函数定义还有一个@code{unless}宏；它是@code{when}的反义词。@code{unless}宏是一个没有then子句的@code{if}。
 
-For more about Lisp macros, see @ref{Macros, , Macros, elisp, The GNU
-Emacs Lisp Reference Manual}.  The C programming language also
-provides macros.  These are different, but also useful.
+有关Lisp宏的更多信息，请参阅@ref{Macros, , Macros, elisp, The GNU
+Emacs Lisp Reference Manual}。C编程语言也提供宏。它们是不同的，但同样有用。
 
 @ignore
-We will briefly look at C macros in
-@ref{Digression into C}.
+我们将简要查看C中的宏
+请参阅@ref{Digression into C}。
 @end ignore
 
 @need 1200
-Regarding the @code{when} macro, in the @code{condition-case}
-expression, when the string has content, then another conditional
-expression is executed.  This is an @code{if} with both a then-part
-and an else-part.
+关于@code{when}宏，在@code{condition-case}表达式中，当字符串具有内容时，然后执行另一个条件表达式。这是一个带有then-part和else-part的@code{if}。
 
 @smallexample
 @group
@@ -5642,28 +5568,21 @@ and an else-part.
 @end group
 @end smallexample
 
-The then-part is evaluated if the previous command was another call to
-@code{kill-region}; if not, the else-part is evaluated.
+如果前一个命令是另一个对@code{kill-region}的调用，则评估then-part；否则，评估else-part。
 
-@code{yank-handler} is an optional argument to @code{kill-region} that
-tells the @code{kill-append} and @code{kill-new} functions how deal
-with properties added to the text, such as bold or italics.
+@code{yank-handler}是传递给@code{kill-region}的可选参数，告诉@code{kill-append}和@code{kill-new}函数如何处理添加到文本中的属性，例如粗体或斜体。
 
-@code{last-command} is a variable that comes with Emacs that we have
-not seen before.  Normally, whenever a function is executed, Emacs
-sets the value of @code{last-command} to the previous command.
+@code{last-command}是Emacs附带的一个我们之前没有见过的变量。通常，每当执行函数时，Emacs都会将@code{last-command}的值设置为前一个命令。
 
 @need 1200
-In this segment of the definition, the @code{if} expression checks
-whether the previous command was @code{kill-region}.  If it was,
+在这个定义片段中，@code{if}表达式检查前一个命令是否为@code{kill-region}。如果是，
 
 @smallexample
 (kill-append string (< end beg) yank-handler)
 @end smallexample
 
 @noindent
-concatenates a copy of the newly clipped text to the just previously
-clipped text in the kill ring.
+将新剪贴文本的副本连接到刚刚剪贴的文本在kill ring中。
 
 @node copy-region-as-kill
 @section @code{copy-region-as-kill}
