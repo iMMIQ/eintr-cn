@@ -15326,118 +15326,58 @@ stopping point.
 @node Conclusion
 @chapter Conclusion
 
-We have now reached the end of this Introduction.  You have now
-learned enough about programming in Emacs Lisp to set values, to write
-simple @file{.emacs} files for yourself and your friends, and write
-simple customizations and extensions to Emacs.
+我们现在已经到达了这个介绍的结尾。您现在已经学到足够的关于在Emacs Lisp中编程的知识，足以设置值、为自己和朋友编写简单的@file{.emacs}文件，以及编写对Emacs进行简单定制和扩展的代码。
 
-This is a place to stop.  Or, if you wish, you can now go onward, and
-teach yourself.
+这是一个停下来的地方。或者，如果您愿意，现在可以继续前进，自己深入学习。
 
-You have learned some of the basic nuts and bolts of programming.  But
-only some.  There are a great many more brackets and hinges that are
-easy to use that we have not touched.
+您已经学到了一些编程的基础知识。但仅仅是一些。有许多容易使用的括号和铰链，我们尚未涉及。
 
-A path you can follow right now lies among the sources to GNU Emacs
-and in
+您现在可以追踪GNU Emacs的源代码以及
 @ifnotinfo
-@cite{The GNU Emacs Lisp Reference Manual}.
+@cite{The GNU Emacs Lisp Reference Manual}。
 @end ifnotinfo
 @ifinfo
 @ref{Top, , The GNU Emacs Lisp Reference Manual, elisp, The GNU
 Emacs Lisp Reference Manual}.
 @end ifinfo
 
-The Emacs Lisp sources are an adventure.  When you read the sources and
-come across a function or expression that is unfamiliar, you need to
-figure out or find out what it does.
+Emacs Lisp的源代码是一场冒险。当您阅读源代码并遇到一个陌生的函数或表达式时，您需要弄清楚或找出它的作用。
 
-Go to the Reference Manual.  It is a thorough, complete, and fairly
-easy-to-read description of Emacs Lisp.  It is written not only for
-experts, but for people who know what you know.  (The @cite{Reference
-Manual} comes with the standard GNU Emacs distribution.  Like this
-introduction, it comes as a Texinfo source file, so you can read it
-on your computer and as a typeset, printed book.)
+前往参考手册。它是对Emacs Lisp进行了详尽、完整且相当易读的描述。它不仅是为专家编写的，还为像您一样有一定基础的人编写的。（@cite{参考手册}与标准GNU Emacs发行版一起提供。与本介绍一样，它作为一个Texinfo源文件，因此您可以在计算机上阅读它，并作为排版的印刷书籍阅读。）
 
-Go to the other built-in help that is part of GNU Emacs: the built-in
-documentation for all functions and variables, and
-@code{xref-find-definitions}, the program that takes you to sources.
+查看GNU Emacs的其他内置帮助：所有函数和变量的内置文档，以及
+@code{xref-find-definitions}，该程序可以带您转到源代码。
 
-Here is an example of how I explore the sources.  Because of its name,
-@file{simple.el} is the file I looked at first, a long time ago.  As
-it happens some of the functions in @file{simple.el} are complicated,
-or at least look complicated at first sight.  The @code{open-line}
-function, for example, looks complicated.
+这里是我探索源代码的一个示例。由于其名称，@file{simple.el}是我很久以前首先查看的文件。恰好@file{simple.el}中的一些函数很复杂，或者至少乍一看很复杂。例如，@code{open-line}函数看起来很复杂。
 
-You may want to walk through this function slowly, as we did with the
-@code{forward-sentence} function.  (@xref{forward-sentence, The
-@code{forward-sentence} function}.)  Or you may want to skip that
-function and look at another, such as @code{split-line}.  You don't
-need to read all the functions.  According to
-@code{count-words-in-defun}, the @code{split-line} function contains
-102 words and symbols.
+您可能想像这个函数的作用，就像我们之前使用@code{forward-sentence}函数一样慢慢地走一遍。(@xref{forward-sentence, The
+@code{forward-sentence} function}.) 或者您可能想跳过该函数，查看另一个函数，比如@code{split-line}。您不需要阅读所有函数。根据
+@code{count-words-in-defun}，@code{split-line}函数包含102个单词和符号。
 
-Even though it is short, @code{split-line} contains  expressions
-we have not studied: @code{skip-chars-forward}, @code{indent-to},
-@code{current-column} and @code{insert-and-inherit}.
+即使很短，@code{split-line}包含我们尚未学习的表达式：@code{skip-chars-forward}，@code{indent-to}，@code{current-column}和@code{insert-and-inherit}。
 
-Consider the @code{skip-chars-forward} function.
-In GNU Emacs, you can find out more about @code{skip-chars-forward} by
-typing @kbd{C-h f} (@code{describe-function}) and the name of the
-function.  This gives you the function documentation.
+考虑@code{skip-chars-forward}函数。
+在GNU Emacs中，您可以通过键入@kbd{C-h f}（@code{describe-function}）和函数的名称来查找有关@code{skip-chars-forward}的更多信息。这将显示函数文档。
 
-You may be able to guess what is done by a well named function such as
-@code{indent-to}; or you can look it up, too.  Incidentally, the
-@code{describe-function} function itself is in @file{help.el}; it is
-one of those long, but decipherable functions.  You can look up
-@code{describe-function} using the @kbd{C-h f} command!
+您可能能够猜到一个命名得当的函数（例如@code{indent-to}）的作用；或者您也可以查找它。顺便说一下，@code{describe-function}函数本身位于@file{help.el}中；它是那些很长但可以解读的函数之一。您可以使用@kbd{C-h f}命令查找@code{describe-function}！
 
-In this instance, since the code is Lisp, the @file{*Help*} buffer
-contains the name of the library containing the function's source.
-You can put point over the name of the library and press the @key{RET} key,
-which in this situation is bound to @code{help-follow}, and be taken
-directly to the source, in the same way as @kbd{M-.}
-(@code{xref-find-definitions}).
+在这种情况下，由于代码是Lisp，@file{*Help*}缓冲区包含包含函数源代码的库的名称。您可以将光标放在库的名称上，按下@key{RET}键，在这种情况下它绑定到@code{help-follow}，直接转到源代码，方式类似于@kbd{M-.}（@code{xref-find-definitions}）。
 
-The definition for @code{describe-function} illustrates how to
-customize the @code{interactive} expression without using the standard
-character codes; and it shows how to create a temporary buffer.
+@code{describe-function}的定义说明了如何定制@code{interactive}表达式，而不使用标准字符代码；它还展示了如何创建临时缓冲区。
 
-(The @code{indent-to} function is written in C rather than Emacs Lisp;
-it is a built-in function.  @code{help-follow} takes you to its
-source as does @code{xref-find-definitions}, when properly set up.)
+（@code{indent-to}函数是用C而不是Emacs Lisp编写的；它是一个内置函数。@code{help-follow}会将您带到它的源代码，就像@code{xref-find-definitions}一样，当正确设置时。）
 
-You can look at a function's source using
-@code{xref-find-definitions}, which is bound to @kbd{M-.}  Finally,
-you can find out what the Reference Manual has to say by visiting the
-manual in Info, and typing @kbd{i} (@code{Info-index}) and the name of
-the function, or by looking up the function in the index to a printed
-copy of the manual.
+您可以使用@code{xref-find-definitions}查看函数的源代码，它绑定到@kbd{M-.}。最后，您可以查看Reference Manual中关于该函数的内容，方法是在Info中访问手册，然后键入@kbd{i}（@code{Info-index}）和函数的名称，或者在印刷副本的索引中查找该函数。
 
-Similarly, you can find out what is meant by
-@code{insert-and-inherit}.
+同样，您可以找出@code{insert-and-inherit}的含义。
 
-Other interesting source files include @file{paragraphs.el},
-@file{loaddefs.el}, and @file{loadup.el}.  The @file{paragraphs.el}
-file includes short, easily understood functions as well as longer
-ones.  The @file{loaddefs.el} file contains the many standard
-autoloads and many keymaps.  I have never looked at it all; only at
-parts.  @file{loadup.el} is the file that loads the standard parts of
-Emacs; it tells you a great deal about how Emacs is built.
+其他有趣的源文件包括@file{paragraphs.el}、@file{loaddefs.el}和@file{loadup.el}。@file{paragraphs.el}文件包含简短、易于理解的函数以及较长的函数。@file{loaddefs.el}文件包含许多标准的自动加载和许多按键映射。我从未完全查看过它；只是查看了部分。@file{loadup.el}是加载Emacs标准部分的文件；它告诉您关于Emacs构建方式的很多信息。
 (@xref{Building Emacs, , Building Emacs, elisp, The GNU Emacs Lisp
-Reference Manual}, for more about building.)
+Reference Manual}，了解更多有关构建的信息。)
 
-As I said, you have learned some nuts and bolts; however, and very
-importantly, we have hardly touched major aspects of programming; I
-have said nothing about how to sort information, except to use the
-predefined @code{sort} function; I have said nothing about how to store
-information, except to use variables and lists; I have said nothing
-about how to write programs that write programs.  These are topics for
-another, and different kind of book, a different kind of learning.
+正如我所说，您已经学到了一些基础知识；但是，非常重要的是，我们几乎没有涉及编程的重要方面；我对如何排序信息一无所知，除了使用预定义的@code{sort}函数之外；我对如何存储信息一无所知，除了使用变量和列表之外；我对如何编写编写程序的程序一无所知。这是另一种、不同类型的书籍、不同类型的学习的主题。
 
-What you have done is learn enough for much practical work with GNU
-Emacs.  What you have done is get started.  This is the end of a
-beginning.
+您所做的是学到了足够在GNU Emacs中进行实际工作的知识。您所做的是开始。这是一个开始的结束。
 
 @c ================ Appendix ================
 

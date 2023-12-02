@@ -61,119 +61,54 @@ Next: <a href="the_002dthe.html" accesskey="n" rel="next">The <code class="code"
 <hr>
 <h2 class="chapter" id="Conclusion-1">18 Conclusion</h2>
 
-<p>We have now reached the end of this Introduction.  You have now
-learned enough about programming in Emacs Lisp to set values, to write
-simple <samp class="file">.emacs</samp> files for yourself and your friends, and write
-simple customizations and extensions to Emacs.
+<p>我们现在已经到达了这个介绍的结尾。您现在已经学到足够的关于在Emacs Lisp中编程的知识，足以设置值、为自己和朋友编写简单的<samp class="file">.emacs</samp>文件，以及编写对Emacs进行简单定制和扩展的代码。
 </p>
-<p>This is a place to stop.  Or, if you wish, you can now go onward, and
-teach yourself.
+<p>这是一个停下来的地方。或者，如果您愿意，现在可以继续前进，自己深入学习。
 </p>
-<p>You have learned some of the basic nuts and bolts of programming.  But
-only some.  There are a great many more brackets and hinges that are
-easy to use that we have not touched.
+<p>您已经学到了一些编程的基础知识。但仅仅是一些。有许多容易使用的括号和铰链，我们尚未涉及。
 </p>
-<p>A path you can follow right now lies among the sources to GNU Emacs
-and in
-<cite class="cite">The GNU Emacs Lisp Reference Manual</cite>.
+<p>您现在可以追踪GNU Emacs的源代码以及
+<cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。
 </p>
-<p>The Emacs Lisp sources are an adventure.  When you read the sources and
-come across a function or expression that is unfamiliar, you need to
-figure out or find out what it does.
+<p>Emacs Lisp的源代码是一场冒险。当您阅读源代码并遇到一个陌生的函数或表达式时，您需要弄清楚或找出它的作用。
 </p>
-<p>Go to the Reference Manual.  It is a thorough, complete, and fairly
-easy-to-read description of Emacs Lisp.  It is written not only for
-experts, but for people who know what you know.  (The <cite class="cite">Reference
-Manual</cite> comes with the standard GNU Emacs distribution.  Like this
-introduction, it comes as a Texinfo source file, so you can read it
-on your computer and as a typeset, printed book.)
+<p>前往参考手册。它是对Emacs Lisp进行了详尽、完整且相当易读的描述。它不仅是为专家编写的，还为像您一样有一定基础的人编写的。（<cite class="cite">参考手册</cite>与标准GNU Emacs发行版一起提供。与本介绍一样，它作为一个Texinfo源文件，因此您可以在计算机上阅读它，并作为排版的印刷书籍阅读。）
 </p>
-<p>Go to the other built-in help that is part of GNU Emacs: the built-in
-documentation for all functions and variables, and
-<code class="code">xref-find-definitions</code>, the program that takes you to sources.
+<p>查看GNU Emacs的其他内置帮助：所有函数和变量的内置文档，以及
+<code class="code">xref-find-definitions</code>，该程序可以带您转到源代码。
 </p>
-<p>Here is an example of how I explore the sources.  Because of its name,
-<samp class="file">simple.el</samp> is the file I looked at first, a long time ago.  As
-it happens some of the functions in <samp class="file">simple.el</samp> are complicated,
-or at least look complicated at first sight.  The <code class="code">open-line</code>
-function, for example, looks complicated.
+<p>这里是我探索源代码的一个示例。由于其名称，<samp class="file">simple.el</samp>是我很久以前首先查看的文件。恰好<samp class="file">simple.el</samp>中的一些函数很复杂，或者至少乍一看很复杂。例如，<code class="code">open-line</code>函数看起来很复杂。
 </p>
-<p>You may want to walk through this function slowly, as we did with the
-<code class="code">forward-sentence</code> function.  (See <a class="xref" href="forward_002dsentence.html">The
-<code class="code">forward-sentence</code> function</a>.)  Or you may want to skip that
-function and look at another, such as <code class="code">split-line</code>.  You don&rsquo;t
-need to read all the functions.  According to
-<code class="code">count-words-in-defun</code>, the <code class="code">split-line</code> function contains
-102 words and symbols.
+<p>您可能想像这个函数的作用，就像我们之前使用<code class="code">forward-sentence</code>函数一样慢慢地走一遍。(See <a class="xref" href="forward_002dsentence.html">The
+<code class="code">forward-sentence</code> function</a>.) 或者您可能想跳过该函数，查看另一个函数，比如<code class="code">split-line</code>。您不需要阅读所有函数。根据
+<code class="code">count-words-in-defun</code>，<code class="code">split-line</code>函数包含102个单词和符号。
 </p>
-<p>Even though it is short, <code class="code">split-line</code> contains  expressions
-we have not studied: <code class="code">skip-chars-forward</code>, <code class="code">indent-to</code>,
-<code class="code">current-column</code> and <code class="code">insert-and-inherit</code>.
+<p>即使很短，<code class="code">split-line</code>包含我们尚未学习的表达式：<code class="code">skip-chars-forward</code>，<code class="code">indent-to</code>，<code class="code">current-column</code>和<code class="code">insert-and-inherit</code>。
 </p>
-<p>Consider the <code class="code">skip-chars-forward</code> function.
-In GNU Emacs, you can find out more about <code class="code">skip-chars-forward</code> by
-typing <kbd class="kbd">C-h f</kbd> (<code class="code">describe-function</code>) and the name of the
-function.  This gives you the function documentation.
+<p>考虑<code class="code">skip-chars-forward</code>函数。
+在GNU Emacs中，您可以通过键入<kbd class="kbd">C-h f</kbd>（<code class="code">describe-function</code>）和函数的名称来查找有关<code class="code">skip-chars-forward</code>的更多信息。这将显示函数文档。
 </p>
-<p>You may be able to guess what is done by a well named function such as
-<code class="code">indent-to</code>; or you can look it up, too.  Incidentally, the
-<code class="code">describe-function</code> function itself is in <samp class="file">help.el</samp>; it is
-one of those long, but decipherable functions.  You can look up
-<code class="code">describe-function</code> using the <kbd class="kbd">C-h f</kbd> command!
+<p>您可能能够猜到一个命名得当的函数（例如<code class="code">indent-to</code>）的作用；或者您也可以查找它。顺便说一下，<code class="code">describe-function</code>函数本身位于<samp class="file">help.el</samp>中；它是那些很长但可以解读的函数之一。您可以使用<kbd class="kbd">C-h f</kbd>命令查找<code class="code">describe-function</code>！
 </p>
-<p>In this instance, since the code is Lisp, the <samp class="file">*Help*</samp> buffer
-contains the name of the library containing the function&rsquo;s source.
-You can put point over the name of the library and press the <kbd class="key">RET</kbd> key,
-which in this situation is bound to <code class="code">help-follow</code>, and be taken
-directly to the source, in the same way as <kbd class="kbd">M-.</kbd>
-(<code class="code">xref-find-definitions</code>).
+<p>在这种情况下，由于代码是Lisp，<samp class="file">*Help*</samp>缓冲区包含包含函数源代码的库的名称。您可以将光标放在库的名称上，按下<kbd class="key">RET</kbd>键，在这种情况下它绑定到<code class="code">help-follow</code>，直接转到源代码，方式类似于<kbd class="kbd">M-.</kbd>（<code class="code">xref-find-definitions</code>）。
 </p>
-<p>The definition for <code class="code">describe-function</code> illustrates how to
-customize the <code class="code">interactive</code> expression without using the standard
-character codes; and it shows how to create a temporary buffer.
+<p><code class="code">describe-function</code>的定义说明了如何定制<code class="code">interactive</code>表达式，而不使用标准字符代码；它还展示了如何创建临时缓冲区。
 </p>
-<p>(The <code class="code">indent-to</code> function is written in C rather than Emacs Lisp;
-it is a built-in function.  <code class="code">help-follow</code> takes you to its
-source as does <code class="code">xref-find-definitions</code>, when properly set up.)
+<p>（<code class="code">indent-to</code>函数是用C而不是Emacs Lisp编写的；它是一个内置函数。<code class="code">help-follow</code>会将您带到它的源代码，就像<code class="code">xref-find-definitions</code>一样，当正确设置时。）
 </p>
-<p>You can look at a function&rsquo;s source using
-<code class="code">xref-find-definitions</code>, which is bound to <kbd class="kbd">M-.</kbd>  Finally,
-you can find out what the Reference Manual has to say by visiting the
-manual in Info, and typing <kbd class="kbd">i</kbd> (<code class="code">Info-index</code>) and the name of
-the function, or by looking up the function in the index to a printed
-copy of the manual.
+<p>您可以使用<code class="code">xref-find-definitions</code>查看函数的源代码，它绑定到<kbd class="kbd">M-.</kbd>。最后，您可以查看Reference Manual中关于该函数的内容，方法是在Info中访问手册，然后键入<kbd class="kbd">i</kbd>（<code class="code">Info-index</code>）和函数的名称，或者在印刷副本的索引中查找该函数。
 </p>
-<p>Similarly, you can find out what is meant by
-<code class="code">insert-and-inherit</code>.
+<p>同样，您可以找出<code class="code">insert-and-inherit</code>的含义。
 </p>
-<p>Other interesting source files include <samp class="file">paragraphs.el</samp>,
-<samp class="file">loaddefs.el</samp>, and <samp class="file">loadup.el</samp>.  The <samp class="file">paragraphs.el</samp>
-file includes short, easily understood functions as well as longer
-ones.  The <samp class="file">loaddefs.el</samp> file contains the many standard
-autoloads and many keymaps.  I have never looked at it all; only at
-parts.  <samp class="file">loadup.el</samp> is the file that loads the standard parts of
-Emacs; it tells you a great deal about how Emacs is built.
+<p>其他有趣的源文件包括<samp class="file">paragraphs.el</samp>、<samp class="file">loaddefs.el</samp>和<samp class="file">loadup.el</samp>。<samp class="file">paragraphs.el</samp>文件包含简短、易于理解的函数以及较长的函数。<samp class="file">loaddefs.el</samp>文件包含许多标准的自动加载和许多按键映射。我从未完全查看过它；只是查看了部分。<samp class="file">loadup.el</samp>是加载Emacs标准部分的文件；它告诉您关于Emacs构建方式的很多信息。
 (See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Building-Emacs.html#Building-Emacs">Building Emacs</a> in <cite class="cite">The GNU Emacs Lisp
-Reference Manual</cite>, for more about building.)
+Reference Manual</cite>，了解更多有关构建的信息。)
 </p>
-<p>As I said, you have learned some nuts and bolts; however, and very
-importantly, we have hardly touched major aspects of programming; I
-have said nothing about how to sort information, except to use the
-predefined <code class="code">sort</code> function; I have said nothing about how to store
-information, except to use variables and lists; I have said nothing
-about how to write programs that write programs.  These are topics for
-another, and different kind of book, a different kind of learning.
+<p>正如我所说，您已经学到了一些基础知识；但是，非常重要的是，我们几乎没有涉及编程的重要方面；我对如何排序信息一无所知，除了使用预定义的<code class="code">sort</code>函数之外；我对如何存储信息一无所知，除了使用变量和列表之外；我对如何编写编写程序的程序一无所知。这是另一种、不同类型的书籍、不同类型的学习的主题。
 </p>
-<p>What you have done is learn enough for much practical work with GNU
-Emacs.  What you have done is get started.  This is the end of a
-beginning.
+<p>您所做的是学到了足够在GNU Emacs中进行实际工作的知识。您所做的是开始。这是一个开始的结束。
 </p>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="the_002dthe.html">The <code class="code">the-the</code> Function</a>, Previous: <a href="Debugging.html">Debugging</a>, Up: <a href="index.html">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
