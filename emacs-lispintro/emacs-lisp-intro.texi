@@ -4977,13 +4977,10 @@ domesticated-animals
 @noindent
 确实，列表从@code{(horse cow sheep goat)}更改为@code{(horse cat dog)}。列表的@sc{cdr}从@code{(cow sheep goat)}更改为@code{(cat dog)}。
 
-@node cons Exercise
-@section Exercise
+@node cons 练习
+@section 练习
 
-Construct a list of four birds by evaluating several expressions with
-@code{cons}.  Find out what happens when you @code{cons} a list onto
-itself.  Replace the first element of the list of four birds with a
-fish.  Replace the rest of that list with a list of other fish.
+通过评估多个表达式使用@code{cons}构建一个包含四只鸟的列表。了解当你使用@code{cons}将一个列表连接到自身时会发生什么。将四只鸟的列表的第一个元素替换为一条鱼。用其他鱼的列表替换该列表的其余部分。
 
 @node Cutting & Storing Text
 @chapter Cutting and Storing Text
