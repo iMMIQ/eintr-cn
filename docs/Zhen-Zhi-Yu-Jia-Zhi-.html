@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>真值与假值 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="真值与假值 (Programming in Emacs Lisp)">
+<meta name="keywords" content="真值与假值 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Bian-Xie-Defuns.html" rel="up" title="编写 Defuns">
+<link href="save_002dexcursion.html" rel="next" title="save-excursion">
+<link href="else.html" rel="prev" title="else">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_771f_503c_4e0e_5047_503c">
+<div class="nav-panel">
+<p>
+Next: <a href="save_002dexcursion.html" accesskey="n" rel="next"><code class="code">save-excursion</code></a>, Previous: <a href="else.html" accesskey="p" rel="prev">If&ndash;then&ndash;else 表达式</a>, Up: <a href="Bian-Xie-Defuns.html" accesskey="u" rel="up">如何编写函数定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Emacs-Lisp-ZhongDe-Zhen-Zhi-He-Jia-Zhi-">3.9 Emacs Lisp 中的真值和假值</h3>
+<a class="index-entry-id" id="index-Emacs-Lisp-ZhongDe-Zhen-Zhi-He-Jia-Zhi-"></a>
+<a class="index-entry-id" id="index-Emacs-Lisp-ZhongDe-Jia-Zhi-He-Zhen-Zhi-"></a>
+<a class="index-entry-id" id="index-nil"></a>
+
+<p>在 <code class="code">if</code> 表达式中，有一个重要的关于真值测试的方面。到目前为止，我们已经谈到“true”和“false”作为谓词的值，好像它们是新种类的 Emacs Lisp 对象一样。实际上，“false”只是我们的老朋友 <code class="code">nil</code>。任何其他东西——无论什么——都是“true”。
+</p>
+<p>对真值进行测试的表达式在解释时会被视为 <em class="dfn">真</em>，如果它的求值结果不是 <code class="code">nil</code>。换句话说，如果返回的值是一个数字，比如 47，一个字符串，比如 <code class="code">&quot;hello&quot;</code>，或者一个符号（除了 <code class="code">nil</code> 之外的任何符号），或者一个列表（只要它不是空的），甚至是一个缓冲区，测试的结果就被认为是真的！
+</p>
+
+<ul class="mini-toc">
+<li><a href="nilJie-Shi-.html" accesskey="1"><code class="code">nil</code>的解释</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

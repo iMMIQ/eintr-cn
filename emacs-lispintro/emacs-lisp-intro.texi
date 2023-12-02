@@ -2706,60 +2706,34 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 （当然，如果 @var{characteristic} 是 @code{"ferocious"}，则将打印消息 @code{"它不凶猛！"}；这可能会产生误导！在编写代码时，你需要考虑到 @code{if} 可能会测试到这样的参数，并相应地编写你的程序。）
 
-@node Truth & Falsehood
-@section Truth and Falsehood in Emacs Lisp
-@cindex Truth and falsehood in Emacs Lisp
-@cindex Falsehood and truth in Emacs Lisp
+@node 真值与假值
+@section Emacs Lisp 中的真值和假值
+@cindex Emacs Lisp 中的真值和假值
+@cindex Emacs Lisp 中的假值和真值
 @findex nil
 
-There is an important aspect to the truth test in an @code{if}
-expression.  So far, we have spoken of ``true'' and ``false'' as values of
-predicates as if they were new kinds of Emacs Lisp objects.  In fact,
-``false'' is just our old friend @code{nil}.  Anything else---anything
-at all---is ``true''.
+在 @code{if} 表达式中，有一个重要的关于真值测试的方面。到目前为止，我们已经谈到“true”和“false”作为谓词的值，好像它们是新种类的 Emacs Lisp 对象一样。实际上，“false”只是我们的老朋友 @code{nil}。任何其他东西——无论什么——都是“true”。
 
-The expression that tests for truth is interpreted as @dfn{true}
-if the result of evaluating it is a value that is not @code{nil}.  In
-other words, the result of the test is considered true if the value
-returned is a number such as 47, a string such as @code{"hello"}, or a
-symbol (other than @code{nil}) such as @code{flowers}, or a list (so
-long as it is not empty), or even a buffer!
+对真值进行测试的表达式在解释时会被视为 @dfn{真}，如果它的求值结果不是 @code{nil}。换句话说，如果返回的值是一个数字，比如 47，一个字符串，比如 @code{"hello"}，或者一个符号（除了 @code{nil} 之外的任何符号），或者一个列表（只要它不是空的），甚至是一个缓冲区，测试的结果就被认为是真的！
 
 @menu
-* nil explained::               @code{nil} has two meanings.
+* nil explained::               @code{nil} 有两个含义。
 @end menu
 
 @ifnottex
-@node nil explained
-@unnumberedsubsec An explanation of @code{nil}
+@node nil解释
+@unnumberedsubsec @code{nil}的解释
 @end ifnottex
 
-Before illustrating a test for truth, we need an explanation of @code{nil}.
+在说明真值测试之前，我们需要解释一下 @code{nil}。
 
-In Emacs Lisp, the symbol @code{nil} has two meanings.  First, it means the
-empty list.  Second, it means false and is the value returned when a
-true-or-false-test tests false.  @code{nil} can be written as an empty
-list, @code{()}, or as @code{nil}.  As far as the Lisp interpreter is
-concerned, @code{()} and @code{nil} are the same.  Humans, however, tend
-to use @code{nil} for false and @code{()} for the empty list.
+在Emacs Lisp中，符号 @code{nil} 有两个含义。首先，它表示空列表。其次，它表示假，是在真假测试返回假时返回的值。@code{nil}可以被写成空列表，@code{()}，或者写作 @code{nil}。就Lisp解释器而言，@code{()} 和 @code{nil} 是一样的。然而，人们倾向于将 @code{nil} 用于表示假，而将 @code{()} 用于表示空列表。
 
-In Emacs Lisp, any value that is not @code{nil}---is not the empty
-list---is considered true.  This means that if an evaluation returns
-something that is not an empty list, an @code{if} expression will test
-true.  For example, if a number is put in the slot for the test, it
-will be evaluated and will return itself, since that is what numbers
-do when evaluated.  In this conditional, the @code{if} expression will
-test true.  The expression tests false only when @code{nil}, an empty
-list, is returned by evaluating the expression.
+在Emacs Lisp中，任何不是 @code{nil}，即非空列表的值，被认为是真。这意味着如果一个求值返回了不是空列表的值，一个 @code{if} 表达式将测试为真。例如，如果一个数字被放在测试的槽位，它将被求值并返回它自己，因为这是数字在被求值时所做的。在这个条件语句中，@code{if} 表达式将测试为真。该表达式仅在通过求值表达式返回 @code{nil}，即空列表时测试为假。
 
-You can see this by evaluating the two expressions in the following examples.
+通过对以下示例中的两个表达式进行求值，您可以看到这一点。
 
-In the first example, the number 4 is evaluated as the test in the
-@code{if} expression and returns itself; consequently, the then-part
-of the expression is evaluated and returned: @samp{true} appears in
-the echo area.  In the second example, the @code{nil} indicates false;
-consequently, the else-part of the expression is evaluated and
-returned: @samp{false} appears in the echo area.
+在第一个示例中，数字4作为 @code{if} 表达式中的测试被求值并返回自己；因此，表达式的then部分被求值并返回：在回显区域中显示 @samp{true}。在第二个示例中，@code{nil} 表示假；因此，表达式的else部分被求值并返回：在回显区域中显示 @samp{false}。
 
 @smallexample
 @group
@@ -2776,10 +2750,7 @@ returned: @samp{false} appears in the echo area.
 @end smallexample
 
 @need 1250
-Incidentally, if some other useful value is not available for a test that
-returns true, then the Lisp interpreter will return the symbol @code{t}
-for true.  For example, the expression @code{(> 5 4)} returns @code{t}
-when evaluated, as you can see by evaluating it in the usual way:
+顺便说一句，如果某个有用的值在返回真的测试时不可用，那么Lisp解释器将返回符号 @code{t} 代表真。例如，表达式 @code{(> 5 4)} 在被求值时返回 @code{t}，您可以通过通常的方式进行求值查看：
 
 @smallexample
 (> 5 4)
@@ -2787,7 +2758,7 @@ when evaluated, as you can see by evaluating it in the usual way:
 
 @need 1250
 @noindent
-On the other hand, this function returns @code{nil} if the test is false.
+另一方面，如果测试为假，则该函数返回 @code{nil}。
 
 @smallexample
 (> 4 5)
