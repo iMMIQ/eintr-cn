@@ -3946,65 +3946,40 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 @code{push-mark} 记录插入缓冲区的位置。然后，该函数返回 @code{nil}，即其最后一条命令的值。换句话说，@code{insert-buffer} 函数仅用于产生副作用，即插入另一个缓冲区，而不是返回任何值。
 
 @node beginning-of-buffer
-@section Complete Definition of @code{beginning-of-buffer}
+@section @code{beginning-of-buffer} 函数的完整定义
 @findex beginning-of-buffer
 
-The basic structure of the @code{beginning-of-buffer} function has
-already been discussed.  (@xref{simplified-beginning-of-buffer, , A
-Simplified @code{beginning-of-buffer} Definition}.)
-This section describes the complex part of the definition.
+@code{beginning-of-buffer} 函数的基本结构已经讨论过了。(@xref{simplified-beginning-of-buffer, , 一个简化的 @code{beginning-of-buffer} 定义}.) 本节描述了定义的复杂部分。
 
-As previously described, when invoked without an argument,
-@code{beginning-of-buffer} moves the cursor to the beginning of the
-buffer (in truth, the beginning of the accessible portion of the
-buffer), leaving the mark at the previous position.  However, when the
-command is invoked with a number between one and ten, the function
-considers that number to be a fraction of the length of the buffer,
-measured in tenths, and Emacs moves the cursor that fraction of the
-way from the beginning of the buffer.  Thus, you can either call this
-function with the key command @kbd{M-<}, which will move the cursor to
-the beginning of the buffer, or with a key command such as @kbd{C-u 7
-M-<} which will move the cursor to a point 70% of the way through the
-buffer.  If a number bigger than ten is used for the argument, it
-moves to the end of the buffer.
+如前所述，当没有参数调用时，@code{beginning-of-buffer} 将光标移动到缓冲区的开头（实际上是可访问部分的开头），并将标记留在先前的位置。然而，当以介于一到十之间的数字调用该命令时，该函数将该数字视为缓冲区长度的十分之一，Emacs 将光标移动到缓冲区的该部分。因此，您可以使用键命令 @kbd{M-<} 调用该函数，将光标移动到缓冲区的开头，或者使用键命令，例如 @kbd{C-u 7 M-<}，将光标移动到缓冲区的70％处。如果使用大于十的数字作为参数，则光标将移动到缓冲区的末尾。
 
-The @code{beginning-of-buffer} function can be called with or without an
-argument.  The use of the argument is optional.
+@code{beginning-of-buffer} 函数可以带有或不带有参数调用。使用参数是可选的。
 
 @menu
 * Optional Arguments::
-* beginning-of-buffer opt arg::  Example with optional argument.
+* beginning-of-buffer opt arg::  带有可选参数的示例。
 * beginning-of-buffer complete::
 @end menu
 
 @node Optional Arguments
-@subsection Optional Arguments
+@subsection 可选参数
 
-Unless told otherwise, Lisp expects that a function with an argument in
-its function definition will be called with a value for that argument.
-If that does not happen, you get an error and a message that says
-@samp{Wrong number of arguments}.
+除非另有说明，Lisp 期望具有函数定义中参数的函数在调用时将为该参数传递一个值。如果没有这样做，将出现错误并显示消息 @samp{Wrong number of arguments}。
 
-@cindex Optional arguments
-@cindex Keyword
+@cindex 可选参数
+@cindex 关键字
 @findex optional
-However, optional arguments are a feature of Lisp: a particular
-@dfn{keyword} is used to tell the Lisp interpreter that an argument is
-optional.  The keyword is @code{&optional}.  (The @samp{&} in front of
-@samp{optional} is part of the keyword.)  In a function definition, if
-an argument follows the keyword @code{&optional}, no value need be
-passed to that argument when the function is called.
+然而，可选参数是Lisp的一个特性：使用特定的@dfn{关键字}告诉Lisp解释器该参数是可选的。关键字是 @code{&optional}。 （@samp{&} 在 @samp{optional} 前面是关键字的一部分。）在函数定义中，如果一个参数跟在关键字 @code{&optional} 后面，那么在调用函数时无需传递值给该参数。
 
 @need 1200
-The first line of the function definition of @code{beginning-of-buffer}
-therefore looks like this:
+因此，@code{beginning-of-buffer} 函数的函数定义的第一行看起来像这样：
 
 @smallexample
 (defun beginning-of-buffer (&optional arg)
 @end smallexample
 
 @need 1250
-In outline, the whole function looks like this:
+概括而言，整个函数看起来像这样：
 
 @smallexample
 @group
@@ -4024,55 +3999,23 @@ In outline, the whole function looks like this:
 @end group
 @end smallexample
 
-The function is similar to the @code{simplified-beginning-of-buffer}
-function except that the @code{interactive} expression has @code{"P"}
-as an argument and the @code{goto-char} function is followed by an
-if-then-else expression that figures out where to put the cursor if
-there is an argument that is not a cons cell.
+该函数类似于 @code{simplified-beginning-of-buffer} 函数，只是 @code{interactive} 表达式的参数是 @code{"P"}，并且 @code{goto-char} 函数后面跟着一个 if-then-else 表达式，用于确定如果有一个不是 cons cell 的参数，光标应该放在哪里。
 
-(Since I do not explain a cons cell for many more chapters, please
-consider ignoring the function @code{consp}.  @xref{List
-Implementation, , How Lists are Implemented}, and @ref{Cons Cell Type,
-, Cons Cell and List Types, elisp, The GNU Emacs Lisp Reference
-Manual}.)
+（由于我在很多章节里都没有解释 cons cell，请考虑忽略函数 @code{consp}。@xref{List Implementation, , How Lists are Implemented}，以及 @ref{Cons Cell Type, , Cons Cell and List Types, elisp, The GNU Emacs Lisp Reference Manual}。）
 
-The @code{"P"} in the @code{interactive} expression tells Emacs to
-pass a prefix argument, if there is one, to the function in raw form.
-A prefix argument is made by typing the @key{META} key followed by a
-number, or by typing @kbd{C-u} and then a number.  (If you don't type
-a number, @kbd{C-u} defaults to a cons cell with a 4.  A lowercase
-@code{"p"} in the @code{interactive} expression causes the function to
-convert a prefix arg to a number.)
+@code{interactive} 表达式中的 @code{"P"} 告诉 Emacs 将前缀参数（如果有的话）以原始形式传递给函数。前缀参数是通过按 @key{META} 键后面跟一个数字，或者按 @kbd{C-u} 然后是一个数字来生成的。（如果不输入数字，@kbd{C-u} 默认为带有 4 的 cons cell。在 @code{interactive} 表达式中的小写 @code{"p"} 会导致函数将前缀参数转换为数字。）
 
-The true-or-false-test of the @code{if} expression looks complex, but
-it is not: it checks whether @code{arg} has a value that is not
-@code{nil} and whether it is a cons cell.  (That is what @code{consp}
-does; it checks whether its argument is a cons cell.)  If @code{arg}
-has a value that is not @code{nil} (and is not a cons cell), which
-will be the case if @code{beginning-of-buffer} is called with a
-numeric argument, then this true-or-false-test will return true and
-the then-part of the @code{if} expression will be evaluated.  On the
-other hand, if @code{beginning-of-buffer} is not called with an
-argument, the value of @code{arg} will be @code{nil} and the else-part
-of the @code{if} expression will be evaluated.  The else-part is
-simply @code{point-min}, and when this is the outcome, the whole
-@code{goto-char} expression is @code{(goto-char (point-min))}, which
-is how we saw the @code{beginning-of-buffer} function in its
-simplified form.
+@code{if} 表达式的真值测试看起来复杂，但实际上并不复杂：它检查 @code{arg} 是否具有非 @code{nil} 的值，以及它是否是 cons cell。 （这就是 @code{consp} 做的事情；它检查其参数是否为 cons cell。）如果 @code{arg} 具有非 @code{nil} 的值（并且不是 cons cell），这个真值测试将返回 true，并且 @code{if} 表达式的 then-部分将被评估。另一方面，如果 @code{beginning-of-buffer} 没有带参数调用，@code{arg} 的值将为 @code{nil}，并且 @code{if} 表达式的 else-部分将被评估。else-部分就是 @code{point-min}，当这是结果时，整个 @code{goto-char} 表达式是 @code{(goto-char (point-min))}，这就是我们在简化形式中看到的 @code{beginning-of-buffer} 函数。
 
 @node beginning-of-buffer opt arg
 @subsection @code{beginning-of-buffer} with an Argument
 
-When @code{beginning-of-buffer} is called with an argument, an
-expression is evaluated which calculates what value to pass to
-@code{goto-char}.  This expression is rather complicated at first sight.
-It includes an inner @code{if} expression and much arithmetic.  It looks
-like this:
+当使用参数调用@code{beginning-of-buffer}时，将计算一个表达式来确定传递给@code{goto-char}的值。这个表达式乍一看相当复杂。它包括一个内部的@code{if}表达式和许多算术运算。具体如下：
 
 @smallexample
 @group
 (if (> (buffer-size) 10000)
-    ;; @r{Avoid overflow for large buffer sizes!}
+    ;; @r{避免大缓冲区大小溢出！}
                           (* (prefix-numeric-value arg)
                              (/ size 10))
   (/
@@ -4093,10 +4036,7 @@ like this:
 @unnumberedsubsubsec Disentangle @code{beginning-of-buffer}
 @end ifnottex
 
-Like other complex-looking expressions, the conditional expression
-within @code{beginning-of-buffer} can be disentangled by looking at it
-as parts of a template, in this case, the template for an if-then-else
-expression.  In skeletal form, the expression looks like this:
+与其他复杂的表达式一样，@code{beginning-of-buffer}中的条件表达式可以通过将其视为模板的一部分（在这种情况下，是if-then-else表达式的模板）来解开。在骨架形式中，该表达式如下：
 
 @smallexample
 @group
@@ -4106,35 +4046,19 @@ expression.  In skeletal form, the expression looks like this:
 @end group
 @end smallexample
 
-The true-or-false-test of this inner @code{if} expression checks the
-size of the buffer.  The reason for this is that the old version 18
-Emacs used numbers that are no bigger than eight million or so and in
-the computation that followed, the programmer feared that Emacs might
-try to use over-large numbers if the buffer were large.  The term
-``overflow'', mentioned in the comment, means numbers that are over
-large.  More recent versions of Emacs use larger numbers, but this
-code has not been touched, if only because people now look at buffers
-that are far, far larger than ever before.
+这个内部的@code{if}表达式的真值或假值测试检查缓冲区的大小。这样做的原因是，旧版本的Emacs使用的数字不超过八百万左右，在随后的计算中，程序员担心如果缓冲区很大，Emacs可能会尝试使用过大的数字。注释中提到的术语“溢出”意味着数字过大。更近期的Emacs版本使用更大的数字，但由于人们现在查看的缓冲区远远大于以往，这段代码没有被更改。
 
-There are two cases:  if the buffer is large and if it is not.
+有两种情况：如果缓冲区很大，如果不大。
 
 @node Large buffer case
-@unnumberedsubsubsec What happens in a large buffer
+@unnumberedsubsubsec 在大缓冲区中发生了什么
 
-In @code{beginning-of-buffer}, the inner @code{if} expression tests
-whether the size of the buffer is greater than 10,000 characters.  To do
-this, it uses the @code{>} function and the computation of @code{size}
-that comes from the let expression.
+在@code{beginning-of-buffer}中，内部的@code{if}表达式测试缓冲区的大小是否大于10,000个字符。为了做到这一点，它使用了@code{>}函数和来自let表达式的@code{size}计算。
 
-In the old days, the function @code{buffer-size} was used.  Not only
-was that function called several times, it gave the size of the whole
-buffer, not the accessible part.  The computation makes much more
-sense when it handles just the accessible part.  (@xref{Narrowing &
-Widening, , Narrowing and Widening}, for more information on focusing
-attention to an accessible part.)
+在旧版本中，使用了@code{buffer-size}函数。不仅调用了该函数多次，而且它给出的是整个缓冲区的大小，而不是可访问部分的大小。当只处理可访问部分时，计算会更有意义。关于将注意力集中到可访问部分的更多信息，请参阅《缩小和扩大》。
 
 @need 800
-The line looks like this:
+这一行看起来像这样：
 
 @smallexample
 (if (> size 10000)
@@ -4142,8 +4066,7 @@ The line looks like this:
 
 @need 1200
 @noindent
-When the buffer is large, the then-part of the @code{if} expression is
-evaluated.  It reads like this (after formatting for easy reading):
+当缓冲区很大时，@code{if}表达式的then部分将被评估。它读起来像这样（格式化以便阅读）：
 
 @smallexample
 @group
@@ -4154,28 +4077,16 @@ evaluated.  It reads like this (after formatting for easy reading):
 @end smallexample
 
 @noindent
-This expression is a multiplication, with two arguments to the function
-@code{*}.
+这个表达式是一个乘法，具有@code{*}函数的两个参数。
 
-The first argument is @code{(prefix-numeric-value arg)}.  When
-@code{"P"} is used as the argument for @code{interactive}, the value
-passed to the function as its argument is passed a @dfn{raw prefix
-argument}, and not a number.  (It is a number in a list.)  To perform
-the arithmetic, a conversion is necessary, and
-@code{prefix-numeric-value} does the job.
+第一个参数是@code{(prefix-numeric-value arg)}。当@code{interactive}的参数为@code{"P"}时，传递给函数的参数是一个@dfn{原始前缀参数}，而不是一个数字（它是一个列表中的数字）。为了进行算术运算，需要进行转换，@code{prefix-numeric-value}完成了这个任务。
 
 @findex / @r{(division)}
 @cindex Division
-The second argument is @code{(/ size 10)}.  This expression divides
-the numeric value by ten---the numeric value of the size of the
-accessible portion of the buffer.  This produces a number that tells
-how many characters make up one tenth of the buffer size.  (In Lisp,
-@code{/} is used for division, just as @code{*} is used for
-multiplication.)
+第二个参数是@code{(/ size 10)}。这个表达式将数值除以十---可访问部分缓冲区大小的数值。这产生一个数字，告诉我们十分之一缓冲区大小由多少字符组成。在Lisp中，@code{/}用于除法，就像@code{*}用于乘法一样。
 
 @need 1200
-In the multiplication expression as a whole, this amount is multiplied
-by the value of the prefix argument---the multiplication looks like this:
+在整个乘法表达式中，这个数量被乘以前缀参数的值---乘法看起来像这样：
 
 @smallexample
 @group
@@ -4185,12 +4096,10 @@ by the value of the prefix argument---the multiplication looks like this:
 @end smallexample
 
 @noindent
-If, for example, the prefix argument is @samp{7}, the one-tenth value
-will be multiplied by 7 to give a position 70% of the way through.
+例如，如果前缀参数是@samp{7}，那么十分之一的值将乘以7，以给出在缓冲区大小的70%的位置。
 
 @need 1200
-The result of all this is that if the accessible portion of the buffer
-is large, the @code{goto-char} expression reads like this:
+所有这些的结果是，如果可访问部分的缓冲区很大，那么@code{goto-char}表达式将如下：
 
 @smallexample
 @group
@@ -4199,31 +4108,24 @@ is large, the @code{goto-char} expression reads like this:
 @end group
 @end smallexample
 
-This puts the cursor where we want it.
+这把光标放在我们想要的位置。
 
-@node Small buffer case
-@unnumberedsubsubsec What happens in a small buffer
+@node 小缓冲区情况
+@unnumberedsubsubsec 小缓冲区中的情况
 
-If the buffer contains fewer than 10,000 characters, a slightly
-different computation is performed.  You might think this is not
-necessary, since the first computation could do the job.  However, in
-a small buffer, the first method may not put the cursor on exactly the
-desired line; the second method does a better job.
+如果缓冲区包含的字符少于10,000个，将执行略有不同的计算。你可能认为这是不必要的，因为第一种计算方法可以完成工作。然而，在小缓冲区中，第一种方法可能无法将光标精确放置在所需的行上；而第二种方法效果更好。
 
 @need 800
-The code looks like this:
+以下是代码：
 
-@c Keep this on one line.
+@c 请将此内容放在一行上。
 @smallexample
 (/ (+ 10 (* size (prefix-numeric-value arg))) 10))
 @end smallexample
 
 @need 1200
 @noindent
-This is code in which you figure out what happens by discovering how the
-functions are embedded in parentheses.  It is easier to read if you
-reformat it with each expression indented more deeply than its
-enclosing expression:
+这是一段代码，你可以通过发现函数嵌套在括号中的方式来理解它的运行。如果每个表达式都比其封闭表达式缩进得更深，那么代码会更容易阅读：
 
 @smallexample
 @group
@@ -4238,53 +4140,41 @@ enclosing expression:
 
 @need 1200
 @noindent
-Looking at parentheses, we see that the innermost operation is
-@code{(prefix-numeric-value arg)}, which converts the raw argument to
-a number.  In the following expression, this number is multiplied by
-the size of the accessible portion of the buffer:
+通过查看括号，我们可以看到最内层的操作是@code{(prefix-numeric-value arg)}，它将原始参数转换为数字。在下面的表达式中，这个数字被乘以缓冲区的可访问部分的大小：
 
 @smallexample
 (* size (prefix-numeric-value arg))
 @end smallexample
 
 @noindent
-This multiplication creates a number that may be larger than the size of
-the buffer---seven times larger if the argument is 7, for example.  Ten
-is then added to this number and finally the large number is divided by
-ten to provide a value that is one character larger than the percentage
-position in the buffer.
+这个乘法会产生一个可能比缓冲区的大小更大的数字——例如，如果参数是7，那么这个数字会大七倍。然后，这个数字加上10，最终将这个大数字除以10，得到的值比缓冲区中的百分比位置多一个字符。
 
-The number that results from all this is passed to @code{goto-char} and
-the cursor is moved to that point.
+所有这些计算得到的数字被传递给@code{goto-char}，并将光标移动到该位置。
 
 @need 1500
 @node beginning-of-buffer complete
-@subsection The Complete @code{beginning-of-buffer}
+@subsection 完整的@code{beginning-of-buffer}
 
 @need 1000
-Here is the complete text of the @code{beginning-of-buffer} function:
+下面是@code{beginning-of-buffer}函数的完整文本：
 @sp 1
 
-@c In GNU Emacs 22
+@c 在GNU Emacs 22中
 @smallexample
 @group
 (defun beginning-of-buffer (&optional arg)
-  "Move point to the beginning of the buffer;
-leave mark at previous position.
-With \\[universal-argument] prefix,
-do not set mark at previous position.
-With numeric arg N,
-put point N/10 of the way from the beginning.
+  "将点移到缓冲区的开头；在先前位置留下标记。
+使用 \\[universal-argument] 前缀时，不在先前位置设置标记。
+使用数值参数 N 时，将点设置为从开头开始的 N/10 处。
 
-If the buffer is narrowed,
-this command uses the beginning and size
-of the accessible part of the buffer.
+如果缩小了缓冲区，
+此命令使用缓冲区的可访问部分的开头和大小。
 @end group
 
 @group
-Don't use this command in Lisp programs!
-\(goto-char (point-min)) is faster
-and avoids clobbering the mark."
+不要在Lisp程序中使用这个命令！
+\(goto-char (point-min))更快
+且不会破坏标记。"
   (interactive "P")
   (or (consp arg)
       (and transient-mark-mode mark-active)
@@ -4295,7 +4185,7 @@ and avoids clobbering the mark."
     (goto-char (if (and arg (not (consp arg)))
                    (+ (point-min)
                       (if (> size 10000)
-                          ;; Avoid overflow for large buffer sizes!
+                          ;; 避免大缓冲区大小的溢出！
                           (* (prefix-numeric-value arg)
                              (/ size 10))
                         (/ (+ 10 (* size (prefix-numeric-value arg)))
@@ -4306,19 +4196,17 @@ and avoids clobbering the mark."
 @end smallexample
 
 @ignore
-From before GNU Emacs 22
+从GNU Emacs 22之前
 @smallexample
 @group
 (defun beginning-of-buffer (&optional arg)
-  "Move point to the beginning of the buffer;
-leave mark at previous position.
-With arg N, put point N/10 of the way
-from the true beginning.
+  "将点移到缓冲区的开头；在先前位置留下标记。
+如果有参数 N，则将点设置为从真正开头开始的 N/10 处。
 @end group
 @group
-Don't use this in Lisp programs!
-\(goto-char (point-min)) is faster
-and does not set the mark."
+不要在Lisp程序中使用这个！
+\(goto-char (point-min))更快
+且不会设置标记。"
   (interactive "P")
   (push-mark)
 @end group
@@ -4326,7 +4214,7 @@ and does not set the mark."
   (goto-char
    (if arg
        (if (> (buffer-size) 10000)
-           ;; @r{Avoid overflow for large buffer sizes!}
+           ;; @r{避免大缓冲区大小的溢出！}
            (* (prefix-numeric-value arg)
               (/ (buffer-size) 10))
 @end group
@@ -4341,46 +4229,27 @@ and does not set the mark."
 @end ignore
 
 @noindent
-Except for two small points, the previous discussion shows how this
-function works.  The first point deals with a detail in the
-documentation string, and the second point concerns the last line of
-the function.
+除了文档字符串中的一个细节和函数的最后一行之外，前面的讨论展示了这个函数的工作原理。
 
 @need 800
-In the documentation string, there is reference to an expression:
+在文档字符串中，有一个表达式的引用：
 
 @smallexample
 \\[universal-argument]
 @end smallexample
 
 @noindent
-A @samp{\\} is used before the first square bracket of this
-expression.  This @samp{\\} tells the Lisp interpreter to substitute
-whatever key is currently bound to the @samp{[@dots{}]}.  In the case
-of @code{universal-argument}, that is usually @kbd{C-u}, but it might
-be different.  (@xref{Documentation Tips, , Tips for Documentation
-Strings, elisp, The GNU Emacs Lisp Reference Manual}, for more
-information.)
+在这个表达式的第一个方括号之前使用了@samp{\\}。这个@samp{\\}告诉Lisp解释器替换当前绑定到@samp{[@dots{}]}的键。在@code{universal-argument}的情况下，通常是@kbd{C-u}，但也可能不同。有关更多信息，@xref{Documentation Tips, ,文档字符串提示, GNU Emacs Lisp参考手册}。
 
 @need 1200
-Finally, the last line of the @code{beginning-of-buffer} command says
-to move point to the beginning of the next line if the command is
-invoked with an argument:
+最后，@code{beginning-of-buffer}命令的最后一行指示，如果带有参数调用命令：
 
 @smallexample
 (if (and arg (not (consp arg))) (forward-line 1))
 @end smallexample
 
 @noindent
-This puts the cursor at the beginning of the first line after the
-appropriate tenths position in the buffer.  This is a flourish that
-means that the cursor is always located @emph{at least} the requested
-tenths of the way through the buffer, which is a nicety that is,
-perhaps, not necessary, but which, if it did not occur, would be sure
-to draw complaints.  (The @code{(not (consp arg))} portion is so that
-if you specify the command with a @kbd{C-u}, but without a number,
-that is to say, if the raw prefix argument is simply a cons cell,
-the command does not put you at the beginning of the second line.)
+如果使用@kbd{C-u}指定命令，但没有数字，也就是说，原始前缀参数只是一个cons单元，该命令将光标放在第二行的开头。
 
 @node Second Buffer Related Review
 @section Review

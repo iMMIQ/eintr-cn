@@ -55,31 +55,27 @@ kbd.kbd {font-style: oblique}
 <div class="subsection-level-extent" id="beginning_002dof_002dbuffer-complete">
 <div class="nav-panel">
 <p>
-Previous: <a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="p" rel="prev"><code class="code">beginning-of-buffer</code> with an Argument</a>, Up: <a href="beginning_002dof_002dbuffer.html" accesskey="u" rel="up">Complete Definition of <code class="code">beginning-of-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="p" rel="prev"><code class="code">beginning-of-buffer</code> with an Argument</a>, Up: <a href="beginning_002dof_002dbuffer.html" accesskey="u" rel="up"><code class="code">beginning-of-buffer</code> 函数的完整定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-Complete-beginning_002dof_002dbuffer">5.3.3 The Complete <code class="code">beginning-of-buffer</code></h4>
+<h4 class="subsection" id="Wan-Zheng-De-beginning_002dof_002dbuffer">5.3.3 完整的<code class="code">beginning-of-buffer</code></h4>
 
-<p>Here is the complete text of the <code class="code">beginning-of-buffer</code> function:
+<p>下面是<code class="code">beginning-of-buffer</code>函数的完整文本：
 </p><br>
 
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun beginning-of-buffer (&amp;optional arg)
-  &quot;Move point to the beginning of the buffer;
-leave mark at previous position.
-With \\[universal-argument] prefix,
-do not set mark at previous position.
-With numeric arg N,
-put point N/10 of the way from the beginning.
+  &quot;将点移到缓冲区的开头；在先前位置留下标记。
+使用 \\[universal-argument] 前缀时，不在先前位置设置标记。
+使用数值参数 N 时，将点设置为从开头开始的 N/10 处。
 
-If the buffer is narrowed,
-this command uses the beginning and size
-of the accessible part of the buffer.
+如果缩小了缓冲区，
+此命令使用缓冲区的可访问部分的开头和大小。
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">Don't use this command in Lisp programs!
-\(goto-char (point-min)) is faster
-and avoids clobbering the mark.&quot;
+</pre><div class="group"><pre class="example-preformatted">不要在Lisp程序中使用这个命令！
+\(goto-char (point-min))更快
+且不会破坏标记。&quot;
   (interactive &quot;P&quot;)
   (or (consp arg)
       (and transient-mark-mode mark-active)
@@ -88,7 +84,7 @@ and avoids clobbering the mark.&quot;
     (goto-char (if (and arg (not (consp arg)))
                    (+ (point-min)
                       (if (&gt; size 10000)
-                          ;; Avoid overflow for large buffer sizes!
+                          ;; 避免大缓冲区大小的溢出！
                           (* (prefix-numeric-value arg)
                              (/ size 10))
                         (/ (+ 10 (* size (prefix-numeric-value arg)))
@@ -98,48 +94,24 @@ and avoids clobbering the mark.&quot;
 </pre></div></div>
 
 
-<p>Except for two small points, the previous discussion shows how this
-function works.  The first point deals with a detail in the
-documentation string, and the second point concerns the last line of
-the function.
+<p>除了文档字符串中的一个细节和函数的最后一行之外，前面的讨论展示了这个函数的工作原理。
 </p>
-<p>In the documentation string, there is reference to an expression:
+<p>在文档字符串中，有一个表达式的引用：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">\\[universal-argument]
 </pre></div>
 
-<p>A &lsquo;<samp class="samp">\\</samp>&rsquo; is used before the first square bracket of this
-expression.  This &lsquo;<samp class="samp">\\</samp>&rsquo; tells the Lisp interpreter to substitute
-whatever key is currently bound to the &lsquo;<samp class="samp">[&hellip;]</samp>&rsquo;.  In the case
-of <code class="code">universal-argument</code>, that is usually <kbd class="kbd">C-u</kbd>, but it might
-be different.  (See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Documentation-Tips.html#Documentation-Tips">Tips for Documentation
-Strings</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>, for more
-information.)
+<p>在这个表达式的第一个方括号之前使用了&lsquo;<samp class="samp">\\</samp>&rsquo;。这个&lsquo;<samp class="samp">\\</samp>&rsquo;告诉Lisp解释器替换当前绑定到&lsquo;<samp class="samp">[&hellip;]</samp>&rsquo;的键。在<code class="code">universal-argument</code>的情况下，通常是<kbd class="kbd">C-u</kbd>，但也可能不同。有关更多信息，See <a data-manual="GNU Emacs Lisp参考手册" href="../GNU%20Emacs%20Lisp%e5%8f%82%e8%80%83%e6%89%8b%e5%86%8c_html/Documentation-Tips.html#Documentation-Tips">(GNU Emacs Lisp参考手册)文档字符串提示</a>。
 </p>
-<p>Finally, the last line of the <code class="code">beginning-of-buffer</code> command says
-to move point to the beginning of the next line if the command is
-invoked with an argument:
+<p>最后，<code class="code">beginning-of-buffer</code>命令的最后一行指示，如果带有参数调用命令：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(if (and arg (not (consp arg))) (forward-line 1))
 </pre></div>
 
-<p>This puts the cursor at the beginning of the first line after the
-appropriate tenths position in the buffer.  This is a flourish that
-means that the cursor is always located <em class="emph">at least</em> the requested
-tenths of the way through the buffer, which is a nicety that is,
-perhaps, not necessary, but which, if it did not occur, would be sure
-to draw complaints.  (The <code class="code">(not (consp arg))</code> portion is so that
-if you specify the command with a <kbd class="kbd">C-u</kbd>, but without a number,
-that is to say, if the raw prefix argument is simply a cons cell,
-the command does not put you at the beginning of the second line.)
+<p>如果使用<kbd class="kbd">C-u</kbd>指定命令，但没有数字，也就是说，原始前缀参数只是一个cons单元，该命令将光标放在第二行的开头。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Previous: <a href="beginning_002dof_002dbuffer-opt-arg.html"><code class="code">beginning-of-buffer</code> with an Argument</a>, Up: <a href="beginning_002dof_002dbuffer.html">Complete Definition of <code class="code">beginning-of-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

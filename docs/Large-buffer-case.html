@@ -39,7 +39,7 @@ ISBN 1-882114-43-4
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="beginning_002dof_002dbuffer-opt-arg.html" rel="up" title="beginning-of-buffer opt arg">
-<link href="Small-buffer-case.html" rel="next" title="Small buffer case">
+<link href="Xiao-Huan-Chong-Qu-Qing-Kuang-.html" rel="next" title="小缓冲区情况">
 <link href="Disentangle-beginning_002dof_002dbuffer.html" rel="prev" title="Disentangle beginning-of-buffer">
 <style type="text/css">
 <!--
@@ -56,30 +56,22 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsubsec-level-extent" id="Large-buffer-case">
 <div class="nav-panel">
 <p>
-Next: <a href="Small-buffer-case.html" accesskey="n" rel="next">What happens in a small buffer</a>, Previous: <a href="Disentangle-beginning_002dof_002dbuffer.html" accesskey="p" rel="prev">Disentangle <code class="code">beginning-of-buffer</code></a>, Up: <a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="u" rel="up"><code class="code">beginning-of-buffer</code> with an Argument</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Xiao-Huan-Chong-Qu-Qing-Kuang-.html" accesskey="n" rel="next">小缓冲区中的情况</a>, Previous: <a href="Disentangle-beginning_002dof_002dbuffer.html" accesskey="p" rel="prev">Disentangle <code class="code">beginning-of-buffer</code></a>, Up: <a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="u" rel="up"><code class="code">beginning-of-buffer</code> with an Argument</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsubsec" id="What-happens-in-a-large-buffer">What happens in a large buffer</h4>
+<h4 class="unnumberedsubsubsec" id="Zai-Da-Huan-Chong-Qu-ZhongFa-Sheng-Liao-Shi-Yao-">在大缓冲区中发生了什么</h4>
 
-<p>In <code class="code">beginning-of-buffer</code>, the inner <code class="code">if</code> expression tests
-whether the size of the buffer is greater than 10,000 characters.  To do
-this, it uses the <code class="code">&gt;</code> function and the computation of <code class="code">size</code>
-that comes from the let expression.
+<p>在<code class="code">beginning-of-buffer</code>中，内部的<code class="code">if</code>表达式测试缓冲区的大小是否大于10,000个字符。为了做到这一点，它使用了<code class="code">&gt;</code>函数和来自let表达式的<code class="code">size</code>计算。
 </p>
-<p>In the old days, the function <code class="code">buffer-size</code> was used.  Not only
-was that function called several times, it gave the size of the whole
-buffer, not the accessible part.  The computation makes much more
-sense when it handles just the accessible part.  (See <a class="xref" href="Narrowing-_0026-Widening.html">Narrowing and Widening</a>, for more information on focusing
-attention to an accessible part.)
+<p>在旧版本中，使用了<code class="code">buffer-size</code>函数。不仅调用了该函数多次，而且它给出的是整个缓冲区的大小，而不是可访问部分的大小。当只处理可访问部分时，计算会更有意义。关于将注意力集中到可访问部分的更多信息，请参阅《缩小和扩大》。
 </p>
-<p>The line looks like this:
+<p>这一行看起来像这样：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(if (&gt; size 10000)
 </pre></div>
 
-<p>When the buffer is large, the then-part of the <code class="code">if</code> expression is
-evaluated.  It reads like this (after formatting for easy reading):
+<p>当缓冲区很大时，<code class="code">if</code>表达式的then部分将被评估。它读起来像这样（格式化以便阅读）：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(*
@@ -87,51 +79,32 @@ evaluated.  It reads like this (after formatting for easy reading):
   (/ size 10))
 </pre></div></div>
 
-<p>This expression is a multiplication, with two arguments to the function
-<code class="code">*</code>.
+<p>这个表达式是一个乘法，具有<code class="code">*</code>函数的两个参数。
 </p>
-<p>The first argument is <code class="code">(prefix-numeric-value arg)</code>.  When
-<code class="code">&quot;P&quot;</code> is used as the argument for <code class="code">interactive</code>, the value
-passed to the function as its argument is passed a <em class="dfn">raw prefix
-argument</em>, and not a number.  (It is a number in a list.)  To perform
-the arithmetic, a conversion is necessary, and
-<code class="code">prefix-numeric-value</code> does the job.
+<p>第一个参数是<code class="code">(prefix-numeric-value arg)</code>。当<code class="code">interactive</code>的参数为<code class="code">&quot;P&quot;</code>时，传递给函数的参数是一个<em class="dfn">原始前缀参数</em>，而不是一个数字（它是一个列表中的数字）。为了进行算术运算，需要进行转换，<code class="code">prefix-numeric-value</code>完成了这个任务。
 </p>
 <a class="index-entry-id" id="index-_002f-_0028division_0029"></a>
 <a class="index-entry-id" id="index-Division"></a>
-<p>The second argument is <code class="code">(/ size 10)</code>.  This expression divides
-the numeric value by ten&mdash;the numeric value of the size of the
-accessible portion of the buffer.  This produces a number that tells
-how many characters make up one tenth of the buffer size.  (In Lisp,
-<code class="code">/</code> is used for division, just as <code class="code">*</code> is used for
-multiplication.)
+<p>第二个参数是<code class="code">(/ size 10)</code>。这个表达式将数值除以十&mdash;可访问部分缓冲区大小的数值。这产生一个数字，告诉我们十分之一缓冲区大小由多少字符组成。在Lisp中，<code class="code">/</code>用于除法，就像<code class="code">*</code>用于乘法一样。
 </p>
-<p>In the multiplication expression as a whole, this amount is multiplied
-by the value of the prefix argument&mdash;the multiplication looks like this:
+<p>在整个乘法表达式中，这个数量被乘以前缀参数的值&mdash;乘法看起来像这样：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(* <var class="var">numeric-value-of-prefix-arg</var>
    <var class="var">number-of-characters-in-one-tenth-of-the-accessible-buffer</var>)
 </pre></div></div>
 
-<p>If, for example, the prefix argument is &lsquo;<samp class="samp">7</samp>&rsquo;, the one-tenth value
-will be multiplied by 7 to give a position 70% of the way through.
+<p>例如，如果前缀参数是&lsquo;<samp class="samp">7</samp>&rsquo;，那么十分之一的值将乘以7，以给出在缓冲区大小的70%的位置。
 </p>
-<p>The result of all this is that if the accessible portion of the buffer
-is large, the <code class="code">goto-char</code> expression reads like this:
+<p>所有这些的结果是，如果可访问部分的缓冲区很大，那么<code class="code">goto-char</code>表达式将如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(goto-char (* (prefix-numeric-value arg)
               (/ size 10)))
 </pre></div></div>
 
-<p>This puts the cursor where we want it.
+<p>这把光标放在我们想要的位置。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Small-buffer-case.html">What happens in a small buffer</a>, Previous: <a href="Disentangle-beginning_002dof_002dbuffer.html">Disentangle <code class="code">beginning-of-buffer</code></a>, Up: <a href="beginning_002dof_002dbuffer-opt-arg.html"><code class="code">beginning-of-buffer</code> with an Argument</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

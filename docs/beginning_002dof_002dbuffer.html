@@ -58,36 +58,20 @@ kbd.kbd {font-style: oblique}
 Next: <a href="Second-Buffer-Related-Review.html" accesskey="n" rel="next">Review</a>, Previous: <a href="insert_002dbuffer.html" accesskey="p" rel="prev">函数 <code class="code">insert-buffer</code> 的定义</a>, Up: <a href="Fu-Za-YiXie-.html" accesskey="u" rel="up">几个更复杂的函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Complete-Definition-of-beginning_002dof_002dbuffer">5.3 Complete Definition of <code class="code">beginning-of-buffer</code></h3>
+<h3 class="section" id="beginning_002dof_002dbuffer-Han-Shu-De-Wan-Zheng-Ding-Yi-">5.3 <code class="code">beginning-of-buffer</code> 函数的完整定义</h3>
 <a class="index-entry-id" id="index-beginning_002dof_002dbuffer"></a>
 
-<p>The basic structure of the <code class="code">beginning-of-buffer</code> function has
-already been discussed.  (See <a class="xref" href="simplified_002dbeginning_002dof_002dbuffer.html">A
-Simplified <code class="code">beginning-of-buffer</code> Definition</a>.)
-This section describes the complex part of the definition.
+<p><code class="code">beginning-of-buffer</code> 函数的基本结构已经讨论过了。(See <a class="xref" href="simplified_002dbeginning_002dof_002dbuffer.html">一个简化的 <code class="code">beginning-of-buffer</code> 定义</a>.) 本节描述了定义的复杂部分。
 </p>
-<p>As previously described, when invoked without an argument,
-<code class="code">beginning-of-buffer</code> moves the cursor to the beginning of the
-buffer (in truth, the beginning of the accessible portion of the
-buffer), leaving the mark at the previous position.  However, when the
-command is invoked with a number between one and ten, the function
-considers that number to be a fraction of the length of the buffer,
-measured in tenths, and Emacs moves the cursor that fraction of the
-way from the beginning of the buffer.  Thus, you can either call this
-function with the key command <kbd class="kbd">M-&lt;</kbd>, which will move the cursor to
-the beginning of the buffer, or with a key command such as <kbd class="kbd">C-u 7
-M-&lt;</kbd> which will move the cursor to a point 70% of the way through the
-buffer.  If a number bigger than ten is used for the argument, it
-moves to the end of the buffer.
+<p>如前所述，当没有参数调用时，<code class="code">beginning-of-buffer</code> 将光标移动到缓冲区的开头（实际上是可访问部分的开头），并将标记留在先前的位置。然而，当以介于一到十之间的数字调用该命令时，该函数将该数字视为缓冲区长度的十分之一，Emacs 将光标移动到缓冲区的该部分。因此，您可以使用键命令 <kbd class="kbd">M-&lt;</kbd> 调用该函数，将光标移动到缓冲区的开头，或者使用键命令，例如 <kbd class="kbd">C-u 7 M-&lt;</kbd>，将光标移动到缓冲区的70％处。如果使用大于十的数字作为参数，则光标将移动到缓冲区的末尾。
 </p>
-<p>The <code class="code">beginning-of-buffer</code> function can be called with or without an
-argument.  The use of the argument is optional.
+<p><code class="code">beginning-of-buffer</code> 函数可以带有或不带有参数调用。使用参数是可选的。
 </p>
 
 <ul class="mini-toc">
-<li><a href="Optional-Arguments.html" accesskey="1">Optional Arguments</a></li>
+<li><a href="Optional-Arguments.html" accesskey="1">可选参数</a></li>
 <li><a href="beginning_002dof_002dbuffer-opt-arg.html" accesskey="2"><code class="code">beginning-of-buffer</code> with an Argument</a></li>
-<li><a href="beginning_002dof_002dbuffer-complete.html" accesskey="3">The Complete <code class="code">beginning-of-buffer</code></a></li>
+<li><a href="beginning_002dof_002dbuffer-complete.html" accesskey="3">完整的<code class="code">beginning-of-buffer</code></a></li>
 </ul>
 </div>
 

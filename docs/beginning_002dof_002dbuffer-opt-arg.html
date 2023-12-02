@@ -56,20 +56,16 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="subsection-level-extent" id="beginning_002dof_002dbuffer-opt-arg">
 <div class="nav-panel">
 <p>
-Next: <a href="beginning_002dof_002dbuffer-complete.html" accesskey="n" rel="next">The Complete <code class="code">beginning-of-buffer</code></a>, Previous: <a href="Optional-Arguments.html" accesskey="p" rel="prev">Optional Arguments</a>, Up: <a href="beginning_002dof_002dbuffer.html" accesskey="u" rel="up">Complete Definition of <code class="code">beginning-of-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="beginning_002dof_002dbuffer-complete.html" accesskey="n" rel="next">完整的<code class="code">beginning-of-buffer</code></a>, Previous: <a href="Optional-Arguments.html" accesskey="p" rel="prev">可选参数</a>, Up: <a href="beginning_002dof_002dbuffer.html" accesskey="u" rel="up"><code class="code">beginning-of-buffer</code> 函数的完整定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="subsection" id="beginning_002dof_002dbuffer-with-an-Argument">5.3.2 <code class="code">beginning-of-buffer</code> with an Argument</h4>
 
-<p>When <code class="code">beginning-of-buffer</code> is called with an argument, an
-expression is evaluated which calculates what value to pass to
-<code class="code">goto-char</code>.  This expression is rather complicated at first sight.
-It includes an inner <code class="code">if</code> expression and much arithmetic.  It looks
-like this:
+<p>当使用参数调用<code class="code">beginning-of-buffer</code>时，将计算一个表达式来确定传递给<code class="code">goto-char</code>的值。这个表达式乍一看相当复杂。它包括一个内部的<code class="code">if</code>表达式和许多算术运算。具体如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(if (&gt; (buffer-size) 10000)
-    ;; <span class="r">Avoid overflow for large buffer sizes!</span>
+    ;; <span class="r">避免大缓冲区大小溢出！</span>
                           (* (prefix-numeric-value arg)
                              (/ size 10))
   (/
@@ -81,8 +77,8 @@ like this:
 
 <ul class="mini-toc">
 <li><a href="Disentangle-beginning_002dof_002dbuffer.html" accesskey="1">Disentangle <code class="code">beginning-of-buffer</code></a></li>
-<li><a href="Large-buffer-case.html" accesskey="2">What happens in a large buffer</a></li>
-<li><a href="Small-buffer-case.html" accesskey="3">What happens in a small buffer</a></li>
+<li><a href="Large-buffer-case.html" accesskey="2">在大缓冲区中发生了什么</a></li>
+<li><a href="Xiao-Huan-Chong-Qu-Qing-Kuang-.html" accesskey="3">小缓冲区中的情况</a></li>
 </ul>
 </div>
 
