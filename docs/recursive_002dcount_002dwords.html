@@ -60,133 +60,92 @@ ul.mark-bullet {list-style-type: disc}
 Next: <a href="Counting-Exercise.html" accesskey="n" rel="next">Exercise: Counting Punctuation</a>, Previous: <a href="count_002dwords_002dexample.html" accesskey="p" rel="prev">函数 <code class="code">count-words-example</code></a>, Up: <a href="Tong-Ji-Dan-Ci-Shu-.html" accesskey="u" rel="up">通过重复和正则表达式进行统计</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Count-Words-Recursively">13.2 Count Words Recursively</h3>
-<a class="index-entry-id" id="index-Count-words-recursively"></a>
-<a class="index-entry-id" id="index-Recursively-counting-words"></a>
-<a class="index-entry-id" id="index-Words_002c-counted-recursively"></a>
+<h3 class="section" id="Di-Gui-Ji-Suan-Dan-Ci-Shu-">13.2 递归计算单词数</h3>
+<a class="index-entry-id" id="index-Di-Gui-Ji-Suan-Dan-Ci-Shu-"></a>
+<a class="index-entry-id" id="index-Di-Gui-Dan-Ci-Ji-Shu-"></a>
+<a class="index-entry-id" id="index-Dan-Ci-_002cDi-Gui-Ji-Shu-"></a>
 
-<p>You can write the function for counting words recursively as well as
-with a <code class="code">while</code> loop.  Let&rsquo;s see how this is done.
+<p>你可以编写递归方式和使用 <code class="code">while</code> 循环的函数来计算单词数。让我们看看如何实现。
 </p>
-<p>First, we need to recognize that the <code class="code">count-words-example</code>
-function has three jobs: it sets up the appropriate conditions for
-counting to occur; it counts the words in the region; and it sends a
-message to the user telling how many words there are.
+<p>首先，我们需要认识到 <code class="code">count-words-example</code> 函数有三个任务：它设置适当的条件来进行计数；它计算区域内的单词数；并向用户发送一条消息，告诉有多少个单词。
 </p>
-<p>If we write a single recursive function to do everything, we will
-receive a message for every recursive call.  If the region contains 13
-words, we will receive thirteen messages, one right after the other.
-We don&rsquo;t want this!  Instead, we must write two functions to do the
-job, one of which (the recursive function) will be used inside of the
-other.  One function will set up the conditions and display the
-message; the other will return the word count.
+<p>如果我们写一个单一的递归函数来执行所有这些任务，我们将为每个递归调用都收到一条消息。如果区域包含13个单词，我们将接收到十三条消息，依次排列。我们不想要这样！相反，我们必须编写两个函数来完成工作，其中一个（递归函数）将在另一个内部使用。一个函数将设置条件并显示消息；另一个将返回单词数。
 </p>
-<p>Let us start with the function that causes the message to be displayed.
-We can continue to call this <code class="code">count-words-example</code>.
+<p>让我们从引起消息显示的函数开始。我们可以继续称之为 <code class="code">count-words-example</code>。
 </p>
-<p>This is the function that the user will call.  It will be interactive.
-Indeed, it will be similar to our previous versions of this
-function, except that it will call <code class="code">recursive-count-words</code> to
-determine how many words are in the region.
+<p>这是用户将调用的函数。它将是交互式的。实际上，它将类似于我们先前版本的这个函数，只是它将调用 <code class="code">recursive-count-words</code> 来确定区域中有多少个单词。
 </p>
-<p>We can readily construct a template for this function, based on our
-previous versions:
+<p>我们可以基于先前的版本轻松构造这个函数的模板：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;; <span class="r">Recursive version; uses regular expression search</span>
+<div class="group"><pre class="example-preformatted">;; <span class="r">递归版本；使用正则表达式搜索</span>
 (defun count-words-example (beginning end)
   &quot;<var class="var">documentation</var>&hellip;&quot;
   (<var class="var">interactive-expression</var>&hellip;)
 </pre></div><div class="group"><pre class="example-preformatted">
 
-;;; <span class="r">1. Set up appropriate conditions.</span>
+;;; <span class="r">1. 设置适当的条件。</span>
   (<var class="var">explanatory message</var>)
   (<var class="var">set-up functions</var>&hellip;
 </pre></div><div class="group"><pre class="example-preformatted">
 
-;;; <span class="r">2. Count the words.</span>
+;;; <span class="r">2. 计算单词数。</span>
     <var class="var">recursive call</var>
 </pre></div><div class="group"><pre class="example-preformatted">
 
-;;; <span class="r">3. Send a message to the user.</span>
+;;; <span class="r">3. 向用户发送消息。</span>
     <var class="var">message providing word count</var>))
 </pre></div></div>
 
-<p>The definition looks straightforward, except that somehow the count
-returned by the recursive call must be passed to the message
-displaying the word count.  A little thought suggests that this can be
-done by making use of a <code class="code">let</code> expression: we can bind a variable
-in the varlist of a <code class="code">let</code> expression to the number of words in
-the region, as returned by the recursive call; and then the
-<code class="code">cond</code> expression, using binding, can display the value to the
-user.
+<p>定义看起来很简单，只是要注意递归调用返回的计数如何传递给显示单词计数的消息。经过一点思考，我们可以利用 <code class="code">let</code> 表达式来实现：我们可以在 <code class="code">let</code> 表达式的 varlist 中将一个变量绑定到区域内的单词数，由递归调用返回；然后 <code class="code">cond</code> 表达式可以使用绑定来向用户显示该值。
 </p>
-<p>Often, one thinks of the binding within a <code class="code">let</code> expression as
-somehow secondary to the primary work of a function.  But in this
-case, what you might consider the primary job of the function,
-counting words, is done within the <code class="code">let</code> expression.
+<p>通常，人们将 <code class="code">let</code> 表达式内的绑定视为函数的主要工作的某种次要部分。但在这种情况下，您可能认为函数的主要工作，即计算单词数，是在 <code class="code">let</code> 表达式内完成的。
 </p>
-<p>Using <code class="code">let</code>, the function definition looks like this:
+<p>使用 <code class="code">let</code>，函数定义如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun count-words-example (beginning end)
-  &quot;Print number of words in the region.&quot;
+  &quot;打印区域内的单词数。&quot;
   (interactive &quot;r&quot;)
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">1. Set up appropriate conditions.</span>
-  (message &quot;Counting words in region ... &quot;)
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">1. 设置适当的条件。</span>
+  (message &quot;正在计算区域内的单词数... &quot;)
   (save-excursion
     (goto-char beginning)
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">2. Count the words.</span>
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">2. 计算单词数。</span>
     (let ((count (recursive-count-words end)))
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">3. Send a message to the user.</span>
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">3. 向用户发送消息。</span>
       (cond ((zerop count)
              (message
-              &quot;The region does NOT have any words.&quot;))
+              &quot;该区域没有任何单词。&quot;))
             ((= 1 count)
              (message
-              &quot;The region has 1 word.&quot;))
+              &quot;该区域有1个单词。&quot;))
             (t
              (message
-              &quot;The region has %d words.&quot; count))))))
+              &quot;该区域有 %d 个单词。&quot; count))))))
 </pre></div></div>
 
-<p>Next, we need to write the recursive counting function.
+<p>接下来，我们需要编写递归计数函数。
 </p>
-<p>A recursive function has at least three parts: the do-again-test, the
-next-step-expression, and the recursive call.
+<p>递归函数至少有三个部分：再次执行测试，下一步表达式和递归调用。
 </p>
-<p>The do-again-test determines whether the function will or will not be
-called again.  Since we are counting words in a region and can use a
-function that moves point forward for every word, the do-again-test
-can check whether point is still within the region.  The do-again-test
-should find the value of point and determine whether point is before,
-at, or after the value of the end of the region.  We can use the
-<code class="code">point</code> function to locate point.  Clearly, we must pass the
-value of the end of the region to the recursive counting function as an
-argument.
+<p>再次执行测试确定函数是否将再次调用。由于我们在区域中计算单词数并可以使用一个每个单词都向前移动指针的函数，再次执行测试可以检查点是否仍然在区域内。再次执行测试应该找到点的值，并确定点是在区域结束的值之前，与之相等还是之后。我们可以使用 <code class="code">point</code> 函数来定位点。显然，必须将区域结束的值作为参数传递给递归计数函数。
 </p>
-<p>In addition, the do-again-test should also test whether the search finds a
-word.  If it does not, the function should not call itself again.
+<p>此外，再次执行测试还应该测试搜索是否找到了单词。如果没有找到，函数不应再次调用自身。
 </p>
-<p>The next-step-expression changes a value so that when the recursive
-function is supposed to stop calling itself, it stops.  More
-precisely, the next-step-expression changes a value so that at the
-right time, the do-again-test stops the recursive function from
-calling itself again.  In this case, the next-step-expression can be
-the expression that moves point forward, word by word.
+<p>下一步表达式更改一个值，以便当递归函数应该停止调用自身时，它停止。更准确地说，下一步表达式更改一个值，以便在正确的时间，再次执行测试停止递归函数再次调用自身。在这种情况下，下一步表达式可以是将点按单词向前移动的表达式。
 </p>
-<p>The third part of a recursive function is the recursive call.
+<p>递归函数的第三部分是递归调用。
 </p>
-<p>Somewhere, we also need a part that does the work of the
-function, a part that does the counting.  A vital part!
+<p>还需要一个执行函数工作的部分，一个执行计数的重要部分！
 </p>
-<p>But already, we have an outline of the recursive counting function:
+<p>但是，我们已经有了递归计数函数的大纲：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun recursive-count-words (region-end)
@@ -196,47 +155,26 @@ function, a part that does the counting.  A vital part!
    <var class="var">recursive call</var>)
 </pre></div></div>
 
-<p>Now we need to fill in the slots.  Let&rsquo;s start with the simplest cases
-first:  if point is at or beyond the end of the region, there cannot
-be any words in the region, so the function should return zero.
-Likewise, if the search fails, there are no words to count, so the
-function should return zero.
+<p>现在我们需要填充这些槽。让我们从最简单的情况开始：如果点在区域结束的位置或之后，那么区域中不能有任何单词，因此函数应返回零。同样，如果搜索失败，就没有单词可计数，因此函数应返回零。
 </p>
-<p>On the other hand, if point is within the region and the search
-succeeds, the function should call itself again.
+<p>另一方面，如果点在区域内且搜索成功，则函数应再次调用自身。
 </p>
-<p>Thus, the do-again-test should look like this:
+<p>因此，再次执行测试应如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(and (&lt; (point) region-end)
      (re-search-forward &quot;\\w+\\W*&quot; region-end t))
 </pre></div></div>
 
-<p>Note that the search expression is part of the do-again-test&mdash;the
-function returns <code class="code">t</code> if its search succeeds and <code class="code">nil</code> if it
-fails.  (See <a class="xref" href="Kong-Bai-Zi-Fu-Cuo-Wu-.html">The Whitespace Bug in
-<code class="code">count-words-example</code></a>, for an explanation of how
-<code class="code">re-search-forward</code> works.)
+<p>请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 <code class="code">t</code>，如果失败，则返回 <code class="code">nil</code>。(See <a class="xref" href="Kong-Bai-Zi-Fu-Cuo-Wu-.html"><code class="code">count-words-example</code> 中的空白字符错误</a>，了解 <code class="code">re-search-forward</code> 的工作原理的解释。)
 </p>
-<p>The do-again-test is the true-or-false test of an <code class="code">if</code> clause.
-Clearly, if the do-again-test succeeds, the then-part of the <code class="code">if</code>
-clause should call the function again; but if it fails, the else-part
-should return zero since either point is outside the region or the
-search failed because there were no words to find.
+<p>再次执行测试是 <code class="code">if</code> 子句的真值测试。显然，如果再次执行测试成功，则 <code class="code">if</code> 子句的 then-部分应该再次调用函数；但如果失败，则 else-部分应该返回零，因为要么点在区域外，要么搜索失败，因为找不到单词。
 </p>
-<p>But before considering the recursive call, we need to consider the
-next-step-expression.  What is it?  Interestingly, it is the search
-part of the do-again-test.
+<p>但在考虑递归调用之前，我们需要考虑下一步表达式。这是什么？有趣的是，它就是do-again-test的搜索部分。
 </p>
-<p>In addition to returning <code class="code">t</code> or <code class="code">nil</code> for the
-do-again-test, <code class="code">re-search-forward</code> moves point forward as a side
-effect of a successful search.  This is the action that changes the
-value of point so that the recursive function stops calling itself
-when point completes its movement through the region.  Consequently,
-the <code class="code">re-search-forward</code> expression is the next-step-expression.
+<p>除了为do-again-test返回<code class="code">t</code>或<code class="code">nil</code>外，<code class="code">re-search-forward</code>在成功搜索时会作为副作用移动点。这是改变点值的操作，使得递归函数停止调用自身，当点通过区域完成移动。因此，<code class="code">re-search-forward</code>表达式就是next-step-expression。
 </p>
-<p>In outline, then, the body of the <code class="code">recursive-count-words</code>
-function looks like this:
+<p>概述来看，<code class="code">recursive-count-words</code>函数的主体如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(if <var class="var">do-again-test-and-next-step-combined</var>
@@ -246,48 +184,31 @@ function looks like this:
   <var class="var">return-zero</var>)
 </pre></div></div>
 
-<p>How to incorporate the mechanism that counts?
+<p>如何融入计数机制？
 </p>
-<p>If you are not used to writing recursive functions, a question like
-this can be troublesome.  But it can and should be approached
-systematically.
+<p>如果你不习惯编写递归函数，这样的问题可能会让人头疼。但应该以系统的方式来解决。
 </p>
-<p>We know that the counting mechanism should be associated in some way
-with the recursive call.  Indeed, since the next-step-expression moves
-point forward by one word, and since a recursive call is made for
-each word, the counting mechanism must be an expression that adds one
-to the value returned by a call to <code class="code">recursive-count-words</code>.
+<p>我们知道计数机制应该以某种方式与递归调用关联起来。确实，由于next-step-expression通过一个单词将点向前移动，并且由于每个单词都会进行递归调用，计数机制必须是一个表达式，该表达式将一个添加到由<code class="code">recursive-count-words</code>调用返回的值。
 </p>
-<p>Consider several cases:
+<p>考虑几种情况：
 </p>
 <ul class="itemize mark-bullet">
-<li>If there are two words in the region, the function should return
-a value resulting from adding one to the value returned when it counts
-the first word, plus the number returned when it counts the remaining
-words in the region, which in this case is one.
+<li>如果区域中有两个单词，则函数应该返回一个值，该值是在计算第一个单词时添加到该值的值，再加上计算区域中剩余单词时返回的数字，这在这种情况下为一。
 
-</li><li>If there is one word in the region, the function should return
-a value resulting from adding one to the value returned when it counts
-that word, plus the number returned when it counts the remaining
-words in the region, which in this case is zero.
+</li><li>如果区域中只有一个单词，则函数应该返回一个值，该值是在计算该单词时添加到该值的值，再加上计算区域中剩余单词时返回的数字，这在这种情况下为零。
 
-</li><li>If there are no words in the region, the function should return zero.
+</li><li>如果区域中没有单词，则函数应该返回零。
 </li></ul>
 
-<p>From the sketch we can see that the else-part of the <code class="code">if</code> returns
-zero for the case of no words.  This means that the then-part of the
-<code class="code">if</code> must return a value resulting from adding one to the value
-returned from a count of the remaining words.
+<p>从草图中我们可以看到，<code class="code">if</code>的else部分对于没有单词的情况返回零。这意味着<code class="code">if</code>的then部分必须返回一个值，该值是通过递归调用的返回值添加一的结果。
 </p>
-<p>The expression will look like this, where <code class="code">1+</code> is a function that
-adds one to its argument.
+<p>表达式将如下所示，其中<code class="code">1+</code>是一个将一个添加到其参数的函数。
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(1+ (recursive-count-words region-end))
 </pre></div>
 
-<p>The whole <code class="code">recursive-count-words</code> function will then look like
-this:
+<p>整个<code class="code">recursive-count-words</code>函数将如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun recursive-count-words (region-end)
@@ -305,47 +226,26 @@ this:
     0))
 </pre></div></div>
 
-<p>Let&rsquo;s examine how this works:
+<p>让我们看看这是如何工作的：
 </p>
-<p>If there are no words in the region, the else part of the <code class="code">if</code>
-expression is evaluated and consequently the function returns zero.
+<p>如果区域中没有单词，则<code class="code">if</code>表达式的else部分被求值，因此函数返回零。
 </p>
-<p>If there is one word in the region, the value of point is less than
-the value of <code class="code">region-end</code> and the search succeeds.  In this case,
-the true-or-false-test of the <code class="code">if</code> expression tests true, and the
-then-part of the <code class="code">if</code> expression is evaluated.  The counting
-expression is evaluated.  This expression returns a value (which will
-be the value returned by the whole function) that is the sum of one
-added to the value returned by a recursive call.
+<p>如果区域中有一个单词，则点的值小于<code class="code">region-end</code>的值，并且搜索成功。在这种情况下，<code class="code">if</code>表达式的true-or-false-test为true，将求值<code class="code">if</code>表达式的then部分。计数表达式将被求值。该表达式返回一个值（这将是整个函数返回的值），即加一到递归调用返回的值。
 </p>
-<p>Meanwhile, the next-step-expression has caused point to jump over the
-first (and in this case only) word in the region.  This means that
-when <code class="code">(recursive-count-words region-end)</code> is evaluated a second
-time, as a result of the recursive call, the value of point will be
-equal to or greater than the value of region end.  So this time,
-<code class="code">recursive-count-words</code> will return zero.  The zero will be added
-to one, and the original evaluation of <code class="code">recursive-count-words</code>
-will return one plus zero, which is one, which is the correct amount.
+<p>同时，next-step-expression导致点跳过区域中的第一个（在这种情况下是唯一的）单词。这意味着当<code class="code">(recursive-count-words region-end)</code>第二次求值时，由于递归调用的结果，点的值将等于或大于region end的值。因此，这次，<code class="code">recursive-count-words</code>将返回零。零将添加到一，原始的<code class="code">recursive-count-words</code>的求值将返回一加零，即一，这是正确的数量。
 </p>
-<p>Clearly, if there are two words in the region, the first call to
-<code class="code">recursive-count-words</code> returns one added to the value returned
-by calling <code class="code">recursive-count-words</code> on a region containing the
-remaining word&mdash;that is, it adds one to one, producing two, which is
-the correct amount.
+<p>显然，如果区域中有两个单词，则第一次调用<code class="code">recursive-count-words</code>将返回一个添加到调用<code class="code">recursive-count-words</code>的区域剩余单词的值，即它添加到一，产生两个，这是正确的数量。
 </p>
-<p>Similarly, if there are three words in the region, the first call to
-<code class="code">recursive-count-words</code> returns one added to the value returned
-by calling <code class="code">recursive-count-words</code> on a region containing the
-remaining two words&mdash;and so on and so on.
+<p>同样地，如果区域中有三个单词，则第一次调用<code class="code">recursive-count-words</code>将返回一个添加到调用<code class="code">recursive-count-words</code>的区域剩余两个单词的值，依此类推。
 </p>
-<p>With full documentation the two functions look like this:
+<p>具有完整文档的两个函数如下：
 </p>
-<p>The recursive function:
+<p>递归函数：
 </p>
 <a class="index-entry-id" id="index-recursive_002dcount_002dwords"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun recursive-count-words (region-end)
-  &quot;Number of words between point and REGION-END.&quot;
+  &quot;在点和REGION-END之间的单词数。&quot;
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">;;; <span class="r">1. do-again-test</span>
@@ -360,31 +260,28 @@ remaining two words&mdash;and so on and so on.
     0))
 </pre></div></div>
 
-<p>The wrapper:
+<p>包装器：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; <span class="r">Recursive version</span>
+<div class="group"><pre class="example-preformatted">;;; <span class="r">递归版本</span>
 (defun count-words-example (beginning end)
-  &quot;Print number of words in the region.
+  &quot;打印区域中的单词数。&quot;
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">Words are defined as at least one word-constituent
-character followed by at least one character that is
-not a word-constituent.  The buffer's syntax table
-determines which characters these are.&quot;
+</pre><div class="group"><pre class="example-preformatted">单词被定义为至少一个单词构成字符，后面跟着至少一个不是单词构成字符的字符。缓冲区的语法表决定了这些字符是哪些。&quot;
 </pre></div><div class="group"><pre class="example-preformatted">  (interactive &quot;r&quot;)
-  (message &quot;Counting words in region ... &quot;)
+  (message &quot;正在计算区域中的单词数...&quot;)
   (save-excursion
     (goto-char beginning)
     (let ((count (recursive-count-words end)))
 </pre></div><div class="group"><pre class="example-preformatted">      (cond ((zerop count)
              (message
-              &quot;The region does NOT have any words.&quot;))
+              &quot;该区域没有任何单词。&quot;))
 </pre></div><div class="group"><pre class="example-preformatted">            ((= 1 count)
-             (message &quot;The region has 1 word.&quot;))
+             (message &quot;该区域有1个单词。&quot;))
             (t
              (message
-              &quot;The region has %d words.&quot; count))))))
+              &quot;该区域有%d个单词。&quot; count))))))
 </pre></div></div>
 
 </div>

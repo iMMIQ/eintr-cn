@@ -9603,146 +9603,105 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 @end smallexample
 
 @node recursive-count-words
-@section Count Words Recursively
-@cindex Count words recursively
-@cindex Recursively counting words
-@cindex Words, counted recursively
+@section 递归计算单词数
+@cindex 递归计算单词数
+@cindex 递归单词计数
+@cindex 单词，递归计数
 
-You can write the function for counting words recursively as well as
-with a @code{while} loop.  Let's see how this is done.
+你可以编写递归方式和使用 @code{while} 循环的函数来计算单词数。让我们看看如何实现。
 
-First, we need to recognize that the @code{@value{COUNT-WORDS}}
-function has three jobs: it sets up the appropriate conditions for
-counting to occur; it counts the words in the region; and it sends a
-message to the user telling how many words there are.
+首先，我们需要认识到 @code{@value{COUNT-WORDS}} 函数有三个任务：它设置适当的条件来进行计数；它计算区域内的单词数；并向用户发送一条消息，告诉有多少个单词。
 
-If we write a single recursive function to do everything, we will
-receive a message for every recursive call.  If the region contains 13
-words, we will receive thirteen messages, one right after the other.
-We don't want this!  Instead, we must write two functions to do the
-job, one of which (the recursive function) will be used inside of the
-other.  One function will set up the conditions and display the
-message; the other will return the word count.
+如果我们写一个单一的递归函数来执行所有这些任务，我们将为每个递归调用都收到一条消息。如果区域包含13个单词，我们将接收到十三条消息，依次排列。我们不想要这样！相反，我们必须编写两个函数来完成工作，其中一个（递归函数）将在另一个内部使用。一个函数将设置条件并显示消息；另一个将返回单词数。
 
-Let us start with the function that causes the message to be displayed.
-We can continue to call this @code{@value{COUNT-WORDS}}.
+让我们从引起消息显示的函数开始。我们可以继续称之为 @code{@value{COUNT-WORDS}}。
 
-This is the function that the user will call.  It will be interactive.
-Indeed, it will be similar to our previous versions of this
-function, except that it will call @code{recursive-count-words} to
-determine how many words are in the region.
+这是用户将调用的函数。它将是交互式的。实际上，它将类似于我们先前版本的这个函数，只是它将调用 @code{recursive-count-words} 来确定区域中有多少个单词。
 
 @need 1250
-We can readily construct a template for this function, based on our
-previous versions:
+我们可以基于先前的版本轻松构造这个函数的模板：
 
 @smallexample
 @group
-;; @r{Recursive version; uses regular expression search}
+;; @r{递归版本；使用正则表达式搜索}
 (defun @value{COUNT-WORDS} (beginning end)
   "@var{documentation}@dots{}"
   (@var{interactive-expression}@dots{})
 @end group
 @group
 
-;;; @r{1. Set up appropriate conditions.}
+;;; @r{1. 设置适当的条件。}
   (@var{explanatory message})
   (@var{set-up functions}@dots{}
 @end group
 @group
 
-;;; @r{2. Count the words.}
+;;; @r{2. 计算单词数。}
     @var{recursive call}
 @end group
 @group
 
-;;; @r{3. Send a message to the user.}
+;;; @r{3. 向用户发送消息。}
     @var{message providing word count}))
 @end group
 @end smallexample
 
-The definition looks straightforward, except that somehow the count
-returned by the recursive call must be passed to the message
-displaying the word count.  A little thought suggests that this can be
-done by making use of a @code{let} expression: we can bind a variable
-in the varlist of a @code{let} expression to the number of words in
-the region, as returned by the recursive call; and then the
-@code{cond} expression, using binding, can display the value to the
-user.
+定义看起来很简单，只是要注意递归调用返回的计数如何传递给显示单词计数的消息。经过一点思考，我们可以利用 @code{let} 表达式来实现：我们可以在 @code{let} 表达式的 varlist 中将一个变量绑定到区域内的单词数，由递归调用返回；然后 @code{cond} 表达式可以使用绑定来向用户显示该值。
 
-Often, one thinks of the binding within a @code{let} expression as
-somehow secondary to the primary work of a function.  But in this
-case, what you might consider the primary job of the function,
-counting words, is done within the @code{let} expression.
+通常，人们将 @code{let} 表达式内的绑定视为函数的主要工作的某种次要部分。但在这种情况下，您可能认为函数的主要工作，即计算单词数，是在 @code{let} 表达式内完成的。
 
 @need 1250
-Using @code{let}, the function definition looks like this:
+使用 @code{let}，函数定义如下：
 
 @smallexample
 @group
 (defun @value{COUNT-WORDS} (beginning end)
-  "Print number of words in the region."
+  "打印区域内的单词数。"
   (interactive "r")
 @end group
 
 @group
-;;; @r{1. Set up appropriate conditions.}
-  (message "Counting words in region ... ")
+;;; @r{1. 设置适当的条件。}
+  (message "正在计算区域内的单词数... ")
   (save-excursion
     (goto-char beginning)
 @end group
 
 @group
-;;; @r{2. Count the words.}
+;;; @r{2. 计算单词数。}
     (let ((count (recursive-count-words end)))
 @end group
 
 @group
-;;; @r{3. Send a message to the user.}
+;;; @r{3. 向用户发送消息。}
       (cond ((zerop count)
              (message
-              "The region does NOT have any words."))
+              "该区域没有任何单词。"))
             ((= 1 count)
              (message
-              "The region has 1 word."))
+              "该区域有1个单词。"))
             (t
              (message
-              "The region has %d words." count))))))
+              "该区域有 %d 个单词。" count))))))
 @end group
 @end smallexample
 
-Next, we need to write the recursive counting function.
+接下来，我们需要编写递归计数函数。
 
-A recursive function has at least three parts: the do-again-test, the
-next-step-expression, and the recursive call.
+递归函数至少有三个部分：再次执行测试，下一步表达式和递归调用。
 
-The do-again-test determines whether the function will or will not be
-called again.  Since we are counting words in a region and can use a
-function that moves point forward for every word, the do-again-test
-can check whether point is still within the region.  The do-again-test
-should find the value of point and determine whether point is before,
-at, or after the value of the end of the region.  We can use the
-@code{point} function to locate point.  Clearly, we must pass the
-value of the end of the region to the recursive counting function as an
-argument.
+再次执行测试确定函数是否将再次调用。由于我们在区域中计算单词数并可以使用一个每个单词都向前移动指针的函数，再次执行测试可以检查点是否仍然在区域内。再次执行测试应该找到点的值，并确定点是在区域结束的值之前，与之相等还是之后。我们可以使用 @code{point} 函数来定位点。显然，必须将区域结束的值作为参数传递给递归计数函数。
 
-In addition, the do-again-test should also test whether the search finds a
-word.  If it does not, the function should not call itself again.
+此外，再次执行测试还应该测试搜索是否找到了单词。如果没有找到，函数不应再次调用自身。
 
-The next-step-expression changes a value so that when the recursive
-function is supposed to stop calling itself, it stops.  More
-precisely, the next-step-expression changes a value so that at the
-right time, the do-again-test stops the recursive function from
-calling itself again.  In this case, the next-step-expression can be
-the expression that moves point forward, word by word.
+下一步表达式更改一个值，以便当递归函数应该停止调用自身时，它停止。更准确地说，下一步表达式更改一个值，以便在正确的时间，再次执行测试停止递归函数再次调用自身。在这种情况下，下一步表达式可以是将点按单词向前移动的表达式。
 
-The third part of a recursive function is the recursive call.
+递归函数的第三部分是递归调用。
 
-Somewhere, we also need a part that does the work of the
-function, a part that does the counting.  A vital part!
+还需要一个执行函数工作的部分，一个执行计数的重要部分！
 
 @need 1250
-But already, we have an outline of the recursive counting function:
+但是，我们已经有了递归计数函数的大纲：
 
 @smallexample
 @group
@@ -9754,17 +9713,12 @@ But already, we have an outline of the recursive counting function:
 @end group
 @end smallexample
 
-Now we need to fill in the slots.  Let's start with the simplest cases
-first:  if point is at or beyond the end of the region, there cannot
-be any words in the region, so the function should return zero.
-Likewise, if the search fails, there are no words to count, so the
-function should return zero.
+现在我们需要填充这些槽。让我们从最简单的情况开始：如果点在区域结束的位置或之后，那么区域中不能有任何单词，因此函数应返回零。同样，如果搜索失败，就没有单词可计数，因此函数应返回零。
 
-On the other hand, if point is within the region and the search
-succeeds, the function should call itself again.
+另一方面，如果点在区域内且搜索成功，则函数应再次调用自身。
 
 @need 800
-Thus, the do-again-test should look like this:
+因此，再次执行测试应如下所示：
 
 @smallexample
 @group
@@ -9773,32 +9727,16 @@ Thus, the do-again-test should look like this:
 @end group
 @end smallexample
 
-Note that the search expression is part of the do-again-test---the
-function returns @code{t} if its search succeeds and @code{nil} if it
-fails.  (@xref{空白字符错误, , The Whitespace Bug in
-@code{@value{COUNT-WORDS}}}, for an explanation of how
-@code{re-search-forward} works.)
+请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 @code{t}，如果失败，则返回 @code{nil}。(@xref{空白字符错误, , @code{@value{COUNT-WORDS}} 中的空白字符错误}，了解 @code{re-search-forward} 的工作原理的解释。)
 
-The do-again-test is the true-or-false test of an @code{if} clause.
-Clearly, if the do-again-test succeeds, the then-part of the @code{if}
-clause should call the function again; but if it fails, the else-part
-should return zero since either point is outside the region or the
-search failed because there were no words to find.
+再次执行测试是 @code{if} 子句的真值测试。显然，如果再次执行测试成功，则 @code{if} 子句的 then-部分应该再次调用函数；但如果失败，则 else-部分应该返回零，因为要么点在区域外，要么搜索失败，因为找不到单词。
 
-But before considering the recursive call, we need to consider the
-next-step-expression.  What is it?  Interestingly, it is the search
-part of the do-again-test.
+但在考虑递归调用之前，我们需要考虑下一步表达式。这是什么？有趣的是，它就是do-again-test的搜索部分。
 
-In addition to returning @code{t} or @code{nil} for the
-do-again-test, @code{re-search-forward} moves point forward as a side
-effect of a successful search.  This is the action that changes the
-value of point so that the recursive function stops calling itself
-when point completes its movement through the region.  Consequently,
-the @code{re-search-forward} expression is the next-step-expression.
+除了为do-again-test返回@code{t}或@code{nil}外，@code{re-search-forward}在成功搜索时会作为副作用移动点。这是改变点值的操作，使得递归函数停止调用自身，当点通过区域完成移动。因此，@code{re-search-forward}表达式就是next-step-expression。
 
 @need 1200
-In outline, then, the body of the @code{recursive-count-words}
-function looks like this:
+概述来看，@code{recursive-count-words}函数的主体如下：
 
 @smallexample
 @group
@@ -9810,54 +9748,37 @@ function looks like this:
 @end group
 @end smallexample
 
-How to incorporate the mechanism that counts?
+如何融入计数机制？
 
-If you are not used to writing recursive functions, a question like
-this can be troublesome.  But it can and should be approached
-systematically.
+如果你不习惯编写递归函数，这样的问题可能会让人头疼。但应该以系统的方式来解决。
 
-We know that the counting mechanism should be associated in some way
-with the recursive call.  Indeed, since the next-step-expression moves
-point forward by one word, and since a recursive call is made for
-each word, the counting mechanism must be an expression that adds one
-to the value returned by a call to @code{recursive-count-words}.
+我们知道计数机制应该以某种方式与递归调用关联起来。确实，由于next-step-expression通过一个单词将点向前移动，并且由于每个单词都会进行递归调用，计数机制必须是一个表达式，该表达式将一个添加到由@code{recursive-count-words}调用返回的值。
 
 @need 800
-Consider several cases:
+考虑几种情况：
 
 @itemize @bullet
 @item
-If there are two words in the region, the function should return
-a value resulting from adding one to the value returned when it counts
-the first word, plus the number returned when it counts the remaining
-words in the region, which in this case is one.
+如果区域中有两个单词，则函数应该返回一个值，该值是在计算第一个单词时添加到该值的值，再加上计算区域中剩余单词时返回的数字，这在这种情况下为一。
 
 @item
-If there is one word in the region, the function should return
-a value resulting from adding one to the value returned when it counts
-that word, plus the number returned when it counts the remaining
-words in the region, which in this case is zero.
+如果区域中只有一个单词，则函数应该返回一个值，该值是在计算该单词时添加到该值的值，再加上计算区域中剩余单词时返回的数字，这在这种情况下为零。
 
 @item
-If there are no words in the region, the function should return zero.
+如果区域中没有单词，则函数应该返回零。
 @end itemize
 
-From the sketch we can see that the else-part of the @code{if} returns
-zero for the case of no words.  This means that the then-part of the
-@code{if} must return a value resulting from adding one to the value
-returned from a count of the remaining words.
+从草图中我们可以看到，@code{if}的else部分对于没有单词的情况返回零。这意味着@code{if}的then部分必须返回一个值，该值是通过递归调用的返回值添加一的结果。
 
 @need 1200
-The expression will look like this, where @code{1+} is a function that
-adds one to its argument.
+表达式将如下所示，其中@code{1+}是一个将一个添加到其参数的函数。
 
 @smallexample
 (1+ (recursive-count-words region-end))
 @end smallexample
 
 @need 1200
-The whole @code{recursive-count-words} function will then look like
-this:
+整个@code{recursive-count-words}函数将如下所示：
 
 @smallexample
 @group
@@ -9879,52 +9800,31 @@ this:
 @end smallexample
 
 @need 1250
-Let's examine how this works:
+让我们看看这是如何工作的：
 
-If there are no words in the region, the else part of the @code{if}
-expression is evaluated and consequently the function returns zero.
+如果区域中没有单词，则@code{if}表达式的else部分被求值，因此函数返回零。
 
-If there is one word in the region, the value of point is less than
-the value of @code{region-end} and the search succeeds.  In this case,
-the true-or-false-test of the @code{if} expression tests true, and the
-then-part of the @code{if} expression is evaluated.  The counting
-expression is evaluated.  This expression returns a value (which will
-be the value returned by the whole function) that is the sum of one
-added to the value returned by a recursive call.
+如果区域中有一个单词，则点的值小于@code{region-end}的值，并且搜索成功。在这种情况下，@code{if}表达式的true-or-false-test为true，将求值@code{if}表达式的then部分。计数表达式将被求值。该表达式返回一个值（这将是整个函数返回的值），即加一到递归调用返回的值。
 
-Meanwhile, the next-step-expression has caused point to jump over the
-first (and in this case only) word in the region.  This means that
-when @code{(recursive-count-words region-end)} is evaluated a second
-time, as a result of the recursive call, the value of point will be
-equal to or greater than the value of region end.  So this time,
-@code{recursive-count-words} will return zero.  The zero will be added
-to one, and the original evaluation of @code{recursive-count-words}
-will return one plus zero, which is one, which is the correct amount.
+同时，next-step-expression导致点跳过区域中的第一个（在这种情况下是唯一的）单词。这意味着当@code{(recursive-count-words region-end)}第二次求值时，由于递归调用的结果，点的值将等于或大于region end的值。因此，这次，@code{recursive-count-words}将返回零。零将添加到一，原始的@code{recursive-count-words}的求值将返回一加零，即一，这是正确的数量。
 
-Clearly, if there are two words in the region, the first call to
-@code{recursive-count-words} returns one added to the value returned
-by calling @code{recursive-count-words} on a region containing the
-remaining word---that is, it adds one to one, producing two, which is
-the correct amount.
+显然，如果区域中有两个单词，则第一次调用@code{recursive-count-words}将返回一个添加到调用@code{recursive-count-words}的区域剩余单词的值，即它添加到一，产生两个，这是正确的数量。
 
-Similarly, if there are three words in the region, the first call to
-@code{recursive-count-words} returns one added to the value returned
-by calling @code{recursive-count-words} on a region containing the
-remaining two words---and so on and so on.
+同样地，如果区域中有三个单词，则第一次调用@code{recursive-count-words}将返回一个添加到调用@code{recursive-count-words}的区域剩余两个单词的值，依此类推。
 
 @need 1250
 @noindent
-With full documentation the two functions look like this:
+具有完整文档的两个函数如下：
 
 @need 1250
 @noindent
-The recursive function:
+递归函数：
 
 @findex recursive-count-words
 @smallexample
 @group
 (defun recursive-count-words (region-end)
-  "Number of words between point and REGION-END."
+  "在点和REGION-END之间的单词数。"
 @end group
 
 @group
@@ -9944,24 +9844,21 @@ The recursive function:
 
 @need 800
 @noindent
-The wrapper:
+包装器：
 
 @smallexample
 @group
-;;; @r{Recursive version}
+;;; @r{递归版本}
 (defun @value{COUNT-WORDS} (beginning end)
-  "Print number of words in the region.
+  "打印区域中的单词数。"
 @end group
 
 @group
-Words are defined as at least one word-constituent
-character followed by at least one character that is
-not a word-constituent.  The buffer's syntax table
-determines which characters these are."
+单词被定义为至少一个单词构成字符，后面跟着至少一个不是单词构成字符的字符。缓冲区的语法表决定了这些字符是哪些。"
 @end group
 @group
   (interactive "r")
-  (message "Counting words in region ... ")
+  (message "正在计算区域中的单词数...")
   (save-excursion
     (goto-char beginning)
     (let ((count (recursive-count-words end)))
@@ -9969,14 +9866,14 @@ determines which characters these are."
 @group
       (cond ((zerop count)
              (message
-              "The region does NOT have any words."))
+              "该区域没有任何单词。"))
 @end group
 @group
             ((= 1 count)
-             (message "The region has 1 word."))
+             (message "该区域有1个单词。"))
             (t
              (message
-              "The region has %d words." count))))))
+              "该区域有%d个单词。" count))))))
 @end group
 @end smallexample
 
