@@ -8357,49 +8357,37 @@ number (triangle-using-cond (1- number)))}。
 这种模式在编写可能使用计算机中的许多资源的函数时很有帮助。
 
 @need 1500
-@node Looping exercise
-@section Looping Exercise
+@node 循环练习
+@section 循环练习
 
 @itemize @bullet
 @item
-Write a function similar to @code{triangle} in which each row has a
-value which is the square of the row number.  Use a @code{while} loop.
+编写一个类似于 @code{triangle} 的函数，其中每一行的值是该行号的平方。使用 @code{while} 循环。
 
 @item
-Write a function similar to @code{triangle} that multiplies instead of
-adds the values.
+编写一个类似于 @code{triangle} 的函数，但是它将值相乘而不是相加。
 
 @item
-Rewrite these two functions recursively.  Rewrite these functions
-using @code{cond}.
+递归地重写这两个函数。使用 @code{cond} 重写这些函数。
 
-@c comma in printed title causes problem in Info cross reference
+@c 在标题中的逗号会导致 Info 交叉引用问题
 @item
-Write a function for Texinfo mode that creates an index entry at the
-beginning of a paragraph for every @samp{@@dfn} within the paragraph.
-(In a Texinfo file, @samp{@@dfn} marks a definition.  This book is
-written in Texinfo.)
+为 Texinfo 模式编写一个函数，在段落开头为每个段落中的 @samp{@@dfn} 创建一个索引条目。
+（在 Texinfo 文件中，@samp{@@dfn} 标记一个定义。本书是用 Texinfo 编写的。）
 
-Many of the functions you will need are described in two of the
-previous chapters, @ref{剪切与存储文本, , 剪切与存储文本}, and @ref{插入文本, , Yanking Text Back}.  If you use
-@code{forward-paragraph} to put the index entry at the beginning of
-the paragraph, you will have to use @w{@kbd{C-h f}}
-(@code{describe-function}) to find out how to make the command go
-backwards.
+你将需要用到前两章中的许多函数，@ref{剪切与存储文本, , 剪切与存储文本} 和 @ref{插入文本, , Yanking Text Back} 中有它们的描述。如果使用 @code{forward-paragraph} 将索引条目放在段落开头，您将需要使用 @w{@kbd{C-h f}}（@code{describe-function}）查找如何使命令向后执行。
 
-For more information, see
+更多信息，请参见
 @ifinfo
-@ref{Indicating, , Indicating Definitions, texinfo}.
+@ref{Indicating, , Indicating Definitions, texinfo}。
 @end ifinfo
 @ifhtml
-@ref{Indicating, , Indicating, texinfo, Texinfo Manual}, which goes to
-a Texinfo manual in the current directory.  Or, if you are on the
-Internet, see
+@ref{Indicating, , Indicating, texinfo, Texinfo Manual}，其中会跳转到当前目录中的 Texinfo 手册。或者，如果您在互联网上，参见
 @uref{https://www.gnu.org/software/texinfo/manual/texinfo/}
 @end ifhtml
 @iftex
 ``Indicating Definitions, Commands, etc.''@: in @cite{Texinfo, The GNU
-Documentation Format}.
+Documentation Format}。
 @end iftex
 @end itemize
 
