@@ -4982,104 +4982,76 @@ domesticated-animals
 
 通过评估多个表达式使用@code{cons}构建一个包含四只鸟的列表。了解当你使用@code{cons}将一个列表连接到自身时会发生什么。将四只鸟的列表的第一个元素替换为一条鱼。用其他鱼的列表替换该列表的其余部分。
 
-@node Cutting & Storing Text
-@chapter Cutting and Storing Text
-@cindex Cutting and storing text
-@cindex Storing and cutting text
-@cindex Killing text
-@cindex Clipping text
-@cindex Erasing text
-@cindex Deleting text
+@node 剪切与存储文本
+@chapter 剪切与存储文本
+@cindex 剪切与存储文本
+@cindex 存储与剪切文本
+@cindex 删除文本
+@cindex 剪切文本
+@cindex 擦除文本
+@cindex 删除文本
 
-Whenever you cut or clip text out of a buffer with a @dfn{kill} command in
-GNU Emacs, it is stored in a list and you can bring it back with a
-@dfn{yank} command.
+无论何时在GNU Emacs中使用@dfn{kill}命令剪切或剪贴文本，它都会被存储在一个列表中，您可以使用@dfn{yank}命令将其恢复。
 
-(The use of the word ``kill'' in Emacs for processes which specifically
-@emph{do not} destroy the values of the entities is an unfortunate
-historical accident.  A much more appropriate word would be ``clip'' since
-that is what the kill commands do; they clip text out of a buffer and
-put it into storage from which it can be brought back.  I have often
-been tempted to replace globally all occurrences of ``kill'' in the Emacs
-sources with ``clip'' and all occurrences of ``killed'' with ``clipped''.)
+（在Emacs中使用“kill”一词来表示那些特别@emph{不}破坏实体值的过程是一个不幸的历史偶然。一个更合适的词语应该是“剪切”，因为kill命令的作用是剪切文本并将其放入存储中，从中可以重新调用。我经常被诱惑着全局替换Emacs源代码中所有“kill”出现的地方为“clip”，并将所有“killed”的出现地方替换为“clipped”）。
 
 @menu
-* Storing Text::                Text is stored in a list.
-* zap-to-char::                 Cutting out text up to a character.
-* kill-region::                 Cutting text out of a region.
-* copy-region-as-kill::         A definition for copying text.
-* Digression into C::           Minor note on C programming language macros.
-* defvar::                      How to give a variable an initial value.
-* cons & search-fwd Review::
-* search Exercises::
+* 存储文本::                   文本被存储在一个列表中。
+* zap-to-char::               剪切文本直到某个字符。
+* kill-region::               从区域中剪切文本。
+* copy-region-as-kill::       复制文本的定义。
+* 进入C的插曲::               C编程语言宏的小注记。
+* defvar::                    如何给变量一个初始值。
+* cons & search-fwd 回顾::
+* 搜索练习::
 @end menu
 
 @ifnottex
-@node Storing Text
-@unnumberedsec Storing Text in a List
+@node 存储文本
+@unnumberedsec 将文本存储在列表中
 @end ifnottex
 
-When text is cut out of a buffer, it is stored on a list.  Successive
-pieces of text are stored on the list successively, so the list might
-look like this:
+当文本从缓冲区中剪切出来时，它被存储在一个列表中。连续的文本片段被依次存储在列表中，因此列表可能看起来像这样：
 
 @smallexample
-("a piece of text" "previous piece")
+("一段文本" "之前的片段")
 @end smallexample
 
 @need 1200
 @noindent
-The function @code{cons} can be used to create a new list from a piece
-of text (an ``atom'', to use the jargon) and an existing list, like
-this:
+函数@code{cons}可用于从文本片段（称为“原子”）和现有列表创建一个新列表，如下所示：
 
 @smallexample
 @group
-(cons "another piece"
-      '("a piece of text" "previous piece"))
+(cons "另一段"
+      '("一段文本" "之前的片段"))
 @end group
 @end smallexample
 
 @need 1200
 @noindent
-If you evaluate this expression, a list of three elements will appear in
-the echo area:
+如果您评估此表达式，一个包含三个元素的列表将显示在回显区：
 
 @smallexample
-("another piece" "a piece of text" "previous piece")
+("另一段" "一段文本" "之前的片段")
 @end smallexample
 
-With the @code{car} and @code{nthcdr} functions, you can retrieve
-whichever piece of text you want.  For example, in the following code,
-@code{nthcdr 1 @dots{}} returns the list with the first item removed;
-and the @code{car} returns the first element of that remainder---the
-second element of the original list:
+使用@code{car}和@code{nthcdr}函数，您可以检索您想要的任何文本片段。例如，在以下代码中，@code{nthcdr 1 @dots{}}返回删除第一个项目的列表；而@code{car}返回该剩余部分的第一个元素---原始列表的第二个元素：
 
 @smallexample
 @group
-(car (nthcdr 1 '("another piece"
-                 "a piece of text"
-                 "previous piece")))
-     @result{} "a piece of text"
+(car (nthcdr 1 '("另一段"
+                 "一段文本"
+                 "之前的片段")))
+     @result{} "一段文本"
 @end group
 @end smallexample
 
-The actual functions in Emacs are more complex than this, of course.
-The code for cutting and retrieving text has to be written so that
-Emacs can figure out which element in the list you want---the first,
-second, third, or whatever.  In addition, when you get to the end of
-the list, Emacs should give you the first element of the list, rather
-than nothing at all.
+实际的Emacs函数当然比这更复杂。剪切和检索文本的代码必须被编写，以便Emacs可以弄清楚您想要列表中的哪个元素---第一个、第二个、第三个等。此外，当到达列表的末尾时，Emacs应该给您列表的第一个元素，而不是什么都不给您。
 
-The list that holds the pieces of text is called the @dfn{kill ring}.
-This chapter leads up to a description of the kill ring and how it is
-used by first tracing how the @code{zap-to-char} function works.  This
-function calls a function that invokes a function that
-manipulates the kill ring.  Thus, before reaching the mountains, we
-climb the foothills.
+保存文本片段的列表称为@dfn{kill环}。本章首先描述了kill环，以及首先追踪@code{zap-to-char}函数的工作方式。此函数调用一个调用函数，该函数操纵kill环。因此，在到达山脚之前，我们要先爬过丘陵。
 
-A subsequent chapter describes how text that is cut from the buffer is
-retrieved.  @xref{Yanking, , Yanking Text Back}.
+后续章节描述了从缓冲区剪切的文本如何被检索。@xref{Yanking, , 检索文本}。
 
 @node zap-to-char
 @section @code{zap-to-char}
@@ -9641,8 +9613,7 @@ beginning of a paragraph for every @samp{@@dfn} within the paragraph.
 written in Texinfo.)
 
 Many of the functions you will need are described in two of the
-previous chapters, @ref{Cutting & Storing Text, , Cutting and Storing
-Text}, and @ref{Yanking, , Yanking Text Back}.  If you use
+previous chapters, @ref{剪切与存储文本, , 剪切与存储文本}, and @ref{Yanking, , Yanking Text Back}.  If you use
 @code{forward-paragraph} to put the index entry at the beginning of
 the paragraph, you will have to use @w{@kbd{C-h f}}
 (@code{describe-function}) to find out how to make the command go
