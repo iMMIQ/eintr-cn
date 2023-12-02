@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Words in a defun (Programming in Emacs Lisp)</title>
+<title>在 defun 中计算单词数 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Words in a defun (Programming in Emacs Lisp)">
-<meta name="keywords" content="Words in a defun (Programming in Emacs Lisp)">
+<meta name="description" content="在 defun 中计算单词数 (Programming in Emacs Lisp)">
+<meta name="keywords" content="在 defun 中计算单词数 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -52,34 +52,23 @@ kbd.kbd {font-style: oblique}
 </head>
 
 <body lang="en">
-<div class="chapter-level-extent" id="Words-in-a-defun">
+<div class="chapter-level-extent" id="g_t_5728-defun-_4e2d_8ba1_7b97_5355_8bcd_6570">
 <div class="nav-panel">
 <p>
 Next: <a href="Readying-a-Graph.html" accesskey="n" rel="next">Readying a Graph</a>, Previous: <a href="Tong-Ji-Dan-Ci-Shu-.html" accesskey="p" rel="prev">通过重复和正则表达式进行统计</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h2 class="chapter" id="Counting-Words-in-a-defun">14 Counting Words in a <code class="code">defun</code></h2>
-<a class="index-entry-id" id="index-Counting-words-in-a-defun"></a>
-<a class="index-entry-id" id="index-Word-counting-in-a-defun"></a>
+<h2 class="chapter" id="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-">14 在 <code class="code">defun</code> 中计算单词数</h2>
+<a class="index-entry-id" id="index-Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-"></a>
+<a class="index-entry-id" id="index-Zai-defun-ZhongDe-Dan-Ci-Ji-Shu-"></a>
 
-<p>Our next project is to count the number of words in a function
-definition.  Clearly, this can be done using some variant of
-<code class="code">count-words-example</code>.  See <a class="xref" href="Tong-Ji-Dan-Ci-Shu-.html">Counting via
-Repetition and Regexps</a>.  If we are just going to count the words in
-one definition, it is easy enough to mark the definition with the
-<kbd class="kbd">C-M-h</kbd> (<code class="code">mark-defun</code>) command, and then call
-<code class="code">count-words-example</code>.
+<p>我们下一个项目是计算函数定义中的单词数。显然，这可以通过一些 <code class="code">count-words-example</code> 的变体来完成。参见 See <a class="xref" href="Tong-Ji-Dan-Ci-Shu-.html">通过重复和正则表达式计数</a>。如果我们只想计算一个定义中的单词数，那么可以使用 <kbd class="kbd">C-M-h</kbd> (<code class="code">mark-defun</code>) 命令标记定义，然后调用 <code class="code">count-words-example</code>。
 </p>
-<p>However, I am more ambitious: I want to count the words and symbols in
-every definition in the Emacs sources and then print a graph that
-shows how many functions there are of each length: how many contain 40
-to 49 words or symbols, how many contain 50 to 59 words or symbols,
-and so on.  I have often been curious how long a typical function is,
-and this will tell.
+<p>然而，我更有雄心壮志：我想要计算 Emacs 源代码中每个定义中的单词和符号的数量，然后打印一个图表，显示每个长度的函数有多少个：包含 40 到 49 个单词或符号的有多少个函数，包含 50 到 59 个单词或符号的有多少个，依此类推。我常常好奇一个典型函数有多长，这将给出答案。
 </p>
 
 <ul class="mini-toc">
-<li><a href="Divide-and-Conquer.html" accesskey="1">Divide and Conquer</a></li>
+<li><a href="Fen-Er-Zhi-Zhi-.html" accesskey="1">分而治之</a></li>
 <li><a href="Words-and-Symbols.html" accesskey="2">What to Count?</a></li>
 <li><a href="Syntax.html" accesskey="3">What Constitutes a Word or Symbol?</a></li>
 <li><a href="count_002dwords_002din_002ddefun.html" accesskey="4">The <code class="code">count-words-in-defun</code> Function</a></li>

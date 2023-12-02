@@ -9882,76 +9882,53 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 
 使用 @code{while} 循环，编写一个函数来计算区域内标点符号的数量---句号、逗号、分号、冒号、感叹号和问号。然后使用递归方式完成相同的任务。
 
-@node Words in a defun
-@chapter Counting Words in a @code{defun}
-@cindex Counting words in a @code{defun}
-@cindex Word counting in a @code{defun}
+@node 在 defun 中计算单词数
+@chapter 在 @code{defun} 中计算单词数
+@cindex 在 @code{defun} 中计算单词数
+@cindex 在 @code{defun} 中的单词计数
 
-Our next project is to count the number of words in a function
-definition.  Clearly, this can be done using some variant of
-@code{@value{COUNT-WORDS}}.  @xref{统计单词数, , Counting via
-Repetition and Regexps}.  If we are just going to count the words in
-one definition, it is easy enough to mark the definition with the
-@kbd{C-M-h} (@code{mark-defun}) command, and then call
-@code{@value{COUNT-WORDS}}.
+我们下一个项目是计算函数定义中的单词数。显然，这可以通过一些 @code{@value{COUNT-WORDS}} 的变体来完成。参见 @xref{统计单词数, ,通过重复和正则表达式计数}。如果我们只想计算一个定义中的单词数，那么可以使用 @kbd{C-M-h} (@code{mark-defun}) 命令标记定义，然后调用 @code{@value{COUNT-WORDS}}。
 
-However, I am more ambitious: I want to count the words and symbols in
-every definition in the Emacs sources and then print a graph that
-shows how many functions there are of each length: how many contain 40
-to 49 words or symbols, how many contain 50 to 59 words or symbols,
-and so on.  I have often been curious how long a typical function is,
-and this will tell.
+然而，我更有雄心壮志：我想要计算 Emacs 源代码中每个定义中的单词和符号的数量，然后打印一个图表，显示每个长度的函数有多少个：包含 40 到 49 个单词或符号的有多少个函数，包含 50 到 59 个单词或符号的有多少个，依此类推。我常常好奇一个典型函数有多长，这将给出答案。
 
 @menu
-* Divide and Conquer::
-* Words and Symbols::           What to count?
-* Syntax::                      What constitutes a word or symbol?
-* count-words-in-defun::        Very like @code{@value{COUNT-WORDS}}.
-* Several defuns::              Counting several defuns in a file.
-* Find a File::                 Do you want to look at a file?
-* lengths-list-file::           A list of the lengths of many definitions.
-* Several files::               Counting in definitions in different files.
-* Several files recursively::   Recursively counting in different files.
-* Prepare the data::            Prepare the data for display in a graph.
+* 分而治之::
+* 单词和符号::           应该计数什么？
+* 语法::                  什么构成一个单词或符号？
+* count-words-in-defun:: 与 @code{@value{COUNT-WORDS}} 非常相似。
+* 多个 defuns::           计算文件中的多个定义。
+* 查找文件::              想要查看一个文件吗？
+* lengths-list-file::     许多定义长度的列表。
+* 多个文件::              在不同文件中计数定义。
+* 递归计数多个文件::      递归在不同文件中计数。
+* 准备数据::              为在图表中显示准备数据。
 @end menu
 
 @ifnottex
-@node Divide and Conquer
-@unnumberedsec Divide and Conquer
+@node 分而治之
+@unnumberedsec 分而治之
 @end ifnottex
 
-Described in one phrase, the histogram project is daunting; but
-divided into numerous small steps, each of which we can take one at a
-time, the project becomes less fearsome.  Let us consider what the
-steps must be:
+用一句话描述，直方图项目是艰巨的；但是，将其分解为许多小步骤，我们可以一次解决一个，项目就变得不那么可怕了。让我们考虑这些步骤应该是什么：
 
 @itemize @bullet
 @item
-First, write a function to count the words in one definition.  This
-includes the problem of handling symbols as well as words.
+首先，编写一个函数来计算一个定义中的单词数。这包括处理符号以及单词的问题。
 
 @item
-Second, write a function to list the number of words in each function
-in a file.  This function can use the @code{count-words-in-defun}
-function.
+其次，编写一个函数来列出文件中每个函数中的单词数。这个函数可以使用 @code{count-words-in-defun} 函数。
 
 @item
-Third, write a function to list the number of words in each function
-in each of several files.  This entails automatically finding the
-various files, switching to them, and counting the words in the
-definitions within them.
+第三，编写一个函数来列出每个文件中每个函数中的单词数。这涉及到自动找到不同文件，切换到它们，并计算其中定义的单词数。
 
 @item
-Fourth, write a function to convert the list of numbers that we
-created in step three to a form that will be suitable for printing as
-a graph.
+第四，编写一个函数将我们在第三步中创建的数字列表转换为适合打印为图表的形式。
 
 @item
-Fifth, write a function to print the results as a graph.
+第五，编写一个函数将结果打印为图表。
 @end itemize
 
-This is quite a project!  But if we take each step slowly, it will not
-be difficult.
+这是一个相当庞大的项目！但是，如果我们慢慢来，它并不难。
 
 @node Words and Symbols
 @section What to Count?
