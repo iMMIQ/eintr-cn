@@ -3148,39 +3148,32 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @code{end-of-buffer} 函数定义与 @code{beginning-of-buffer} 定义的方式相同，只是函数的主体包含 @code{(goto-char (point-max))} 表达式，而不是 @code{(goto-char (point-min))}。
 
 @node mark-whole-buffer
-@section The Definition of @code{mark-whole-buffer}
+@section 定义 @code{mark-whole-buffer}
 @findex mark-whole-buffer
 
-The @code{mark-whole-buffer} function is no harder to understand than the
-@code{simplified-beginning-of-buffer} function.  In this case, however,
-we will look at the complete function, not a shortened version.
+@code{mark-whole-buffer} 函数的理解并不比 @code{simplified-beginning-of-buffer} 函数更难。然而，在这种情况下，我们将看一下完整的函数，而不是缩短版本。
 
-The @code{mark-whole-buffer} function is not as commonly used as the
-@code{beginning-of-buffer} function, but is useful nonetheless: it
-marks a whole buffer as a region by putting point at the beginning and
-a mark at the end of the buffer.  It is generally bound to @kbd{C-x
-h}.
+@code{mark-whole-buffer} 函数并不像 @code{beginning-of-buffer} 函数那样常用，但仍然很有用：它通过将点放在开头并在缓冲区末尾放置标记来标记整个缓冲区作为一个区域。通常绑定到 @kbd{C-x h}。
 
 @menu
-* mark-whole-buffer overview::
-* Body of mark-whole-buffer::   Only three lines of code.
+* mark-whole-buffer 概述::
+* mark-whole-buffer 函数体::   只有三行代码。
 @end menu
 
 @ifnottex
-@node mark-whole-buffer overview
-@unnumberedsubsec An overview of @code{mark-whole-buffer}
+@node mark-whole-buffer 概述
+@unnumberedsubsec @code{mark-whole-buffer} 概述
 @end ifnottex
 
 @need 1250
-In GNU Emacs 22, the code for the complete function looks like this:
+在GNU Emacs 22中，完整函数的代码如下：
 
 @smallexample
 @group
 (defun mark-whole-buffer ()
-  "Put point at beginning and mark at end of buffer.
-You probably should not use this function in Lisp programs;
-it is usually a mistake for a Lisp function to use any subroutine
-that uses or sets the mark."
+  "将点放在缓冲区的开头，将标记放在缓冲区的末尾。
+在Lisp程序中，您可能不应该使用此函数；
+让Lisp函数使用使用或设置标记的任何子例程通常是一个错误。"
   (interactive)
   (push-mark (point))
   (push-mark (point-max) nil t)
@@ -3189,9 +3182,7 @@ that uses or sets the mark."
 @end smallexample
 
 @need 1250
-Like all other functions, the @code{mark-whole-buffer} function fits
-into the template for a function definition.  The template looks like
-this:
+与所有其他函数一样，@code{mark-whole-buffer} 函数符合函数定义的模板。模板如下：
 
 @smallexample
 @group
@@ -3202,22 +3193,15 @@ this:
 @end group
 @end smallexample
 
-Here is how the function works: the name of the function is
-@code{mark-whole-buffer}; it is followed by an empty argument list,
-@samp{()}, which means that the function does not require arguments.
-The documentation comes next.
+函数的名称是 @code{mark-whole-buffer}；后面是一个空的参数列表，@samp{()} 表示函数不需要参数。接下来是文档。
 
-The next line is an @code{(interactive)} expression that tells Emacs
-that the function will be used interactively.  These details are similar
-to the @code{simplified-beginning-of-buffer} function described in the
-previous section.
+下一行是一个 @code{(interactive)} 表达式，告诉Emacs该函数将以交互方式使用。这些细节类似于前一节中描述的 @code{simplified-beginning-of-buffer} 函数。
 
 @need 1250
-@node Body of mark-whole-buffer
-@subsection Body of @code{mark-whole-buffer}
+@node mark-whole-buffer 函数体
+@subsection @code{mark-whole-buffer} 函数体
 
-The body of the @code{mark-whole-buffer} function consists of three
-lines of code:
+@code{mark-whole-buffer} 函数的主体由三行代码组成：
 
 @c GNU Emacs 22
 @smallexample
@@ -3228,63 +3212,25 @@ lines of code:
 @end group
 @end smallexample
 
-The first of these lines is the expression, @code{(push-mark (point))}.
+这些行中的第一行是表达式 @code{(push-mark (point))}。
 
-This line does exactly the same job as the first line of the body of
-the @code{simplified-beginning-of-buffer} function, which is written
-@code{(push-mark)}.  In both cases, the Lisp interpreter sets a mark
-at the current position of the cursor.
+这行与 @code{simplified-beginning-of-buffer} 函数体的第一行 @code{(push-mark)} 完全相同。在这两种情况下，Lisp解释器在光标的当前位置设置一个标记。
 
-I don't know why the expression in @code{mark-whole-buffer} is written
-@code{(push-mark (point))} and the expression in
-@code{beginning-of-buffer} is written @code{(push-mark)}.  Perhaps
-whoever wrote the code did not know that the arguments for
-@code{push-mark} are optional and that if @code{push-mark} is not
-passed an argument, the function automatically sets mark at the
-location of point by default.  Or perhaps the expression was written
-so as to parallel the structure of the next line.  In any case, the
-line causes Emacs to determine the position of point and set a mark
-there.
+我不知道为什么 @code{mark-whole-buffer} 中的表达式写为 @code{(push-mark (point))}，而在 @code{beginning-of-buffer} 中的表达式写为 @code{(push-mark)}。也许编写代码的人不知道 @code{push-mark} 的参数是可选的，如果 @code{push-mark} 没有传递参数，该函数默认会在点的位置自动设置标记。或者也许该表达式是为了与下一行的结构相呼应而写的。无论如何，这行使Emacs确定点的位置并在那里设置一个标记。
 
-In earlier versions of GNU Emacs, the next line of
-@code{mark-whole-buffer} was @code{(push-mark (point-max))}.  This
-expression sets a mark at the point in the buffer that has the highest
-number.  This will be the end of the buffer (or, if the buffer is
-narrowed, the end of the accessible portion of the buffer.
-@xref{Narrowing & Widening, , Narrowing and Widening}, for more about
-narrowing.)  After this mark has been set, the previous mark, the one
-set at point, is no longer set, but Emacs remembers its position, just
-as all other recent marks are always remembered.  This means that you
-can, if you wish, go back to that position by typing @kbd{C-u
-C-@key{SPC}} twice.
+在GNU Emacs的早期版本中，@code{mark-whole-buffer} 的下一行是 @code{(push-mark (point-max))}。此表达式在缓冲区中具有最大编号的地方设置一个标记。这将是缓冲区的末尾（或者，如果缓冲区被缩小，缓冲区的可访问部分的末尾。有关缩小的更多信息，请参见 @xref{Narrowing & Widening, , Narrowing and Widening}）。设置了此标记后，前一个标记（在点处设置的标记）不再设置，但Emacs记住了其位置，就像始终记住所有其他最近的标记一样。这意味着您可以通过键入 @kbd{C-u C-@key{SPC}} 两次返回到该位置，如果您愿意的话。
 
 @need 1250
-In GNU Emacs 22, the @code{(point-max)} is slightly more complicated.
-The line reads
+在GNU Emacs 22中，@code{(point-max)} 稍微复杂一些。该行读取
 
 @smallexample
 (push-mark (point-max) nil t)
 @end smallexample
 
 @noindent
-The expression works nearly the same as before.  It sets a mark at the
-highest numbered place in the buffer that it can.  However, in this
-version, @code{push-mark} has two additional arguments.  The second
-argument to @code{push-mark} is @code{nil}.  This tells the function
-it @emph{should} display a message that says ``Mark set'' when it pushes
-the mark.  The third argument is @code{t}.  This tells
-@code{push-mark} to activate the mark when Transient Mark mode is
-turned on.  Transient Mark mode highlights the currently active
-region.  It is often turned off.
+该表达式几乎与之前相同。它在缓冲区中具有最大编号的位置设置一个标记。然而，在此版本中，@code{push-mark} 有两个额外的参数。@code{push-mark} 的第二个参数是 @code{nil}。这告诉函数在推送标记时应显示一个消息，该消息说“标记已设置”。第三个参数是 @code{t}。这告诉 @code{push-mark} 在启用瞬时标记模式时激活标记。瞬时标记模式突出显示当前活动的区域。通常情况下会关闭它。
 
-Finally, the last line of the function is @code{(goto-char
-(point-min)))}.  This is written exactly the same way as it is written
-in @code{beginning-of-buffer}.  The expression moves the cursor to
-the minimum point in the buffer, that is, to the beginning of the buffer
-(or to the beginning of the accessible portion of the buffer).  As a
-result of this, point is placed at the beginning of the buffer and mark
-is set at the end of the buffer.  The whole buffer is, therefore, the
-region.
+最后，函数的最后一行是 @code{(goto-char (point-min)))}。这与 @code{beginning-of-buffer} 中写得一样。该表达式将光标移动到缓冲区的最小点，即缓冲区的开头（或者可访问部分的开头）。因此，点被放置在缓冲区的开头，标记被设置在缓冲区的末尾。整个缓冲区因此成为了一个区域。
 
 @node append-to-buffer
 @section The Definition of @code{append-to-buffer}
