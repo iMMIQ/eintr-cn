@@ -6821,48 +6821,32 @@ bouquet                       flowers
 * yank nthcdr 练习::           @code{kill-ring-yank-pointer}变量。
 @end menu
 
-@node Kill Ring Overview
-@section Kill Ring Overview
-@cindex Kill ring overview
+@node 剪切环概述
+@section 剪切环概述
+@cindex 剪切环概述
 
-The kill ring is a list of textual strings.  This is what it looks like:
+剪切环是一组文本字符串的列表。它的结构如下所示：
 
 @smallexample
-("some text" "a different piece of text" "yet more text")
+("一些文本" "不同的文本片段" "更多文本")
 @end smallexample
 
-If this were the contents of my kill ring and I pressed @kbd{C-y}, the
-string of characters saying @samp{some text} would be inserted in this
-buffer where my cursor is located.
+如果这是我的剪切环的内容，并且我按下 @kbd{C-y} 键，那么包含字符串 @samp{一些文本} 的部分将被插入到我的光标所在位置。
 
-The @code{yank} command is also used for duplicating text by copying it.
-The copied text is not cut from the buffer, but a copy of it is put on the
-kill ring and is inserted by yanking it back.
+@code{yank} 命令还用于通过复制来复制文本。复制的文本并未从缓冲区中删除，而是将其副本放入剪切环，并通过粘贴将其插入。
 
-Three functions are used for bringing text back from the kill ring:
-@code{yank}, which is usually bound to @kbd{C-y}; @code{yank-pop},
-which is usually bound to @kbd{M-y}; and @code{rotate-yank-pointer},
-which is used by the two other functions.
+有三个函数用于从剪切环中恢复文本：@code{yank}，通常绑定到 @kbd{C-y}；@code{yank-pop}，通常绑定到 @kbd{M-y}；以及由这两个函数使用的 @code{rotate-yank-pointer}。
 
-These functions refer to the kill ring through a variable called the
-@code{kill-ring-yank-pointer}.  Indeed, the insertion code for both the
-@code{yank} and @code{yank-pop} functions is:
+这些函数通过一个称为 @code{kill-ring-yank-pointer} 的变量引用剪切环。实际上，@code{yank} 和 @code{yank-pop} 函数的插入代码为：
 
 @smallexample
 (insert (car kill-ring-yank-pointer))
 @end smallexample
 
 @noindent
-(Well, no more.  In GNU Emacs 22, the function has been replaced by
-@code{insert-for-yank} which calls @code{insert-for-yank-1}
-repetitively for each @code{yank-handler} segment.  In turn,
-@code{insert-for-yank-1} strips text properties from the inserted text
-according to @code{yank-excluded-properties}.  Otherwise, it is just
-like @code{insert}.  We will stick with plain @code{insert} since it
-is easier to understand.)
+（好了，不再是这样了。在 GNU Emacs 22 中，该函数已被 @code{insert-for-yank} 替代，它会为每个 @code{yank-handler} 段重复调用 @code{insert-for-yank-1}。转而，@code{insert-for-yank-1} 根据 @code{yank-excluded-properties} 从插入的文本中去除文本属性。否则，它就像 @code{insert} 一样。我们将继续使用纯粹的 @code{insert}，因为它更容易理解。）
 
-To begin to understand how @code{yank} and @code{yank-pop} work, it is
-first necessary to look at the @code{kill-ring-yank-pointer} variable.
+要开始理解 @code{yank} 和 @code{yank-pop} 如何工作，首先需要查看 @code{kill-ring-yank-pointer} 变量。
 
 @node kill-ring-yank-pointer
 @section The @code{kill-ring-yank-pointer} Variable
