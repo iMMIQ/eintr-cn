@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>进入C的插曲 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="进入C的插曲 (Programming in Emacs Lisp)">
+<meta name="keywords" content="进入C的插曲 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Jian-Qie-Yu-Cun-Chu-WenBen-.html" rel="up" title="剪切与存储文本">
+<link href="defvar.html" rel="next" title="defvar">
+<link href="copy_002dregion_002das_002dkill.html" rel="prev" title="copy-region-as-kill">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_8fdb_5165C_7684_63d2_66f2">
+<div class="nav-panel">
+<p>
+Next: <a href="defvar.html" accesskey="n" rel="next">Initializing a Variable with <code class="code">defvar</code></a>, Previous: <a href="copy_002dregion_002das_002dkill.html" accesskey="p" rel="prev"><code class="code">copy-region-as-kill</code></a>, Up: <a href="Jian-Qie-Yu-Cun-Chu-WenBen-.html" accesskey="u" rel="up">剪切与存储文本</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Jin-Ru-CDe-Cha-Qu-">8.4 进入C的插曲</h3>
+<a class="index-entry-id" id="index-delete_002dand_002dextract_002dregion"></a>
+<a class="index-entry-id" id="index-C_002cJin-Ru-CDe-Cha-Qu-"></a>
+<a class="index-entry-id" id="index-Jin-Ru-CDe-Cha-Qu-"></a>
+
+<p><code class="code">copy-region-as-kill</code> 函数（参见see <a class="pxref" href="copy_002dregion_002das_002dkill.html"><code class="code">copy-region-as-kill</code></a>）使用了 <code class="code">filter-buffer-substring</code> 函数，而该函数又使用了 <code class="code">delete-and-extract-region</code> 函数。它会删除区域的内容，而且一旦删除就无法还原。
+</p>
+<p>与这里讨论的其他代码不同，<code class="code">delete-and-extract-region</code> 函数不是用Emacs Lisp编写的；它是用C编写的，是GNU Emacs系统的原语之一。由于它非常简单，我将简要离开Lisp并在这里描述它。
+</p>
+<p>与许多其他Emacs原语一样，<code class="code">delete-and-extract-region</code> 作为C宏的实例编写，宏是代码的模板。完整的宏如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">DEFUN (&quot;delete-and-extract-region&quot;, Fdelete_and_extract_region,
+       Sdelete_and_extract_region, 2, 2, 0,
+       doc: /* 删除START和END之间的文本并返回它。 */)
+  (Lisp_Object start, Lisp_Object end)
+{
+  validate_region (&amp;start, &amp;end);
+  if (XFIXNUM (start) == XFIXNUM (end))
+    return empty_unibyte_string;
+  return del_range_1 (XFIXNUM (start), XFIXNUM (end), 1, 1);
+}
+</pre></div></div>
+
+<p>在不深入宏编写过程的细节的情况下，让我指出该宏以单词 <code class="code">DEFUN</code> 开头。选择单词 <code class="code">DEFUN</code> 是因为该代码与Lisp中的 <code class="code">defun</code> 具有相同的目的。（<code class="code">DEFUN</code> C宏在<samp class="file">emacs/src/lisp.h</samp>中定义。）
+</p>
+<p>单词 <code class="code">DEFUN</code> 后面跟着括号内的七个部分：
+</p>
+<ul class="itemize mark-bullet">
+<li>第一个部分是Lisp中给定的函数名称，<code class="code">delete-and-extract-region</code>。
+
+</li><li>第二部分是C中的函数名称，<code class="code">Fdelete_and_extract_region</code>。按照惯例，它以 &lsquo;<samp class="samp">F</samp>&rsquo; 开头。由于C中不使用连字符，而是使用下划线。
+
+</li><li>第三部分是记录此函数信息以供内部使用的C常量结构的名称。它是C中函数的名称，但以 &lsquo;<samp class="samp">S</samp>&rsquo; 开头而不是 &lsquo;<samp class="samp">F</samp>&rsquo;。
+
+</li><li>第四和第五部分指定函数可以有的参数的最小和最大数量。此函数要求精确地有2个参数。
+
+</li><li>第六部分几乎与在Lisp中编写的函数中的 <code class="code">interactive</code> 声明后面的参数相似：一个字母，然后是一个提示，也许还有一个数字。与Lisp不同的是，当使用零参数调用宏时。然后你写一个 <code class="code">0</code>（它是一个空字符串），就像这个宏一样。
+
+<p>如果要指定参数，你会将它们放在引号之间。用于 <code class="code">goto-char</code> 的C宏包括在此位置添加 <code class="code">&quot;NGoto char: &quot;</code> 以指示该函数期望一个原始前缀，这种情况下是缓冲区中的数值位置，并提供提示。
+</p>
+</li><li>第七部分是文档字符串，就像Emacs Lisp中的函数的文档字符串一样。这是以C注释的形式编写的。（构建Emacs时，程序<code class="command">lib-src/make-docfile</code>提取这些注释并用它们制作文档。）
+</li></ul>
+
+<p>在C宏中，接下来是形式参数，包括对象类型的说明，然后是宏的主体。对于 <code class="code">delete-and-extract-region</code>，主体包括以下四行：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">validate_region (&amp;start, &amp;end);
+if (XFIXNUM (start) == XFIXNUM (end))
+  return empty_unibyte_string;
+return del_range_1 (XFIXNUM (start), XFIXNUM (end), 1, 1);
+</pre></div></div>
+
+<p><code class="code">validate_region</code> 函数检查作为区域开始和结束传递的值是否是正确的类型并且是否在范围内。如果开始和结束位置相同，则返回一个空字符串。
+</p>
+<p><code class="code">del_range_1</code> 函数实际上删除文本。这是一个复杂的函数，我们不会深入研究。它更新缓冲区并执行其他操作。但是，值得注意的是传递给 <code class="code">del_range_1</code> 的两个参数。这些是 <code class="code">XFIXNUM&nbsp;(start)</code><!-- /@w --> 和 <code class="code">XFIXNUM&nbsp;(end)</code><!-- /@w -->。
+</p>
+<p>就C语言而言，<code class="code">start</code> 和 <code class="code">end</code> 是标记要删除的区域的开始和结束的两个不透明的值。更准确地说，需要更多专业知识才能理解，这两个值的类型是 <code class="code">Lisp_Object</code>，它可能是C指针、C整数或C结构；C代码通常不应关心 <code class="code">Lisp_Object</code> 的实现方式。
+</p>
+<p>&lsquo;<samp class="samp">XFIXNUM</samp>&rsquo; 是一个C宏，从较长的比特集中提取相关整数；类型比特被丢弃。
+</p>
+<p><code class="code">delete-and-extract-region</code> 中的命令如下：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">del_range_1 (XFIXNUM (start), XFIXNUM (end), 1, 1);
+</pre></div>
+
+<p>它删除开始位置 <code class="code">start</code> 和结束位置 <code class="code">end</code> 之间的区域。
+</p>
+<p>从编写Lisp的人的角度来看，Emacs非常简单；但是在底层隐藏着大量的复杂性，以使一切正常工作。
+</p>
+</div>
+
+
+
+</body>
+</html>

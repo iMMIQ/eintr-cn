@@ -6106,36 +6106,25 @@ delete-and-extract-region是用C编写的。
 参见使用 @code{defvar} 初始化变量
 @end ignore
 
-@node Digression into C
-@section Digression into C
+@node 进入C的插曲
+@section 进入C的插曲
 @findex delete-and-extract-region
-@cindex C, a digression into
-@cindex Digression into C
+@cindex C，进入C的插曲
+@cindex 进入C的插曲
 
-The @code{copy-region-as-kill} function (@pxref{copy-region-as-kill, ,
-@code{copy-region-as-kill}}) uses the @code{filter-buffer-substring}
-function, which in turn uses the @code{delete-and-extract-region}
-function.  It removes the contents of a region and you cannot get them
-back.
+@code{copy-region-as-kill} 函数（参见@pxref{copy-region-as-kill, , @code{copy-region-as-kill}}）使用了 @code{filter-buffer-substring} 函数，而该函数又使用了 @code{delete-and-extract-region} 函数。它会删除区域的内容，而且一旦删除就无法还原。
 
-Unlike the other code discussed here, the
-@code{delete-and-extract-region} function is not written in Emacs
-Lisp; it is written in C and is one of the primitives of the GNU Emacs
-system.  Since it is very simple, I will digress briefly from Lisp and
-describe it here.
+与这里讨论的其他代码不同，@code{delete-and-extract-region} 函数不是用Emacs Lisp编写的；它是用C编写的，是GNU Emacs系统的原语之一。由于它非常简单，我将简要离开Lisp并在这里描述它。
 
 @need 1500
-Like many of the other Emacs primitives,
-@code{delete-and-extract-region} is written as an instance of a C
-macro, a macro being a template for code.  The complete macro looks
-like this:
+与许多其他Emacs原语一样，@code{delete-and-extract-region} 作为C宏的实例编写，宏是代码的模板。完整的宏如下：
 
-@c This is a copy of editfns.c's DEFUN for delete-and-extract-region.
+@c 这是editfns.c中用于delete-and-extract-region的DEFUN的副本。
 @smallexample
 @group
 DEFUN ("delete-and-extract-region", Fdelete_and_extract_region,
        Sdelete_and_extract_region, 2, 2, 0,
-       doc: /* Delete the text between START and END and return it.  */)
+       doc: /* 删除START和END之间的文本并返回它。 */)
   (Lisp_Object start, Lisp_Object end)
 @{
   validate_region (&start, &end);
@@ -6146,61 +6135,34 @@ DEFUN ("delete-and-extract-region", Fdelete_and_extract_region,
 @end group
 @end smallexample
 
-Without going into the details of the macro writing process, let me
-point out that this macro starts with the word @code{DEFUN}.  The word
-@code{DEFUN} was chosen since the code serves the same purpose as
-@code{defun} does in Lisp.  (The @code{DEFUN} C macro is defined in
-@file{emacs/src/lisp.h}.)
+在不深入宏编写过程的细节的情况下，让我指出该宏以单词 @code{DEFUN} 开头。选择单词 @code{DEFUN} 是因为该代码与Lisp中的 @code{defun} 具有相同的目的。（@code{DEFUN} C宏在@file{emacs/src/lisp.h}中定义。）
 
-The word @code{DEFUN} is followed by seven parts inside of
-parentheses:
+单词 @code{DEFUN} 后面跟着括号内的七个部分：
 
 @itemize @bullet
 @item
-The first part is the name given to the function in Lisp,
-@code{delete-and-extract-region}.
+第一个部分是Lisp中给定的函数名称，@code{delete-and-extract-region}。
 
 @item
-The second part is the name of the function in C,
-@code{Fdelete_and_extract_region}.  By convention, it starts with
-@samp{F}.  Since C does not use hyphens in names, underscores are used
-instead.
+第二部分是C中的函数名称，@code{Fdelete_and_extract_region}。按照惯例，它以 @samp{F} 开头。由于C中不使用连字符，而是使用下划线。
 
 @item
-The third part is the name for the C constant structure that records
-information on this function for internal use.  It is the name of the
-function in C but begins with an @samp{S} instead of an @samp{F}.
+第三部分是记录此函数信息以供内部使用的C常量结构的名称。它是C中函数的名称，但以 @samp{S} 开头而不是 @samp{F}。
 
 @item
-The fourth and fifth parts specify the minimum and maximum number of
-arguments the function can have.  This function demands exactly 2
-arguments.
+第四和第五部分指定函数可以有的参数的最小和最大数量。此函数要求精确地有2个参数。
 
 @item
-The sixth part is nearly like the argument that follows the
-@code{interactive} declaration in a function written in Lisp: a letter
-followed, perhaps, by a prompt.  The only difference from Lisp is
-when the macro is called with no arguments.  Then you write a @code{0}
-(which is a null string), as in this macro.
+第六部分几乎与在Lisp中编写的函数中的 @code{interactive} 声明后面的参数相似：一个字母，然后是一个提示，也许还有一个数字。与Lisp不同的是，当使用零参数调用宏时。然后你写一个 @code{0}（它是一个空字符串），就像这个宏一样。
 
-If you were to specify arguments, you would place them between
-quotation marks.  The C macro for @code{goto-char} includes
-@code{"NGoto char: "} in this position to indicate that the function
-expects a raw prefix, in this case, a numerical location in a buffer,
-and provides a prompt.
+如果要指定参数，你会将它们放在引号之间。用于 @code{goto-char} 的C宏包括在此位置添加 @code{"NGoto char: "} 以指示该函数期望一个原始前缀，这种情况下是缓冲区中的数值位置，并提供提示。
 
 @item
-The seventh part is a documentation string, just like the one for a
-function written in Emacs Lisp.  This is written as a C comment.  (When
-you build Emacs, the program @command{lib-src/make-docfile} extracts
-these comments and uses them to make the documentation.)
+第七部分是文档字符串，就像Emacs Lisp中的函数的文档字符串一样。这是以C注释的形式编写的。（构建Emacs时，程序@command{lib-src/make-docfile}提取这些注释并用它们制作文档。）
 @end itemize
 
 @need 1200
-In a C macro, the formal parameters come next, with a statement of
-what kind of object they are, followed by the body
-of the macro.  For @code{delete-and-extract-region} the body
-consists of the following four lines:
+在C宏中，接下来是形式参数，包括对象类型的说明，然后是宏的主体。对于 @code{delete-and-extract-region}，主体包括以下四行：
 
 @smallexample
 @group
@@ -6211,45 +6173,25 @@ return del_range_1 (XFIXNUM (start), XFIXNUM (end), 1, 1);
 @end group
 @end smallexample
 
-The @code{validate_region} function checks whether the values
-passed as the beginning and end of the region are the proper type and
-are within range.  If the beginning and end positions are the same,
-then return an empty string.
+@code{validate_region} 函数检查作为区域开始和结束传递的值是否是正确的类型并且是否在范围内。如果开始和结束位置相同，则返回一个空字符串。
 
-The @code{del_range_1} function actually deletes the text.  It is a
-complex function we will not look into.  It updates the buffer and
-does other things.  However, it is worth looking at the two arguments
-passed to @code{del_range_1}.  These are @w{@code{XFIXNUM (start)}} and
-@w{@code{XFIXNUM (end)}}.
+@code{del_range_1} 函数实际上删除文本。这是一个复杂的函数，我们不会深入研究。它更新缓冲区并执行其他操作。但是，值得注意的是传递给 @code{del_range_1} 的两个参数。这些是 @w{@code{XFIXNUM (start)}} 和 @w{@code{XFIXNUM (end)}}。
 
-As far as the C language is concerned, @code{start} and @code{end} are
-two opaque values that mark the beginning and end of the region to be
-deleted.  More precisely, and requiring more expert knowledge
-to understand, the two values are of type @code{Lisp_Object}, which
-might be a C pointer, a C integer, or a C @code{struct}; C code
-ordinarily should not care how @code{Lisp_Object} is implemented.
+就C语言而言，@code{start} 和 @code{end} 是标记要删除的区域的开始和结束的两个不透明的值。更准确地说，需要更多专业知识才能理解，这两个值的类型是 @code{Lisp_Object}，它可能是C指针、C整数或C结构；C代码通常不应关心 @code{Lisp_Object} 的实现方式。
 
-@code{Lisp_Object} widths depend on the machine, and are typically 32
-or 64 bits.  A few of the bits are used to specify the type of
-information; the remaining bits are used as content.
-
-@samp{XFIXNUM} is a C macro that extracts the relevant integer from the
-longer collection of bits; the type bits are discarded.
+@samp{XFIXNUM} 是一个C宏，从较长的比特集中提取相关整数；类型比特被丢弃。
 
 @need 800
-The command in @code{delete-and-extract-region} looks like this:
+@code{delete-and-extract-region} 中的命令如下：
 
 @smallexample
 del_range_1 (XFIXNUM (start), XFIXNUM (end), 1, 1);
 @end smallexample
 
 @noindent
-It deletes the region between the beginning position, @code{start},
-and the ending position, @code{end}.
+它删除开始位置 @code{start} 和结束位置 @code{end} 之间的区域。
 
-From the point of view of the person writing Lisp, Emacs is all very
-simple; but hidden underneath is a great deal of complexity to make it
-all work.
+从编写Lisp的人的角度来看，Emacs非常简单；但是在底层隐藏着大量的复杂性，以使一切正常工作。
 
 @node defvar
 @section Initializing a Variable with @code{defvar}
