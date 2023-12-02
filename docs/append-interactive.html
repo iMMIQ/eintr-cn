@@ -40,7 +40,7 @@ ISBN 1-882114-43-4
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="append_002dto_002dbuffer.html" rel="up" title="append-to-buffer">
 <link href="append_002dto_002dbuffer-body.html" rel="next" title="append-to-buffer body">
-<link href="append_002dto_002dbuffer-overview.html" rel="prev" title="append-to-buffer overview">
+<link href="append_002dto_002dbufferGai-Shu-.html" rel="prev" title="append-to-buffer概述">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -55,76 +55,50 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="append-interactive">
 <div class="nav-panel">
 <p>
-Next: <a href="append_002dto_002dbuffer-body.html" accesskey="n" rel="next">The Body of <code class="code">append-to-buffer</code></a>, Previous: <a href="append_002dto_002dbuffer-overview.html" accesskey="p" rel="prev">An Overview of <code class="code">append-to-buffer</code></a>, Up: <a href="append_002dto_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">append-to-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="append_002dto_002dbuffer-body.html" accesskey="n" rel="next"><code class="code">append-to-buffer</code> 函数体</a>, Previous: <a href="append_002dto_002dbufferGai-Shu-.html" accesskey="p" rel="prev"><code class="code">append-to-buffer</code>的概述</a>, Up: <a href="append_002dto_002dbuffer.html" accesskey="u" rel="up"><code class="code">append-to-buffer</code>的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-append_002dto_002dbuffer-Interactive-Expression">4.4.1 The <code class="code">append-to-buffer</code> Interactive Expression</h4>
+<h4 class="subsection" id="append_002dto_002dbuffer-Jiao-Hu-Shi-Biao-Da-Shi-">4.4.1 <code class="code">append-to-buffer</code> 交互式表达式</h4>
 
-<p>Since the <code class="code">append-to-buffer</code> function will be used interactively,
-the function must have an <code class="code">interactive</code> expression.  (For a
-review of <code class="code">interactive</code>, see <a class="ref" href="Jiao-Hu-Cao-Zuo-.html">使函数具有交互性</a>.)
+<p>由于 <code class="code">append-to-buffer</code> 函数将被交互使用，该函数必须具有一个 <code class="code">interactive</code> 表达式。 (有关 <code class="code">interactive</code> 的详细信息，请参阅 <a class="ref" href="Jiao-Hu-Cao-Zuo-.html">使函数具有交互性</a>。)
 </p>
-<p>The expression reads as follows:
+<p>表达式如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(interactive
  (list (read-buffer
-        &quot;Append to buffer: &quot;
+        &quot;追加到缓冲区: &quot;
         (other-buffer (current-buffer) t))
        (region-beginning)
        (region-end)))
 </pre></div></div>
 
-<p>This expression is not one with letters standing for parts, as
-described earlier.  Instead, it starts a list with these parts:
+<p>该表达式不是一个字母代表部分的表达式，如前所述。相反，它以这些部分开始一个列表：
 </p>
-<p>The first part of the list is an expression to read the name of a
-buffer and return it as a string.  That is <code class="code">read-buffer</code>.  The
-function requires a prompt as its first argument, &lsquo;<samp class="samp">&quot;Append to
-buffer: &quot;</samp>&rsquo;.  Its second argument tells the command what value to
-provide if you don&rsquo;t specify anything.
+<p>列表的第一部分是一个表达式，用于读取缓冲区的名称并将其作为字符串返回。那就是 <code class="code">read-buffer</code>。该函数需要一个提示作为其第一个参数，即 &lsquo;<samp class="samp">&quot;追加到缓冲区: &quot;</samp>&rsquo;。其第二个参数告诉命令如果不指定任何值，应提供什么值。
 </p>
-<p>In this case that second argument is an expression containing the
-function <code class="code">other-buffer</code>, an exception, and a &lsquo;<samp class="samp">t</samp>&rsquo;, standing
-for true.
+<p>在这种情况下，第二个参数是一个包含函数 <code class="code">other-buffer</code>、一个异常和 &lsquo;<samp class="samp">t</samp>&rsquo; 的表达式，表示为真。
 </p>
-<p>The first argument to <code class="code">other-buffer</code>, the exception, is yet
-another function, <code class="code">current-buffer</code>.  That is not going to be
-returned.  The second argument is the symbol for true, <code class="code">t</code>.  That
-tells <code class="code">other-buffer</code> that it may show visible buffers (except in
-this case, it will not show the current buffer, which makes sense).
+<p><code class="code">other-buffer</code> 的第一个参数是异常，是另一个函数 <code class="code">current-buffer</code>。这不会被返回。第二个参数是真的符号，即 <code class="code">t</code>。这告诉 <code class="code">other-buffer</code> 它可以显示可见缓冲区（在这种情况下，它将不显示当前缓冲区，这是有道理的）。
 </p>
-<p>The expression looks like this:
+<p>表达式如下：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(other-buffer (current-buffer) t)
 </pre></div>
 
-<p>The second and third arguments to the <code class="code">list</code> expression are
-<code class="code">(region-beginning)</code> and <code class="code">(region-end)</code>.  These two
-functions specify the beginning and end of the text to be appended.
+<p><code class="code">list</code> 表达式的第二个和第三个参数是 <code class="code">(region-beginning)</code> 和 <code class="code">(region-end)</code>。这两个函数指定要追加的文本的开头和结尾。
 </p>
-<p>Originally, the command used the letters &lsquo;<samp class="samp">B</samp>&rsquo; and &lsquo;<samp class="samp">r</samp>&rsquo;.
-The whole <code class="code">interactive</code> expression looked like this:
+<p>最初，该命令使用字母 &lsquo;<samp class="samp">B</samp>&rsquo; 和 &lsquo;<samp class="samp">r</samp>&rsquo;。整个 <code class="code">interactive</code> 表达式如下：
 </p>
 <div class="example smallexample">
-<pre class="example-preformatted">(interactive &quot;BAppend to buffer: \nr&quot;)
+<pre class="example-preformatted">(interactive &quot;B追加到缓冲区: \nr&quot;)
 </pre></div>
 
-<p>But when that was done, the default value of the buffer switched to
-was invisible.  That was not wanted.
+<p>但是当这样做时，切换到的缓冲区的默认值变为不可见。这是不想要的。
 </p>
-<p>(The prompt was separated from the second argument with a newline,
-&lsquo;<samp class="samp">\n</samp>&rsquo;.  It was followed by an &lsquo;<samp class="samp">r</samp>&rsquo; that told Emacs to bind the
-two arguments that follow the symbol <code class="code">buffer</code> in the function&rsquo;s
-argument list (that is, <code class="code">start</code> and <code class="code">end</code>) to the values of
-point and mark.  That argument worked fine.)
+<p>（提示与第二个参数之间用换行符 &lsquo;<samp class="samp">\n</samp>&rsquo; 分隔。它后面跟着一个 &lsquo;<samp class="samp">r</samp>&rsquo;，告诉 Emacs 将跟随函数参数列表中 <code class="code">buffer</code> 符号后面的两个参数（即 <code class="code">start</code> 和 <code class="code">end</code>）绑定到点和标记的值。这个参数运行良好。）
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="append_002dto_002dbuffer-body.html">The Body of <code class="code">append-to-buffer</code></a>, Previous: <a href="append_002dto_002dbuffer-overview.html">An Overview of <code class="code">append-to-buffer</code></a>, Up: <a href="append_002dto_002dbuffer.html">The Definition of <code class="code">append-to-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

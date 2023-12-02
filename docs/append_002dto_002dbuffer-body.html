@@ -55,22 +55,16 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="append_002dto_002dbuffer-body">
 <div class="nav-panel">
 <p>
-Next: <a href="append-save_002dexcursion.html" accesskey="n" rel="next"><code class="code">save-excursion</code> in <code class="code">append-to-buffer</code></a>, Previous: <a href="append-interactive.html" accesskey="p" rel="prev">The <code class="code">append-to-buffer</code> Interactive Expression</a>, Up: <a href="append_002dto_002dbuffer.html" accesskey="u" rel="up">The Definition of <code class="code">append-to-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="append-save_002dexcursion.html" accesskey="n" rel="next"><code class="code">save-excursion</code> 在 <code class="code">append-to-buffer</code> 中的应用</a>, Previous: <a href="append-interactive.html" accesskey="p" rel="prev"><code class="code">append-to-buffer</code> 交互式表达式</a>, Up: <a href="append_002dto_002dbuffer.html" accesskey="u" rel="up"><code class="code">append-to-buffer</code>的定义</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-Body-of-append_002dto_002dbuffer">4.4.2 The Body of <code class="code">append-to-buffer</code></h4>
+<h4 class="subsection" id="append_002dto_002dbuffer-Han-Shu-Ti-">4.4.2 <code class="code">append-to-buffer</code> 函数体</h4>
 
-<p>The body of the <code class="code">append-to-buffer</code> function begins with <code class="code">let</code>.
+<p><code class="code">append-to-buffer</code> 函数的体部分以 <code class="code">let</code> 开始。
 </p>
-<p>As we have seen before (see <a class="pxref" href="let.html"><code class="code">let</code></a>), the purpose of a
-<code class="code">let</code> expression is to create and give initial values to one or
-more variables that will only be used within the body of the
-<code class="code">let</code>.  This means that such a variable will not be confused with
-any variable of the same name outside the <code class="code">let</code> expression.
+<p>正如我们之前所见 (see <a class="pxref" href="let.html"><code class="code">let</code></a>)，<code class="code">let</code> 表达式的目的是在 <code class="code">let</code> 的体内创建并给予一个或多个变量初始值。这意味着这样的变量不会与 <code class="code">let</code> 表达式外部同名的任何变量混淆。
 </p>
-<p>We can see how the <code class="code">let</code> expression fits into the function as a
-whole by showing a template for <code class="code">append-to-buffer</code> with the
-<code class="code">let</code> expression in outline:
+<p>通过以下提纲展示了 <code class="code">append-to-buffer</code> 函数的模板，其中包含 <code class="code">let</code> 表达式：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun append-to-buffer (buffer start end)
@@ -80,50 +74,33 @@ whole by showing a template for <code class="code">append-to-buffer</code> with 
         <var class="var">body</var>&hellip;))
 </pre></div></div>
 
-<p>The <code class="code">let</code> expression has three elements:
+<p><code class="code">let</code> 表达式包含三个元素：
 </p>
 <ol class="enumerate">
-<li> The symbol <code class="code">let</code>;
+<li> 符号 <code class="code">let</code>；
 
-</li><li> A varlist containing, in this case, a single two-element list,
-<code class="code">(<var class="var">variable</var> <var class="var">value</var>)</code>;
+</li><li> 一个 varlist，包含一个两元素列表，即 <code class="code">(<var class="var">variable</var> <var class="var">value</var>)</code>；
 
-</li><li> The body of the <code class="code">let</code> expression.
+</li><li> <code class="code">let</code> 表达式的体部分。
 </li></ol>
 
-<p>In the <code class="code">append-to-buffer</code> function, the varlist looks like this:
+<p>在 <code class="code">append-to-buffer</code> 函数中，varlist 的样式如下：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(oldbuf (current-buffer))
 </pre></div>
 
-<p>In this part of the <code class="code">let</code> expression, the one variable,
-<code class="code">oldbuf</code>, is bound to the value returned by the
-<code class="code">(current-buffer)</code> expression.  The variable, <code class="code">oldbuf</code>, is
-used to keep track of the buffer in which you are working and from
-which you will copy.
+<p>在 <code class="code">let</code> 表达式的这部分中，唯一的变量 <code class="code">oldbuf</code> 被绑定到 <code class="code">(current-buffer)</code> 表达式返回的值。这个变量 <code class="code">oldbuf</code> 用于跟踪你正在操作的缓冲区，并从中复制。
 </p>
-<p>The element or elements of a varlist are surrounded by a set of
-parentheses so the Lisp interpreter can distinguish the varlist from
-the body of the <code class="code">let</code>.  As a consequence, the two-element list
-within the varlist is surrounded by a circumscribing set of parentheses.
-The line looks like this:
+<p>varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够区分 varlist 和 <code class="code">let</code> 的体部分。因此，varlist 中的两元素列表被一对括号包围。这一行看起来像这样：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(let ((oldbuf (current-buffer)))
   &hellip; )
 </pre></div></div>
 
-<p>The two parentheses before <code class="code">oldbuf</code> might surprise you if you did
-not realize that the first parenthesis before <code class="code">oldbuf</code> marks the
-boundary of the varlist and the second parenthesis marks the beginning
-of the two-element list, <code class="code">(oldbuf (current-buffer))</code>.
+<p>在 <code class="code">oldbuf</code> 之前的两个括号可能会让你感到惊讶，如果你没有意识到 <code class="code">oldbuf</code> 之前的第一个括号标记了 varlist 的边界，而第二个括号标记了两元素列表 <code class="code">(oldbuf (current-buffer))</code> 的开始。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="append-save_002dexcursion.html"><code class="code">save-excursion</code> in <code class="code">append-to-buffer</code></a>, Previous: <a href="append-interactive.html">The <code class="code">append-to-buffer</code> Interactive Expression</a>, Up: <a href="append_002dto_002dbuffer.html">The Definition of <code class="code">append-to-buffer</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
