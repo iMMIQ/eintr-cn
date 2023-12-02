@@ -6721,56 +6721,41 @@ bouquet                       flowers
 
 总之，当一个 Lisp 变量被设置为某个值时，它会被赋予指向该变量所引用的列表的地址。
 
-@node Symbols as Chest
-@section Symbols as a Chest of Drawers
-@cindex Symbols as a Chest of Drawers
-@cindex Chest of Drawers, metaphor for a symbol
-@cindex Drawers, Chest of, metaphor for a symbol
+@node 符号作为抽屉
+@section 符号作为抽屉式储物柜
+@cindex 符号作为抽屉式储物柜
+@cindex 抽屉式储物柜，作为符号的隐喻
+@cindex 抽屉，抽屉式储物柜，作为符号的隐喻
 
-In an earlier section, I suggested that you might imagine a symbol as
-being a chest of drawers.  The function definition is put in one
-drawer, the value in another, and so on.  What is put in the drawer
-holding the value can be changed without affecting the contents of the
-drawer holding the function definition, and vice versa.
+在早期的一节中，我建议你将符号想象成一个抽屉式储物柜。一个抽屉放置函数定义，另一个抽屉放置值，依此类推。放在存放值的抽屉中的内容可以更改，而不影响放置函数定义的抽屉中的内容，反之亦然。
 
-Actually, what is put in each drawer is the address of the value or
-function definition.  It is as if you found an old chest in the attic,
-and in one of its drawers you found a map giving you directions to
-where the buried treasure lies.
+实际上，放在每个抽屉中的是值或函数定义的地址。就好像你在阁楼上发现了一只旧箱子，在其中一个抽屉里找到了一张地图，指引你找到埋藏的宝藏的地方。
 
-(In addition to its name, symbol definition, and variable value, a
-symbol has a drawer for a @dfn{property list} which can be used to
-record other information.  Property lists are not discussed here; see
-@ref{Property Lists, , Property Lists, elisp, The GNU Emacs Lisp
-Reference Manual}.)
+（除了名称、符号定义和变量值之外，符号还有一个用于记录其他信息的@dfn{属性列表}抽屉。这里不讨论属性列表；请参阅@ref{Property Lists, , Property Lists, elisp，GNU Emacs Lisp参考手册}。）
 
 @need 1500
-Here is a fanciful representation:
+这里是一个幻想的表示：
 
-@c chest-of-drawers diagram
+@c 抽屉式储物柜图表
 @ifnottex
 @sp 1
 @smallexample
 @group
-            Chest of Drawers            Contents of Drawers
+            抽屉式储物柜            抽屉的内容
 
             __   o0O0o   __
           /                 \
          ---------------------
-        |    directions to    |            [map to]
-        |     symbol name     |             bouquet
-        |                     |
+        |    符号名称的方向    |            [指向地图]
+        |                     |             花束
         +---------------------+
-        |    directions to    |
-        |  symbol definition  |             [none]
-        |                     |
+        |    符号定义的方向    |
+        |                     |             [无]
         +---------------------+
-        |    directions to    |            [map to]
-        |    variable value   |             (rose violet buttercup)
-        |                     |
+        |    变量值的方向      |            [指向地图]
+        |                     |             (玫瑰 紫罗兰 毛茛)
         +---------------------+
-        |    directions to    |
-        |    property list    |             [not described here]
+        |    属性列表的方向    |             [这里不描述]
         |                     |
         +---------------------+
         |/                   \|
@@ -6790,25 +6775,21 @@ Here is a fanciful representation:
 @sp 1
 @smallexample
 @group
-            Chest of Drawers            Contents of Drawers
+            抽屉式储物柜            抽屉的内容
 
             __   o0O0o   __
           /                 \
          ---------------------
-        |    directions to    |            [map to]
-        |     symbol name     |             bouquet
-        |                     |
+        |    符号名称的方向    |            [指向地图]
+        |                     |             花束
         +---------------------+
-        |    directions to    |
-        |  symbol definition  |             [none]
-        |                     |
+        |    符号定义的方向    |
+        |                     |             [无]
         +---------------------+
-        |    directions to    |            [map to]
-        |    variable value   |             (rose violet buttercup)
-        |                     |
+        |    变量值的方向      |            [指向地图]
+        |                     |             (玫瑰 紫罗兰 毛茛)
         +---------------------+
-        |    directions to    |
-        |    property list    |             [not described here]
+        |    属性列表的方向    |             [这里不描述]
         |                     |
         +---------------------+
         |/                   \|
@@ -6818,13 +6799,10 @@ Here is a fanciful representation:
 @end iftex
 @end ifclear
 
-@node List Exercise
-@section Exercise
+@node 列表练习
+@section 练习
 
-Set @code{flowers} to @code{violet} and @code{buttercup}.  Cons two
-more flowers on to this list and set this new list to
-@code{more-flowers}.  Set the @sc{car} of @code{flowers} to a fish.
-What does the @code{more-flowers} list now contain?
+将@code{flowers}设置为@code{violet}和@code{buttercup}。在这个列表上再连接两朵花，并将这个新列表设置为@code{more-flowers}。将@code{flowers}的@sc{car}设置为一条鱼。现在，@code{more-flowers}列表包含什么？
 
 @node Yanking
 @chapter Yanking Text Back
