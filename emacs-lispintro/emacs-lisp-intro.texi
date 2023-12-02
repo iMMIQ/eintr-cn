@@ -3590,24 +3590,17 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 使用 @code{xref-find-definitions} 查找 @code{copy-to-buffer} 函数的源代码。
 @end itemize
 
-@node More Complex
-@chapter A Few More Complex Functions
+@node 复杂一些
+@chapter 几个更复杂的函数
 
-In this chapter, we build on what we have learned in previous chapters
-by looking at more complex functions.  The @code{copy-to-buffer}
-function illustrates use of two @code{save-excursion} expressions in
-one definition, while the @code{insert-buffer} function illustrates
-use of an asterisk in an @code{interactive} expression, use of
-@code{or}, and the important distinction between a name and the object
-to which the name refers.
+在这一章中，我们在前几章学到的基础上，深入研究更复杂的函数。@code{copy-to-buffer} 函数演示了在一个定义中使用两个 @code{save-excursion} 表达式，而 @code{insert-buffer} 函数则演示了在 @code{interactive} 表达式中使用星号、使用 @code{or}，以及名称和名称引用的对象之间的重要区别。
 
 @menu
-* copy-to-buffer::              With @code{set-buffer}, @code{get-buffer-create}.
-* insert-buffer::               Read-only, and with @code{or}.
-* beginning-of-buffer::         Shows @code{goto-char},
-                                @code{point-min}, and @code{push-mark}.
-* Second Buffer Related Review::
-* optional Exercise::
+* copy-to-buffer::              使用 @code{set-buffer}、@code{get-buffer-create}。
+* insert-buffer::               只读，并带有 @code{or}。
+* beginning-of-buffer::         展示了 @code{goto-char}、@code{point-min} 和 @code{push-mark}。
+* 第二缓冲区相关回顾::
+* 可选练习::
 @end menu
 
 @node copy-to-buffer
