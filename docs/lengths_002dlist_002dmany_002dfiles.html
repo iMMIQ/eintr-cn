@@ -61,7 +61,7 @@ Next: <a href="append.html" accesskey="n" rel="next">The <code class="code">appe
 <h4 class="unnumberedsubsec" id="Determine-the-lengths-of-defuns">Determine the lengths of <code class="code">defuns</code></h4>
 
 <p>The design using a <code class="code">while</code> loop is routine.  The argument passed
-to the function is a list of files.  As we saw earlier (see <a class="pxref" href="Loop-Example.html">A <code class="code">while</code> Loop and a List</a>), you can write a <code class="code">while</code> loop so that the body of the
+to the function is a list of files.  As we saw earlier (see <a class="pxref" href="Xun-Huan-ShiLi.html">使用 <code class="code">while</code> 循环和列表</a>), you can write a <code class="code">while</code> loop so that the body of the
 loop is evaluated if such a list contains elements, but to exit the
 loop if the list is empty.  For this design to work, the body of the
 loop must contain an expression that shortens the list each time the
@@ -85,7 +85,7 @@ sets the lengths&rsquo; list is part of the body&mdash;and that is the value
 that we want returned by the function as a whole.  To do this, we
 enclose the <code class="code">while</code> loop within a <code class="code">let</code> expression, and
 arrange that the last element of the <code class="code">let</code> expression contains
-the value of the lengths&rsquo; list.  (See <a class="xref" href="Incrementing-Example.html">Loop
+the value of the lengths&rsquo; list.  (See <a class="xref" href="Zeng-Liang-ShiLi.html">Loop
 Example with an Incrementing Counter</a>.)
 </p>
 <a class="index-entry-id" id="index-lengths_002dlist_002dmany_002dfiles"></a>

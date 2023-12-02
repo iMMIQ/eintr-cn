@@ -7028,43 +7028,28 @@ Emacs Lisp 有两种主要的方式来使一个表达式或一系列表达式被
 
 通过评估 @code{while} 的返回值是 true-or-false-test 的值。这样做的一个有趣的结果是，如果 @code{while} 循环评估成功且没有错误，它将始终返回 @code{nil} 或 false，无论它循环了1次还是100次，甚至一次都没有循环。成功评估的 @code{while} 表达式永远不返回真值！这意味着 @code{while} 总是被评估为其副作用，也就是评估循环体内表达式的后果。这是有道理的。人们追求的不仅仅是循环的行为，更是循环体内表达式反复评估时产生的后果。
 
-@node Loop Example
-@subsection A @code{while} Loop and a List
+@node 循环示例
+@subsection 使用 @code{while} 循环和列表
 
-A common way to control a @code{while} loop is to test whether a list
-has any elements.  If it does, the loop is repeated; but if it does not,
-the repetition is ended.  Since this is an important technique, we will
-create a short example to illustrate it.
+控制 @code{while} 循环的常见方法是测试列表是否包含任何元素。如果包含元素，则循环将继续；但如果不包含元素，则循环结束。由于这是一种重要的技术，我们将创建一个简短的示例来说明它。
 
-A simple way to test whether a list has elements is to evaluate the
-list: if it has no elements, it is an empty list and will return the
-empty list, @code{()}, which is a synonym for @code{nil} or false.  On
-the other hand, a list with elements will return those elements when it
-is evaluated.  Since Emacs Lisp considers as true any value that is not
-@code{nil}, a list that returns elements will test true in a
-@code{while} loop.
+测试列表是否包含元素的一种简单方法是评估列表：如果没有元素，它是一个空列表，将返回空列表 @code{()}，这是 @code{nil} 或 false 的同义词。另一方面，具有元素的列表在评估时将返回这些元素。由于Emacs Lisp认为任何非 @code{nil} 的值都为真，因此返回元素的列表在 @code{while} 循环中将测试为真。
 
 @need 1200
-For example, you can set the variable @code{empty-list} to @code{nil} by
-evaluating the following @code{setq} expression:
+例如，您可以通过评估以下 @code{setq} 表达式将变量 @code{empty-list} 设置为 @code{nil}：
 
 @smallexample
 (setq empty-list ())
 @end smallexample
 
 @noindent
-After evaluating the @code{setq} expression, you can evaluate the
-variable @code{empty-list} in the usual way, by placing the cursor after
-the symbol and typing @kbd{C-x C-e}; @code{nil} will appear in your
-echo area:
+在评估了 @code{setq} 表达式之后，您可以以通常的方式评估变量 @code{empty-list}，即将光标放在符号后面，然后键入 @kbd{C-x C-e}；在您的回显区域中将显示 @code{nil}：
 
 @smallexample
 empty-list
 @end smallexample
 
-On the other hand, if you set a variable to be a list with elements, the
-list will appear when you evaluate the variable, as you can see by
-evaluating the following two expressions:
+另一方面，如果将变量设置为具有元素的列表，则在评估变量时将显示该列表，如通过评估以下两个表达式所示：
 
 @smallexample
 @group
@@ -7074,9 +7059,7 @@ animals
 @end group
 @end smallexample
 
-Thus, to create a @code{while} loop that tests whether there are any
-items in the list @code{animals}, the first part of the loop will be
-written like this:
+因此，要创建一个 @code{while} 循环，测试列表 @code{animals} 中是否有任何项，循环的第一部分将被编写为：
 
 @smallexample
 @group
@@ -7086,39 +7069,20 @@ written like this:
 @end smallexample
 
 @noindent
-When the @code{while} tests its first argument, the variable
-@code{animals} is evaluated.  It returns a list.  So long as the list
-has elements, the @code{while} considers the results of the test to be
-true; but when the list is empty, it considers the results of the test
-to be false.
+当 @code{while} 测试其第一个参数时，变量 @code{animals} 被评估。它返回一个列表。只要列表具有元素，@code{while} 将认为测试的结果为真；但当列表为空时，它将认为测试的结果为假。
 
-To prevent the @code{while} loop from running forever, some mechanism
-needs to be provided to empty the list eventually.  An oft-used
-technique is to have one of the subsequent forms in the @code{while}
-expression set the value of the list to be the @sc{cdr} of the list.
-Each time the @code{cdr} function is evaluated, the list will be made
-shorter, until eventually only the empty list will be left.  At this
-point, the test of the @code{while} loop will return false, and the
-arguments to the @code{while} will no longer be evaluated.
+为防止 @code{while} 循环无限运行，需要提供某种机制以最终清空列表。一个常用的技术是在 @code{while} 表达式的后续形式中之一将列表的值设置为列表的 @sc{cdr}。每次评估 @code{cdr} 函数时，列表都会变得更短，直到最终只剩下空列表。此时，@code{while} 循环的测试将返回假，@code{while} 的参数将不再被评估。
 
-For example, the list of animals bound to the variable @code{animals}
-can be set to be the @sc{cdr} of the original list with the
-following expression:
+例如，将绑定到变量 @code{animals} 的动物列表可以通过以下表达式设置为原始列表的 @sc{cdr}：
 
 @smallexample
 (setq animals (cdr animals))
 @end smallexample
 
 @noindent
-If you have evaluated the previous expressions and then evaluate this
-expression, you will see @code{(giraffe lion tiger)} appear in the echo
-area.  If you evaluate the expression again, @code{(lion tiger)} will
-appear in the echo area.  If you evaluate it again and yet again,
-@code{(tiger)} appears and then the empty list, shown by @code{nil}.
+如果您已经评估了前面的表达式，然后评估此表达式，您将在回显区域中看到 @code{(giraffe lion tiger)}。如果再次评估表达式，将显示 @code{(lion tiger)}。如果再次评估它，@code{(tiger)} 将出现，然后是空列表，由 @code{nil} 表示。
 
-A template for a @code{while} loop that uses the @code{cdr} function
-repeatedly to cause the true-or-false-test eventually to test false
-looks like this:
+使用 @code{cdr} 反复使真或假测试最终测试为假的 @code{while} 循环的模板如下：
 
 @smallexample
 @group
@@ -7128,55 +7092,32 @@ looks like this:
 @end group
 @end smallexample
 
-This test and use of @code{cdr} can be put together in a function that
-goes through a list and prints each element of the list on a line of its
-own.
+这个测试和使用 @code{cdr} 的功能可以放在一起，形成一个函数，该函数遍历列表并在各自的行上打印列表的每个元素。
 
 @node print-elements-of-list
-@subsection An Example: @code{print-elements-of-list}
+@subsection 示例：@code{print-elements-of-list} 函数
 @findex print-elements-of-list
 
-The @code{print-elements-of-list} function illustrates a @code{while}
-loop with a list.
+@code{print-elements-of-list} 函数演示了使用列表的 @code{while} 循环。
 
-@cindex @file{*scratch*} buffer
-The function requires several lines for its output.  If you are
-reading this in a recent instance of GNU Emacs, you can evaluate the
-following expression inside of Info, as usual.
+@cindex @file{*scratch*} 缓冲区
+该函数需要多行输出。如果您正在使用最近版本的 GNU Emacs 阅读此文档，您可以像往常一样在 Info 中评估以下表达式。
 
-If you are using an earlier version of Emacs, you need to copy the
-necessary expressions to your @file{*scratch*} buffer and evaluate
-them there.  This is because the echo area had only one line in the
-earlier versions.
+如果您使用较早版本的 Emacs，则需要将必要的表达式复制到 @file{*scratch*} 缓冲区并在那里进行评估。这是因为早期版本的回显区只有一行。
 
-You can copy the expressions by marking the beginning of the region
-with @kbd{C-@key{SPC}} (@code{set-mark-command}), moving the cursor to
-the end of the region and then copying the region using @kbd{M-w}
-(@code{kill-ring-save}, which calls @code{copy-region-as-kill} and
-then provides visual feedback).  In the @file{*scratch*}
-buffer, you can yank the expressions back by typing @kbd{C-y}
-(@code{yank}).
+您可以通过使用 @kbd{C-@key{SPC}}（@code{set-mark-command}）标记区域的开头，将光标移动到区域的末尾，然后使用 @kbd{M-w}（@code{kill-ring-save}，它调用 @code{copy-region-as-kill} 并提供视觉反馈）来复制区域。在 @file{*scratch*} 缓冲区中，您可以通过键入 @kbd{C-y}（@code{yank}）将表达式还原。
 
-After you have copied the expressions to the @file{*scratch*} buffer,
-evaluate each expression in turn.  Be sure to evaluate the last
-expression, @code{(print-elements-of-list animals)}, by typing
-@kbd{C-u C-x C-e}, that is, by giving an argument to
-@code{eval-last-sexp}.  This will cause the result of the evaluation
-to be printed in the @file{*scratch*} buffer instead of being printed
-in the echo area.  (Otherwise you will see something like this in your
-echo area: @code{^Jgazelle^J^Jgiraffe^J^Jlion^J^Jtiger^Jnil}, in which
-each @samp{^J} stands for a newline.)
+在将表达式复制到 @file{*scratch*} 缓冲区后，逐个评估每个表达式。确保通过键入 @kbd{C-u C-x C-e} 评估最后一个表达式 @code{(print-elements-of-list animals)}，即通过给 @code{eval-last-sexp} 提供参数。这将导致评估的结果在 @file{*scratch*} 缓冲区中打印，而不是在回显区中打印（否则您将在回显区中看到类似于这样的内容：@code{^Jgazelle^J^Jgiraffe^J^Jlion^J^Jtiger^Jnil}，其中每个 @samp{^J} 代表一个换行符）。
 
 @need 1500
-You can evaluate these expressions directly in the Info buffer, and
-the echo area will grow to show the results.
+您可以直接在 Info 缓冲区中评估这些表达式，回显区将增大以显示结果。
 
 @smallexample
 @group
 (setq animals '(gazelle giraffe lion tiger))
 
 (defun print-elements-of-list (list)
-  "Print each element of LIST on a line of its own."
+  "逐行打印 LIST 的每个元素。"
   (while list
     (print (car list))
     (setq list (cdr list))))
@@ -7187,8 +7128,7 @@ the echo area will grow to show the results.
 
 @need 1200
 @noindent
-When you evaluate the three expressions in sequence, you will see
-this:
+当您按顺序评估这三个表达式时，将看到以下结果：
 
 @smallexample
 @group
@@ -7203,41 +7143,22 @@ nil
 @end group
 @end smallexample
 
-Each element of the list is printed on a line of its own (that is what
-the function @code{print} does) and then the value returned by the
-function is printed.  Since the last expression in the function is the
-@code{while} loop, and since @code{while} loops always return
-@code{nil}, a @code{nil} is printed after the last element of the list.
+列表的每个元素都打印在自己的一行上（这是函数 @code{print} 的作用），然后打印函数的返回值。由于函数中的最后一个表达式是 @code{while} 循环，而且由于 @code{while} 循环总是返回 @code{nil}，因此在列表的最后一个元素后打印了一个 @code{nil}。
 
-@node Incrementing Loop
-@subsection A Loop with an Incrementing Counter
+@node 增量循环
+@subsection 具有增量计数器的循环
 
-A loop is not useful unless it stops when it ought.  Besides
-controlling a loop with a list, a common way of stopping a loop is to
-write the first argument as a test that returns false when the correct
-number of repetitions are complete.  This means that the loop must
-have a counter---an expression that counts how many times the loop
-repeats itself.
+循环如果没有在应该停止的时候停止，就毫无用处。除了使用列表控制循环外，另一种常见的停止循环的方式是将第一个参数写为一个测试，当正确的重复次数完成时返回false。这意味着循环必须有一个计数器，即一个表达式，用于计算循环重复的次数。
 
 @ifnottex
-@node Incrementing Loop Details
-@unnumberedsubsec Details of an Incrementing Loop
+@node 增量循环细节
+@unnumberedsubsec 增量循环的细节
 @end ifnottex
 
-The test for a loop with an incrementing counter can be an expression
-such as @code{(< count desired-number)} which returns @code{t} for
-true if the value of @code{count} is less than the
-@code{desired-number} of repetitions and @code{nil} for false if the
-value of @code{count} is equal to or is greater than the
-@code{desired-number}.  The expression that increments the count can
-be a simple @code{setq} such as @code{(setq count (1+ count))}, where
-@code{1+} is a built-in function in Emacs Lisp that adds 1 to its
-argument.  (The expression @w{@code{(1+ count)}} has the same result
-as @w{@code{(+ count 1)}}, but is easier for a human to read.)
+具有增量计数器的循环的测试可以是诸如 @code{(< count desired-number)} 的表达式，如果 @code{count} 的值小于 @code{desired-number}，则返回 @code{t} 为true，如果 @code{count} 的值等于或大于 @code{desired-number}，则返回 @code{nil} 为false。增加计数的表达式可以是一个简单的 @code{setq}，例如 @code{(setq count (1+ count))}，其中 @code{1+} 是Emacs Lisp中的内置函数，将1添加到其参数。 (表达式 @w{@code{(1+ count)}} 的结果与 @w{@code{(+ count 1)}} 相同，但对于人类来说更容易阅读。)
 
 @need 1250
-The template for a @code{while} loop controlled by an incrementing
-counter looks like this:
+由增量计数器控制的 @code{while} 循环的模板如下：
 
 @smallexample
 @group
@@ -7249,24 +7170,21 @@ counter looks like this:
 @end smallexample
 
 @noindent
-Note that you need to set the initial value of @code{count}; usually it
-is set to 1.
+请注意，您需要设置 @code{count} 的初始值；通常将其设置为1。
 
 @menu
-* Incrementing Example::        Counting pebbles in a triangle.
-* Inc Example parts::           The parts of the function definition.
-* Inc Example altogether::      Putting the function definition together.
+* 增量示例::        计算三角形中的鹅卵石。
+* 增量示例部分::   函数定义的各个部分。
+* 增量示例完整::   将函数定义组合在一起。
 @end menu
 
-@node Incrementing Example
-@unnumberedsubsubsec  Example with incrementing counter
+@node 增量示例
+@unnumberedsubsubsec  具有增量计数器的示例
 
-Suppose you are playing on the beach and decide to make a triangle of
-pebbles, putting one pebble in the first row, two in the second row,
-three in the third row and so on, like this:
+假设您正在沙滩上玩耍，决定做一个鹅卵石三角形，第一排放一个鹅卵石，第二排放两个，第三排放三个，依此类推，如下所示：
 
 @sp 1
-@c pebble diagram
+@c 鹅卵石图示
 @ifnottex
 @smallexample
 @group
@@ -7290,72 +7208,30 @@ three in the third row and so on, like this:
 @sp 1
 
 @noindent
-(About 2500 years ago, Pythagoras and others developed the beginnings of
-number theory by considering questions such as this.)
+(大约2500年前，毕达哥拉斯等人通过考虑这类问题发展了数论的开端。)
 
-Suppose you want to know how many pebbles you will need to make a
-triangle with 7 rows?
+假设您想知道要制作一个有7排的三角形需要多少鹅卵石？
 
-Clearly, what you need to do is add up the numbers from 1 to 7.  There
-are two ways to do this; start with the smallest number, one, and add up
-the list in sequence, 1, 2, 3, 4 and so on; or start with the largest
-number and add the list going down: 7, 6, 5, 4 and so on.  Because both
-mechanisms illustrate common ways of writing @code{while} loops, we will
-create two examples, one counting up and the other counting down.  In
-this first example, we will start with 1 and add 2, 3, 4 and so on.
+显然，您需要做的是将从1到7的数字相加。有两种方法可以做到这一点：从最小的数字开始，即1，按顺序相加列表中的数字1、2、3、4等；或者从最大的数字开始，按列表向下相加：7、6、5、4等。由于这两种机制都说明了编写 @code{while} 循环的常见方法，我们将创建两个示例，一个是递增计数，另一个是递减计数。在这个第一个示例中，我们将从1开始，然后添加2、3、4等。
 
-If you are just adding up a short list of numbers, the easiest way to do
-it is to add up all the numbers at once.  However, if you do not know
-ahead of time how many numbers your list will have, or if you want to be
-prepared for a very long list, then you need to design your addition so
-that what you do is repeat a simple process many times instead of doing
-a more complex process once.
+如果您只是在一个短列表中相加一些数字，最简单的方法是一次将所有数字相加。但是，如果您不知道列表将有多少数字，或者如果您希望为一个非常长的列表做好准备，那么您需要设计加法，以便您重复一个简单的过程多次，而不是一次执行更复杂的过程。
 
-For example, instead of adding up all the pebbles all at once, what you
-can do is add the number of pebbles in the first row, 1, to the number
-in the second row, 2, and then add the total of those two rows to the
-third row, 3.  Then you can add the number in the fourth row, 4, to the
-total of the first three rows; and so on.
+例如，与其一次性将所有鹅卵石相加，不如将第一排的鹅卵石数，即1，加到第二排的鹅卵石数2中，然后将这两排的总数加到第三排的鹅卵石数3中。然后，将第四排的鹅卵石数4加到前三排的总数中，依此类推。
 
-The critical characteristic of the process is that each repetitive
-action is simple.  In this case, at each step we add only two numbers,
-the number of pebbles in the row and the total already found.  This
-process of adding two numbers is repeated again and again until the last
-row has been added to the total of all the preceding rows.  In a more
-complex loop the repetitive action might not be so simple, but it will
-be simpler than doing everything all at once.
+这个过程的关键特征是每个重复的动作都很简单。在这种情况下，在每一步中，我们只添加两个数字，即排中的鹅卵石数和已找到的总数。这个添加两个数字的过程一遍又一遍地重复，直到最后一排的鹅卵石被添加到所有前排的总数中。在更复杂的循环中，重复的动作可能不那么简单，但它将比一次性做所有事情更简单。
 
-@node Inc Example parts
-@unnumberedsubsubsec The parts of the function definition
+@node 函数定义的组成部分
+@unnumberedsubsubsec 函数定义的各部分
 
-The preceding analysis gives us the bones of our function definition:
-first, we will need a variable that we can call @code{total} that will
-be the total number of pebbles.  This will be the value returned by
-the function.
+前面的分析为我们的函数定义提供了骨架：首先，我们需要一个变量，我们可以称之为 @code{total}，它将是函数返回的总的鹅卵石数量。这将是函数返回的值。
 
-Second, we know that the function will require an argument: this
-argument will be the total number of rows in the triangle.  It can be
-called @code{number-of-rows}.
+其次，我们知道函数将需要一个参数：这个参数将是三角形中的总行数。它可以被称为 @code{number-of-rows}。
 
-Finally, we need a variable to use as a counter.  We could call this
-variable @code{counter}, but a better name is @code{row-number}.  That
-is because what the counter does in this function is count rows, and a
-program should be written to be as understandable as possible.
+最后，我们需要一个作为计数器的变量。我们可以称这个变量为 @code{counter}，但更好的名字是 @code{row-number}。这是因为在这个函数中，计数器的作用是计算行数，而程序应该尽可能易于理解。
 
-When the Lisp interpreter first starts evaluating the expressions in the
-function, the value of @code{total} should be set to zero, since we have
-not added anything to it.  Then the function should add the number of
-pebbles in the first row to the total, and then add the number of
-pebbles in the second to the total, and then add the number of
-pebbles in the third row to the total, and so on, until there are no
-more rows left to add.
+当Lisp解释器首次开始评估函数中的表达式时，@code{total}的值应该设置为零，因为我们还没有向其中添加任何东西。然后，函数应该将第一行中的鹅卵石数量添加到总数中，然后将第二行的数量添加到总数中，然后将第三行的数量添加到总数中，依此类推，直到没有更多的行可以添加。
 
-Both @code{total} and @code{row-number} are used only inside the
-function, so they can be declared as local variables with @code{let}
-and given initial values.  Clearly, the initial value for @code{total}
-should be 0.  The initial value of @code{row-number} should be 1,
-since we start with the first row.  This means that the @code{let}
-statement will look like this:
+@code{total}和@code{row-number}都仅在函数内部使用，因此它们可以被声明为局部变量，并用@code{let}给予初始值。显然，@code{total}的初始值应为0。@code{row-number}的初始值应为1，因为我们从第一行开始。这意味着@code{let}语句将如下所示：
 
 @smallexample
 @group
@@ -7365,55 +7241,29 @@ statement will look like this:
 @end group
 @end smallexample
 
-After the internal variables are declared and bound to their initial
-values, we can begin the @code{while} loop.  The expression that serves
-as the test should return a value of @code{t} for true so long as the
-@code{row-number} is less than or equal to the @code{number-of-rows}.
-(If the expression tests true only so long as the row number is less
-than the number of rows in the triangle, the last row will never be
-added to the total; hence the row number has to be either less than or
-equal to the number of rows.)
+在内部变量被声明并绑定到它们的初始值之后，我们可以开始@code{while}循环。作为测试的表达式应该在@code{row-number}小于或等于@code{number-of-rows}时返回true。如果表达式仅在行号小于三角形行数的情况下为true，最后一行将永远不会添加到总数中；因此行号必须小于或等于行数。
 
 @need 1500
-@findex <= @r{(less than or equal)}
-Lisp provides the @code{<=} function that returns true if the value of
-its first argument is less than or equal to the value of its second
-argument and false otherwise.  So the expression that the @code{while}
-will evaluate as its test should look like this:
+@findex <= @r{(小于或等于)}
+Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其第二个参数的值，则返回true，否则返回false。因此，@code{while}将评估为测试的表达式应如下所示：
 
 @smallexample
 (<= row-number number-of-rows)
 @end smallexample
 
-The total number of pebbles can be found by repeatedly adding the number
-of pebbles in a row to the total already found.  Since the number of
-pebbles in the row is equal to the row number, the total can be found by
-adding the row number to the total.  (Clearly, in a more complex
-situation, the number of pebbles in the row might be related to the row
-number in a more complicated way; if this were the case, the row number
-would be replaced by the appropriate expression.)
+鹅卵石的总数量可以通过重复将一行中的鹅卵石数量添加到已找到的总数中来找到。由于一行中的鹅卵石数量等于行号，因此可以通过将行号添加到总数中来找到总数。
 
 @smallexample
 (setq total (+ total row-number))
 @end smallexample
 
 @noindent
-What this does is set the new value of @code{total} to be equal to the
-sum of adding the number of pebbles in the row to the previous total.
+这做的是将@code{total}的新值设置为将鹅卵石数量添加到先前总数的和。
 
-After setting the value of @code{total}, the conditions need to be
-established for the next repetition of the loop, if there is one.  This
-is done by incrementing the value of the @code{row-number} variable,
-which serves as a counter.  After the @code{row-number} variable has
-been incremented, the true-or-false-test at the beginning of the
-@code{while} loop tests whether its value is still less than or equal to
-the value of the @code{number-of-rows} and if it is, adds the new value
-of the @code{row-number} variable to the @code{total} of the previous
-repetition of the loop.
+在设置了@code{total}的值之后，需要建立下一次循环的条件，如果有的话。这是通过增加@code{row-number}变量的值来完成的，它充当计数器。在增加@code{row-number}变量之后，@code{while}循环开头的true-or-false测试会测试其值是否仍然小于或等于@code{number-of-rows}的值，如果是，将新值添加到先前循环的@code{total}中。
 
 @need 1200
-The built-in Emacs Lisp function @code{1+} adds 1 to a number, so the
-@code{row-number} variable can be incremented with this expression:
+内置的Emacs Lisp函数@code{1+}将1添加到一个数字，因此可以使用以下表达式递增@code{row-number}变量：
 
 @smallexample
 (setq row-number (1+ row-number))
@@ -7421,101 +7271,77 @@ The built-in Emacs Lisp function @code{1+} adds 1 to a number, so the
 
 @node Inc Example altogether
 @unnumberedsubsubsec Putting the function definition together
-
-We have created the parts for the function definition; now we need to
-put them together.
-
 @need 800
-First, the contents of the @code{while} expression:
+
+我们已经创建了函数定义的各个部分；现在需要将它们组合起来。
+
+首先，@code{while} 表达式的内容：
 
 @smallexample
 @group
-(while (<= row-number number-of-rows)   ; @r{true-or-false-test}
-  (setq total (+ total row-number))
-  (setq row-number (1+ row-number)))    ; @r{incrementer}
+(while (<= 行号 总行数)   ; @r{真或假的测试}
+  (setq 总和 (+ 总和 行号))
+  (setq 行号 (1+ 行号)))    ; @r{增量器}
 @end group
 @end smallexample
 
-Along with the @code{let} expression varlist, this very nearly
-completes the body of the function definition.  However, it requires
-one final element, the need for which is somewhat subtle.
+连同 @code{let} 表达式的变量列表，这几乎完成了函数定义的主体。但是，还需要一个微妙的最后要素。
 
-The final touch is to place the variable @code{total} on a line by
-itself after the @code{while} expression.  Otherwise, the value returned
-by the whole function is the value of the last expression that is
-evaluated in the body of the @code{let}, and this is the value
-returned by the @code{while}, which is always @code{nil}.
+最后的一步是将变量 @code{总和} 单独放在 @code{while} 表达式之后的一行上。否则，整个函数返回的值将是在 @code{let} 主体中最后一个表达式的值，而这是由 @code{while} 评估得到的，其值始终为 @code{nil}。
 
-This may not be evident at first sight.  It almost looks as if the
-incrementing expression is the last expression of the whole function.
-But that expression is part of the body of the @code{while}; it is the
-last element of the list that starts with the symbol @code{while}.
-Moreover, the whole of the @code{while} loop is a list within the body
-of the @code{let}.
+这一点乍一看可能不明显。它几乎看起来好像增量表达式是整个函数的最后一个表达式。但是该表达式是 @code{while} 主体的一部分；它是以符号 @code{while} 开始的列表的最后一个元素。此外，整个 @code{while} 循环是 @code{let} 主体内的列表。
 
 @need 1250
-In outline, the function will look like this:
+
+概述来说，函数将如下所示：
 
 @smallexample
 @group
-(defun @var{name-of-function} (@var{argument-list})
-  "@var{documentation}@dots{}"
-  (let (@var{varlist})
-    (while (@var{true-or-false-test})
-      @var{body-of-while}@dots{} )
-    @dots{} ))                    ; @r{Need final expression here.}
+(defun @var{函数名} (@var{参数列表})
+  "@var{文档}@dots{}"
+  (let (@var{变量列表})
+    (while (@var{真或假的测试})
+      @var{while的主体}@dots{} )
+    @dots{} ))                    ; @r{这里需要最后的表达式。}
 @end group
 @end smallexample
 
-The result of evaluating the @code{let} is what is going to be returned
-by the @code{defun} since the @code{let} is not embedded within any
-containing list, except for the @code{defun} as a whole.  However, if
-the @code{while} is the last element of the @code{let} expression, the
-function will always return @code{nil}.  This is not what we want!
-Instead, what we want is the value of the variable @code{total}.  This
-is returned by simply placing the symbol as the last element of the list
-starting with @code{let}.  It gets evaluated after the preceding
-elements of the list are evaluated, which means it gets evaluated after
-it has been assigned the correct value for the total.
+评估 @code{let} 的结果将是由 @code{defun} 返回的结果，因为 @code{let} 不嵌套在任何包含列表中，除了整个 @code{defun}。然而，如果 @code{while} 是 @code{let} 表达式的最后一个元素，函数将始终返回 @code{nil}。这不是我们想要的！相反，我们想要的是变量 @code{总和} 的值。通过简单地将该符号作为以 @code{let} 开始的列表的最后一个元素放置在列表中，它将在之前的元素被评估之后被评估，这意味着在为总和赋予正确值之后才被评估。
 
-It may be easier to see this by printing the list starting with
-@code{let} all on one line.  This format makes it evident that the
-@var{varlist} and @code{while} expressions are the second and third
-elements of the list starting with @code{let}, and the @code{total} is
-the last element:
+通过将以 @code{let} 开始的列表打印在一行上，可能更容易看到这一点。这种格式使得显而易见，@var{变量列表} 和 @code{while} 表达式是以 @code{let} 开始的列表的第二和第三个元素，而 @code{总和} 是最后一个元素：
 
 @smallexample
 @group
-(let (@var{varlist}) (while (@var{true-or-false-test}) @var{body-of-while}@dots{} ) total)
+(let (@var{变量列表}) (while (@var{真或假的测试}) @var{while的主体}@dots{} ) 总和)
 @end group
 @end smallexample
 
 @need 1200
-Putting everything together, the @code{triangle} function definition
-looks like this:
+
+将所有内容放在一起，@code{triangle} 函数定义如下：
 
 @smallexample
 @group
-(defun triangle (number-of-rows)    ; @r{Version with}
-                                    ; @r{  incrementing counter.}
-  "Add up the number of pebbles in a triangle.
-The first row has one pebble, the second row two pebbles,
-the third row three pebbles, and so on.
-The argument is NUMBER-OF-ROWS."
+(defun triangle (总行数)    ; @r{带有}
+                                    ; @r{  增量计数器的版本。}
+  "将三角形中的鹅卵石数量相加。
+第一行有一个鹅卵石，第二行有两个鹅卵石，
+第三行有三个鹅卵石，依此类推。
+参数为总行数。"
 @end group
 @group
-  (let ((total 0)
-        (row-number 1))
-    (while (<= row-number number-of-rows)
-      (setq total (+ total row-number))
-      (setq row-number (1+ row-number)))
-    total))
+  (let ((总和 0)
+        (行号 1))
+    (while (<= 行号 总行数)
+      (setq 总和 (+ 总和 行号))
+      (setq 行号 (1+ 行号)))
+    总和))
 @end group
 @end smallexample
 
 @need 1200
-After you have installed @code{triangle} by evaluating the function, you
-can try it out.  Here are two examples:
+
+安装 @code{triangle} 后，您可以尝试它。以下是两个示例：
 
 @smallexample
 @group
@@ -7526,91 +7352,52 @@ can try it out.  Here are two examples:
 @end smallexample
 
 @noindent
-The sum of the first four numbers is 10 and the sum of the first seven
-numbers is 28.
+前四个数字的总和是10，前七个数字的总和是28。
 
-@node Decrementing Loop
-@subsection Loop with a Decrementing Counter
+@node 递减循环
+@subsection 带有递减计数器的循环
 
-Another common way to write a @code{while} loop is to write the test
-so that it determines whether a counter is greater than zero.  So long
-as the counter is greater than zero, the loop is repeated.  But when
-the counter is equal to or less than zero, the loop is stopped.  For
-this to work, the counter has to start out greater than zero and then
-be made smaller and smaller by a form that is evaluated
-repeatedly.
+另一种常见的编写 @code{while} 循环的方式是编写测试，使其确定计数器是否大于零。只要计数器大于零，循环就会重复。但当计数器等于或小于零时，循环停止。为使此方法有效，计数器必须从大于零开始，然后通过一个可重复评估的形式逐渐减小。
 
-The test will be an expression such as @code{(> counter 0)} which
-returns @code{t} for true if the value of @code{counter} is greater
-than zero, and @code{nil} for false if the value of @code{counter} is
-equal to or less than zero.  The expression that makes the number
-smaller and smaller can be a simple @code{setq} such as @code{(setq
-counter (1- counter))}, where @code{1-} is a built-in function in
-Emacs Lisp that subtracts 1 from its argument.
+测试将是诸如 @code{(> counter 0)} 的表达式，如果 @code{counter} 的值大于零，则返回 @code{t} 为 true，如果 @code{counter} 的值等于或小于零，则返回 @code{nil} 为 false。使数字逐渐减小的表达式可以是一个简单的 @code{setq}，例如 @code{(setq counter (1- counter))}，其中 @code{1-} 是 Emacs Lisp 中减去其参数的内置函数。
 
 @need 1250
-The template for a decrementing @code{while} loop looks like this:
+递减 @code{while} 循环的模板如下：
 
 @smallexample
 @group
-(while (> counter 0)                    ; @r{true-or-false-test}
+(while (> counter 0)                    ; @r{真或假测试}
   @var{body}@dots{}
-  (setq counter (1- counter)))          ; @r{decrementer}
+  (setq counter (1- counter)))          ; @r{递减器}
 @end group
 @end smallexample
 
 @menu
-* Decrementing Example::        More pebbles on the beach.
-* Dec Example parts::           The parts of the function definition.
-* Dec Example altogether::      Putting the function definition together.
+* 递减示例::        海滩上更多的小石子。
+* 递减示例部分::    函数定义的各个部分。
+* 整体递减示例::    将函数定义组合在一起。
 @end menu
 
-@node Decrementing Example
-@unnumberedsubsubsec Example with decrementing counter
+@node 递减示例
+@unnumberedsubsubsec 带有递减计数器的示例
 
-To illustrate a loop with a decrementing counter, we will rewrite the
-@code{triangle} function so the counter decreases to zero.
+为了说明带有递减计数器的循环，我们将重写 @code{triangle} 函数，使计数器递减到零。
 
-This is the reverse of the earlier version of the function.  In this
-case, to find out how many pebbles are needed to make a triangle with
-3 rows, add the number of pebbles in the third row, 3, to the number
-in the preceding row, 2, and then add the total of those two rows to
-the row that precedes them, which is 1.
+这是该函数早期版本的反转。在这种情况下，要找出构成 3 行三角形所需的小石子数量，将第三行的小石子数量（3）与前一行的数量（2）相加，然后将这两行的总和添加到它们之前的行，即第一行（1）。
 
-Likewise, to find the number of pebbles in a triangle with 7 rows, add
-the number of pebbles in the seventh row, 7, to the number in the
-preceding row, which is 6, and then add the total of those two rows to
-the row that precedes them, which is 5, and so on.  As in the previous
-example, each addition only involves adding two numbers, the total of
-the rows already added up and the number of pebbles in the row that is
-being added to the total.  This process of adding two numbers is
-repeated again and again until there are no more pebbles to add.
+同样，要找出具有 7 行的三角形中的小石子数量，将第七行的小石子数量（7）与前一行的数量（6）相加，然后将这两行的总和添加到它们之前的行，即第五行（5），依此类推。与前一个示例一样，每次添加仅涉及两个数字的相加，已经添加的行的总和以及正在添加到总和的行的小石子数量。这个加法的过程一遍又一遍地重复，直到没有更多的小石子可添加。
 
-We know how many pebbles to start with: the number of pebbles in the
-last row is equal to the number of rows.  If the triangle has seven
-rows, the number of pebbles in the last row is 7.  Likewise, we know how
-many pebbles are in the preceding row: it is one less than the number in
-the row.
+我们知道从哪里开始有多少小石子：最后一行中的小石子数量等于行数。如果三角形有七行，最后一行中的小石子数量为 7。同样，我们知道前一行中有多少小石子：它比该行中的数量少一个。
 
-@node Dec Example parts
-@unnumberedsubsubsec The parts of the function definition
+@node Dec 示例部分
+@unnumberedsubsubsec 函数定义的各部分
 
-We start with three variables: the total number of rows in the
-triangle; the number of pebbles in a row; and the total number of
-pebbles, which is what we want to calculate.  These variables can be
-named @code{number-of-rows}, @code{number-of-pebbles-in-row}, and
-@code{total}, respectively.
+我们从三个变量开始：三角形中的总行数；每行中的小石子数；以及我们想要计算的小石子的总数。这些变量可以分别命名为 @code{number-of-rows}、@code{number-of-pebbles-in-row} 和 @code{total}。
 
-Both @code{total} and @code{number-of-pebbles-in-row} are used only
-inside the function and are declared with @code{let}.  The initial
-value of @code{total} should, of course, be zero.  However, the
-initial value of @code{number-of-pebbles-in-row} should be equal to
-the number of rows in the triangle, since the addition will start with
-the longest row.
+@code{total} 和 @code{number-of-pebbles-in-row} 都仅在函数内部使用，并使用 @code{let} 进行声明。显然，@code{total} 的初始值应为零。然而，@code{number-of-pebbles-in-row} 的初始值应等于三角形中的行数，因为加法将从最长的行开始。
 
 @need 1250
-This means that the beginning of the @code{let} expression will look
-like this:
+这意味着 @code{let} 表达式的开头将如下所示：
 
 @smallexample
 @group
@@ -7620,24 +7407,16 @@ like this:
 @end group
 @end smallexample
 
-The total number of pebbles can be found by repeatedly adding the number
-of pebbles in a row to the total already found, that is, by repeatedly
-evaluating the following expression:
+小石子的总数可以通过重复将每行的小石子数加到已找到的总数中来找到，即通过反复评估以下表达式：
 
 @smallexample
 (setq total (+ total number-of-pebbles-in-row))
 @end smallexample
 
 @noindent
-After the @code{number-of-pebbles-in-row} is added to the @code{total},
-the @code{number-of-pebbles-in-row} should be decremented by one, since
-the next time the loop repeats, the preceding row will be
-added to the total.
+在将 @code{number-of-pebbles-in-row} 添加到 @code{total} 后，@code{number-of-pebbles-in-row} 应减一，因为下次循环重复时将添加前一行到总数中。
 
-The number of pebbles in a preceding row is one less than the number of
-pebbles in a row, so the built-in Emacs Lisp function @code{1-} can be
-used to compute the number of pebbles in the preceding row.  This can be
-done with the following expression:
+前一行中的小石子数比当前行中的小石子数少一个，因此可以使用内置的 Emacs Lisp 函数 @code{1-} 来计算前一行中的小石子数。可以使用以下表达式完成：
 
 @smallexample
 @group
@@ -7646,29 +7425,25 @@ done with the following expression:
 @end group
 @end smallexample
 
-Finally, we know that the @code{while} loop should stop making repeated
-additions when there are no pebbles in a row.  So the test for
-the @code{while} loop is simply:
+最后，我们知道 @code{while} 循环应在一行中没有小石子时停止重复添加。因此，@code{while} 循环的测试简单地是：
 
 @smallexample
 (while (> number-of-pebbles-in-row 0)
 @end smallexample
 
-@node Dec Example altogether
-@unnumberedsubsubsec Putting the function definition together
+@node Dec 示例整体
+@unnumberedsubsubsec 将函数定义组合在一起
 
-We can put these expressions together to create a function definition
-that works.  However, on examination, we find that one of the local
-variables is unneeded!
+我们可以将这些表达式组合在一起以创建一个有效的函数定义。然而，在检查时，我们发现其中一个局部变量是不必要的！
 
 @need 1250
-The function definition looks like this:
+函数定义如下：
 
 @smallexample
 @group
-;;; @r{First subtractive version.}
+;;; @r{第一个减法版本。}
 (defun triangle (number-of-rows)
-  "Add up the number of pebbles in a triangle."
+  "将三角形中小石子的数量相加。"
   (let ((total 0)
         (number-of-pebbles-in-row number-of-rows))
     (while (> number-of-pebbles-in-row 0)
@@ -7679,27 +7454,20 @@ The function definition looks like this:
 @end group
 @end smallexample
 
-As written, this function works.
+按照写法，这个函数是有效的。
 
-However, we do not need @code{number-of-pebbles-in-row}.
+然而，我们不需要 @code{number-of-pebbles-in-row}。
 
-@cindex Argument as local variable
-When the @code{triangle} function is evaluated, the symbol
-@code{number-of-rows} will be bound to a number, giving it an initial
-value.  That number can be changed in the body of the function as if
-it were a local variable, without any fear that such a change will
-effect the value of the variable outside of the function.  This is a
-very useful characteristic of Lisp; it means that the variable
-@code{number-of-rows} can be used anywhere in the function where
-@code{number-of-pebbles-in-row} is used.
+@cindex 参数作为局部变量
+当评估 @code{triangle} 函数时，符号 @code{number-of-rows} 将绑定到一个数字，给它一个初始值。该数字可以在函数体内部像局部变量一样更改，而无需担心这样的更改会影响函数外部的变量值。这是 Lisp 的一个非常有用的特性；这意味着变量 @code{number-of-rows} 可以在函数中任何使用 @code{number-of-pebbles-in-row} 的地方使用。
 
 @need 800
-Here is a second version of the function written a bit more cleanly:
+以下是稍微更清晰地编写的函数的第二个版本：
 
 @smallexample
 @group
-(defun triangle (number)                ; @r{Second version.}
-  "Return sum of numbers 1 through NUMBER inclusive."
+(defun triangle (number)                ; @r{第二个版本。}
+  "返回 1 到 NUMBER（包括）的数字的总和。"
   (let ((total 0))
     (while (> number 0)
       (setq total (+ total number))
@@ -7708,21 +7476,17 @@ Here is a second version of the function written a bit more cleanly:
 @end group
 @end smallexample
 
-In brief, a properly written @code{while} loop will consist of three parts:
+简而言之，一个正确编写的 @code{while} 循环将包含三个部分：
 
 @enumerate
 @item
-A test that will return false after the loop has repeated itself the
-correct number of times.
+一个测试，循环重复正确次数后将返回 false。
 
 @item
-An expression the evaluation of which will return the value desired
-after being repeatedly evaluated.
+一个表达式，其评估在重复评估后将返回所需值。
 
 @item
-An expression to change the value passed to the true-or-false-test so
-that the test returns false after the loop has repeated itself the right
-number of times.
+一个表达式，用于更改传递给真假测试的值，以便在循环重复正确次数后测试返回 false。
 @end enumerate
 
 @node dolist dotimes
@@ -7814,8 +7578,7 @@ each expression and type @kbd{C-x C-e}; in each case, you should see
 in the echo area.
 
 For this example, the existing @code{reverse} function is obviously best.
-The @code{while} loop is just like our first example (@pxref{Loop
-Example, , A @code{while} Loop and a List}).  The @code{while} first
+The @code{while} loop is just like our first example (@pxref{循环示例, , A @code{while} Loop and a List}).  The @code{while} first
 checks whether the list has elements; if so, it constructs a new list
 by adding the first element of the list to the existing list (which in
 the first iteration of the loop is @code{nil}).  Since the second
@@ -9352,7 +9115,7 @@ looks like this:
 @end smallexample
 
 The @code{while} loop is of the decrementing kind.
-(@xref{Decrementing Loop, , A Loop with a Decrementing Counter}.)  It
+(@xref{递减循环, , A Loop with a Decrementing Counter}.)  It
 has a true-or-false-test that tests true so long as the counter (in
 this case, the variable @code{arg}) is greater than zero; and it has a
 decrementer that subtracts 1 from the value of the counter every time
@@ -11784,8 +11547,7 @@ either a @code{while} loop or recursion.
 @end ifnottex
 
 The design using a @code{while} loop is routine.  The argument passed
-to the function is a list of files.  As we saw earlier (@pxref{Loop
-Example}), you can write a @code{while} loop so that the body of the
+to the function is a list of files.  As we saw earlier (@pxref{循环示例}), you can write a @code{while} loop so that the body of the
 loop is evaluated if such a list contains elements, but to exit the
 loop if the list is empty.  For this design to work, the body of the
 loop must contain an expression that shortens the list each time the
@@ -11812,7 +11574,7 @@ sets the lengths' list is part of the body---and that is the value
 that we want returned by the function as a whole.  To do this, we
 enclose the @code{while} loop within a @code{let} expression, and
 arrange that the last element of the @code{let} expression contains
-the value of the lengths' list.  (@xref{Incrementing Example, , Loop
+the value of the lengths' list.  (@xref{增量示例, , Loop
 Example with an Incrementing Counter}.)
 
 @findex lengths-list-many-files
@@ -12421,7 +12183,7 @@ small gear inside a big gear.
 
 The inner loop counts the number of definitions within the range.  It
 is a simple counting loop of the type we have seen before.
-(@xref{Incrementing Loop, , A loop with an incrementing counter}.)
+(@xref{增量循环, , A loop with an incrementing counter}.)
 The true-or-false test of the loop tests whether the value from the
 @code{sorted-lengths} list is smaller than the current value of the
 top of the range.  If it is, the function increments the counter and
@@ -14809,9 +14571,8 @@ In this chapter, I will walk through a short example of each.
 
 Suppose you have written a function definition that is intended to
 return the sum of the numbers 1 through a given number.  (This is the
-@code{triangle} function discussed earlier.  @xref{Decrementing
-Example, , Example with Decrementing Counter}, for a discussion.)
-@c xref{Decrementing Loop,, Loop with a Decrementing Counter}, for a discussion.)
+@code{triangle} function discussed earlier.  @xref{递减示例, , Example with Decrementing Counter}, for a discussion.)
+@c xref{递减循环,, Loop with a Decrementing Counter}, for a discussion.)
 
 However, your function definition has a bug.  You have mistyped
 @samp{1=} for @samp{1-}.  Here is the broken definition:

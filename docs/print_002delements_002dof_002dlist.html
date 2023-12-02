@@ -39,8 +39,8 @@ ISBN 1-882114-43-4
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="while.html" rel="up" title="while">
-<link href="Incrementing-Loop.html" rel="next" title="Incrementing Loop">
-<link href="Loop-Example.html" rel="prev" title="Loop Example">
+<link href="Zeng-Liang-Xun-Huan-.html" rel="next" title="增量循环">
+<link href="Xun-Huan-ShiLi.html" rel="prev" title="循环示例">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -57,51 +57,30 @@ kbd.key {font-style: normal}
 <div class="subsection-level-extent" id="print_002delements_002dof_002dlist">
 <div class="nav-panel">
 <p>
-Next: <a href="Incrementing-Loop.html" accesskey="n" rel="next">A Loop with an Incrementing Counter</a>, Previous: <a href="Loop-Example.html" accesskey="p" rel="prev">A <code class="code">while</code> Loop and a List</a>, Up: <a href="while.html" accesskey="u" rel="up"><code class="code">while</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Zeng-Liang-Xun-Huan-.html" accesskey="n" rel="next">具有增量计数器的循环</a>, Previous: <a href="Xun-Huan-ShiLi.html" accesskey="p" rel="prev">使用 <code class="code">while</code> 循环和列表</a>, Up: <a href="while.html" accesskey="u" rel="up"><code class="code">while</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="An-Example_003a-print_002delements_002dof_002dlist">11.1.2 An Example: <code class="code">print-elements-of-list</code></h4>
+<h4 class="subsection" id="ShiLi_003aprint_002delements_002dof_002dlist-Han-Shu-">11.1.2 示例：<code class="code">print-elements-of-list</code> 函数</h4>
 <a class="index-entry-id" id="index-print_002delements_002dof_002dlist"></a>
 
-<p>The <code class="code">print-elements-of-list</code> function illustrates a <code class="code">while</code>
-loop with a list.
+<p><code class="code">print-elements-of-list</code> 函数演示了使用列表的 <code class="code">while</code> 循环。
 </p>
-<a class="index-entry-id" id="index-_002ascratch_002a-buffer"></a>
-<p>The function requires several lines for its output.  If you are
-reading this in a recent instance of GNU Emacs, you can evaluate the
-following expression inside of Info, as usual.
+<a class="index-entry-id" id="index-_002ascratch_002a-Huan-Chong-Qu-"></a>
+<p>该函数需要多行输出。如果您正在使用最近版本的 GNU Emacs 阅读此文档，您可以像往常一样在 Info 中评估以下表达式。
 </p>
-<p>If you are using an earlier version of Emacs, you need to copy the
-necessary expressions to your <samp class="file">*scratch*</samp> buffer and evaluate
-them there.  This is because the echo area had only one line in the
-earlier versions.
+<p>如果您使用较早版本的 Emacs，则需要将必要的表达式复制到 <samp class="file">*scratch*</samp> 缓冲区并在那里进行评估。这是因为早期版本的回显区只有一行。
 </p>
-<p>You can copy the expressions by marking the beginning of the region
-with <kbd class="kbd">C-<kbd class="key">SPC</kbd></kbd> (<code class="code">set-mark-command</code>), moving the cursor to
-the end of the region and then copying the region using <kbd class="kbd">M-w</kbd>
-(<code class="code">kill-ring-save</code>, which calls <code class="code">copy-region-as-kill</code> and
-then provides visual feedback).  In the <samp class="file">*scratch*</samp>
-buffer, you can yank the expressions back by typing <kbd class="kbd">C-y</kbd>
-(<code class="code">yank</code>).
+<p>您可以通过使用 <kbd class="kbd">C-<kbd class="key">SPC</kbd></kbd>（<code class="code">set-mark-command</code>）标记区域的开头，将光标移动到区域的末尾，然后使用 <kbd class="kbd">M-w</kbd>（<code class="code">kill-ring-save</code>，它调用 <code class="code">copy-region-as-kill</code> 并提供视觉反馈）来复制区域。在 <samp class="file">*scratch*</samp> 缓冲区中，您可以通过键入 <kbd class="kbd">C-y</kbd>（<code class="code">yank</code>）将表达式还原。
 </p>
-<p>After you have copied the expressions to the <samp class="file">*scratch*</samp> buffer,
-evaluate each expression in turn.  Be sure to evaluate the last
-expression, <code class="code">(print-elements-of-list animals)</code>, by typing
-<kbd class="kbd">C-u C-x C-e</kbd>, that is, by giving an argument to
-<code class="code">eval-last-sexp</code>.  This will cause the result of the evaluation
-to be printed in the <samp class="file">*scratch*</samp> buffer instead of being printed
-in the echo area.  (Otherwise you will see something like this in your
-echo area: <code class="code">^Jgazelle^J^Jgiraffe^J^Jlion^J^Jtiger^Jnil</code>, in which
-each &lsquo;<samp class="samp">^J</samp>&rsquo; stands for a newline.)
+<p>在将表达式复制到 <samp class="file">*scratch*</samp> 缓冲区后，逐个评估每个表达式。确保通过键入 <kbd class="kbd">C-u C-x C-e</kbd> 评估最后一个表达式 <code class="code">(print-elements-of-list animals)</code>，即通过给 <code class="code">eval-last-sexp</code> 提供参数。这将导致评估的结果在 <samp class="file">*scratch*</samp> 缓冲区中打印，而不是在回显区中打印（否则您将在回显区中看到类似于这样的内容：<code class="code">^Jgazelle^J^Jgiraffe^J^Jlion^J^Jtiger^Jnil</code>，其中每个 &lsquo;<samp class="samp">^J</samp>&rsquo; 代表一个换行符）。
 </p>
-<p>You can evaluate these expressions directly in the Info buffer, and
-the echo area will grow to show the results.
+<p>您可以直接在 Info 缓冲区中评估这些表达式，回显区将增大以显示结果。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
 
 (defun print-elements-of-list (list)
-  &quot;Print each element of LIST on a line of its own.&quot;
+  &quot;逐行打印 LIST 的每个元素。&quot;
   (while list
     (print (car list))
     (setq list (cdr list))))
@@ -109,8 +88,7 @@ the echo area will grow to show the results.
 (print-elements-of-list animals)
 </pre></div></div>
 
-<p>When you evaluate the three expressions in sequence, you will see
-this:
+<p>当您按顺序评估这三个表达式时，将看到以下结果：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">gazelle
@@ -123,17 +101,8 @@ tiger
 nil
 </pre></div></div>
 
-<p>Each element of the list is printed on a line of its own (that is what
-the function <code class="code">print</code> does) and then the value returned by the
-function is printed.  Since the last expression in the function is the
-<code class="code">while</code> loop, and since <code class="code">while</code> loops always return
-<code class="code">nil</code>, a <code class="code">nil</code> is printed after the last element of the list.
+<p>列表的每个元素都打印在自己的一行上（这是函数 <code class="code">print</code> 的作用），然后打印函数的返回值。由于函数中的最后一个表达式是 <code class="code">while</code> 循环，而且由于 <code class="code">while</code> 循环总是返回 <code class="code">nil</code>，因此在列表的最后一个元素后打印了一个 <code class="code">nil</code>。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Incrementing-Loop.html">A Loop with an Incrementing Counter</a>, Previous: <a href="Loop-Example.html">A <code class="code">while</code> Loop and a List</a>, Up: <a href="while.html"><code class="code">while</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

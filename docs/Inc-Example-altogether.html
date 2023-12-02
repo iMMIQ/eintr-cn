@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Incrementing-Loop-Details.html" rel="up" title="Incrementing Loop Details">
-<link href="Inc-Example-parts.html" rel="prev" title="Inc Example parts">
+<link href="Zeng-Liang-Xun-Huan-Xi-Jie-.html" rel="up" title="增量循环细节">
+<link href="Han-Shu-Ding-Yi-De-Zu-Cheng-Bu-Fen-.html" rel="prev" title="函数定义的组成部分">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -55,91 +55,67 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsubsec-level-extent" id="Inc-Example-altogether">
 <div class="nav-panel">
 <p>
-Previous: <a href="Inc-Example-parts.html" accesskey="p" rel="prev">The parts of the function definition</a>, Up: <a href="Incrementing-Loop-Details.html" accesskey="u" rel="up">Details of an Incrementing Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Han-Shu-Ding-Yi-De-Zu-Cheng-Bu-Fen-.html" accesskey="p" rel="prev">函数定义的各部分</a>, Up: <a href="Zeng-Liang-Xun-Huan-Xi-Jie-.html" accesskey="u" rel="up">增量循环的细节</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="unnumberedsubsubsec" id="Putting-the-function-definition-together">Putting the function definition together</h4>
 
-<p>We have created the parts for the function definition; now we need to
-put them together.
+<p>我们已经创建了函数定义的各个部分；现在需要将它们组合起来。
 </p>
-<p>First, the contents of the <code class="code">while</code> expression:
-</p>
-<div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(while (&lt;= row-number number-of-rows)   ; <span class="r">true-or-false-test</span>
-  (setq total (+ total row-number))
-  (setq row-number (1+ row-number)))    ; <span class="r">incrementer</span>
-</pre></div></div>
-
-<p>Along with the <code class="code">let</code> expression varlist, this very nearly
-completes the body of the function definition.  However, it requires
-one final element, the need for which is somewhat subtle.
-</p>
-<p>The final touch is to place the variable <code class="code">total</code> on a line by
-itself after the <code class="code">while</code> expression.  Otherwise, the value returned
-by the whole function is the value of the last expression that is
-evaluated in the body of the <code class="code">let</code>, and this is the value
-returned by the <code class="code">while</code>, which is always <code class="code">nil</code>.
-</p>
-<p>This may not be evident at first sight.  It almost looks as if the
-incrementing expression is the last expression of the whole function.
-But that expression is part of the body of the <code class="code">while</code>; it is the
-last element of the list that starts with the symbol <code class="code">while</code>.
-Moreover, the whole of the <code class="code">while</code> loop is a list within the body
-of the <code class="code">let</code>.
-</p>
-<p>In outline, the function will look like this:
+<p>首先，<code class="code">while</code> 表达式的内容：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(defun <var class="var">name-of-function</var> (<var class="var">argument-list</var>)
-  &quot;<var class="var">documentation</var>&hellip;&quot;
-  (let (<var class="var">varlist</var>)
-    (while (<var class="var">true-or-false-test</var>)
-      <var class="var">body-of-while</var>&hellip; )
-    &hellip; ))                    ; <span class="r">Need final expression here.</span>
+<div class="group"><pre class="example-preformatted">(while (&lt;= 行号 总行数)   ; <span class="r">真或假的测试</span>
+  (setq 总和 (+ 总和 行号))
+  (setq 行号 (1+ 行号)))    ; <span class="r">增量器</span>
 </pre></div></div>
 
-<p>The result of evaluating the <code class="code">let</code> is what is going to be returned
-by the <code class="code">defun</code> since the <code class="code">let</code> is not embedded within any
-containing list, except for the <code class="code">defun</code> as a whole.  However, if
-the <code class="code">while</code> is the last element of the <code class="code">let</code> expression, the
-function will always return <code class="code">nil</code>.  This is not what we want!
-Instead, what we want is the value of the variable <code class="code">total</code>.  This
-is returned by simply placing the symbol as the last element of the list
-starting with <code class="code">let</code>.  It gets evaluated after the preceding
-elements of the list are evaluated, which means it gets evaluated after
-it has been assigned the correct value for the total.
+<p>连同 <code class="code">let</code> 表达式的变量列表，这几乎完成了函数定义的主体。但是，还需要一个微妙的最后要素。
 </p>
-<p>It may be easier to see this by printing the list starting with
-<code class="code">let</code> all on one line.  This format makes it evident that the
-<var class="var">varlist</var> and <code class="code">while</code> expressions are the second and third
-elements of the list starting with <code class="code">let</code>, and the <code class="code">total</code> is
-the last element:
+<p>最后的一步是将变量 <code class="code">总和</code> 单独放在 <code class="code">while</code> 表达式之后的一行上。否则，整个函数返回的值将是在 <code class="code">let</code> 主体中最后一个表达式的值，而这是由 <code class="code">while</code> 评估得到的，其值始终为 <code class="code">nil</code>。
+</p>
+<p>这一点乍一看可能不明显。它几乎看起来好像增量表达式是整个函数的最后一个表达式。但是该表达式是 <code class="code">while</code> 主体的一部分；它是以符号 <code class="code">while</code> 开始的列表的最后一个元素。此外，整个 <code class="code">while</code> 循环是 <code class="code">let</code> 主体内的列表。
+</p>
+
+<p>概述来说，函数将如下所示：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(let (<var class="var">varlist</var>) (while (<var class="var">true-or-false-test</var>) <var class="var">body-of-while</var>&hellip; ) total)
+<div class="group"><pre class="example-preformatted">(defun <var class="var">函数名</var> (<var class="var">参数列表</var>)
+  &quot;<var class="var">文档</var>&hellip;&quot;
+  (let (<var class="var">变量列表</var>)
+    (while (<var class="var">真或假的测试</var>)
+      <var class="var">while的主体</var>&hellip; )
+    &hellip; ))                    ; <span class="r">这里需要最后的表达式。</span>
 </pre></div></div>
 
-<p>Putting everything together, the <code class="code">triangle</code> function definition
-looks like this:
+<p>评估 <code class="code">let</code> 的结果将是由 <code class="code">defun</code> 返回的结果，因为 <code class="code">let</code> 不嵌套在任何包含列表中，除了整个 <code class="code">defun</code>。然而，如果 <code class="code">while</code> 是 <code class="code">let</code> 表达式的最后一个元素，函数将始终返回 <code class="code">nil</code>。这不是我们想要的！相反，我们想要的是变量 <code class="code">总和</code> 的值。通过简单地将该符号作为以 <code class="code">let</code> 开始的列表的最后一个元素放置在列表中，它将在之前的元素被评估之后被评估，这意味着在为总和赋予正确值之后才被评估。
+</p>
+<p>通过将以 <code class="code">let</code> 开始的列表打印在一行上，可能更容易看到这一点。这种格式使得显而易见，<var class="var">变量列表</var> 和 <code class="code">while</code> 表达式是以 <code class="code">let</code> 开始的列表的第二和第三个元素，而 <code class="code">总和</code> 是最后一个元素：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(defun triangle (number-of-rows)    ; <span class="r">Version with</span>
-                                    ; <span class="r">  incrementing counter.</span>
-  &quot;Add up the number of pebbles in a triangle.
-The first row has one pebble, the second row two pebbles,
-the third row three pebbles, and so on.
-The argument is NUMBER-OF-ROWS.&quot;
-</pre></div><div class="group"><pre class="example-preformatted">  (let ((total 0)
-        (row-number 1))
-    (while (&lt;= row-number number-of-rows)
-      (setq total (+ total row-number))
-      (setq row-number (1+ row-number)))
-    total))
+<div class="group"><pre class="example-preformatted">(let (<var class="var">变量列表</var>) (while (<var class="var">真或假的测试</var>) <var class="var">while的主体</var>&hellip; ) 总和)
 </pre></div></div>
 
-<p>After you have installed <code class="code">triangle</code> by evaluating the function, you
-can try it out.  Here are two examples:
+
+<p>将所有内容放在一起，<code class="code">triangle</code> 函数定义如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun triangle (总行数)    ; <span class="r">带有</span>
+                                    ; <span class="r">  增量计数器的版本。</span>
+  &quot;将三角形中的鹅卵石数量相加。
+第一行有一个鹅卵石，第二行有两个鹅卵石，
+第三行有三个鹅卵石，依此类推。
+参数为总行数。&quot;
+</pre></div><div class="group"><pre class="example-preformatted">  (let ((总和 0)
+        (行号 1))
+    (while (&lt;= 行号 总行数)
+      (setq 总和 (+ 总和 行号))
+      (setq 行号 (1+ 行号)))
+    总和))
+</pre></div></div>
+
+
+<p>安装 <code class="code">triangle</code> 后，您可以尝试它。以下是两个示例：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(triangle 4)
@@ -147,14 +123,8 @@ can try it out.  Here are two examples:
 (triangle 7)
 </pre></div></div>
 
-<p>The sum of the first four numbers is 10 and the sum of the first seven
-numbers is 28.
+<p>前四个数字的总和是10，前七个数字的总和是28。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Previous: <a href="Inc-Example-parts.html">The parts of the function definition</a>, Up: <a href="Incrementing-Loop-Details.html">Details of an Incrementing Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

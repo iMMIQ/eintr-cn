@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>函数定义的组成部分 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="函数定义的组成部分 (Programming in Emacs Lisp)">
+<meta name="keywords" content="函数定义的组成部分 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Zeng-Liang-Xun-Huan-Xi-Jie-.html" rel="up" title="增量循环细节">
+<link href="Inc-Example-altogether.html" rel="next" title="Inc Example altogether">
+<link href="Zeng-Liang-ShiLi.html" rel="prev" title="增量示例">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="g_t_51fd_6570_5b9a_4e49_7684_7ec4_6210_90e8_5206">
+<div class="nav-panel">
+<p>
+Next: <a href="Inc-Example-altogether.html" accesskey="n" rel="next">Putting the function definition together</a>, Previous: <a href="Zeng-Liang-ShiLi.html" accesskey="p" rel="prev">具有增量计数器的示例</a>, Up: <a href="Zeng-Liang-Xun-Huan-Xi-Jie-.html" accesskey="u" rel="up">增量循环的细节</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="Han-Shu-Ding-Yi-De-Ge-Bu-Fen-">函数定义的各部分</h4>
+
+<p>前面的分析为我们的函数定义提供了骨架：首先，我们需要一个变量，我们可以称之为 <code class="code">total</code>，它将是函数返回的总的鹅卵石数量。这将是函数返回的值。
+</p>
+<p>其次，我们知道函数将需要一个参数：这个参数将是三角形中的总行数。它可以被称为 <code class="code">number-of-rows</code>。
+</p>
+<p>最后，我们需要一个作为计数器的变量。我们可以称这个变量为 <code class="code">counter</code>，但更好的名字是 <code class="code">row-number</code>。这是因为在这个函数中，计数器的作用是计算行数，而程序应该尽可能易于理解。
+</p>
+<p>当Lisp解释器首次开始评估函数中的表达式时，<code class="code">total</code>的值应该设置为零，因为我们还没有向其中添加任何东西。然后，函数应该将第一行中的鹅卵石数量添加到总数中，然后将第二行的数量添加到总数中，然后将第三行的数量添加到总数中，依此类推，直到没有更多的行可以添加。
+</p>
+<p><code class="code">total</code>和<code class="code">row-number</code>都仅在函数内部使用，因此它们可以被声明为局部变量，并用<code class="code">let</code>给予初始值。显然，<code class="code">total</code>的初始值应为0。<code class="code">row-number</code>的初始值应为1，因为我们从第一行开始。这意味着<code class="code">let</code>语句将如下所示：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">  (let ((total 0)
+        (row-number 1))
+    <var class="var">body</var>&hellip;)
+</pre></div></div>
+
+<p>在内部变量被声明并绑定到它们的初始值之后，我们可以开始<code class="code">while</code>循环。作为测试的表达式应该在<code class="code">row-number</code>小于或等于<code class="code">number-of-rows</code>时返回true。如果表达式仅在行号小于三角形行数的情况下为true，最后一行将永远不会添加到总数中；因此行号必须小于或等于行数。
+</p>
+<a class="index-entry-id" id="index-_003c_003d-_0028Xiao-Yu-Huo-Deng-Yu-_0029"></a>
+<p>Lisp提供了<code class="code">&lt;=</code>函数，如果其第一个参数的值小于或等于其第二个参数的值，则返回true，否则返回false。因此，<code class="code">while</code>将评估为测试的表达式应如下所示：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(&lt;= row-number number-of-rows)
+</pre></div>
+
+<p>鹅卵石的总数量可以通过重复将一行中的鹅卵石数量添加到已找到的总数中来找到。由于一行中的鹅卵石数量等于行号，因此可以通过将行号添加到总数中来找到总数。
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq total (+ total row-number))
+</pre></div>
+
+<p>这做的是将<code class="code">total</code>的新值设置为将鹅卵石数量添加到先前总数的和。
+</p>
+<p>在设置了<code class="code">total</code>的值之后，需要建立下一次循环的条件，如果有的话。这是通过增加<code class="code">row-number</code>变量的值来完成的，它充当计数器。在增加<code class="code">row-number</code>变量之后，<code class="code">while</code>循环开头的true-or-false测试会测试其值是否仍然小于或等于<code class="code">number-of-rows</code>的值，如果是，将新值添加到先前循环的<code class="code">total</code>中。
+</p>
+<p>内置的Emacs Lisp函数<code class="code">1+</code>将1添加到一个数字，因此可以使用以下表达式递增<code class="code">row-number</code>变量：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq row-number (1+ row-number))
+</pre></div>
+
+</div>
+
+
+
+</body>
+</html>
