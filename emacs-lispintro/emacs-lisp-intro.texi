@@ -7490,19 +7490,13 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 @end enumerate
 
 @node dolist dotimes
-@section Save your time: @code{dolist} and @code{dotimes}
+@section 节省时间：@code{dolist} 和 @code{dotimes}
 
-In addition to @code{while}, both @code{dolist} and @code{dotimes}
-provide for looping.  Sometimes these are quicker to write than the
-equivalent @code{while} loop.  Both are Lisp macros.  (@xref{Macros, ,
-Macros, elisp, The GNU Emacs Lisp Reference Manual}. )
+除了 @code{while} 之外，@code{dolist} 和 @code{dotimes} 都提供了循环的功能。有时候，它们比等效的 @code{while} 循环更容易编写。两者都是Lisp宏。(@xref{宏, , 宏, elisp, GNU Emacs Lisp参考手册}.)
 
-@code{dolist} works like a @code{while} loop that @sc{cdr}s down a
-list:  @code{dolist} automatically shortens the list each time it
-loops---takes the @sc{cdr} of the list---and binds the @sc{car} of
-each shorter version of the list to the first of its arguments.
+@code{dolist} 像一个 @code{while} 循环，不断地对列表进行 @sc{cdr} 操作：@code{dolist} 每次循环都会自动缩短列表---获取列表的 @sc{cdr}---并将每个缩短版本的列表的 @sc{car} 绑定到其第一个参数。
 
-@code{dotimes} loops a specific number of times: you specify the number.
+@code{dotimes} 循环指定的次数：您需要指定次数。
 
 @menu
 * dolist::
@@ -7510,14 +7504,13 @@ each shorter version of the list to the first of its arguments.
 @end menu
 
 @node dolist
-@unnumberedsubsec The @code{dolist} Macro
+@unnumberedsubsec @code{dolist} 宏
 @findex dolist
 
-Suppose, for example, you want to reverse a list, so that
-``first'' ``second'' ``third'' becomes ``third'' ``second'' ``first''.
+例如，假设您想反转一个列表，使得``first'' ``second'' ``third'' 变成 ``third'' ``second'' ``first''。
 
 @need 1250
-In practice, you would use the @code{reverse} function, like this:
+实际上，您可以使用 @code{reverse} 函数，如下所示：
 
 @smallexample
 @group
@@ -7529,15 +7522,15 @@ In practice, you would use the @code{reverse} function, like this:
 
 @need 800
 @noindent
-Here is how you could reverse the list using a @code{while} loop:
+以下是使用 @code{while} 循环反转列表的方法：
 
 @smallexample
 @group
 (setq animals '(gazelle giraffe lion tiger))
 
 (defun reverse-list-with-while (list)
-  "Using while, reverse the order of LIST."
-  (let (value)  ; make sure list starts empty
+  "使用while循环反转LIST的顺序。"
+  (let (value)  ; 确保列表从空开始
     (while list
       (setq value (cons (car list) value))
       (setq list (cdr list)))
@@ -7549,15 +7542,15 @@ Here is how you could reverse the list using a @code{while} loop:
 
 @need 800
 @noindent
-And here is how you could use the @code{dolist} macro:
+以下是使用 @code{dolist} 宏的方法：
 
 @smallexample
 @group
 (setq animals '(gazelle giraffe lion tiger))
 
 (defun reverse-list-with-dolist (list)
-  "Using dolist, reverse the order of LIST."
-  (let (value)  ; make sure list starts empty
+  "使用dolist宏反转LIST的顺序。"
+  (let (value)  ; 确保列表从空开始
     (dolist (element list value)
       (setq value (cons element value)))))
 
@@ -7567,72 +7560,42 @@ And here is how you could use the @code{dolist} macro:
 
 @need 1250
 @noindent
-In Info, you can place your cursor after the closing parenthesis of
-each expression and type @kbd{C-x C-e}; in each case, you should see
+在Info中，您可以将光标放在每个表达式的右括号后，然后键入 @kbd{C-x C-e}; 在每种情况下，您应该在回显区域看到
 
 @smallexample
 (tiger lion giraffe gazelle)
 @end smallexample
 
 @noindent
-in the echo area.
+对于此示例，现有的 @code{reverse} 函数显然是最好的选择。
+@code{while} 循环就像我们的第一个示例一样(@pxref{循环示例, , 一个@code{while}循环和一个列表})。@code{while} 首先检查列表是否有元素；如果有，它通过将列表的第一个元素添加到现有列表（在循环的第一次迭代中是 @code{nil}）来构造一个新列表。由于第二个元素在第一个元素的前面添加，第三个元素在第二个元素的前面添加，因此列表被反转。
 
-For this example, the existing @code{reverse} function is obviously best.
-The @code{while} loop is just like our first example (@pxref{循环示例, , A @code{while} Loop and a List}).  The @code{while} first
-checks whether the list has elements; if so, it constructs a new list
-by adding the first element of the list to the existing list (which in
-the first iteration of the loop is @code{nil}).  Since the second
-element is prepended in front of the first element, and the third
-element is prepended in front of the second element, the list is reversed.
+在使用 @code{while} 循环的表达式中，
+@w{@code{(setq list (cdr list))}}
+表达式缩短了列表，因此 @code{while} 循环最终停止。此外，它通过在每次循环重复时创建一个新的更短的列表，为 @code{cons} 表达式提供了一个新的第一个元素。
 
-In the expression using a @code{while} loop,
-the @w{@code{(setq list (cdr list))}}
-expression shortens the list, so the @code{while} loop eventually
-stops.  In addition, it provides the @code{cons} expression with a new
-first element by creating a new and shorter list at each repetition of
-the loop.
+@code{dolist} 表达式的工作方式与 @code{while} 表达式非常相似，不同之处在于，@code{dolist} 宏执行了在编写 @code{while} 表达式时必须执行的一些工作。
 
-The @code{dolist} expression does very much the same as the
-@code{while} expression, except that the @code{dolist} macro does some
-of the work you have to do when writing a @code{while} expression.
+像 @code{while} 循环一样，@code{dolist} 循环。不同之处在于，它每次循环都会自动缩短列表---它会对列表进行 @sc{cdr} 操作---并且会自动将每个较短版本的列表的 @sc{car} 绑定到其第一个参数。
 
-Like a @code{while} loop, a @code{dolist} loops.  What is different is
-that it automatically shortens the list each time it loops---it
-@sc{cdr}s down the list on its own---and it automatically binds
-the @sc{car} of each shorter version of the list to the first of its
-arguments.
+在此示例中，较短版本的列表的 @sc{car} 由符号 @samp{element} 引用，列表本身称为 @samp{list}，返回的值称为 @samp{value}。@code{dolist} 表达式的其余部分是主体。
 
-In the example, the @sc{car} of each shorter version of the list is
-referred to using the symbol @samp{element}, the list itself is called
-@samp{list}, and the value returned is called @samp{value}.  The
-remainder of the @code{dolist} expression is the body.
-
-The @code{dolist} expression binds the @sc{car} of each shorter
-version of the list to @code{element} and then evaluates the body of
-the expression; and repeats the loop.  The result is returned in
-@code{value}.
+@code{dolist} 表达式将较短版本的列表的 @sc{car} 绑定到 @code{element}，然后评估表达式的主体；然后重复循环。结果在 @code{value} 中返回。
 
 @node dotimes
-@unnumberedsubsec The @code{dotimes} Macro
+@unnumberedsubsec @code{dotimes} 宏
 @findex dotimes
 
-The @code{dotimes} macro is similar to @code{dolist}, except that it
-loops a specific number of times.
+@code{dotimes} 宏类似于 @code{dolist}，但它循环特定次数。
 
-The first argument to @code{dotimes} is assigned the numbers 0, 1, 2
-and so forth each time around the loop.  You need to provide the value
-of the second argument, which is how many times the macro loops.
+@code{dotimes} 的第一个参数在每次循环时被赋予数字 0、1、2 等等。你需要提供第二个参数的值，该值表示宏循环的次数。
 
 @need 1250
-For example, the following binds the numbers from 0 up to, but not
-including, the number 3 to the first argument, @var{number}, and then
-constructs a list of the three numbers.  (The first number is 0, the
-second number is 1, and the third number is 2; this makes a total of
-three numbers in all, starting with zero as the first number.)
+例如，下面的代码将数字从 0 到 3（不包括 3）绑定到第一个参数 @var{number}，然后构建包含这三个数字的列表。（第一个数字是 0，第二个数字是 1，第三个数字是 2；总共有三个数字，以零为起始。）
 
 @smallexample
 @group
-(let (value)      ; otherwise a value is a void variable
+(let (value)      ; 否则 value 是一个未定义变量
   (dotimes (number 3)
     (setq value (cons number value)))
   value)
@@ -7642,19 +7605,16 @@ three numbers in all, starting with zero as the first number.)
 @end smallexample
 
 @noindent
-The way to use @code{dotimes} is to operate on some expression
-@var{number} number of times and then return the result, either as
-a list or an atom.
+使用 @code{dotimes} 的方法是对某个表达式 @var{number} 进行操作，重复操作 @var{number} 次，然后返回结果，可以是列表或原子。
 
 @need 1250
-Here is an example of a @code{defun} that uses @code{dotimes} to add
-up the number of pebbles in a triangle.
+以下是一个使用 @code{dotimes} 的 @code{defun} 示例，用于计算三角形中鹅卵石的总数。
 
 @smallexample
 @group
 (defun triangle-using-dotimes (number-of-rows)
-  "Using `dotimes', add up the number of pebbles in a triangle."
-(let ((total 0))  ; otherwise a total is a void variable
+  "使用 `dotimes'，计算三角形中鹅卵石的总数。"
+(let ((total 0))  ; 否则 total 是一个未定义变量
   (dotimes (number number-of-rows)
     (setq total (+ total (1+ number))))
   total))

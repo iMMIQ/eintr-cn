@@ -57,23 +57,18 @@ ISBN 1-882114-43-4
 Next: <a href="Recursion.html" accesskey="n" rel="next">Recursion</a>, Previous: <a href="while.html" accesskey="p" rel="prev"><code class="code">while</code></a>, Up: <a href="Xun-Huan-Yu-Di-Gui-.html" accesskey="u" rel="up">循环和递归</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Save-your-time_003a-dolist-and-dotimes">11.2 Save your time: <code class="code">dolist</code> and <code class="code">dotimes</code></h3>
+<h3 class="section" id="Jie-Sheng-Shi-Jian-_003adolist-He-dotimes">11.2 节省时间：<code class="code">dolist</code> 和 <code class="code">dotimes</code></h3>
 
-<p>In addition to <code class="code">while</code>, both <code class="code">dolist</code> and <code class="code">dotimes</code>
-provide for looping.  Sometimes these are quicker to write than the
-equivalent <code class="code">while</code> loop.  Both are Lisp macros.  (See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Macros.html#Macros">Macros</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>. )
+<p>除了 <code class="code">while</code> 之外，<code class="code">dolist</code> 和 <code class="code">dotimes</code> 都提供了循环的功能。有时候，它们比等效的 <code class="code">while</code> 循环更容易编写。两者都是Lisp宏。(See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/_5b8f.html#g_t_5b8f">宏</a> in <cite class="cite">GNU Emacs Lisp参考手册</cite>.)
 </p>
-<p><code class="code">dolist</code> works like a <code class="code">while</code> loop that <small class="sc">CDR</small>s down a
-list:  <code class="code">dolist</code> automatically shortens the list each time it
-loops&mdash;takes the <small class="sc">CDR</small> of the list&mdash;and binds the <small class="sc">CAR</small> of
-each shorter version of the list to the first of its arguments.
+<p><code class="code">dolist</code> 像一个 <code class="code">while</code> 循环，不断地对列表进行 <small class="sc">CDR</small> 操作：<code class="code">dolist</code> 每次循环都会自动缩短列表&mdash;获取列表的 <small class="sc">CDR</small>&mdash;并将每个缩短版本的列表的 <small class="sc">CAR</small> 绑定到其第一个参数。
 </p>
-<p><code class="code">dotimes</code> loops a specific number of times: you specify the number.
+<p><code class="code">dotimes</code> 循环指定的次数：您需要指定次数。
 </p>
 
 <ul class="mini-toc">
-<li><a href="dolist.html" accesskey="1">The <code class="code">dolist</code> Macro</a></li>
-<li><a href="dotimes.html" accesskey="2">The <code class="code">dotimes</code> Macro</a></li>
+<li><a href="dolist.html" accesskey="1"><code class="code">dolist</code> 宏</a></li>
+<li><a href="dotimes.html" accesskey="2"><code class="code">dotimes</code> 宏</a></li>
 </ul>
 </div>
 

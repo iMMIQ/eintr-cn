@@ -54,27 +54,20 @@ div.example {margin-left: 3.2em}
 <div class="unnumberedsubsec-level-extent" id="dotimes">
 <div class="nav-panel">
 <p>
-Previous: <a href="dolist.html" accesskey="p" rel="prev">The <code class="code">dolist</code> Macro</a>, Up: <a href="dolist-dotimes.html" accesskey="u" rel="up">Save your time: <code class="code">dolist</code> and <code class="code">dotimes</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="dolist.html" accesskey="p" rel="prev"><code class="code">dolist</code> 宏</a>, Up: <a href="dolist-dotimes.html" accesskey="u" rel="up">节省时间：<code class="code">dolist</code> 和 <code class="code">dotimes</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-dotimes-Macro">The <code class="code">dotimes</code> Macro</h4>
+<h4 class="unnumberedsubsec" id="dotimes-Hong-"><code class="code">dotimes</code> 宏</h4>
 <a class="index-entry-id" id="index-dotimes"></a>
 
-<p>The <code class="code">dotimes</code> macro is similar to <code class="code">dolist</code>, except that it
-loops a specific number of times.
+<p><code class="code">dotimes</code> 宏类似于 <code class="code">dolist</code>，但它循环特定次数。
 </p>
-<p>The first argument to <code class="code">dotimes</code> is assigned the numbers 0, 1, 2
-and so forth each time around the loop.  You need to provide the value
-of the second argument, which is how many times the macro loops.
+<p><code class="code">dotimes</code> 的第一个参数在每次循环时被赋予数字 0、1、2 等等。你需要提供第二个参数的值，该值表示宏循环的次数。
 </p>
-<p>For example, the following binds the numbers from 0 up to, but not
-including, the number 3 to the first argument, <var class="var">number</var>, and then
-constructs a list of the three numbers.  (The first number is 0, the
-second number is 1, and the third number is 2; this makes a total of
-three numbers in all, starting with zero as the first number.)
+<p>例如，下面的代码将数字从 0 到 3（不包括 3）绑定到第一个参数 <var class="var">number</var>，然后构建包含这三个数字的列表。（第一个数字是 0，第二个数字是 1，第三个数字是 2；总共有三个数字，以零为起始。）
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(let (value)      ; otherwise a value is a void variable
+<div class="group"><pre class="example-preformatted">(let (value)      ; 否则 value 是一个未定义变量
   (dotimes (number 3)
     (setq value (cons number value)))
   value)
@@ -82,17 +75,14 @@ three numbers in all, starting with zero as the first number.)
 &rArr; (2 1 0)
 </pre></div></div>
 
-<p>The way to use <code class="code">dotimes</code> is to operate on some expression
-<var class="var">number</var> number of times and then return the result, either as
-a list or an atom.
+<p>使用 <code class="code">dotimes</code> 的方法是对某个表达式 <var class="var">number</var> 进行操作，重复操作 <var class="var">number</var> 次，然后返回结果，可以是列表或原子。
 </p>
-<p>Here is an example of a <code class="code">defun</code> that uses <code class="code">dotimes</code> to add
-up the number of pebbles in a triangle.
+<p>以下是一个使用 <code class="code">dotimes</code> 的 <code class="code">defun</code> 示例，用于计算三角形中鹅卵石的总数。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun triangle-using-dotimes (number-of-rows)
-  &quot;Using `dotimes', add up the number of pebbles in a triangle.&quot;
-(let ((total 0))  ; otherwise a total is a void variable
+  &quot;使用 `dotimes'，计算三角形中鹅卵石的总数。&quot;
+(let ((total 0))  ; 否则 total 是一个未定义变量
   (dotimes (number number-of-rows)
     (setq total (+ total (1+ number))))
   total))

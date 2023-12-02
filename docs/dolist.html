@@ -55,16 +55,15 @@ kbd.kbd {font-style: oblique}
 <div class="unnumberedsubsec-level-extent" id="dolist">
 <div class="nav-panel">
 <p>
-Next: <a href="dotimes.html" accesskey="n" rel="next">The <code class="code">dotimes</code> Macro</a>, Up: <a href="dolist-dotimes.html" accesskey="u" rel="up">Save your time: <code class="code">dolist</code> and <code class="code">dotimes</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="dotimes.html" accesskey="n" rel="next"><code class="code">dotimes</code> 宏</a>, Up: <a href="dolist-dotimes.html" accesskey="u" rel="up">节省时间：<code class="code">dolist</code> 和 <code class="code">dotimes</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-dolist-Macro">The <code class="code">dolist</code> Macro</h4>
+<h4 class="unnumberedsubsec" id="dolist-Hong-"><code class="code">dolist</code> 宏</h4>
 <a class="index-entry-id" id="index-dolist"></a>
 
-<p>Suppose, for example, you want to reverse a list, so that
-&ldquo;first&rdquo; &ldquo;second&rdquo; &ldquo;third&rdquo; becomes &ldquo;third&rdquo; &ldquo;second&rdquo; &ldquo;first&rdquo;.
+<p>例如，假设您想反转一个列表，使得&ldquo;first&rdquo; &ldquo;second&rdquo; &ldquo;third&rdquo; 变成 &ldquo;third&rdquo; &ldquo;second&rdquo; &ldquo;first&rdquo;。
 </p>
-<p>In practice, you would use the <code class="code">reverse</code> function, like this:
+<p>实际上，您可以使用 <code class="code">reverse</code> 函数，如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
@@ -72,14 +71,14 @@ Next: <a href="dotimes.html" accesskey="n" rel="next">The <code class="code">dot
 (reverse animals)
 </pre></div></div>
 
-<p>Here is how you could reverse the list using a <code class="code">while</code> loop:
+<p>以下是使用 <code class="code">while</code> 循环反转列表的方法：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
 
 (defun reverse-list-with-while (list)
-  &quot;Using while, reverse the order of LIST.&quot;
-  (let (value)  ; make sure list starts empty
+  &quot;使用while循环反转LIST的顺序。&quot;
+  (let (value)  ; 确保列表从空开始
     (while list
       (setq value (cons (car list) value))
       (setq list (cdr list)))
@@ -88,69 +87,41 @@ Next: <a href="dotimes.html" accesskey="n" rel="next">The <code class="code">dot
 (reverse-list-with-while animals)
 </pre></div></div>
 
-<p>And here is how you could use the <code class="code">dolist</code> macro:
+<p>以下是使用 <code class="code">dolist</code> 宏的方法：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq animals '(gazelle giraffe lion tiger))
 
 (defun reverse-list-with-dolist (list)
-  &quot;Using dolist, reverse the order of LIST.&quot;
-  (let (value)  ; make sure list starts empty
+  &quot;使用dolist宏反转LIST的顺序。&quot;
+  (let (value)  ; 确保列表从空开始
     (dolist (element list value)
       (setq value (cons element value)))))
 
 (reverse-list-with-dolist animals)
 </pre></div></div>
 
-<p>In Info, you can place your cursor after the closing parenthesis of
-each expression and type <kbd class="kbd">C-x C-e</kbd>; in each case, you should see
+<p>在Info中，您可以将光标放在每个表达式的右括号后，然后键入 <kbd class="kbd">C-x C-e</kbd>; 在每种情况下，您应该在回显区域看到
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(tiger lion giraffe gazelle)
 </pre></div>
 
-<p>in the echo area.
+<p>对于此示例，现有的 <code class="code">reverse</code> 函数显然是最好的选择。
+<code class="code">while</code> 循环就像我们的第一个示例一样(see <a class="pxref" href="Xun-Huan-ShiLi.html">一个<code class="code">while</code>循环和一个列表</a>)。<code class="code">while</code> 首先检查列表是否有元素；如果有，它通过将列表的第一个元素添加到现有列表（在循环的第一次迭代中是 <code class="code">nil</code>）来构造一个新列表。由于第二个元素在第一个元素的前面添加，第三个元素在第二个元素的前面添加，因此列表被反转。
 </p>
-<p>For this example, the existing <code class="code">reverse</code> function is obviously best.
-The <code class="code">while</code> loop is just like our first example (see <a class="pxref" href="Xun-Huan-ShiLi.html">A <code class="code">while</code> Loop and a List</a>).  The <code class="code">while</code> first
-checks whether the list has elements; if so, it constructs a new list
-by adding the first element of the list to the existing list (which in
-the first iteration of the loop is <code class="code">nil</code>).  Since the second
-element is prepended in front of the first element, and the third
-element is prepended in front of the second element, the list is reversed.
+<p>在使用 <code class="code">while</code> 循环的表达式中，
+<code class="code">(setq&nbsp;list&nbsp;(cdr&nbsp;list))</code><!-- /@w -->
+表达式缩短了列表，因此 <code class="code">while</code> 循环最终停止。此外，它通过在每次循环重复时创建一个新的更短的列表，为 <code class="code">cons</code> 表达式提供了一个新的第一个元素。
 </p>
-<p>In the expression using a <code class="code">while</code> loop,
-the <code class="code">(setq&nbsp;list&nbsp;(cdr&nbsp;list))</code><!-- /@w -->
-expression shortens the list, so the <code class="code">while</code> loop eventually
-stops.  In addition, it provides the <code class="code">cons</code> expression with a new
-first element by creating a new and shorter list at each repetition of
-the loop.
+<p><code class="code">dolist</code> 表达式的工作方式与 <code class="code">while</code> 表达式非常相似，不同之处在于，<code class="code">dolist</code> 宏执行了在编写 <code class="code">while</code> 表达式时必须执行的一些工作。
 </p>
-<p>The <code class="code">dolist</code> expression does very much the same as the
-<code class="code">while</code> expression, except that the <code class="code">dolist</code> macro does some
-of the work you have to do when writing a <code class="code">while</code> expression.
+<p>像 <code class="code">while</code> 循环一样，<code class="code">dolist</code> 循环。不同之处在于，它每次循环都会自动缩短列表&mdash;它会对列表进行 <small class="sc">CDR</small> 操作&mdash;并且会自动将每个较短版本的列表的 <small class="sc">CAR</small> 绑定到其第一个参数。
 </p>
-<p>Like a <code class="code">while</code> loop, a <code class="code">dolist</code> loops.  What is different is
-that it automatically shortens the list each time it loops&mdash;it
-<small class="sc">CDR</small>s down the list on its own&mdash;and it automatically binds
-the <small class="sc">CAR</small> of each shorter version of the list to the first of its
-arguments.
+<p>在此示例中，较短版本的列表的 <small class="sc">CAR</small> 由符号 &lsquo;<samp class="samp">element</samp>&rsquo; 引用，列表本身称为 &lsquo;<samp class="samp">list</samp>&rsquo;，返回的值称为 &lsquo;<samp class="samp">value</samp>&rsquo;。<code class="code">dolist</code> 表达式的其余部分是主体。
 </p>
-<p>In the example, the <small class="sc">CAR</small> of each shorter version of the list is
-referred to using the symbol &lsquo;<samp class="samp">element</samp>&rsquo;, the list itself is called
-&lsquo;<samp class="samp">list</samp>&rsquo;, and the value returned is called &lsquo;<samp class="samp">value</samp>&rsquo;.  The
-remainder of the <code class="code">dolist</code> expression is the body.
+<p><code class="code">dolist</code> 表达式将较短版本的列表的 <small class="sc">CAR</small> 绑定到 <code class="code">element</code>，然后评估表达式的主体；然后重复循环。结果在 <code class="code">value</code> 中返回。
 </p>
-<p>The <code class="code">dolist</code> expression binds the <small class="sc">CAR</small> of each shorter
-version of the list to <code class="code">element</code> and then evaluates the body of
-the expression; and repeats the loop.  The result is returned in
-<code class="code">value</code>.
-</p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="dotimes.html">The <code class="code">dotimes</code> Macro</a>, Up: <a href="dolist-dotimes.html">Save your time: <code class="code">dolist</code> and <code class="code">dotimes</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
