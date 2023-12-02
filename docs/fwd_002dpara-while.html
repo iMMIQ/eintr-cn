@@ -57,43 +57,37 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsec-level-extent" id="fwd_002dpara-while">
 <div class="nav-panel">
 <p>
-Previous: <a href="fwd_002dpara-let.html" accesskey="p" rel="prev">The <code class="code">let*</code> expression</a>, Up: <a href="forward_002dparagraph.html" accesskey="u" rel="up"><code class="code">forward-paragraph</code>: a Goldmine of Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="fwd_002dpara-let.html" accesskey="p" rel="prev">The <code class="code">let*</code> expression</a>, Up: <a href="forward_002dparagraph.html" accesskey="u" rel="up"><code class="code">forward-paragraph</code>：一个丰富的功能集合</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-forward-motion-while-loop">The forward motion <code class="code">while</code> loop</h4>
+<h4 class="unnumberedsubsec" id="Qian-Jin-Dong-Zuo-while-Xun-Huan-">前进动作 <code class="code">while</code> 循环</h4>
 
-<p>The second part of the body of the <code class="code">let*</code> deals with forward
-motion.  It is a <code class="code">while</code> loop that repeats itself so long as the
-value of <code class="code">arg</code> is greater than zero.  In the most common use of
-the function, the value of the argument is 1, so the body of the
-<code class="code">while</code> loop is evaluated exactly once, and the cursor moves
-forward one paragraph.
+<p><code class="code">let*</code> 的第二部分处理前进动作。它是一个 <code class="code">while</code> 循环，只要 <code class="code">arg</code> 的值大于零就重复执行。在函数的最常见用法中，参数的值为 1，因此 <code class="code">while</code> 循环的主体只被评估一次，光标向前移动一个段落。
 </p>
 
-<p>This part handles three situations: when point is between paragraphs,
-when there is a fill prefix and when there is no fill prefix.
+<p>这部分处理三种情况：当光标在段落之间时，当存在填充前缀时，当不存在填充前缀时。
 </p>
-<p>The <code class="code">while</code> loop looks like this:
+<p><code class="code">while</code> 循环如下：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;; <span class="r">going forwards and not at the end of the buffer</span>
+<div class="group"><pre class="example-preformatted">;; <span class="r">向前移动且不在缓冲区末尾</span>
 (while (and (&gt; arg 0) (not (eobp)))
 
-  ;; <span class="r">between paragraphs</span>
-  ;; Move forward over separator lines...
+  ;; <span class="r">在段落之间</span>
+  ;; 向前移动过分隔行…
   (while (and (not (eobp))
               (progn (move-to-left-margin) (not (eobp)))
               (looking-at parsep))
     (forward-line 1))
-  ;;  <span class="r">This decrements the loop</span>
+  ;;  <span class="r">这减少了循环计数</span>
   (unless (eobp) (setq arg (1- arg)))
-  ;; ... and one more line.
+  ;; …再多移动一行。
   (forward-line 1)
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">  (if fill-prefix-regexp
-      ;; There is a fill prefix; it overrides parstart;
-      ;; we go forward line by line
+      ;; 存在填充前缀；它覆盖了 parstart；
+      ;; 我们逐行向前移动
       (while (and (not (eobp))
                   (progn (move-to-left-margin) (not (eobp)))
                   (not (looking-at parsep))
@@ -101,8 +95,8 @@ when there is a fill prefix and when there is no fill prefix.
         (forward-line 1))
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">    ;; There is no fill prefix;
-    ;; we go forward character by character
+</pre><div class="group"><pre class="example-preformatted">    ;; 不存在填充前缀；
+    ;; 我们逐字符向前移动
     (while (and (re-search-forward sp-parstart nil 1)
                 (progn (setq start (match-beginning 0))
                        (goto-char start)
@@ -115,52 +109,32 @@ when there is a fill prefix and when there is no fill prefix.
       (forward-char 1))
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">    ;; and if there is no fill prefix and if we are not at the end,
-    ;;     go to whatever was found in the regular expression search
-    ;;     for sp-parstart
+</pre><div class="group"><pre class="example-preformatted">    ;; 如果没有填充前缀且不在末尾，
+    ;;     则转到在正则表达式搜索 sp-parstart 中找到的内容
     (if (&lt; (point) (point-max))
         (goto-char start))))
 </pre></div></div>
 
 <a class="index-entry-id" id="index-eobp"></a>
-<p>We can see that this is a decrementing counter <code class="code">while</code> loop,
-using the expression <code class="code">(setq arg (1- arg))</code> as the decrementer.
-That expression is not far from the <code class="code">while</code>, but is hidden in
-another Lisp macro, an <code class="code">unless</code> macro.  Unless we are at the end
-of the buffer&mdash;that is what the <code class="code">eobp</code> function determines; it
-is an abbreviation of &lsquo;<samp class="samp">End Of Buffer P</samp>&rsquo;&mdash;we decrease the value
-of <code class="code">arg</code> by one.
+<p>我们可以看到这是一个递减计数器的 <code class="code">while</code> 循环，使用表达式 <code class="code">(setq arg (1- arg))</code> 作为递减器。该表达式并不远离 <code class="code">while</code>，但被隐藏在另一个 Lisp 宏中，即 <code class="code">unless</code> 宏。除非我们在缓冲区末尾——这是 <code class="code">eobp</code> 函数确定的；它是 &lsquo;<samp class="samp">End Of Buffer P</samp>&rsquo; 的缩写——否则我们会将 <code class="code">arg</code> 的值减小一。
 </p>
-<p>(If we are at the end of the buffer, we cannot go forward any more and
-the next loop of the <code class="code">while</code> expression will test false since the
-test is an <code class="code">and</code> with <code class="code">(not (eobp))</code>.  The <code class="code">not</code>
-function means exactly as you expect; it is another name for
-<code class="code">null</code>, a function that returns true when its argument is false.)
+<p>（如果我们在缓冲区末尾，我们无法再向前移动，由于测试是与 <code class="code">(not (eobp))</code> 的 <code class="code">and</code>，下一个循环的表达式将测试为假，因为 <code class="code">not</code> 函数的作用与您期望的完全相同；它是 <code class="code">null</code> 的另一个名称，当其参数为假时返回真。）
 </p>
-<p>Interestingly, the loop count is not decremented until we leave the
-space between paragraphs, unless we come to the end of buffer or stop
-seeing the local value of the paragraph separator.
+<p>有趣的是，循环计数器在我们离开段落之间之前并未递减，除非我们到达缓冲区的末尾或停止看到段落分隔符的本地值。
 </p>
-<p>That second <code class="code">while</code> also has a <code class="code">(move-to-left-margin)</code>
-expression.  The function is self-explanatory.  It is inside a
-<code class="code">progn</code> expression and not the last element of its body, so it is
-only invoked for its side effect, which is to move point to the left
-margin of the current line.
+<p>这第二个 <code class="code">while</code> 也有一个 <code class="code">(move-to-left-margin)</code> 表达式。该函数是不言自明的。它在一个 <code class="code">progn</code> 表达式中，并且不是其主体的最后一个元素，因此它仅被调用以产生其移动到当前行左边缘的副作用。
 </p>
 <a class="index-entry-id" id="index-looking_002dat"></a>
-<p>The <code class="code">looking-at</code> function is also self-explanatory; it returns
-true if the text after point matches the regular expression given as
-its argument.
+<p><code class="code">looking-at</code> 函数同样不言自明；如果点之后的文本与其参数给定的正则表达式匹配，则返回真。
 </p>
-<p>The rest of the body of the loop looks difficult at first, but makes
-sense as you come to understand it.
+<p>在理解的过程中，循环体的其余部分起初看起来可能有些困难，但随着理解，它会变得合理。
 </p>
-<p>First consider what happens if there is a fill prefix:
+<p>首先考虑如果存在填充前缀时会发生什么：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">  (if fill-prefix-regexp
-      ;; There is a fill prefix; it overrides parstart;
-      ;; we go forward line by line
+      ;; 存在填充前缀；它覆盖了 parstart；
+      ;; 我们逐行向前移动
       (while (and (not (eobp))
                   (progn (move-to-left-margin) (not (eobp)))
                   (not (looking-at parsep))
@@ -168,26 +142,21 @@ sense as you come to understand it.
         (forward-line 1))
 </pre></div></div>
 
-<p>This expression moves point forward line by line so long
-as four conditions are true:
+<p>这个表达式会使点逐行向前移动，只要四个条件都为真：
 </p>
 <ol class="enumerate">
-<li> Point is not at the end of the buffer.
+<li> 点不在缓冲区末尾。
 
-</li><li> We can move to the left margin of the text and are
-not at the end of the buffer.
+</li><li> 我们可以移动到文本的左边缘且不在缓冲区末尾。
 
-</li><li> The text following point does not separate paragraphs.
+</li><li> 点之后的文本不分隔段落。
 
-</li><li> The pattern following point is the fill prefix regular expression.
+</li><li> 点之后的模式是填充前缀正则表达式。
 </li></ol>
 
-<p>The last condition may be puzzling, until you remember that point was
-moved to the beginning of the line early in the <code class="code">forward-paragraph</code>
-function.  This means that if the text has a fill prefix, the
-<code class="code">looking-at</code> function will see it.
+<p>最后一个条件可能令人困惑，直到您记住点在 <code class="code">forward-paragraph</code> 函数中早期被移动到行的开头。这意味着如果文本有填充前缀，<code class="code">looking-at</code> 函数将会看到它。
 </p>
-<p>Consider what happens when there is no fill prefix.
+<p>考虑当没有填充前缀时会发生什么。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">    (while (and (re-search-forward sp-parstart nil 1)
@@ -202,81 +171,42 @@ function.  This means that if the text has a fill prefix, the
       (forward-char 1))
 </pre></div></div>
 
-<p>This <code class="code">while</code> loop has us searching forward for
-<code class="code">sp-parstart</code>, which is the combination of possible whitespace
-with the local value of the start of a paragraph or of a paragraph
-separator.  (The latter two are within an expression starting
-<code class="code">\(?:</code> so that they are not referenced by the
-<code class="code">match-beginning</code> function.)
+<p>这个 <code class="code">while</code> 循环让我们向前搜索 <code class="code">sp-parstart</code>，它是可能的空白字符与段落或段落分隔符的本地值的组合。 （后两者都在以 <code class="code">\(?:</code> 开头的表达式中，以便它们不被 <code class="code">match-beginning</code> 函数引用。）
 </p>
-<p>The two expressions,
+<p>这两个表达式，
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq start (match-beginning 0))
 (goto-char start)
 </pre></div></div>
 
-<p>mean go to the start of the text matched by the regular expression
-search.
+<p>意味着转到由正则表达式搜索匹配的文本的开头。
 </p>
-<p>The <code class="code">(match-beginning 0)</code> expression is new.  It returns a number
-specifying the location of the start of the text that was matched by
-the last search.
-</p>
-<p>The <code class="code">match-beginning</code> function is used here because of a
-characteristic of a forward search: a successful forward search,
-regardless of whether it is a plain search or a regular expression
-search, moves point to the end of the text that is found.  In this
-case, a successful search moves point to the end of the pattern for
-<code class="code">sp-parstart</code>.
-</p>
-<p>However, we want to put point at the end of the current paragraph, not
-somewhere else.  Indeed, since the search possibly includes the
-paragraph separator, point may end up at the beginning of the next one
-unless we use an expression that includes <code class="code">match-beginning</code>.
+<p><code class="code">(match-beginning 0)</code> 表达式是新的。它返回一个指定由最近的搜索匹配的文本的开头位置的数字。
 </p>
 <a class="index-entry-id" id="index-match_002dbeginning"></a>
-<p>When given an argument of 0, <code class="code">match-beginning</code> returns the
-position that is the start of the text matched by the most recent
-search.  In this case, the most recent search looks for
-<code class="code">sp-parstart</code>.  The <code class="code">(match-beginning 0)</code> expression returns
-the beginning position of that pattern, rather than the end position
-of that pattern.
+<p>当给定参数 0 时，<code class="code">match-beginning</code> 返回最近搜索匹配的文本的开头位置。在这种情况下，最近的搜索寻找 <code class="code">sp-parstart</code>。<code class="code">(match-beginning 0)</code> 表达式返回该模式的开头位置，而不是该模式的结束位置。
 </p>
-<p>(Incidentally, when passed a positive number as an argument, the
-<code class="code">match-beginning</code> function returns the location of point at that
-parenthesized expression in the last search unless that parenthesized
-expression begins with <code class="code">\(?:</code>.  I don&rsquo;t know why <code class="code">\(?:</code>
-appears here since the argument is 0.)
+<p>（顺便说一下，当作为参数传递一个正数时，<code class="code">match-beginning</code> 函数返回最后一次搜索中括号表达式的位置，除非该括号表达式以 <code class="code">\(?:</code> 开头。我不知道为什么这里出现 <code class="code">\(?:</code>，因为参数是 0。）
 </p>
-<p>The last expression when there is no fill prefix is
+<p>当没有填充前缀时的最后一个表达式是
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(if (&lt; (point) (point-max))
     (goto-char start))))
 </pre></div></div>
 
-<p>This says that if there is no fill prefix and if we are not at the
-end, point should move to the beginning of whatever was found by the
-regular expression search for <code class="code">sp-parstart</code>.
+<p>这表示如果没有填充前缀且不在末尾，点应该移动到由正则表达式搜索 <code class="code">sp-parstart</code> 找到的内容的开头。
 </p>
-<p>The full definition for the <code class="code">forward-paragraph</code> function not only
-includes code for going forwards, but also code for going backwards.
+<p><code class="code">forward-paragraph</code> 函数的完整定义不仅包括前进的代码，还包括后退的代码。
 </p>
-<p>If you are reading this inside of GNU Emacs and you want to see the
-whole function, you can type <kbd class="kbd">C-h f</kbd> (<code class="code">describe-function</code>)
-and the name of the function.  This gives you the function
-documentation and the name of the library containing the function&rsquo;s
-source.  Place point over the name of the library and press the <kbd class="key">RET</kbd>
-key; you will be taken directly to the source.  (Be sure to install
-your sources!  Without them, you are like a person who tries to drive
-a car with his eyes shut!)
+<p>如果您在 GNU Emacs 中阅读此内容并想查看整个函数，请键入 <kbd class="kbd">C-h f</kbd>（<code class="code">describe-function</code>）和函数的名称。这会给您函数文档和包含函数源代码的库的名称。将点放在库的名称上，然后按 <kbd class="key">RET</kbd> 键；您将直接转到源代码。（确保安装了源代码！没有源代码，您就像闭着眼睛开车的人一样！）
 </p>
 </div>
 <hr>
 <div class="nav-panel">
 <p>
-Previous: <a href="fwd_002dpara-let.html">The <code class="code">let*</code> expression</a>, Up: <a href="forward_002dparagraph.html"><code class="code">forward-paragraph</code>: a Goldmine of Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="fwd_002dpara-let.html">The <code class="code">let*</code> expression</a>, Up: <a href="forward_002dparagraph.html"><code class="code">forward-paragraph</code>：一个丰富的功能集合</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

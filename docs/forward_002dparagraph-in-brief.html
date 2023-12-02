@@ -55,42 +55,31 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsec-level-extent" id="forward_002dparagraph-in-brief">
 <div class="nav-panel">
 <p>
-Next: <a href="fwd_002dpara-let.html" accesskey="n" rel="next">The <code class="code">let*</code> expression</a>, Up: <a href="forward_002dparagraph.html" accesskey="u" rel="up"><code class="code">forward-paragraph</code>: a Goldmine of Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="fwd_002dpara-let.html" accesskey="n" rel="next">The <code class="code">let*</code> expression</a>, Up: <a href="forward_002dparagraph.html" accesskey="u" rel="up"><code class="code">forward-paragraph</code>：一个丰富的功能集合</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="unnumberedsubsec" id="Shortened-forward_002dparagraph-function-definition">Shortened <code class="code">forward-paragraph</code> function definition</h4>
 
-<p>Rather than print all of the <code class="code">forward-paragraph</code> function, we
-will only print parts of it.  Read without preparation, the function
-can be daunting!
+<p>与其打印整个 <code class="code">forward-paragraph</code> 函数，我们只打印其中的部分。如果毫无准备地阅读，这个函数可能令人生畏！
 </p>
-<p>In outline, the function looks like this:
+<p>简而言之，该函数的轮廓如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun forward-paragraph (&amp;optional arg)
-  &quot;<var class="var">documentation</var>&hellip;&quot;
+  &quot;<var class="var">文档</var>&hellip;&quot;
   (interactive &quot;p&quot;)
   (or arg (setq arg 1))
   (let*
-      <var class="var">varlist</var>
-    (while (and (&lt; arg 0) (not (bobp)))     ; <span class="r">backward-moving-code</span>
+      <var class="var">变量列表</var>
+    (while (and (&lt; arg 0) (not (bobp)))     ; <span class="r">向后移动的代码</span>
       &hellip;
-    (while (and (&gt; arg 0) (not (eobp)))     ; <span class="r">forward-moving-code</span>
+    (while (and (&gt; arg 0) (not (eobp)))     ; <span class="r">向前移动的代码</span>
       &hellip;
 </pre></div></div>
 
-<p>The first parts of the function are routine: the function&rsquo;s argument
-list consists of one optional argument.  Documentation follows.
+<p>函数的前部分很常规：函数的参数列表包含一个可选参数。文档随后。
 </p>
-<p>The lower case &lsquo;<samp class="samp">p</samp>&rsquo; in the <code class="code">interactive</code> declaration means
-that the processed prefix argument, if any, is passed to the function.
-This will be a number, and is the repeat count of how many paragraphs
-point will move.  The <code class="code">or</code> expression in the next line handles
-the common case when no argument is passed to the function, which occurs
-if the function is called from other code rather than interactively.
-This case was described earlier.  (See <a class="xref" href="forward_002dsentence.html">The
-<code class="code">forward-sentence</code> function</a>.)  Now we reach the end of the
-familiar part of this function.
+<p>在 <code class="code">interactive</code> 声明中的小写 &lsquo;<samp class="samp">p</samp>&rsquo; 表示处理后的前缀参数（如果有）将传递给函数。这将是一个数字，是光标将移动的段落数的重复计数。下一行的 <code class="code">or</code> 表达式处理了未向函数传递参数的常见情况，即如果函数是从其他代码中调用而不是交互式调用时发生的情况。此情况在之前已经描述过。(See <a class="xref" href="forward_002dsentence.html">The <code class="code">forward-sentence</code> function</a>.) 现在我们到达了这个函数的熟悉部分的末尾。
 </p>
 </div>
 

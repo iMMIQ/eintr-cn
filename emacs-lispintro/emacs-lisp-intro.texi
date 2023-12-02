@@ -8760,21 +8760,20 @@ GNU Emacs 21
 正则表达式搜索非常有用，而由 @code{re-search-forward} 展示的模式，其中搜索是 @code{if} 表达式的测试，非常方便。你会经常看到或编写包含这个模式的代码。
 
 @node forward-paragraph
-@section @code{forward-paragraph}: a Goldmine of Functions
+@section @code{forward-paragraph}：一个丰富的功能集合
 @findex forward-paragraph
 
 @ignore
-@c in GNU Emacs 22
+@c 在 GNU Emacs 22 中
 (defun forward-paragraph (&optional arg)
-  "Move forward to end of paragraph.
-With argument ARG, do it ARG times;
-a negative argument ARG = -N means move backward N paragraphs.
+  "向前移动至段落末尾。
+带有参数 ARG 时，执行 ARG 次；
+负参数 ARG = -N 表示向后移动 N 段落。
 
-A line which `paragraph-start' matches either separates paragraphs
-\(if `paragraph-separate' matches it also) or is the first line of a paragraph.
-A paragraph end is the beginning of a line which is not part of the paragraph
-to which the end of the previous line belongs, or the end of the buffer.
-Returns the count of paragraphs left to move."
+`paragraph-start' 匹配的行要么分隔段落
+（如果 `paragraph-separate' 也匹配它），要么是段落的第一行。
+段落末尾是前一行的结束不属于同一段落的行，或缓冲区的结束。
+返回剩余要移动的段落数量。"
   (interactive "p")
   (or arg (setq arg 1))
   (let* ((opoint (point))
@@ -8782,11 +8781,10 @@ Returns the count of paragraphs left to move."
           (and fill-prefix (not (equal fill-prefix ""))
                (not paragraph-ignore-fill-prefix)
                (regexp-quote fill-prefix)))
-         ;; Remove ^ from paragraph-start and paragraph-sep if they are there.
-         ;; These regexps shouldn't be anchored, because we look for them
-         ;; starting at the left-margin.  This allows paragraph commands to
-         ;; work normally with indented text.
-         ;; This hack will not find problem cases like "whatever\\|^something".
+         ;; 如果在 paragraph-start 和 paragraph-sep 的开头有 ^，则移除它们。
+         ;; 这些正则表达式不应该是锚定的，因为我们从左边距开始查找它们。
+         ;; 这允许段落命令在缩进的文本中正常工作。
+         ;; 此 hack 将无法找到问题案例，例如 "whatever\\|^something"。
          (parstart (if (and (not (equal "" paragraph-start))
                             (equal ?^ (aref paragraph-start 0)))
                        (substring paragraph-start 1)
@@ -8800,7 +8798,7 @@ Returns the count of paragraphs left to move."
               (concat parsep "\\|"
                       fill-prefix-regexp "[ \t]*$")
             parsep))
-         ;; This is used for searching.
+         ;; 用于搜索的变量。
          (sp-parstart (concat "^[ \t]*\\(?:" parstart "\\|" parsep "\\)"))
          start found-start)
     (while (and (< arg 0) (not (bobp)))
@@ -8809,7 +8807,7 @@ Returns the count of paragraphs left to move."
                (looking-at parsep))
           (setq arg (1+ arg))
         (setq start (point))
-        ;; Move back over paragraph-separating lines.
+        ;; 向后移动超过分隔段落的行。
         (forward-char -1) (beginning-of-line)
         (while (and (not (bobp))
                     (progn (move-to-left-margin)
@@ -8818,11 +8816,11 @@ Returns the count of paragraphs left to move."
         (if (bobp)
             nil
           (setq arg (1+ arg))
-          ;; Go to end of the previous (non-separating) line.
+          ;; 移动至前一行的结束（非分隔）。
           (end-of-line)
-          ;; Search back for line that starts or separates paragraphs.
+          ;; 向后搜索以找到开始或分隔段落的行。
           (if (if fill-prefix-regexp
-                  ;; There is a fill prefix; it overrides parstart.
+                  ;; 存在填充前缀；它覆盖了 parstart。
                   (let (multiple-lines)
                     (while (and (progn (beginning-of-line) (not (bobp)))
                                 (progn (move-to-left-margin)
@@ -8832,19 +8830,16 @@ Returns the count of paragraphs left to move."
                         (setq multiple-lines t))
                       (forward-line -1))
                     (move-to-left-margin)
-                    ;; This deleted code caused a long hanging-indent line
-                    ;; not to be filled together with the following lines.
-                    ;; ;; Don't move back over a line before the paragraph
-                    ;; ;; which doesn't start with fill-prefix
-                    ;; ;; unless that is the only line we've moved over.
+                    ;; 这段已删除的代码导致长悬挂缩进行无法与后续行一起填充。
+                    ;; ;; 不要向后移动一个段落之前的行，除非它不以 fill-prefix 开头，
+                    ;; ;; 并且那是我们移动的唯一行。
                     ;; (and (not (looking-at fill-prefix-regexp))
                     ;;      multiple-lines
                     ;;      (forward-line 1))
                     (not (bobp)))
                 (while (and (re-search-backward sp-parstart nil 1)
                             (setq found-start t)
-                            ;; Found a candidate, but need to check if it is a
-                            ;; REAL parstart.
+                            ;; 找到一个候选项，但需要检查它是否是真正的 parstart。
                             (progn (setq start (point))
                                    (move-to-left-margin)
                                    (not (looking-at parsep)))
@@ -8856,36 +8851,36 @@ Returns the count of paragraphs left to move."
                   (setq found-start nil)
                   (goto-char start))
                 found-start)
-              ;; Found one.
+              ;; 找到一个。
               (progn
-                ;; Move forward over paragraph separators.
-                ;; We know this cannot reach the place we started
-                ;; because we know we moved back over a non-separator.
+                ;; 向前移动超过分隔符。
+                ;; 我们知道这不可能达到我们开始的地方，
+                ;; 因为我们知道我们向后移动超过了非分隔符。
                 (while (and (not (eobp))
                             (progn (move-to-left-margin)
                                    (looking-at parsep)))
                   (forward-line 1))
-                ;; If line before paragraph is just margin, back up to there.
+                ;; 如果段落前一行只是边距，后退到那里。
                 (end-of-line 0)
                 (if (> (current-column) (current-left-margin))
                     (forward-char 1)
                   (skip-chars-backward " \t")
                   (if (not (bolp))
                       (forward-line 1))))
-            ;; No starter or separator line => use buffer beg.
+            ;; 没有启动器或分隔符行 => 使用缓冲区开头。
             (goto-char (point-min))))))
 
     (while (and (> arg 0) (not (eobp)))
-      ;; Move forward over separator lines...
+      ;; 向前移动超过分隔符行...
       (while (and (not (eobp))
                   (progn (move-to-left-margin) (not (eobp)))
                   (looking-at parsep))
         (forward-line 1))
       (unless (eobp) (setq arg (1- arg)))
-      ;; ... and one more line.
+      ;; ... 还有一行。
       (forward-line 1)
       (if fill-prefix-regexp
-          ;; There is a fill prefix; it overrides parstart.
+          ;; 存在填充前缀；它覆盖了 parstart。
           (while (and (not (eobp))
                       (progn (move-to-left-margin) (not (eobp)))
                       (not (looking-at parsep))
@@ -8904,42 +8899,24 @@ Returns the count of paragraphs left to move."
         (if (< (point) (point-max))
             (goto-char start))))
     (constrain-to-field nil opoint t)
-    ;; Return the number of steps that could not be done.
+    ;; 返回无法完成的步骤数。
     arg))
 @end ignore
 
-The @code{forward-paragraph} function moves point forward to the end
-of the paragraph.  It is usually bound to @kbd{M-@}} and makes use of a
-number of functions that are important in themselves, including
-@code{let*}, @code{match-beginning}, and @code{looking-at}.
+@code{forward-paragraph} 函数将点（point）向前移动到段落末尾。通常绑定到 @kbd{M-@}}，并且使用一些重要的函数，包括@code{let*}、@code{match-beginning} 和 @code{looking-at}。
 
-The function definition for @code{forward-paragraph} is considerably
-longer than the function definition for @code{forward-sentence}
-because it works with a paragraph, each line of which may begin with a
-fill prefix.
+@code{forward-paragraph} 的函数定义比 @code{forward-sentence} 的函数定义长得多，因为它处理一个段落，其中每一行可能以填充前缀开始。
 
-A fill prefix consists of a string of characters that are repeated at
-the beginning of each line.  For example, in Lisp code, it is a
-convention to start each line of a paragraph-long comment with
-@samp{;;; }.  In Text mode, four blank spaces make up another common
-fill prefix, creating an indented paragraph.  (@xref{Fill Prefix, , ,
-emacs, The GNU Emacs Manual}, for more information about fill
-prefixes.)
+填充前缀由一串在每一行开头重复的字符组成。例如，在 Lisp 代码中，通常使用 @samp{;;; } 开始段落长注释的每一行。在文本模式中，四个空格组成了另一种常见的填充前缀，创建一个缩进的段落。（有关填充前缀的更多信息，请参阅 @xref{Fill Prefix, , ,emacs, The GNU Emacs Manual}。）
 
-The existence of a fill prefix means that in addition to being able to
-find the end of a paragraph whose lines begin on the left-most
-column, the @code{forward-paragraph} function must be able to find the
-end of a paragraph when all or many of the lines in the buffer begin
-with the fill prefix.
+存在填充前缀意味着除了能够找到以最左列开始的段落的末尾之外，@code{forward-paragraph} 函数还必须能够找到在缓冲区中所有或许多行都以填充前缀开头的段落的末尾。
 
-Moreover, it is sometimes practical to ignore a fill prefix that
-exists, especially when blank lines separate paragraphs.
-This is an added complication.
+此外，有时忽略存在的填充前缀是切实可行的，特别是在空白行分隔段落时。这是一个额外的复杂性。
 
 @menu
-* forward-paragraph in brief::  Key parts of the function definition.
-* fwd-para let::                The @code{let*} expression.
-* fwd-para while::              The forward motion @code{while} loop.
+* forward-paragraph in brief::  函数定义的关键部分。
+* fwd-para let::                @code{let*} 表达式。
+* fwd-para while::              前进运动的 @code{while} 循环。
 @end menu
 
 @ifnottex
@@ -8947,61 +8924,41 @@ This is an added complication.
 @unnumberedsubsec Shortened @code{forward-paragraph} function definition
 @end ifnottex
 
-Rather than print all of the @code{forward-paragraph} function, we
-will only print parts of it.  Read without preparation, the function
-can be daunting!
+与其打印整个 @code{forward-paragraph} 函数，我们只打印其中的部分。如果毫无准备地阅读，这个函数可能令人生畏！
 
 @need 800
-In outline, the function looks like this:
+简而言之，该函数的轮廓如下：
 
 @smallexample
 @group
 (defun forward-paragraph (&optional arg)
-  "@var{documentation}@dots{}"
+  "@var{文档}@dots{}"
   (interactive "p")
   (or arg (setq arg 1))
   (let*
-      @var{varlist}
-    (while (and (< arg 0) (not (bobp)))     ; @r{backward-moving-code}
+      @var{变量列表}
+    (while (and (< arg 0) (not (bobp)))     ; @r{向后移动的代码}
       @dots{}
-    (while (and (> arg 0) (not (eobp)))     ; @r{forward-moving-code}
+    (while (and (> arg 0) (not (eobp)))     ; @r{向前移动的代码}
       @dots{}
 @end group
 @end smallexample
 
-The first parts of the function are routine: the function's argument
-list consists of one optional argument.  Documentation follows.
+函数的前部分很常规：函数的参数列表包含一个可选参数。文档随后。
 
-The lower case @samp{p} in the @code{interactive} declaration means
-that the processed prefix argument, if any, is passed to the function.
-This will be a number, and is the repeat count of how many paragraphs
-point will move.  The @code{or} expression in the next line handles
-the common case when no argument is passed to the function, which occurs
-if the function is called from other code rather than interactively.
-This case was described earlier.  (@xref{forward-sentence, The
-@code{forward-sentence} function}.)  Now we reach the end of the
-familiar part of this function.
+在 @code{interactive} 声明中的小写 @samp{p} 表示处理后的前缀参数（如果有）将传递给函数。这将是一个数字，是光标将移动的段落数的重复计数。下一行的 @code{or} 表达式处理了未向函数传递参数的常见情况，即如果函数是从其他代码中调用而不是交互式调用时发生的情况。此情况在之前已经描述过。(@xref{forward-sentence, The @code{forward-sentence} function}.) 现在我们到达了这个函数的熟悉部分的末尾。
 
 @node fwd-para let
 @unnumberedsubsec The @code{let*} expression
 
 @findex let*
-The next line of the @code{forward-paragraph} function begins a
-@code{let*} expression (@pxref{let* introduced,,@code{let*}
-introduced}), in which Emacs binds a total of seven variables:
-@code{opoint}, @code{fill-prefix-regexp}, @code{parstart},
-@code{parsep}, @code{sp-parstart}, @code{start}, and
-@code{found-start}.
+@code{forward-paragraph} 函数的下一行开始了一个 @code{let*} 表达式 (@pxref{let* introduced,,@code{let*} introduced})，在其中 Emacs 绑定了七个变量：@code{opoint}、@code{fill-prefix-regexp}、@code{parstart}、@code{parsep}、@code{sp-parstart}、@code{start} 和 @code{found-start}。
 
-The variable @code{parsep} appears twice, first, to remove instances
-of @samp{^}, and second, to handle fill prefixes.
+变量 @code{parsep} 出现两次，首先是为了去除 @samp{^} 的实例，其次是为了处理填充前缀。
 
-The variable @code{opoint} is just the value of @code{point}.  As you
-can guess, it is used in a @code{constrain-to-field} expression, just
-as in @code{forward-sentence}.
+变量 @code{opoint} 只是 @code{point} 的值。正如你可以猜到的，它在一个 @code{constrain-to-field} 表达式中使用，就像在 @code{forward-sentence} 中一样。
 
-The variable @code{fill-prefix-regexp} is set to the value returned by
-evaluating the following list:
+变量 @code{fill-prefix-regexp} 被设置为通过评估以下列表返回的值：
 
 @smallexample
 @group
@@ -9013,118 +8970,63 @@ evaluating the following list:
 @end smallexample
 
 @noindent
-This is an expression whose first element is the @code{and} special form.
+这是一个表达式，其第一个元素是 @code{and} 特殊形式。
 
-As we learned earlier (@pxref{kill-new 函数, , @code{kill-new} 函数}), the @code{and} special form evaluates each of its
-arguments until one of the arguments returns a value of @code{nil}, in
-which case the @code{and} expression returns @code{nil}; however, if
-none of the arguments returns a value of @code{nil}, the value
-resulting from evaluating the last argument is returned.  (Since such
-a value is not @code{nil}, it is considered true in Lisp.)  In other
-words, an @code{and} expression returns a true value only if all its
-arguments are true.
-@findex and
+正如我们之前学到的(@pxref{kill-new 函数, , @code{kill-new} 函数})，@code{and} 特殊形式评估其每个参数，直到其中一个参数返回 @code{nil} 的值，此时 @code{and} 表达式返回 @code{nil}；然而，如果没有任何参数返回 @code{nil} 的值，则评估最后一个参数产生的值将被返回。 (由于这样的值不是 @code{nil}，在 Lisp 中被视为真值。) 换句话说，只有当 @code{and} 表达式的所有参数都为真时，它才返回真值。
 
-In this case, the variable @code{fill-prefix-regexp} is bound to a
-non-@code{nil} value only if the following four expressions produce a
-true (i.e., a non-@code{nil}) value when they are evaluated; otherwise,
-@code{fill-prefix-regexp} is bound to @code{nil}.
+在这种情况下，只有当以下四个表达式在评估时产生真值（即非 @code{nil} 值）时，变量 @code{fill-prefix-regexp} 才绑定到非 @code{nil} 值；否则，@code{fill-prefix-regexp} 被绑定到 @code{nil}。
 
 @table @code
 @item fill-prefix
-When this variable is evaluated, the value of the fill prefix, if any,
-is returned.  If there is no fill prefix, this variable returns
-@code{nil}.
+评估此变量时，返回填充前缀的值（如果有的话）。如果没有填充前缀，则此变量返回 @code{nil}。
 
-@item (not (equal fill-prefix "")
-This expression checks whether an existing fill prefix is an empty
-string, that is, a string with no characters in it.  An empty string is
-not a useful fill prefix.
+@item (not (equal fill-prefix ""))
+此表达式检查现有填充前缀是否为空字符串，即不包含任何字符的字符串。空字符串不是有用的填充前缀。
 
 @item (not paragraph-ignore-fill-prefix)
-This expression returns @code{nil} if the variable
-@code{paragraph-ignore-fill-prefix} has been turned on by being set to a
-true value such as @code{t}.
+如果变量 @code{paragraph-ignore-fill-prefix} 被设置为真值，如 @code{t}，则此表达式返回 @code{nil}。
 
 @item (regexp-quote fill-prefix)
-This is the last argument to the @code{and} special form.  If all the
-arguments to the @code{and} are true, the value resulting from
-evaluating this expression will be returned by the @code{and} expression
-and bound to the variable @code{fill-prefix-regexp},
+这是 @code{and} 特殊形式的最后一个参数。如果 @code{and} 的所有参数都为真，则通过评估此表达式产生的值将被 @code{and} 表达式返回，并绑定到变量 @code{fill-prefix-regexp}，
 @end table
 
 @findex regexp-quote
 @noindent
-The result of evaluating this @code{and} expression successfully is that
-@code{fill-prefix-regexp} will be bound to the value of
-@code{fill-prefix} as modified by the @code{regexp-quote} function.
-What @code{regexp-quote} does is read a string and return a regular
-expression that will exactly match the string and match nothing else.
-This means that @code{fill-prefix-regexp} will be set to a value that
-will exactly match the fill prefix if the fill prefix exists.
-Otherwise, the variable will be set to @code{nil}.
+成功评估此 @code{and} 表达式的结果是，@code{fill-prefix-regexp} 将绑定到由 @code{regexp-quote} 函数修改的 @code{fill-prefix} 的值。 @code{regexp-quote} 做的是读取一个字符串并返回一个正则表达式，该正则表达式将精确匹配该字符串且不匹配其他任何内容。这意味着如果存在填充前缀，@code{fill-prefix-regexp} 将被设置为一个精确匹配填充前缀的值。否则，该变量将被设置为 @code{nil}。
 
-The next two local variables in the @code{let*} expression are
-designed to remove instances of @samp{^} from @code{parstart} and
-@code{parsep}, the local variables which indicate the paragraph start
-and the paragraph separator.  The next expression sets @code{parsep}
-again.  That is to handle fill prefixes.
+@code{let*} 表达式中的下两个局部变量旨在从 @code{parstart} 和 @code{parsep} 中删除 @samp{^} 的实例。接下来的表达式再次设置 @code{parsep}。这是为了处理填充前缀。
 
-This is the setting that requires the definition call @code{let*}
-rather than @code{let}.  The true-or-false-test for the @code{if}
-depends on whether the variable @code{fill-prefix-regexp} evaluates to
-@code{nil} or some other value.
+这是定义调用 @code{let*} 而不是 @code{let} 的设置。 @code{if} 表达式的真假测试取决于变量 @code{fill-prefix-regexp} 是否评估为 @code{nil} 或其他值。
 
-If @code{fill-prefix-regexp} does not have a value, Emacs evaluates
-the else-part of the @code{if} expression and binds @code{parsep} to
-its local value.  (@code{parsep} is a regular expression that matches
-what separates paragraphs.)
+如果 @code{fill-prefix-regexp} 没有值，Emacs 评估 @code{if} 表达式的 else-部分，并将 @code{parsep} 绑定到其局部值。 (@code{parsep} 是一个匹配段落之间分隔符的正则表达式。)
 
-But if @code{fill-prefix-regexp} does have a value, Emacs evaluates
-the then-part of the @code{if} expression and binds @code{parsep} to a
-regular expression that includes the @code{fill-prefix-regexp} as part
-of the pattern.
+但是，如果 @code{fill-prefix-regexp} 有值，Emacs 将评估 @code{if} 表达式的 then-部分，并将 @code{parsep} 绑定到一个正则表达式，该正则表达式包含 @code{fill-prefix-regexp} 作为模式的一部分。
 
-Specifically, @code{parsep} is set to the original value of the
-paragraph separate regular expression concatenated with an alternative
-expression that consists of the @code{fill-prefix-regexp} followed by
-optional whitespace to the end of the line.  The whitespace is defined
-by @w{@code{"[ \t]*$"}}.)  The @samp{\\|} defines this portion of the
-regexp as an alternative to @code{parsep}.
+具体而言，@code{parsep} 被设置为段落分隔正则表达式的原始值，后面跟着一个可选的空白到行尾的替代表达式，由 @w{@code{"[ \t]*$"}} 定义。) @samp{\\|} 定义了正则表达式的这一部分作为 @code{parsep} 的替代项。
 
-According to a comment in the code, the next local variable,
-@code{sp-parstart}, is used for searching, and then the final two,
-@code{start} and @code{found-start}, are set to @code{nil}.
+根据代码中的注释，接下来的局部变量，@code{sp-parstart}，用于搜索，然后最后两个，@code{start} 和 @code{found-start}，被设置为 @code{nil}。
 
-Now we get into the body of the @code{let*}.  The first part of the body
-of the @code{let*} deals with the case when the function is given a
-negative argument and is therefore moving backwards.  We will skip this
-section.
+现在我们进入了 @code{let*} 的主体。 @code{let*} 的主体的第一部分处理函数被给予负参数且因此向后移动的情况。我们将跳过这一部分。
 
 @node fwd-para while
-@unnumberedsubsec The forward motion @code{while} loop
+@unnumberedsubsec 前进动作 @code{while} 循环
 
-The second part of the body of the @code{let*} deals with forward
-motion.  It is a @code{while} loop that repeats itself so long as the
-value of @code{arg} is greater than zero.  In the most common use of
-the function, the value of the argument is 1, so the body of the
-@code{while} loop is evaluated exactly once, and the cursor moves
-forward one paragraph.
+@code{let*} 的第二部分处理前进动作。它是一个 @code{while} 循环，只要 @code{arg} 的值大于零就重复执行。在函数的最常见用法中，参数的值为 1，因此 @code{while} 循环的主体只被评估一次，光标向前移动一个段落。
 
 @ignore
 (while (and (> arg 0) (not (eobp)))
 
-  ;; Move forward over separator lines...
+  ;; 向前移动过分隔行…
   (while (and (not (eobp))
               (progn (move-to-left-margin) (not (eobp)))
               (looking-at parsep))
     (forward-line 1))
   (unless (eobp) (setq arg (1- arg)))
-  ;; ... and one more line.
+  ;; …再多移动一行。
   (forward-line 1)
 
   (if fill-prefix-regexp
-      ;; There is a fill prefix; it overrides parstart.
+      ;; 存在填充前缀；它覆盖了 parstart；
       (while (and (not (eobp))
                   (progn (move-to-left-margin) (not (eobp)))
                   (not (looking-at parsep))
@@ -9146,33 +9048,32 @@ forward one paragraph.
         (goto-char start))))
 @end ignore
 
-This part handles three situations: when point is between paragraphs,
-when there is a fill prefix and when there is no fill prefix.
+这部分处理三种情况：当光标在段落之间时，当存在填充前缀时，当不存在填充前缀时。
 
 @need 800
-The @code{while} loop looks like this:
+@code{while} 循环如下：
 
 @smallexample
 @group
-;; @r{going forwards and not at the end of the buffer}
+;; @r{向前移动且不在缓冲区末尾}
 (while (and (> arg 0) (not (eobp)))
 
-  ;; @r{between paragraphs}
-  ;; Move forward over separator lines...
+  ;; @r{在段落之间}
+  ;; 向前移动过分隔行…
   (while (and (not (eobp))
               (progn (move-to-left-margin) (not (eobp)))
               (looking-at parsep))
     (forward-line 1))
-  ;;  @r{This decrements the loop}
+  ;;  @r{这减少了循环计数}
   (unless (eobp) (setq arg (1- arg)))
-  ;; ... and one more line.
+  ;; …再多移动一行。
   (forward-line 1)
 @end group
 
 @group
   (if fill-prefix-regexp
-      ;; There is a fill prefix; it overrides parstart;
-      ;; we go forward line by line
+      ;; 存在填充前缀；它覆盖了 parstart；
+      ;; 我们逐行向前移动
       (while (and (not (eobp))
                   (progn (move-to-left-margin) (not (eobp)))
                   (not (looking-at parsep))
@@ -9181,8 +9082,8 @@ The @code{while} loop looks like this:
 @end group
 
 @group
-    ;; There is no fill prefix;
-    ;; we go forward character by character
+    ;; 不存在填充前缀；
+    ;; 我们逐字符向前移动
     (while (and (re-search-forward sp-parstart nil 1)
                 (progn (setq start (match-beginning 0))
                        (goto-char start)
@@ -9196,55 +9097,35 @@ The @code{while} loop looks like this:
 @end group
 
 @group
-    ;; and if there is no fill prefix and if we are not at the end,
-    ;;     go to whatever was found in the regular expression search
-    ;;     for sp-parstart
+    ;; 如果没有填充前缀且不在末尾，
+    ;;     则转到在正则表达式搜索 sp-parstart 中找到的内容
     (if (< (point) (point-max))
         (goto-char start))))
 @end group
 @end smallexample
 
 @findex eobp
-We can see that this is a decrementing counter @code{while} loop,
-using the expression @code{(setq arg (1- arg))} as the decrementer.
-That expression is not far from the @code{while}, but is hidden in
-another Lisp macro, an @code{unless} macro.  Unless we are at the end
-of the buffer---that is what the @code{eobp} function determines; it
-is an abbreviation of @samp{End Of Buffer P}---we decrease the value
-of @code{arg} by one.
+我们可以看到这是一个递减计数器的 @code{while} 循环，使用表达式 @code{(setq arg (1- arg))} 作为递减器。该表达式并不远离 @code{while}，但被隐藏在另一个 Lisp 宏中，即 @code{unless} 宏。除非我们在缓冲区末尾——这是 @code{eobp} 函数确定的；它是 @samp{End Of Buffer P} 的缩写——否则我们会将 @code{arg} 的值减小一。
 
-(If we are at the end of the buffer, we cannot go forward any more and
-the next loop of the @code{while} expression will test false since the
-test is an @code{and} with @code{(not (eobp))}.  The @code{not}
-function means exactly as you expect; it is another name for
-@code{null}, a function that returns true when its argument is false.)
+（如果我们在缓冲区末尾，我们无法再向前移动，由于测试是与 @code{(not (eobp))} 的 @code{and}，下一个循环的表达式将测试为假，因为 @code{not} 函数的作用与您期望的完全相同；它是 @code{null} 的另一个名称，当其参数为假时返回真。）
 
-Interestingly, the loop count is not decremented until we leave the
-space between paragraphs, unless we come to the end of buffer or stop
-seeing the local value of the paragraph separator.
+有趣的是，循环计数器在我们离开段落之间之前并未递减，除非我们到达缓冲区的末尾或停止看到段落分隔符的本地值。
 
-That second @code{while} also has a @code{(move-to-left-margin)}
-expression.  The function is self-explanatory.  It is inside a
-@code{progn} expression and not the last element of its body, so it is
-only invoked for its side effect, which is to move point to the left
-margin of the current line.
+这第二个 @code{while} 也有一个 @code{(move-to-left-margin)} 表达式。该函数是不言自明的。它在一个 @code{progn} 表达式中，并且不是其主体的最后一个元素，因此它仅被调用以产生其移动到当前行左边缘的副作用。
 
 @findex looking-at
-The @code{looking-at} function is also self-explanatory; it returns
-true if the text after point matches the regular expression given as
-its argument.
+@code{looking-at} 函数同样不言自明；如果点之后的文本与其参数给定的正则表达式匹配，则返回真。
 
-The rest of the body of the loop looks difficult at first, but makes
-sense as you come to understand it.
+在理解的过程中，循环体的其余部分起初看起来可能有些困难，但随着理解，它会变得合理。
 
 @need 800
-First consider what happens if there is a fill prefix:
+首先考虑如果存在填充前缀时会发生什么：
 
 @smallexample
 @group
   (if fill-prefix-regexp
-      ;; There is a fill prefix; it overrides parstart;
-      ;; we go forward line by line
+      ;; 存在填充前缀；它覆盖了 parstart；
+      ;; 我们逐行向前移动
       (while (and (not (eobp))
                   (progn (move-to-left-margin) (not (eobp)))
                   (not (looking-at parsep))
@@ -9254,31 +9135,26 @@ First consider what happens if there is a fill prefix:
 @end smallexample
 
 @noindent
-This expression moves point forward line by line so long
-as four conditions are true:
+这个表达式会使点逐行向前移动，只要四个条件都为真：
 
 @enumerate
 @item
-Point is not at the end of the buffer.
+点不在缓冲区末尾。
 
 @item
-We can move to the left margin of the text and are
-not at the end of the buffer.
+我们可以移动到文本的左边缘且不在缓冲区末尾。
 
 @item
-The text following point does not separate paragraphs.
+点之后的文本不分隔段落。
 
 @item
-The pattern following point is the fill prefix regular expression.
+点之后的模式是填充前缀正则表达式。
 @end enumerate
 
-The last condition may be puzzling, until you remember that point was
-moved to the beginning of the line early in the @code{forward-paragraph}
-function.  This means that if the text has a fill prefix, the
-@code{looking-at} function will see it.
+最后一个条件可能令人困惑，直到您记住点在 @code{forward-paragraph} 函数中早期被移动到行的开头。这意味着如果文本有填充前缀，@code{looking-at} 函数将会看到它。
 
 @need 1250
-Consider what happens when there is no fill prefix.
+考虑当没有填充前缀时会发生什么。
 
 @smallexample
 @group
@@ -9296,15 +9172,10 @@ Consider what happens when there is no fill prefix.
 @end smallexample
 
 @noindent
-This @code{while} loop has us searching forward for
-@code{sp-parstart}, which is the combination of possible whitespace
-with the local value of the start of a paragraph or of a paragraph
-separator.  (The latter two are within an expression starting
-@code{\(?:} so that they are not referenced by the
-@code{match-beginning} function.)
+这个 @code{while} 循环让我们向前搜索 @code{sp-parstart}，它是可能的空白字符与段落或段落分隔符的本地值的组合。 （后两者都在以 @code{\(?:} 开头的表达式中，以便它们不被 @code{match-beginning} 函数引用。）
 
 @need 800
-The two expressions,
+这两个表达式，
 
 @smallexample
 @group
@@ -9314,41 +9185,17 @@ The two expressions,
 @end smallexample
 
 @noindent
-mean go to the start of the text matched by the regular expression
-search.
+意味着转到由正则表达式搜索匹配的文本的开头。
 
-The @code{(match-beginning 0)} expression is new.  It returns a number
-specifying the location of the start of the text that was matched by
-the last search.
-
-The @code{match-beginning} function is used here because of a
-characteristic of a forward search: a successful forward search,
-regardless of whether it is a plain search or a regular expression
-search, moves point to the end of the text that is found.  In this
-case, a successful search moves point to the end of the pattern for
-@code{sp-parstart}.
-
-However, we want to put point at the end of the current paragraph, not
-somewhere else.  Indeed, since the search possibly includes the
-paragraph separator, point may end up at the beginning of the next one
-unless we use an expression that includes @code{match-beginning}.
+@code{(match-beginning 0)} 表达式是新的。它返回一个指定由最近的搜索匹配的文本的开头位置的数字。
 
 @findex match-beginning
-When given an argument of 0, @code{match-beginning} returns the
-position that is the start of the text matched by the most recent
-search.  In this case, the most recent search looks for
-@code{sp-parstart}.  The @code{(match-beginning 0)} expression returns
-the beginning position of that pattern, rather than the end position
-of that pattern.
+当给定参数 0 时，@code{match-beginning} 返回最近搜索匹配的文本的开头位置。在这种情况下，最近的搜索寻找 @code{sp-parstart}。@code{(match-beginning 0)} 表达式返回该模式的开头位置，而不是该模式的结束位置。
 
-(Incidentally, when passed a positive number as an argument, the
-@code{match-beginning} function returns the location of point at that
-parenthesized expression in the last search unless that parenthesized
-expression begins with @code{\(?:}.  I don't know why @code{\(?:}
-appears here since the argument is 0.)
+（顺便说一下，当作为参数传递一个正数时，@code{match-beginning} 函数返回最后一次搜索中括号表达式的位置，除非该括号表达式以 @code{\(?:} 开头。我不知道为什么这里出现 @code{\(?:}，因为参数是 0。）
 
 @need 1250
-The last expression when there is no fill prefix is
+当没有填充前缀时的最后一个表达式是
 
 @smallexample
 @group
@@ -9358,21 +9205,11 @@ The last expression when there is no fill prefix is
 @end smallexample
 
 @noindent
-This says that if there is no fill prefix and if we are not at the
-end, point should move to the beginning of whatever was found by the
-regular expression search for @code{sp-parstart}.
+这表示如果没有填充前缀且不在末尾，点应该移动到由正则表达式搜索 @code{sp-parstart} 找到的内容的开头。
 
-The full definition for the @code{forward-paragraph} function not only
-includes code for going forwards, but also code for going backwards.
+@code{forward-paragraph} 函数的完整定义不仅包括前进的代码，还包括后退的代码。
 
-If you are reading this inside of GNU Emacs and you want to see the
-whole function, you can type @kbd{C-h f} (@code{describe-function})
-and the name of the function.  This gives you the function
-documentation and the name of the library containing the function's
-source.  Place point over the name of the library and press the @key{RET}
-key; you will be taken directly to the source.  (Be sure to install
-your sources!  Without them, you are like a person who tries to drive
-a car with his eyes shut!)
+如果您在 GNU Emacs 中阅读此内容并想查看整个函数，请键入 @kbd{C-h f}（@code{describe-function}）和函数的名称。这会给您函数文档和包含函数源代码的库的名称。将点放在库的名称上，然后按 @key{RET} 键；您将直接转到源代码。（确保安装了源代码！没有源代码，您就像闭着眼睛开车的人一样！）
 
 @node Regexp Review
 @section Review

@@ -58,42 +58,25 @@ kbd.kbd {font-style: oblique}
 Next: <a href="Regexp-Review.html" accesskey="n" rel="next">Review</a>, Previous: <a href="forward_002dsentence.html" accesskey="p" rel="prev"><code class="code">forward-sentence</code></a>, Up: <a href="Zheng-Ze-Biao-Da-Shi-Sou-Suo-.html" accesskey="u" rel="up">正则表达式搜索</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="forward_002dparagraph_003a-a-Goldmine-of-Functions">12.4 <code class="code">forward-paragraph</code>: a Goldmine of Functions</h3>
+<h3 class="section" id="forward_002dparagraph_003aYiGeFeng-Fu-De-Gong-Neng-Ji-He-">12.4 <code class="code">forward-paragraph</code>：一个丰富的功能集合</h3>
 <a class="index-entry-id" id="index-forward_002dparagraph"></a>
 
 
-<p>The <code class="code">forward-paragraph</code> function moves point forward to the end
-of the paragraph.  It is usually bound to <kbd class="kbd">M-}</kbd> and makes use of a
-number of functions that are important in themselves, including
-<code class="code">let*</code>, <code class="code">match-beginning</code>, and <code class="code">looking-at</code>.
+<p><code class="code">forward-paragraph</code> 函数将点（point）向前移动到段落末尾。通常绑定到 <kbd class="kbd">M-}</kbd>，并且使用一些重要的函数，包括<code class="code">let*</code>、<code class="code">match-beginning</code> 和 <code class="code">looking-at</code>。
 </p>
-<p>The function definition for <code class="code">forward-paragraph</code> is considerably
-longer than the function definition for <code class="code">forward-sentence</code>
-because it works with a paragraph, each line of which may begin with a
-fill prefix.
+<p><code class="code">forward-paragraph</code> 的函数定义比 <code class="code">forward-sentence</code> 的函数定义长得多，因为它处理一个段落，其中每一行可能以填充前缀开始。
 </p>
-<p>A fill prefix consists of a string of characters that are repeated at
-the beginning of each line.  For example, in Lisp code, it is a
-convention to start each line of a paragraph-long comment with
-&lsquo;<samp class="samp">;;; </samp>&rsquo;.  In Text mode, four blank spaces make up another common
-fill prefix, creating an indented paragraph.  (See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Fill-Prefix.html#Fill-Prefix">Fill Prefix</a> in <cite class="cite">The GNU Emacs Manual</cite>, for more information about fill
-prefixes.)
+<p>填充前缀由一串在每一行开头重复的字符组成。例如，在 Lisp 代码中，通常使用 &lsquo;<samp class="samp">;;; </samp>&rsquo; 开始段落长注释的每一行。在文本模式中，四个空格组成了另一种常见的填充前缀，创建一个缩进的段落。（有关填充前缀的更多信息，请参阅 See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Fill-Prefix.html#Fill-Prefix">Fill Prefix</a> in <cite class="cite">The GNU Emacs Manual</cite>。）
 </p>
-<p>The existence of a fill prefix means that in addition to being able to
-find the end of a paragraph whose lines begin on the left-most
-column, the <code class="code">forward-paragraph</code> function must be able to find the
-end of a paragraph when all or many of the lines in the buffer begin
-with the fill prefix.
+<p>存在填充前缀意味着除了能够找到以最左列开始的段落的末尾之外，<code class="code">forward-paragraph</code> 函数还必须能够找到在缓冲区中所有或许多行都以填充前缀开头的段落的末尾。
 </p>
-<p>Moreover, it is sometimes practical to ignore a fill prefix that
-exists, especially when blank lines separate paragraphs.
-This is an added complication.
+<p>此外，有时忽略存在的填充前缀是切实可行的，特别是在空白行分隔段落时。这是一个额外的复杂性。
 </p>
 
 <ul class="mini-toc">
 <li><a href="forward_002dparagraph-in-brief.html" accesskey="1">Shortened <code class="code">forward-paragraph</code> function definition</a></li>
 <li><a href="fwd_002dpara-let.html" accesskey="2">The <code class="code">let*</code> expression</a></li>
-<li><a href="fwd_002dpara-while.html" accesskey="3">The forward motion <code class="code">while</code> loop</a></li>
+<li><a href="fwd_002dpara-while.html" accesskey="3">前进动作 <code class="code">while</code> 循环</a></li>
 </ul>
 </div>
 
