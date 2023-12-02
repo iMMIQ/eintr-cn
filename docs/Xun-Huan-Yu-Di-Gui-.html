@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Loops &amp; Recursion (Programming in Emacs Lisp)</title>
+<title>循环与递归 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Loops &amp; Recursion (Programming in Emacs Lisp)">
-<meta name="keywords" content="Loops &amp; Recursion (Programming in Emacs Lisp)">
+<meta name="description" content="循环与递归 (Programming in Emacs Lisp)">
+<meta name="keywords" content="循环与递归 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -51,31 +51,22 @@ ISBN 1-882114-43-4
 </head>
 
 <body lang="en">
-<div class="chapter-level-extent" id="Loops-_0026-Recursion">
+<div class="chapter-level-extent" id="g_t_5faa_73af_4e0e_9012_5f52">
 <div class="nav-panel">
 <p>
 Next: <a href="Regexp-Search.html" accesskey="n" rel="next">Regular Expression Searches</a>, Previous: <a href="Cha-Ru-WenBen-.html" accesskey="p" rel="prev">插入文本</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h2 class="chapter" id="Loops-and-Recursion">11 Loops and Recursion</h2>
-<a class="index-entry-id" id="index-Loops-and-recursion"></a>
-<a class="index-entry-id" id="index-Recursion-and-loops"></a>
-<a class="index-entry-id" id="index-Repetition-_0028loops_0029"></a>
+<h2 class="chapter" id="Xun-Huan-He-Di-Gui-">11 循环和递归</h2>
+<a class="index-entry-id" id="index-Xun-Huan-He-Di-Gui-"></a>
+<a class="index-entry-id" id="index-Di-Gui-He-Xun-Huan-"></a>
+<a class="index-entry-id" id="index-Zhong-Fu-_0028Xun-Huan-_0029"></a>
 
-<p>Emacs Lisp has two primary ways to cause an expression, or a series of
-expressions, to be evaluated repeatedly: one uses a <code class="code">while</code>
-loop, and the other uses <em class="dfn">recursion</em>.
+<p>Emacs Lisp 有两种主要的方式来使一个表达式或一系列表达式被重复地评估：一种使用 <code class="code">while</code> 循环，另一种使用 <em class="dfn">递归</em>。
 </p>
-<p>Repetition can be very valuable.  For example, to move forward four
-sentences, you need only write a program that will move forward one
-sentence and then repeat the process four times.  Since a computer does
-not get bored or tired, such repetitive action does not have the
-deleterious effects that excessive or the wrong kinds of repetition can
-have on humans.
+<p>重复可以是非常有价值的。例如，要前进四个句子，你只需要编写一个程序，该程序将前进一句，然后重复这个过程四次。由于计算机不会感到无聊或疲劳，这种重复的动作不会像对人类可能有害的过度或错误的重复那样产生不良影响。
 </p>
-<p>People mostly write Emacs Lisp functions using <code class="code">while</code> loops and
-their kin; but you can use recursion, which provides a very powerful
-way to think about and then to solve problems<a class="footnote" id="DOCF12" href="#FOOT12"><sup>12</sup></a>.
+<p>大多数人使用 <code class="code">while</code> 循环及其类似物来编写 Emacs Lisp 函数；但你也可以使用递归，它提供了一种非常强大的思考和解决问题的方式<a class="footnote" id="DOCF12" href="#FOOT12"><sup>12</sup></a>。
 </p>
 
 <ul class="mini-toc">
@@ -90,14 +81,7 @@ way to think about and then to solve problems<a class="footnote" id="DOCF12" hre
 <h4 class="footnotes-heading">Footnotes</h4>
 
 <h5 class="footnote-body-heading"><a id="FOOT12" href="#DOCF12">(12)</a></h5>
-<p>You can write
-recursive functions to be frugal or wasteful of mental or computer
-resources; as it happens, methods that people find easy&mdash;that are
-frugal of mental resources&mdash;sometimes use considerable computer
-resources.  Emacs was designed to run on machines that we now consider
-limited and its default settings are conservative.  You may want to
-increase the value of <code class="code">max-lisp-eval-depth</code>.  In my <samp class="file">.emacs</samp>
-file, I set it to 30 times its default value.</p>
+<p>你可以编写递归函数，让其在使用心智或计算资源时既节俭又浪费；实际上，人们发现易于使用——对心智资源节俭的方法——有时会使用相当多的计算资源。Emacs 设计用于运行在我们现在认为有限的机器上，其默认设置是保守的。你可能需要增加 <code class="code">max-lisp-eval-depth</code> 的值。在我的 <samp class="file">.emacs</samp> 文件中，我将其设置为默认值的30倍。</p>
 </div>
 
 

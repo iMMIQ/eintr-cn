@@ -6970,38 +6970,22 @@ kill-ring     kill-ring-yank-pointer
 使用 @code{nthcdr} 和 @code{car}，构建一系列表达式，返回列表的第一、第二、第三和第四个元素。
 @end itemize
 
-@node Loops & Recursion
-@chapter Loops and Recursion
-@cindex Loops and recursion
-@cindex Recursion and loops
-@cindex Repetition (loops)
+@node 循环与递归
+@chapter 循环和递归
+@cindex 循环和递归
+@cindex 递归和循环
+@cindex 重复（循环）
 
-Emacs Lisp has two primary ways to cause an expression, or a series of
-expressions, to be evaluated repeatedly: one uses a @code{while}
-loop, and the other uses @dfn{recursion}.
+Emacs Lisp 有两种主要的方式来使一个表达式或一系列表达式被重复地评估：一种使用 @code{while} 循环，另一种使用 @dfn{递归}。
 
-Repetition can be very valuable.  For example, to move forward four
-sentences, you need only write a program that will move forward one
-sentence and then repeat the process four times.  Since a computer does
-not get bored or tired, such repetitive action does not have the
-deleterious effects that excessive or the wrong kinds of repetition can
-have on humans.
+重复可以是非常有价值的。例如，要前进四个句子，你只需要编写一个程序，该程序将前进一句，然后重复这个过程四次。由于计算机不会感到无聊或疲劳，这种重复的动作不会像对人类可能有害的过度或错误的重复那样产生不良影响。
 
-People mostly write Emacs Lisp functions using @code{while} loops and
-their kin; but you can use recursion, which provides a very powerful
-way to think about and then to solve problems@footnote{You can write
-recursive functions to be frugal or wasteful of mental or computer
-resources; as it happens, methods that people find easy---that are
-frugal of mental resources---sometimes use considerable computer
-resources.  Emacs was designed to run on machines that we now consider
-limited and its default settings are conservative.  You may want to
-increase the value of @code{max-lisp-eval-depth}.  In my @file{.emacs}
-file, I set it to 30 times its default value.}.
+大多数人使用 @code{while} 循环及其类似物来编写 Emacs Lisp 函数；但你也可以使用递归，它提供了一种非常强大的思考和解决问题的方式@footnote{你可以编写递归函数，让其在使用心智或计算资源时既节俭又浪费；实际上，人们发现易于使用——对心智资源节俭的方法——有时会使用相当多的计算资源。Emacs 设计用于运行在我们现在认为有限的机器上，其默认设置是保守的。你可能需要增加 @code{max-lisp-eval-depth} 的值。在我的 @file{.emacs} 文件中，我将其设置为默认值的30倍。}。
 
 @menu
-* while::                       Causing a stretch of code to repeat.
+* while::                       导致代码段重复执行。
 * dolist dotimes::
-* Recursion::                   Causing a function to call itself.
+* Recursion::                   导致函数调用自身。
 * Looping exercise::
 @end menu
 
