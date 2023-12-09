@@ -8097,7 +8097,7 @@ number (triangle-using-cond (1- number)))}。
 @end group
 @end smallexample
 
-@xref{Files List, , 制作文件列表}，以获取累积模式的示例。
+@xref{文件列表, , 制作文件列表}，以获取累积模式的示例。
 
 @node 保留
 @unnumberedsubsubsec 递归模式：@emph{保留}
@@ -10495,66 +10495,39 @@ debug.el
 
 下一步是准备列表中的数据以在图表中显示。
 
-@node Prepare the data
-@section Prepare the Data for Display in a Graph
+@node 准备数据
+@section 为在图表中显示准备数据
 
-The @code{recursive-lengths-list-many-files} function returns a list
-of numbers.  Each number records the length of a function definition.
-What we need to do now is transform this data into a list of numbers
-suitable for generating a graph.  The new list will tell how many
-functions definitions contain less than 10 words and
-symbols, how many contain between 10 and 19 words and symbols, how
-many contain between 20 and 29 words and symbols, and so on.
+函数 @code{recursive-lengths-list-many-files} 返回一个数字列表。每个数字记录一个函数定义的长度。我们现在需要将这些数据转换为适合生成图表的数字列表。新列表将显示有多少个函数定义包含少于10个单词和符号，有多少个包含10到19个单词和符号，有多少个包含20到29个单词和符号，以此类推。
 
-In brief, we need to go through the lengths' list produced by the
-@code{recursive-lengths-list-many-files} function and count the number
-of defuns within each range of lengths, and produce a list of those
-numbers.
+简而言之，我们需要遍历由 @code{recursive-lengths-list-many-files} 函数生成的长度列表，并统计每个长度范围内的 defuns 的数量，并生成一个包含这些数字的列表。
 
 @menu
-* Data for Display in Detail::
-* Sorting::                     Sorting lists.
-* Files List::                  Making a list of files.
-* Counting function definitions::
+* 详细显示的数据::
+* 排序::                     列表排序。
+* 文件列表::                  制作文件列表。
+* 计算函数定义的数量::
 @end menu
 
 @ifnottex
-@node Data for Display in Detail
-@unnumberedsubsec The Data for Display in Detail
+@node 详细显示的数据
+@unnumberedsubsec 详细显示的数据
 @end ifnottex
 
-Based on what we have done before, we can readily foresee that it
-should not be too hard to write a function that @sc{cdr}s down the
-lengths' list, looks at each element, determines which length range it
-is in, and increments a counter for that range.
+基于我们之前所做的工作，我们可以预见编写一个函数不会太难，该函数 @sc{cdr}s 下长度列表，查看每个元素，确定它属于哪个长度范围，并增加该范围的计数器。
 
-However, before beginning to write such a function, we should consider
-the advantages of sorting the lengths' list first, so the numbers are
-ordered from smallest to largest.  First, sorting will make it easier
-to count the numbers in each range, since two adjacent numbers will
-either be in the same length range or in adjacent ranges.  Second, by
-inspecting a sorted list, we can discover the highest and lowest
-number, and thereby determine the largest and smallest length range
-that we will need.
+然而，在开始编写这样一个函数之前，我们应该考虑先对长度列表进行排序的优势，以便数字按从小到大的顺序排列。首先，排序将使在每个范围内计数数字变得更容易，因为两个相邻的数字要么在相同的长度范围内，要么在相邻的范围内。其次，通过检查已排序的列表，我们可以发现最高和最低的数字，从而确定我们将需要的最大和最小长度范围。
 
-@node Sorting
-@subsection Sorting Lists
+@node 排序
+@subsection 列表排序
 @findex sort
 
-Emacs contains a function to sort lists, called (as you might guess)
-@code{sort}.  The @code{sort} function takes two arguments, the list
-to be sorted, and a predicate that determines whether the first of
-two list elements is less than the second.
+Emacs 包含一个用于排序列表的函数，称为（你可能猜到的）@code{sort}。@code{sort} 函数接受两个参数，要排序的列表和一个断言，该断言确定两个列表元素中的第一个是否小于第二个。
 
-As we saw earlier (@pxref{错误类型的参数, , 使用错误类型的对象作为参数}), a predicate is a function that
-determines whether some property is true or false.  The @code{sort}
-function will reorder a list according to whatever property the
-predicate uses; this means that @code{sort} can be used to sort
-non-numeric lists by non-numeric criteria---it can, for example,
-alphabetize a list.
+正如我们之前所见（@pxref{错误类型的参数, , 使用错误类型的对象作为参数}），断言是确定某个属性是真还是假的函数。@code{sort} 函数将根据断言使用的任何属性重新排序列表；这意味着 @code{sort} 可以根据非数值标准对非数值列表进行排序---例如，它可以对列表进行字母排序。
 
 @need 1250
-The @code{<} function is used when sorting a numeric list.  For example,
+在对数值列表进行排序时，使用函数 @code{<}。例如，
 
 @smallexample
 (sort '(4 8 21 17 33 7 21 7) '<)
@@ -10562,20 +10535,16 @@ The @code{<} function is used when sorting a numeric list.  For example,
 
 @need 800
 @noindent
-produces this:
+产生以下结果：
 
 @smallexample
 (4 7 7 8 17 21 21 33)
 @end smallexample
 
 @noindent
-(Note that in this example, both the arguments are quoted so that the
-symbols are not evaluated before being passed to @code{sort} as
-arguments.)
+（请注意，在此示例中，两个参数都引用了，以便在传递给 @code{sort} 之前不对符号进行求值。）
 
-Sorting the list returned by the
-@code{recursive-lengths-list-many-files} function is straightforward;
-it uses the @code{<} function:
+对由 @code{recursive-lengths-list-many-files} 函数返回的列表进行排序很简单；它使用 @code{<} 函数：
 
 @smallexample
 @group
@@ -10590,52 +10559,29 @@ it uses the @code{<} function:
 
 @need 800
 @noindent
-which produces:
+产生以下结果：
 
 @smallexample
 (29 32 38 71 82 90 95 178 180 218 263 283 321 324 480)
 @end smallexample
 
 @noindent
-(Note that in this example, the first argument to @code{sort} is not
-quoted, since the expression must be evaluated so as to produce the
-list that is passed to @code{sort}.)
+（请注意，在此示例中，@code{sort} 的第一个参数未引用，因为必须评估表达式以产生传递给 @code{sort} 的列表。）
 
-@node Files List
-@subsection Making a List of Files
+@node 文件列表
+@subsection 创建文件列表
 
-The @code{recursive-lengths-list-many-files} function requires a list
-of files as its argument.  For our test examples, we constructed such
-a list by hand; but the Emacs Lisp source directory is too large for
-us to do for that.  Instead, we will write a function to do the job
-for us.  In this function, we will use both a @code{while} loop and a
-recursive call.
+函数 @code{recursive-lengths-list-many-files} 需要一个文件列表作为其参数。在我们的测试示例中，我们手工构建了这样一个列表；但是 Emacs Lisp 源代码目录太大，我们无法手动创建。相反，我们将编写一个函数来为我们完成这个任务。在这个函数中，我们将同时使用 @code{while} 循环和递归调用。
 
 @findex directory-files
-We did not have to write a function like this for older versions of
-GNU Emacs, since they placed all the @samp{.el} files in one
-directory.  Instead, we were able to use the @code{directory-files}
-function, which lists the names of files that match a specified
-pattern within a single directory.
+在旧版本的 GNU Emacs 中，我们无需编写这样的函数，因为它们将所有的 @samp{.el} 文件放在一个目录中。相反，我们可以使用 @code{directory-files} 函数，该函数列出了匹配指定模式的文件的名称，该模式在单个目录中。
 
-However, recent versions of Emacs place Emacs Lisp files in
-sub-directories of the top level @file{lisp} directory.  This
-re-arrangement eases navigation.  For example, all the mail related
-files are in a @file{lisp} sub-directory called @file{mail}.  But at
-the same time, this arrangement forces us to create a file listing
-function that descends into the sub-directories.
+然而，最近的 Emacs 版本将 Emacs Lisp 文件放在顶层 @file{lisp} 目录的子目录中。这种重新排列方便了导航。例如，所有与邮件相关的文件都在名为 @file{mail} 的 @file{lisp} 子目录中。但与此同时，这种排列方式迫使我们创建一个能够进入子目录的文件列表函数。
 
 @findex files-in-below-directory
-We can create this function, called @code{files-in-below-directory},
-using familiar functions such as @code{car}, @code{nthcdr}, and
-@code{substring} in conjunction with an existing function called
-@code{directory-files-and-attributes}.  This latter function not only
-lists all the filenames in a directory, including the names
-of sub-directories, but also their attributes.
+我们可以使用熟悉的函数，如 @code{car}、@code{nthcdr} 和 @code{substring}，以及一个名为 @code{directory-files-and-attributes} 的现有函数来创建这个函数。这个后者不仅列出目录中所有文件的名称，包括子目录的名称，还列出它们的属性。
 
-To restate our goal: to create a function that will enable us
-to feed filenames to @code{recursive-lengths-list-many-files}
-as a list that looks like this (but with more elements):
+重新表述我们的目标：创建一个函数，使我们能够将文件名作为一个列表传递给 @code{recursive-lengths-list-many-files}，该列表看起来像这样（但元素更多）：
 
 @smallexample
 @group
@@ -10645,22 +10591,12 @@ as a list that looks like this (but with more elements):
 @end group
 @end smallexample
 
-The @code{directory-files-and-attributes} function returns a list of
-lists.  Each of the lists within the main list consists of 13
-elements.  The first element is a string that contains the name of the
-file---which, in GNU/Linux, may be a @dfn{directory file}, that is to
-say, a file with the special attributes of a directory.  The second
-element of the list is @code{t} for a directory, a string
-for symbolic link (the string is the name linked to), or @code{nil}.
+@code{directory-files-and-attributes} 函数返回一个列表的列表。主列表中的每个列表都包含13个元素。列表的第一个元素是包含文件的名称的字符串，在 GNU/Linux 中，它可能是一个 @dfn{目录文件}，也就是说，具有目录的特殊属性的文件。列表的第二个元素是目录的 @code{t}，符号链接的字符串（字符串是链接到的名称），或 @code{nil}。
 
-For example, the first @samp{.el} file in the @file{lisp/} directory
-is @file{abbrev.el}.  Its name is
-@file{/usr/local/share/emacs/22.1.1/lisp/abbrev.el} and it is not a
-directory or a symbolic link.
+例如，@file{lisp/} 目录中的第一个 @samp{.el} 文件是 @file{abbrev.el}。它的名称是 @file{/usr/local/share/emacs/22.1.1/lisp/abbrev.el}，它既不是目录也不是符号链接。
 
 @need 1000
-This is how @code{directory-files-and-attributes} lists that file and
-its attributes:
+以下是 @code{directory-files-and-attributes} 如何列出该文件及其属性的方式：
 
 @smallexample
 @group
@@ -10673,10 +10609,7 @@ nil
 @group
 (20615 27034 579989 697000)
 (17905 55681 0 0)
-(20615 26327 734791 805000)@footnote{If @code{current-time-list} is
-@code{nil} the three timestamps are @code{(1351051674579989697
-. 1000000000)}, @code{(1173477761000000000 . 1000000000)}, and
-@code{(1351050967734791805 . 1000000000)}, respectively.}
+(20615 26327 734791 805000)@footnote{如果 @code{current-time-list} 是 @code{nil}，则三个时间戳分别为 @code{(1351051674579989697 . 1000000000)}，@code{(1173477761000000000 . 1000000000)} 和 @code{(1351050967734791805 . 1000000000)}。}
 13188
 "-rw-r--r--"
 @end group
@@ -10688,8 +10621,7 @@ t
 @end smallexample
 
 @need 1200
-On the other hand, @file{mail/} is a directory within the @file{lisp/}
-directory.  The beginning of its listing looks like this:
+另一方面，@file{mail/} 是 @file{lisp/} 目录中的一个子目录。其列表的开头看起来像这样：
 
 @smallexample
 @group
@@ -10700,59 +10632,33 @@ t
 @end group
 @end smallexample
 
-(To learn about the different attributes, look at the documentation of
-@code{file-attributes}.  Bear in mind that the @code{file-attributes}
-function does not list the filename, so its first element is
-@code{directory-files-and-attributes}'s second element.)
+（要了解不同属性，请查看 @code{file-attributes} 的文档。请注意，@code{file-attributes} 函数不会列出文件名，因此它的第一个元素是 @code{directory-files-and-attributes} 的第二个元素。）
 
-We will want our new function, @code{files-in-below-directory}, to
-list the @samp{.el} files in the directory it is told to check, and in
-any directories below that directory.
+我们希望我们的新函数 @code{files-in-below-directory} 能够列出它被告知检查的目录以及该目录下的任何子目录中的 @samp{.el} 文件。
 
-This gives us a hint on how to construct
-@code{files-in-below-directory}:  within a directory, the function
-should add @samp{.el} filenames to a list; and if, within a directory,
-the function comes upon a sub-directory, it should go into that
-sub-directory and repeat its actions.
+这为我们提供了构建 @code{files-in-below-directory} 的线索：在目录内，该函数应该将 @samp{.el} 文件名添加到列表中；而如果在目录内，该函数遇到子目录，它应该进入该子目录并重复其操作。
 
-However, we should note that every directory contains a name that
-refers to itself, called @file{.} (``dot''), and a name that refers to
-its parent directory, called @file{..} (``dot dot'').  (In
-@file{/}, the root directory, @file{..} refers to itself, since
-@file{/} has no parent.)  Clearly, we do not want our
-@code{files-in-below-directory} function to enter those directories,
-since they always lead us, directly or indirectly, to the current
-directory.
+然而，我们应该注意到每个目录都包含一个指向自身的名称，称为 @file{.}（“点”），以及一个指向其父目录的名称，称为 @file{..}（“点 点”）。 （在 @file{/}，即根目录中，@file{..} 指向它自己，因为 @file{/} 没有父目录。）显然，我们不希望我们的 @code{files-in-below-directory} 函数进入这些目录，因为它们始终直接或间接地导致当前目录。
 
-Consequently, our @code{files-in-below-directory} function must do
-several tasks:
+因此，我们的 @code{files-in-below-directory} 函数必须执行几个任务：
 
 @itemize @bullet
 @item
-Check to see whether it is looking at a filename that ends in
-@samp{.el}; and if so, add its name to a list.
+检查是否正在查看以 @samp{.el} 结尾的文件名；如果是，则将其名称添加到列表中。
 
 @item
-Check to see whether it is looking at a filename that is the name of a
-directory; and if so,
+检查是否正在查看是目录的名称；如果是，
 
 @itemize @minus
 @item
-Check to see whether it is looking at @file{.}  or @file{..}; and if
-so skip it.
+检查是否正在查看 @file{.} 或 @file{..}；如果是，则跳过。
 
 @item
-Or else, go into that directory and repeat the process.
+否则，进入该目录并重复过程。
 @end itemize
 @end itemize
 
-Let's write a function definition to do these tasks.  We will use a
-@code{while} loop to move from one filename to another within a
-directory, checking what needs to be done; and we will use a recursive
-call to repeat the actions on each sub-directory.  The recursive
-pattern is Accumulate
-(@pxref{累积}),
-using @code{append} as the combiner.
+让我们编写一个函数定义来执行这些任务。我们将使用一个 @code{while} 循环来在目录中从一个文件名移动到另一个文件名，检查需要执行的操作；我们将使用递归调用来在每个子目录上重复这些操作。递归模式是 Accumulate（@pxref{累积}），使用 @code{append} 作为组合器。
 
 @ignore
 (directory-files "/usr/local/src/emacs/lisp/" t "\\.el$")
@@ -10765,55 +10671,55 @@ using @code{append} as the combiner.
 @c  /usr/local/share/emacs/22.1.1/lisp/
 
 @need 800
-Here is the function:
+以下是该函数：
 
 @smallexample
 @group
 (defun files-in-below-directory (directory)
-  "List the .el files in DIRECTORY and in its sub-directories."
-  ;; Although the function will be used non-interactively,
-  ;; it will be easier to test if we make it interactive.
-  ;; The directory will have a name such as
-  ;;  "/usr/local/share/emacs/22.1.1/lisp/"
+  "列出 DIRECTORY 及其子目录中的 .el 文件。"
+  ;; 尽管该函数将被非交互地使用，
+  ;; 但如果我们将其设置为交互式，测试将更容易。
+  ;; 目录的名称将类似于
+  ;; "/usr/local/share/emacs/22.1.1/lisp/"
   (interactive "DDirectory name: ")
 @end group
 @group
   (let (el-files-list
         (current-directory-list
          (directory-files-and-attributes directory t)))
-    ;; while we are in the current directory
+    ;; 当我们在当前目录中时
     (while current-directory-list
 @end group
 @group
       (cond
-       ;; check to see whether filename ends in '.el'
-       ;; and if so, add its name to a list.
+       ;; 检查文件名是否以 '.el' 结尾
+       ;; 如果是，则将其名称添加到列表中。
        ((equal ".el" (substring (car (car current-directory-list)) -3))
         (setq el-files-list
               (cons (car (car current-directory-list)) el-files-list)))
 @end group
 @group
-       ;; check whether filename is that of a directory
+       ;; 检查文件名是否是目录的名称
        ((eq t (car (cdr (car current-directory-list))))
-        ;; decide whether to skip or recurse
+        ;; 决定是跳过还是递归
         (if
             (equal "."
                    (substring (car (car current-directory-list)) -1))
-            ;; then do nothing since filename is that of
-            ;;   current directory or parent, "." or ".."
+            ;; 然后什么都不做，因为文件名是
+            ;;   当前目录或父目录的名称，"." 或 ".."
             ()
 @end group
 @group
-          ;; else descend into the directory and repeat the process
+          ;; 否则，进入该目录并重复过程
           (setq el-files-list
                 (append
                  (files-in-below-directory
                   (car (car current-directory-list)))
                  el-files-list)))))
-      ;; move to the next filename in the list; this also
-      ;; shortens the list so the while loop eventually comes to an end
+      ;; 移动到列表中的下一个文件名；这也
+      ;; 缩短列表，因此 while 循环最终会结束
       (setq current-directory-list (cdr current-directory-list)))
-    ;; return the filenames
+    ;; 返回文件名
     el-files-list))
 @end group
 @end smallexample
@@ -10821,15 +10727,14 @@ Here is the function:
 @c (files-in-below-directory "/usr/local/src/emacs/lisp/")
 @c (files-in-below-directory "/usr/local/share/emacs/22.1.1/lisp/")
 
-The @code{files-in-below-directory} @code{directory-files} function
-takes one argument, the name of a directory.
+@code{files-in-below-directory} @code{directory-files} 函数接受一个参数，即目录的名称。
 
 @need 1250
-Thus, on my system,
+因此，在我的系统上，
 
 @c (length (files-in-below-directory "/usr/local/src/emacs/lisp/"))
 
-@c !!! 22.1.1 lisp sources location here
+@c !!! 22.1.1 lisp 源代码的位置在这里
 @smallexample
 @group
 (length
@@ -10838,12 +10743,9 @@ Thus, on my system,
 @end smallexample
 
 @noindent
-tells me that in and below my Lisp sources directory are 1031
-@samp{.el} files.
+告诉我，在我的 Lisp 源代码目录及其子目录中有 1031 个 @samp{.el} 文件。
 
-@code{files-in-below-directory} returns a list in reverse alphabetical
-order.  An expression to sort the list in alphabetical order looks
-like this:
+@code{files-in-below-directory} 以字母顺序的逆序返回一个列表。将列表按字母顺序排序的表达式如下：
 
 @smallexample
 @group
@@ -10855,7 +10757,7 @@ like this:
 
 @ignore
 (defun test ()
-  "Test how long it takes to find lengths of all sorted elisp defuns."
+  "测试查找所有排序的 elisp defuns 的长度所需的时间。"
   (insert "\n" (current-time-string) "\n")
   (sit-for 0)
   (sort
@@ -10865,25 +10767,15 @@ like this:
   (insert (current-time-string)))
 @end ignore
 
-@node Counting function definitions
-@subsection Counting function definitions
+@node 统计函数定义数量
+@subsection 统计函数定义数量
 
-Our immediate goal is to generate a list that tells us how many
-function definitions contain fewer than 10 words and symbols, how many
-contain between 10 and 19 words and symbols, how many contain between
-20 and 29 words and symbols, and so on.
+我们的即时目标是生成一个列表，告诉我们有多少个函数定义包含少于10个字和符号，有多少包含10到19个字和符号，有多少包含20到29个字和符号，依此类推。
 
-With a sorted list of numbers, this is easy: count how many elements
-of the list are smaller than 10, then, after moving past the numbers
-just counted, count how many are smaller than 20, then, after moving
-past the numbers just counted, count how many are smaller than 30, and
-so on.  Each of the numbers, 10, 20, 30, 40, and the like, is one
-larger than the top of that range.  We can call the list of such
-numbers the @code{top-of-ranges} list.
+有了一个排序过的数字列表，这很容易实现：统计列表中有多少元素小于10，然后在移过刚刚计数的数字后，统计列表中有多少元素小于20，然后在移过刚刚计数的数字后，统计列表中有多少元素小于30，依此类推。每个数字，10、20、30、40以及类似的，都比该范围的顶部大1。我们可以称这个数字列表为@code{top-of-ranges}列表。
 
 @need 1200
-If we wished, we could generate this list automatically, but it is
-simpler to write a list manually.  Here it is:
+如果愿意，我们可以自动生成这个列表，但手动编写列表更简单。下面是一个例子：
 @vindex top-of-ranges
 
 @smallexample
@@ -10895,42 +10787,23 @@ simpler to write a list manually.  Here it is:
   160 170 180 190 200
   210 220 230 240 250
   260 270 280 290 300)
- "List specifying ranges for `defuns-per-range'.")
+ "指定 `defuns-per-range' 的范围的列表。")
 @end group
 @end smallexample
 
-To change the ranges, we edit this list.
+要更改范围，我们编辑此列表。
 
-Next, we need to write the function that creates the list of the
-number of definitions within each range.  Clearly, this function must
-take the @code{sorted-lengths} and the @code{top-of-ranges} lists
-as arguments.
+接下来，我们需要编写一个函数，该函数创建包含在每个范围内的定义数量列表。显然，此函数必须将@code{sorted-lengths}和@code{top-of-ranges}列表作为参数。
 
-The @code{defuns-per-range} function must do two things again and
-again: it must count the number of definitions within a range
-specified by the current top-of-range value; and it must shift to the
-next higher value in the @code{top-of-ranges} list after counting the
-number of definitions in the current range.  Since each of these
-actions is repetitive, we can use @code{while} loops for the job.
-One loop counts the number of definitions in the range defined by the
-current top-of-range value, and the other loop selects each of the
-top-of-range values in turn.
-
-Several entries of the @code{sorted-lengths} list are counted for each
-range; this means that the loop for the @code{sorted-lengths} list
-will be inside the loop for the @code{top-of-ranges} list, like a
-small gear inside a big gear.
-
-The inner loop counts the number of definitions within the range.  It
-is a simple counting loop of the type we have seen before.
-(@xref{增量循环, , A loop with an incrementing counter}.)
-The true-or-false test of the loop tests whether the value from the
-@code{sorted-lengths} list is smaller than the current value of the
-top of the range.  If it is, the function increments the counter and
-tests the next value from the @code{sorted-lengths} list.
+@code{defuns-per-range} 函数必须反复执行两件事：它必须计算在当前顶部范围值指定的范围内的定义数量；并且在计算当前范围内的定义数量后，它必须转移到@code{top-of-ranges}列表中的下一个更高的值。由于每个动作都是重复的，我们可以使用@code{while}循环完成这项工作。一个循环计算当前范围内的定义数量，另一个循环依次选择@code{top-of-ranges}中的每个顶部范围值。
 
 @need 1250
-The inner loop looks like this:
+@code{sorted-lengths} 列表的每个条目都会计数多次，这意味着@code{sorted-lengths}列表的循环将在@code{top-of-ranges}列表的循环内部，就像小齿轮在大齿轮内部一样。
+
+内部循环计算范围内的定义数量。它是我们之前见过的简单计数循环的类型。(@xref{增量循环, , 具有增量计数器的循环}.) 循环的真假测试测试@code{sorted-lengths} 列表中的值是否小于范围顶部的当前值。如果是，则函数增加计数器并测试@code{sorted-lengths}列表的下一个值。
+
+@need 1250
+内部循环如下：
 
 @smallexample
 @group
@@ -10940,9 +10813,7 @@ The inner loop looks like this:
 @end group
 @end smallexample
 
-The outer loop must start with the lowest value of the
-@code{top-of-ranges} list, and then be set to each of the succeeding
-higher values in turn.  This can be done with a loop like this:
+外部循环必须从@code{top-of-ranges}列表的最小值开始，然后依次设置为每个后续更高的值。可以使用如下循环实现：
 
 @smallexample
 @group
@@ -10953,42 +10824,29 @@ higher values in turn.  This can be done with a loop like this:
 @end smallexample
 
 @need 1200
-Put together, the two loops look like this:
+组合在一起，两个循环如下：
 
 @smallexample
 @group
 (while top-of-ranges
 
-  ;; @r{Count the number of elements within the current range.}
+  ;; @r{计算当前范围内的元素数量。}
   (while @var{length-element-smaller-than-top-of-range}
     (setq number-within-range (1+ number-within-range))
     (setq sorted-lengths (cdr sorted-lengths)))
 
-  ;; @r{Move to next range.}
+  ;; @r{移到下一个范围。}
   (setq top-of-ranges (cdr top-of-ranges)))
 @end group
 @end smallexample
 
-In addition, in each circuit of the outer loop, Emacs should record
-the number of definitions within that range (the value of
-@code{number-within-range}) in a list.  We can use @code{cons} for
-this purpose.  (@xref{cons, , @code{cons}}.)
+此外，在外部循环的每一次迭代中，Emacs应该记录该范围内的定义数量（@code{number-within-range}的值）到一个列表中。我们可以使用@code{cons}来完成这个目的。(@xref{cons, , @code{cons}}.)
 
-The @code{cons} function works fine, except that the list it
-constructs will contain the number of definitions for the highest
-range at its beginning and the number of definitions for the lowest
-range at its end.  This is because @code{cons} attaches new elements
-of the list to the beginning of the list, and since the two loops are
-working their way through the lengths' list from the lower end first,
-the @code{defuns-per-range-list} will end up largest number first.
-But we will want to print our graph with smallest values first and the
-larger later.  The solution is to reverse the order of the
-@code{defuns-per-range-list}.  We can do this using the
-@code{nreverse} function, which reverses the order of a list.
+@code{cons}函数运行正常，但它构造的列表将以最大范围的定义数量开头，并以最小范围的定义数量结尾。这是因为@code{cons}将新元素附加到列表的开头，而由于两个循环从较低端开始遍历长度的列表，因此@code{defuns-per-range-list}将以最大的数字开始。但我们希望以最小值优先打印我们的图形，然后再打印较大的值。解决方案是颠倒@code{defuns-per-range-list}的顺序。我们可以使用@code{nreverse}函数实现这一点，该函数颠倒列表的顺序。
 @findex nreverse
 
 @need 800
-For example,
+例如，
 
 @smallexample
 (nreverse '(1 2 3 4))
@@ -10996,70 +10854,64 @@ For example,
 
 @need 800
 @noindent
-produces:
+产生：
 
 @smallexample
 (4 3 2 1)
 @end smallexample
 
-Note that the @code{nreverse} function is destructive---that is,
-it changes the list to which it is applied; this contrasts with the
-@code{car} and @code{cdr} functions, which are non-destructive.  In
-this case, we do not want the original @code{defuns-per-range-list},
-so it does not matter that it is destroyed.  (The @code{reverse}
-function provides a reversed copy of a list, leaving the original list
-as is.)
+请注意，@code{nreverse}函数是破坏性的---也就是说，它改变了其应用的列表；这与@code{car}和@code{cdr}函数不同，它们是非破坏性的。在这种情况下，我们不需要原始的@code{defuns-per-range-list}，因此它被销毁并不重要。(@code{reverse}函数提供列表的反向副本，保留原始列表不变。) 
 @findex reverse
 
 @need 1250
-Put all together, the @code{defuns-per-range} looks like this:
+全部组合在一起，@code{defuns-per-range}如下：
 
 @smallexample
 @group
 (defun defuns-per-range (sorted-lengths top-of-ranges)
-  "SORTED-LENGTHS defuns in each TOP-OF-RANGES range."
+  "在每个TOP-OF-RANGES范围内，对SORTED-LENGTHS进行函数定义。"
   (let ((top-of-range (car top-of-ranges))
         (number-within-range 0)
         defuns-per-range-list)
 @end group
 
 @group
-    ;; @r{Outer loop.}
+    ;; @r{外部循环。}
     (while top-of-ranges
 @end group
 
 @group
-      ;; @r{Inner loop.}
+      ;; @r{内部循环。}
       (while (and
-              ;; @r{Need number for numeric test.}
+              ;; @r{需要用于数字测试的数字。}
               (car sorted-lengths)
               (< (car sorted-lengths) top-of-range))
 @end group
 
 @group
-        ;; @r{Count number of definitions within current range.}
+        ;; @r{计算当前范围内的定义数量。}
         (setq number-within-range (1+ number-within-range))
         (setq sorted-lengths (cdr sorted-lengths)))
 
-      ;; @r{Exit inner loop but remain within outer loop.}
+      ;; @r{退出内部循环但仍保持在外部循环中。}
 @end group
 
 @group
       (setq defuns-per-range-list
             (cons number-within-range defuns-per-range-list))
-      (setq number-within-range 0)      ; @r{Reset count to zero.}
+      (setq number-within-range 0)      ; @r{将计数器重置为零。}
 @end group
 
 @group
-      ;; @r{Move to next range.}
+      ;; @r{移至下一个范围。}
       (setq top-of-ranges (cdr top-of-ranges))
-      ;; @r{Specify next top of range value.}
+      ;; @r{指定下一个范围的顶部值。}
       (setq top-of-range (car top-of-ranges)))
 @end group
 
 @group
-    ;; @r{Exit outer loop and count the number of defuns larger than}
-    ;; @r{  the largest top-of-range value.}
+    ;; @r{退出外部循环并计算大于}
+    ;; @r{最大顶部范围值的函数数量。}
     (setq defuns-per-range-list
           (cons
            (length sorted-lengths)
@@ -11067,16 +10919,15 @@ Put all together, the @code{defuns-per-range} looks like this:
 @end group
 
 @group
-    ;; @r{Return a list of the number of definitions within each range,}
-    ;; @r{  smallest to largest.}
+    ;; @r{返回每个范围内定义数量的列表，}
+    ;; @r{从最小到最大。}
     (nreverse defuns-per-range-list)))
 @end group
 @end smallexample
 
 @need 1200
 @noindent
-The function is straightforward except for one subtle feature.  The
-true-or-false test of the inner loop looks like this:
+该函数很直观，除了一个微妙的特征。内部循环的真假测试看起来像这样：
 
 @smallexample
 @group
@@ -11087,62 +10938,38 @@ true-or-false test of the inner loop looks like this:
 
 @need 800
 @noindent
-instead of like this:
+而不是像这样：
 
 @smallexample
 (< (car sorted-lengths) top-of-range)
 @end smallexample
 
-The purpose of the test is to determine whether the first item in the
-@code{sorted-lengths} list is less than the value of the top of the
-range.
+该测试的目的是确定@code{sorted-lengths}列表中的第一个项是否小于范围顶部的值。
 
-The simple version of the test works fine unless the
-@code{sorted-lengths} list has a @code{nil} value.  In that case, the
-@code{(car sorted-lengths)} expression function returns
-@code{nil}.  The @code{<} function cannot compare a number to
-@code{nil}, which is an empty list, so Emacs signals an error and
-stops the function from attempting to continue to execute.
+简单版本的测试很好，除非@code{sorted-lengths}列表有一个@code{nil}值。在这种情况下，@code{(car sorted-lengths)} 表达式函数返回@code{nil}。@code{<}函数无法将数字与@code{nil}（一个空列表）进行比较，因此Emacs会发出错误并阻止函数继续执行。
 
-The @code{sorted-lengths} list always becomes @code{nil} when the
-counter reaches the end of the list.  This means that any attempt to
-use the @code{defuns-per-range} function with the simple version of
-the test will fail.
+当计数器达到列表末尾时，@code{sorted-lengths}列表始终变为@code{nil}。这意味着任何尝试使用简单版本测试的@code{defuns-per-range}函数都将失败。
 
-We solve the problem by using the @code{(car sorted-lengths)}
-expression in conjunction with the @code{and} expression.  The
-@code{(car sorted-lengths)} expression returns a non-@code{nil}
-value so long as the list has at least one number within it, but
-returns @code{nil} if the list is empty.  The @code{and} expression
-first evaluates the @code{(car sorted-lengths)} expression, and
-if it is @code{nil}, returns false @emph{without} evaluating the
-@code{<} expression.  But if the @code{(car sorted-lengths)}
-expression returns a non-@code{nil} value, the @code{and} expression
-evaluates the @code{<} expression, and returns that value as the value
-of the @code{and} expression.
+我们通过使用@code{(car sorted-lengths)} 表达式与@code{and} 表达式结合来解决问题。@code{(car sorted-lengths)} 表达式只要列表中至少有一个数字，就会返回非@code{nil}值，但如果列表为空，则返回@code{nil}。@code{and} 表达式首先评估@code{(car sorted-lengths)} 表达式，如果它是@code{nil}，则@emph{不}评估@code{<} 表达式，直接返回false。但如果@code{(car sorted-lengths)} 表达式返回非@code{nil}值，则@code{and} 表达式评估@code{<} 表达式，并将该值作为@code{and} 表达式的值返回。
 
-@c colon in printed section title causes problem in Info cross reference
-This way, we avoid an error.
+@c 在打印的章节标题中的冒号会导致Info交叉引用问题
+这样，我们避免了错误。
 @iftex
 @noindent
-(For information about @code{and}, see
-@ref{kill-new function, , The @code{kill-new} function}.)
+(有关@code{and}的信息，请参阅
+@ref{kill-new function, , @code{kill-new}函数}.)
 @end iftex
 @ifinfo
 @noindent
-(@xref{kill-new function, , The @code{kill-new} function}, for
-information about @code{and}.)
+(有关@code{and}的信息，请参阅@code{kill-new}函数
+@xref{kill-new function, , @code{kill-new}函数}。)
 @end ifinfo
 
-Here is a short test of the @code{defuns-per-range} function.  First,
-evaluate the expression that binds (a shortened)
-@code{top-of-ranges} list to the list of values, then evaluate the
-expression for binding the @code{sorted-lengths} list, and then
-evaluate the @code{defuns-per-range} function.
+以下是对@code{defuns-per-range}函数的简短测试。首先，评估将（缩短的）@code{top-of-ranges} 列表绑定到值列表的表达式，然后评估绑定@code{sorted-lengths} 列表的表达式，最后评估@code{defuns-per-range}函数。
 
 @smallexample
 @group
-;; @r{(Shorter list than we will use later.)}
+;; @r{(比我们稍后将使用的列表更短.)}
 (setq top-of-ranges
  '(110 120 130 140 150
    160 170 180 190 200))
@@ -11156,17 +10983,14 @@ evaluate the @code{defuns-per-range} function.
 
 @need 800
 @noindent
-The list returned looks like this:
+返回的列表如下：
 
 @smallexample
 (2 2 2 0 0 1 0 2 0 0 4)
 @end smallexample
 
 @noindent
-Indeed, there are two elements of the @code{sorted-lengths} list
-smaller than 110, two elements between 110 and 119, two elements
-between 120 and 129, and so on.  There are four elements with a value
-of 200 or larger.
+确实，@code{sorted-lengths}列表中有两个小于110的元素，两个元素介于 110 和 119 之间，两个元素介于 120 和 129 之间，依此类推。有四个值等于或大于 200 的元素。
 
 @c The next step is to turn this numbers' list into a graph.
 @node Readying a Graph

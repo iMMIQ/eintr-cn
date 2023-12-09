@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Prepare the data (Programming in Emacs Lisp)</title>
+<title>准备数据 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Prepare the data (Programming in Emacs Lisp)">
-<meta name="keywords" content="Prepare the data (Programming in Emacs Lisp)">
+<meta name="description" content="准备数据 (Programming in Emacs Lisp)">
+<meta name="keywords" content="准备数据 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -50,33 +50,24 @@ ISBN 1-882114-43-4
 </head>
 
 <body lang="en">
-<div class="section-level-extent" id="Prepare-the-data">
+<div class="section-level-extent" id="g_t_51c6_5907_6570_636e">
 <div class="nav-panel">
 <p>
 Previous: <a href="Di-Gui-Ji-Suan-Duo-GeWenJian-De-Dan-Ci-Shu-.html" accesskey="p" rel="prev">递归计算不同文件中的单词数</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Prepare-the-Data-for-Display-in-a-Graph">14.9 Prepare the Data for Display in a Graph</h3>
+<h3 class="section" id="Wei-Zai-Tu-Biao-ZhongXian-ShiZhun-Bei-Shu-Ju-">14.9 为在图表中显示准备数据</h3>
 
-<p>The <code class="code">recursive-lengths-list-many-files</code> function returns a list
-of numbers.  Each number records the length of a function definition.
-What we need to do now is transform this data into a list of numbers
-suitable for generating a graph.  The new list will tell how many
-functions definitions contain less than 10 words and
-symbols, how many contain between 10 and 19 words and symbols, how
-many contain between 20 and 29 words and symbols, and so on.
+<p>函数 <code class="code">recursive-lengths-list-many-files</code> 返回一个数字列表。每个数字记录一个函数定义的长度。我们现在需要将这些数据转换为适合生成图表的数字列表。新列表将显示有多少个函数定义包含少于10个单词和符号，有多少个包含10到19个单词和符号，有多少个包含20到29个单词和符号，以此类推。
 </p>
-<p>In brief, we need to go through the lengths&rsquo; list produced by the
-<code class="code">recursive-lengths-list-many-files</code> function and count the number
-of defuns within each range of lengths, and produce a list of those
-numbers.
+<p>简而言之，我们需要遍历由 <code class="code">recursive-lengths-list-many-files</code> 函数生成的长度列表，并统计每个长度范围内的 defuns 的数量，并生成一个包含这些数字的列表。
 </p>
 
 <ul class="mini-toc">
-<li><a href="Data-for-Display-in-Detail.html" accesskey="1">The Data for Display in Detail</a></li>
-<li><a href="Sorting.html" accesskey="2">Sorting Lists</a></li>
-<li><a href="Files-List.html" accesskey="3">Making a List of Files</a></li>
-<li><a href="Counting-function-definitions.html" accesskey="4">Counting function definitions</a></li>
+<li><a href="Xiang-Xi-Xian-ShiDe-Shu-Ju-.html" accesskey="1">详细显示的数据</a></li>
+<li><a href="Pai-Xu-.html" accesskey="2">列表排序</a></li>
+<li><a href="WenJian-Lie-Biao-.html" accesskey="3">创建文件列表</a></li>
+<li><a href="Tong-Ji-Han-Shu-Ding-Yi-Shu-Liang-.html" accesskey="4">统计函数定义数量</a></li>
 </ul>
 </div>
 
