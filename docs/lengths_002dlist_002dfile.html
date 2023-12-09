@@ -59,23 +59,17 @@ kbd.kbd {font-style: oblique}
 Next: <a href="Several-files.html" accesskey="n" rel="next">Count Words in <code class="code">defuns</code> in Different Files</a>, Previous: <a href="Cha-Zhao-WenJian-.html" accesskey="p" rel="prev">查找文件</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="lengths_002dlist_002dfile-in-Detail">14.6 <code class="code">lengths-list-file</code> in Detail</h3>
+<h3 class="section" id="lengths_002dlist_002dfile-Xiang-Jie-">14.6 <code class="code">lengths-list-file</code> 详解</h3>
 
-<p>The core of the <code class="code">lengths-list-file</code> function is a <code class="code">while</code>
-loop containing a function to move point forward defun by defun, and
-a function to count the number of words and symbols in each defun.
-This core must be surrounded by functions that do various other tasks,
-including finding the file, and ensuring that point starts out at the
-beginning of the file.  The function definition looks like this:
+<p><code class="code">lengths-list-file</code> 函数的核心是一个包含 <code class="code">while</code> 循环的结构，其中包含一个函数来逐个 defun 地将 point 前进，以及一个函数来计算每个 defun 中的单词和符号数。这个核心必须被包裹在执行各种其他任务的函数中，包括查找文件并确保 point 位于文件的开头。该函数定义如下：
 <a class="index-entry-id" id="index-lengths_002dlist_002dfile"></a>
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun lengths-list-file (filename)
-  &quot;Return list of definitions' lengths within FILE.
-The returned list is a list of numbers.
-Each number is the number of words or
-symbols in one function definition.&quot;
-</pre></div><div class="group"><pre class="example-preformatted">  (message &quot;Working on `%s' ... &quot; filename)
+  &quot;返回 FILE 中定义长度的列表。
+返回的列表是数字的列表。
+每个数字是一个函数定义中的单词或符号的数量。&quot;
+</pre></div><div class="group"><pre class="example-preformatted">  (message &quot;正在处理 `%s' ... &quot; filename)
   (save-excursion
     (let ((buffer (find-file-noselect filename))
           (lengths-list))
@@ -90,102 +84,58 @@ symbols in one function definition.&quot;
       lengths-list)))
 </pre></div></div>
 
-<p>The function is passed one argument, the name of the file on which it
-will work.  It has four lines of documentation, but no interactive
-specification.  Since people worry that a computer is broken if they
-don&rsquo;t see anything going on, the first line of the body is a
-message.
+<p>该函数接受一个参数，即它将操作的文件的名称。它有四行文档，但没有交互规范。由于人们担心如果他们看不到任何操作就会认为计算机出了问题，函数体的第一行是一个消息。
 </p>
-<p>The next line contains a <code class="code">save-excursion</code> that returns Emacs&rsquo;s
-attention to the current buffer when the function completes.  This is
-useful in case you embed this function in another function that
-presumes point is restored to the original buffer.
+<p>接下来的一行包含一个 <code class="code">save-excursion</code>，在函数完成时将 Emacs 的注意力返回到当前缓冲区。这对于嵌套在假设 point 被恢复到原始缓冲区的另一个函数中的情况是有用的。
 </p>
-<p>In the varlist of the <code class="code">let</code> expression, Emacs finds the file and
-binds the local variable <code class="code">buffer</code> to the buffer containing the
-file.  At the same time, Emacs creates <code class="code">lengths-list</code> as a local
-variable.
+<p>在 <code class="code">let</code> 表达式的变量列表中，Emacs 找到文件并将局部变量 <code class="code">buffer</code> 绑定到包含文件的缓冲区。同时，Emacs 创建了 <code class="code">lengths-list</code> 作为局部变量。
 </p>
-<p>Next, Emacs switches its attention to the buffer.
+<p>接下来，Emacs 将注意力切换到缓冲区。
 </p>
-<p>In the following line, Emacs makes the buffer read-only.  Ideally,
-this line is not necessary.  None of the functions for counting words
-and symbols in a function definition should change the buffer.
-Besides, the buffer is not going to be saved, even if it were changed.
-This line is entirely the consequence of great, perhaps excessive,
-caution.  The reason for the caution is that this function and those
-it calls work on the sources for Emacs and it is inconvenient if they
-are inadvertently modified.  It goes without saying that I did not
-realize a need for this line until an experiment went awry and started
-to modify my Emacs source files &hellip;
+<p>在接下来的一行中，Emacs 将缓冲区设置为只读。理想情况下，这一行是不必要的。在计算函数定义中的单词和符号数的函数中，缓冲区不应该发生更改。此外，即使更改了缓冲区，它也不会被保存。这一行完全是对极度谨慎的后果。对谨慎的原因是，这个函数及其调用的函数处理 Emacs 的源代码，并且如果它们被意外修改，则会很不方便。不用说，在一个实验出现问题并开始修改我的 Emacs 源文件之前，我并没有意识到需要这一行 &hellip;
 </p>
-<p>Next comes a call to widen the buffer if it is narrowed.  This
-function is usually not needed&mdash;Emacs creates a fresh buffer if none
-already exists; but if a buffer visiting the file already exists Emacs
-returns that one.  In this case, the buffer may be narrowed and must
-be widened.  If we wanted to be fully user-friendly, we would
-arrange to save the restriction and the location of point, but we
-won&rsquo;t.
+<p>接下来是调用扩展缓冲区的函数，如果它被缩小了的话。通常情况下，这个函数是不需要的 - Emacs 如果还没有存在缓冲区，就会创建一个新的；但是如果已经存在了一个访问文件的缓冲区，Emacs 就返回那个缓冲区。在这种情况下，缓冲区可能被缩小，必须被扩展。如果我们想要完全用户友好，我们会安排保存约束和 point 的位置，但我们不会这样做。
 </p>
-<p>The <code class="code">(goto-char (point-min))</code> expression moves point to the
-beginning of the buffer.
+<p><code class="code">(goto-char (point-min))</code> 表达式将 point 移动到缓冲区的开头。
 </p>
-<p>Then comes a <code class="code">while</code> loop in which the work of the function is
-carried out.  In the loop, Emacs determines the length of each
-definition and constructs a lengths&rsquo; list containing the information.
+<p>然后是一个 <code class="code">while</code> 循环，在循环中执行函数的工作。在循环中，Emacs 确定每个定义的长度并构造包含该信息的长度列表。
 </p>
-<p>Emacs kills the buffer after working through it.  This is to save
-space inside of Emacs.  My version of GNU Emacs 19 contained over 300
-source files of interest; GNU Emacs 22 contains over a thousand source
-files.  Another function will apply <code class="code">lengths-list-file</code> to each
-of the files.
+<p>在处理完缓冲区后，Emacs 将其关闭。这是为了在 Emacs 中保存空间。我使用的 GNU Emacs 19 版本包含了 300 多个感兴趣的源文件；GNU Emacs 22 包含了一千多个源文件。另一个函数将应用 <code class="code">lengths-list-file</code> 到每个文件。
 </p>
-<p>Finally, the last expression within the <code class="code">let</code> expression is the
-<code class="code">lengths-list</code> variable; its value is returned as the value of
-the whole function.
+<p>最后，在 <code class="code">let</code> 表达式中的最后一个表达式是 <code class="code">lengths-list</code> 变量；其值作为整个函数的值返回。
 </p>
-<p>You can try this function by installing it in the usual fashion.  Then
-place your cursor after the following expression and type <kbd class="kbd">C-x
-C-e</kbd> (<code class="code">eval-last-sexp</code>).
+<p>你可以通过通常的方式安装这个函数并尝试它。然后，将光标放在以下表达式之后，键入 <kbd class="kbd">C-x C-e</kbd> (<code class="code">eval-last-sexp</code>).
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(lengths-list-file
  &quot;/usr/local/share/emacs/22.1/lisp/emacs-lisp/debug.el&quot;)
 </pre></div>
 
-<p>You may need to change the pathname of the file; the one here is for
-GNU Emacs version 22.1.  To change the expression, copy it to
-the <samp class="file">*scratch*</samp> buffer and edit it.
+<p>你可能需要更改文件的路径名；这里的路径是适用于 GNU Emacs 版本 22.1 的。要更改表达式，将其复制到 <samp class="file">*scratch*</samp> 缓冲区并进行编辑。
 </p>
-<p>Also, to see the full length of the list, rather than a truncated
-version, you may have to evaluate the following:
+<p>此外，为了看到列表的完整长度，而不是截断版本，你可能需要评估以下内容：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(custom-set-variables '(eval-expression-print-length nil))
 </pre></div>
 
-<p>(See <a class="xref" href="defcustom.html">Specifying Variables using <code class="code">defcustom</code></a>.
-Then evaluate the <code class="code">lengths-list-file</code> expression.)
+<p>(See <a class="xref" href="defcustom.html">使用 <code class="code">defcustom</code> 指定变量</a>。
+然后评估 <code class="code">lengths-list-file</code> 表达式。)
 </p>
-<p>The lengths&rsquo; list for <samp class="file">debug.el</samp> takes less than a second to
-produce and looks like this in GNU Emacs 22:
+<p><samp class="file">debug.el</samp> 的长度列表在 GNU Emacs 22 中不到一秒钟就产生了，看起来像这样：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(83 113 105 144 289 22 30 97 48 89 25 52 52 88 28 29 77 49 43 290 232 587)
 </pre></div>
 
-<p>(Using my old machine, the version 19 lengths&rsquo; list for <samp class="file">debug.el</samp>
-took seven seconds to produce and looked like this:
+<p>(在我的旧机器上，版本 19 的 <samp class="file">debug.el</samp> 长度列表花费了七秒钟并且看起来像这样：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(75 41 80 62 20 45 44 68 45 12 34 235)
 </pre></div>
 
-<p>The newer version of <samp class="file">debug.el</samp> contains more defuns than the
-earlier one; and my new machine is much faster than the old one.)
-</p>
-<p>Note that the length of the last definition in the file is first in
-the list.
+<p>新版本的 <samp class="file">debug.el</samp> 包含比早期版本更多的 defuns；而我的新机器比旧机器要快得多。)
+请注意，文件中的最后一个定义的长度在列表中是最先的。
 </p>
 </div>
 <hr>
