@@ -11544,7 +11544,7 @@ GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式
 
 另外，还有三个站点范围的初始化文件，每次启动 Emacs 时都会自动加载，如果它们存在的话。这些文件分别是 @file{site-start.el}，它在你的 @file{.emacs} 文件之前加载，以及 @file{default.el} 和终端类型文件，它们在你的 @file{.emacs} 文件之后加载。
 
-在你的 @file{.emacs} 文件中的设置和定义会覆盖 @file{site-start.el} 文件中的冲突设置和定义（如果存在的话）。但是，在 @file{default.el} 或终端类型文件中的设置和定义会覆盖你的 @file{.emacs} 文件中的设置和定义。（你可以通过将 @code{term-file-prefix} 设置为 @code{nil} 来阻止终端类型文件的干扰。@xref{Simple Extension, , A Simple Extension}。）
+在你的 @file{.emacs} 文件中的设置和定义会覆盖 @file{site-start.el} 文件中的冲突设置和定义（如果存在的话）。但是，在 @file{default.el} 或终端类型文件中的设置和定义会覆盖你的 @file{.emacs} 文件中的设置和定义。（你可以通过将 @code{term-file-prefix} 设置为 @code{nil} 来阻止终端类型文件的干扰。@xref{简单扩展, , 一个简单的扩展}。）
 
 @c 重写以避免 hbox 溢出。
 分发中附带的 @file{INSTALL} 文件包含了对 @file{site-init.el} 和 @file{site-load.el} 文件的描述。
@@ -12075,113 +12075,98 @@ Emacs使用自动加载的函数启动更快，因为它们的库不会立即加
 
 @xref{Autoload, , Autoload, elisp, The GNU Emacs Lisp Reference Manual}，了解更多信息。
 
-@node Simple Extension
-@section A Simple Extension: @code{line-to-top-of-window}
+@node 简单扩展
+@section 一个简单的扩展：@code{line-to-top-of-window}
 @findex line-to-top-of-window
-@cindex Simple extension in @file{.emacs} file
+@cindex 在 @file{.emacs} 文件中的简单扩展
 
-Here is a simple extension to Emacs that moves the line that point is
-on to the top of the window.  I use this all the time, to make text
-easier to read.
+下面是一个简单的Emacs扩展，将光标所在行移动到窗口顶部。我经常使用它，以便更容易阅读文本。
 
-You can put the following code into a separate file and then load it
-from your @file{.emacs} file, or you can include it within your
-@file{.emacs} file.
+你可以将以下代码放入一个单独的文件中，然后从你的 @file{.emacs} 文件中加载它，或者直接包含在 @file{.emacs} 文件中。
 
 @need 1250
-Here is the definition:
+下面是定义：
 
 @smallexample
 @group
-;;; Line to top of window;
-;;; replace three keystroke sequence  C-u 0 C-l
+;;; 将行移到窗口顶部；
+;;; 替代三个按键序列 C-u 0 C-l
 (defun line-to-top-of-window ()
-  "Move the line that point is on to top of window."
+  "将光标所在行移动到窗口顶部。"
   (interactive)
   (recenter 0))
 @end group
 @end smallexample
 
 @need 1250
-Now for the key binding.
+现在是按键绑定。
 
-Function keys as well as mouse button events and non-@sc{ascii}
-characters are written within square brackets, without quotation
-marks.
+函数键以及鼠标按钮事件和非@sc{ascii}字符用方括号括起，不加引号。
 
-I bind @code{line-to-top-of-window} to my @key{F6} function key like
-this:
+我将 @code{line-to-top-of-window} 绑定到我的 @key{F6} 函数键上，如下所示：
 
 @smallexample
 (global-set-key [f6] 'line-to-top-of-window)
 @end smallexample
 
-For more information, see @ref{Init Rebinding, , Rebinding Keys in
-Your Init File, emacs, The GNU Emacs Manual}.
+有关更多信息，请参阅 @ref{Init Rebinding, , 在你的初始化文件中重新绑定键, emacs, GNU Emacs手册}。
 
-@cindex Conditional 'twixt two versions of Emacs
-@cindex Version of Emacs, choosing
-@cindex Emacs version, choosing
-If you run two versions of GNU Emacs, such as versions 27 and 28, and
-use one @file{.emacs} file, you can select which code to evaluate with
-the following conditional:
+@cindex 在两个版本的Emacs之间选择
+@cindex Emacs版本，选择
+@cindex 选择Emacs版本
+如果你运行两个GNU Emacs版本，比如版本27和28，并使用一个 @file{.emacs} 文件，你可以使用以下条件选择要评估的代码：
 
 @smallexample
 @group
 (cond
  ((= 27 emacs-major-version)
-  ;; evaluate version 27 code
+  ;; 评估版本27的代码
   ( @dots{} ))
  ((= 28 emacs-major-version)
-  ;; evaluate version 28 code
+  ;; 评估版本28的代码
   ( @dots{} )))
 @end group
 @end smallexample
 
-For example, recent versions blink
-their cursors by default.  I hate such blinking, as well as other
-features, so I placed the following in my @file{.emacs}
-file@footnote{When I start instances of Emacs that do not load my
-@file{.emacs} file or any site file, I also turn off blinking:
+例如，最近的版本默认闪烁光标。我不喜欢这种闪烁，以及其他一些功能，因此我将以下内容放在我的 @file{.emacs} 文件中@footnote{当我启动不加载我的 @file{.emacs} 文件或任何站点文件的Emacs实例时，我还会关闭闪烁：
 
 @smallexample
 emacs -q --no-site-file -eval '(blink-cursor-mode nil)'
 
-@exdent Or nowadays, using an even more sophisticated set of options,
+@exdent 或者现在，使用一组更复杂的选项，
 
 emacs -Q -D
 @end smallexample
-}:
+}：
 
 @smallexample
 @group
 (when (>= emacs-major-version 21)
   (blink-cursor-mode 0)
-  ;; Insert newline when you press 'C-n' (next-line)
-  ;; at the end of the buffer
+  ;; 在缓冲区末尾按 'C-n'（next-line）时插入换行符
   (setq next-line-add-newlines t)
 @end group
 @group
-  ;; Turn on image viewing
+  ;; 打开图像查看
   (auto-image-file-mode t)
 @end group
 @group
-  ;; Turn on menu bar (this bar has text)
-  ;; (Use numeric argument to turn on)
+  ;; 打开菜单栏（此栏具有文本）
+  ;; （使用数值参数打开）
   (menu-bar-mode 1)
 @end group
 @group
-  ;; Turn off tool bar (this bar has icons)
-  ;; (Use numeric argument to turn on)
+  ;; 关闭工具栏（此栏具有图标）
+  ;; （使用数值参数打开）
   (tool-bar-mode nil)
 @end group
 @group
-  ;; Turn off tooltip mode for tool bar
-  ;; (This mode causes icon explanations to pop up)
-  ;; (Use numeric argument to turn on)
+  ;; 关闭工具栏的工具提示模式
+  ;; （此模式导致图标解释弹出）
+  ;; （使用数值参数打开）
   (tooltip-mode nil)
-  ;; If tooltips turned on, make tips appear promptly
-  (setq tooltip-delay 0.1)  ; default is 0.7 second
+  ;; 如果启用工具提示，使提示迅速显示
+  (setq tooltip-delay 0.1)  ; 默认为0.7秒
    )
 @end group
 @end smallexample

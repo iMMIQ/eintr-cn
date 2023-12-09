@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Simple Extension (Programming in Emacs Lisp)</title>
+<title>简单扩展 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Simple Extension (Programming in Emacs Lisp)">
-<meta name="keywords" content="Simple Extension (Programming in Emacs Lisp)">
+<meta name="description" content="简单扩展 (Programming in Emacs Lisp)">
+<meta name="keywords" content="简单扩展 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -53,93 +53,79 @@ kbd.key {font-style: normal}
 </head>
 
 <body lang="en">
-<div class="section-level-extent" id="Simple-Extension">
+<div class="section-level-extent" id="g_t_7b80_5355_6269_5c55">
 <div class="nav-panel">
 <p>
 Next: <a href="X11-Colors.html" accesskey="n" rel="next">X11 Colors</a>, Previous: <a href="Zi-Dong-Jia-Zai-.html" accesskey="p" rel="prev">自动加载</a>, Up: <a href="Emacs-Chu-Shi-Hua-.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="A-Simple-Extension_003a-line_002dto_002dtop_002dof_002dwindow">16.11 A Simple Extension: <code class="code">line-to-top-of-window</code></h3>
+<h3 class="section" id="YiGeJian-Dan-De-Kuo-Zhan-_003aline_002dto_002dtop_002dof_002dwindow">16.11 一个简单的扩展：<code class="code">line-to-top-of-window</code></h3>
 <a class="index-entry-id" id="index-line_002dto_002dtop_002dof_002dwindow"></a>
-<a class="index-entry-id" id="index-Simple-extension-in-_002eemacs-file"></a>
+<a class="index-entry-id" id="index-Zai-_002eemacs-WenJian-ZhongDe-Jian-Dan-Kuo-Zhan-"></a>
 
-<p>Here is a simple extension to Emacs that moves the line that point is
-on to the top of the window.  I use this all the time, to make text
-easier to read.
+<p>下面是一个简单的Emacs扩展，将光标所在行移动到窗口顶部。我经常使用它，以便更容易阅读文本。
 </p>
-<p>You can put the following code into a separate file and then load it
-from your <samp class="file">.emacs</samp> file, or you can include it within your
-<samp class="file">.emacs</samp> file.
+<p>你可以将以下代码放入一个单独的文件中，然后从你的 <samp class="file">.emacs</samp> 文件中加载它，或者直接包含在 <samp class="file">.emacs</samp> 文件中。
 </p>
-<p>Here is the definition:
+<p>下面是定义：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; Line to top of window;
-;;; replace three keystroke sequence  C-u 0 C-l
+<div class="group"><pre class="example-preformatted">;;; 将行移到窗口顶部；
+;;; 替代三个按键序列 C-u 0 C-l
 (defun line-to-top-of-window ()
-  &quot;Move the line that point is on to top of window.&quot;
+  &quot;将光标所在行移动到窗口顶部。&quot;
   (interactive)
   (recenter 0))
 </pre></div></div>
 
-<p>Now for the key binding.
+<p>现在是按键绑定。
 </p>
-<p>Function keys as well as mouse button events and non-<small class="sc">ASCII</small>
-characters are written within square brackets, without quotation
-marks.
+<p>函数键以及鼠标按钮事件和非<small class="sc">ASCII</small>字符用方括号括起，不加引号。
 </p>
-<p>I bind <code class="code">line-to-top-of-window</code> to my <kbd class="key">F6</kbd> function key like
-this:
+<p>我将 <code class="code">line-to-top-of-window</code> 绑定到我的 <kbd class="key">F6</kbd> 函数键上，如下所示：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(global-set-key [f6] 'line-to-top-of-window)
 </pre></div>
 
-<p>For more information, see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html#Init-Rebinding">Rebinding Keys in
-Your Init File</a> in <cite class="cite">The GNU Emacs Manual</cite>.
+<p>有关更多信息，请参阅 <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html#Init-Rebinding">在你的初始化文件中重新绑定键</a> in <cite class="cite">GNU Emacs手册</cite>。
 </p>
-<a class="index-entry-id" id="index-Conditional-_0027twixt-two-versions-of-Emacs"></a>
-<a class="index-entry-id" id="index-Version-of-Emacs_002c-choosing"></a>
-<a class="index-entry-id" id="index-Emacs-version_002c-choosing"></a>
-<p>If you run two versions of GNU Emacs, such as versions 27 and 28, and
-use one <samp class="file">.emacs</samp> file, you can select which code to evaluate with
-the following conditional:
+<a class="index-entry-id" id="index-Zai-Liang-GeBan-Ben-De-EmacsZhi-Jian-Xuan-Ze-"></a>
+<a class="index-entry-id" id="index-EmacsBan-Ben-_002cXuan-Ze-"></a>
+<a class="index-entry-id" id="index-Xuan-Ze-EmacsBan-Ben-"></a>
+<p>如果你运行两个GNU Emacs版本，比如版本27和28，并使用一个 <samp class="file">.emacs</samp> 文件，你可以使用以下条件选择要评估的代码：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(cond
  ((= 27 emacs-major-version)
-  ;; evaluate version 27 code
+  ;; 评估版本27的代码
   ( &hellip; ))
  ((= 28 emacs-major-version)
-  ;; evaluate version 28 code
+  ;; 评估版本28的代码
   ( &hellip; )))
 </pre></div></div>
 
-<p>For example, recent versions blink
-their cursors by default.  I hate such blinking, as well as other
-features, so I placed the following in my <samp class="file">.emacs</samp>
-file<a class="footnote" id="DOCF17" href="#FOOT17"><sup>17</sup></a>:
+<p>例如，最近的版本默认闪烁光标。我不喜欢这种闪烁，以及其他一些功能，因此我将以下内容放在我的 <samp class="file">.emacs</samp> 文件中<a class="footnote" id="DOCF17" href="#FOOT17"><sup>17</sup></a>：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(when (&gt;= emacs-major-version 21)
   (blink-cursor-mode 0)
-  ;; Insert newline when you press 'C-n' (next-line)
-  ;; at the end of the buffer
+  ;; 在缓冲区末尾按 'C-n'（next-line）时插入换行符
   (setq next-line-add-newlines t)
-</pre></div><div class="group"><pre class="example-preformatted">  ;; Turn on image viewing
+</pre></div><div class="group"><pre class="example-preformatted">  ;; 打开图像查看
   (auto-image-file-mode t)
-</pre></div><div class="group"><pre class="example-preformatted">  ;; Turn on menu bar (this bar has text)
-  ;; (Use numeric argument to turn on)
+</pre></div><div class="group"><pre class="example-preformatted">  ;; 打开菜单栏（此栏具有文本）
+  ;; （使用数值参数打开）
   (menu-bar-mode 1)
-</pre></div><div class="group"><pre class="example-preformatted">  ;; Turn off tool bar (this bar has icons)
-  ;; (Use numeric argument to turn on)
+</pre></div><div class="group"><pre class="example-preformatted">  ;; 关闭工具栏（此栏具有图标）
+  ;; （使用数值参数打开）
   (tool-bar-mode nil)
-</pre></div><div class="group"><pre class="example-preformatted">  ;; Turn off tooltip mode for tool bar
-  ;; (This mode causes icon explanations to pop up)
-  ;; (Use numeric argument to turn on)
+</pre></div><div class="group"><pre class="example-preformatted">  ;; 关闭工具栏的工具提示模式
+  ;; （此模式导致图标解释弹出）
+  ;; （使用数值参数打开）
   (tooltip-mode nil)
-  ;; If tooltips turned on, make tips appear promptly
-  (setq tooltip-delay 0.1)  ; default is 0.7 second
+  ;; 如果启用工具提示，使提示迅速显示
+  (setq tooltip-delay 0.1)  ; 默认为0.7秒
    )
 </pre></div></div>
 
@@ -149,22 +135,16 @@ file<a class="footnote" id="DOCF17" href="#FOOT17"><sup>17</sup></a>:
 <h4 class="footnotes-heading">Footnotes</h4>
 
 <h5 class="footnote-body-heading"><a id="FOOT17" href="#DOCF17">(17)</a></h5>
-<p>When I start instances of Emacs that do not load my
-<samp class="file">.emacs</samp> file or any site file, I also turn off blinking:
+<p>当我启动不加载我的 <samp class="file">.emacs</samp> 文件或任何站点文件的Emacs实例时，我还会关闭闪烁：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">emacs -q --no-site-file -eval '(blink-cursor-mode nil)'
 
-</pre><pre class="exdent">Or nowadays, using an even more sophisticated set of options,
+</pre><pre class="exdent">或者现在，使用一组更复杂的选项，
 </pre><pre class="example-preformatted">
 
 emacs -Q -D
 </pre></div>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="X11-Colors.html">X11 Colors</a>, Previous: <a href="Zi-Dong-Jia-Zai-.html">自动加载</a>, Up: <a href="Emacs-Chu-Shi-Hua-.html">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
