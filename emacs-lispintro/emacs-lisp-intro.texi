@@ -12171,33 +12171,31 @@ emacs -Q -D
 @end group
 @end smallexample
 
-@node X11 Colors
-@section X11 Colors
+@node X11 颜色
+@section X11 颜色
 
-You can specify colors when you use Emacs with the MIT X Windowing
-system.
+在使用 MIT X 窗口系统的 Emacs 中，您可以指定颜色。
 
-I dislike the default colors and specify my own.
+我不喜欢默认的颜色，因此我设置了自己的颜色。
 
 @need 1250
-Here are the expressions in my @file{.emacs}
-file that set values:
+以下是我在 @file{.emacs} 文件中设置值的表达式：
 
 @smallexample
 @group
-;; Set cursor color
+;; 设置光标颜色
 (set-cursor-color "white")
 
-;; Set mouse color
+;; 设置鼠标颜色
 (set-mouse-color "white")
 
-;; Set foreground and background
+;; 设置前景和背景颜色
 (set-foreground-color "white")
 (set-background-color "darkblue")
 @end group
 
 @group
-;;; Set highlighting colors for isearch and drag
+;;; 为 isearch 和 drag 设置高亮颜色
 (set-face-foreground 'highlight "white")
 (set-face-background 'highlight "blue")
 @end group
@@ -12213,7 +12211,7 @@ file that set values:
 @end group
 
 @group
-;; Set calendar highlighting colors
+;; 设置日历高亮颜色
 (with-eval-after-load 'calendar
   (set-face-foreground 'diary   "skyblue")
   (set-face-background 'holiday "slate blue")
@@ -12221,13 +12219,9 @@ file that set values:
 @end group
 @end smallexample
 
-The various shades of blue soothe my eye and prevent me from seeing
-the screen flicker.
+各种蓝色调缓解了我的眼睛，并防止我看到屏幕闪烁。
 
-Alternatively, I could have set my specifications in various X
-initialization files.  For example, I could set the foreground,
-background, cursor, and pointer (i.e., mouse) colors in my
-@file{~/.Xresources} file like this:
+或者，我也可以在各种 X 初始化文件中设置我的规格。例如，我可以在 @file{~/.Xresources} 文件中设置前景、背景、光标和指针（即鼠标）颜色，如下所示：
 
 @smallexample
 @group
@@ -12238,10 +12232,7 @@ Emacs*pointerColor: white
 @end group
 @end smallexample
 
-In any event, since it is not part of Emacs, I set the root color of
-my X window in my @file{~/.xinitrc} file, like this@footnote{I also
-run more modern window managers, such as Enlightenment, Gnome, or KDE;
-in those cases, I often specify an image rather than a plain color.}:
+无论如何，由于它不是 Emacs 的一部分，我在 @file{~/.xinitrc} 文件中设置了我的 X 窗口的根颜色，如下所示@footnote{我还运行更现代的窗口管理器，如 Enlightenment、Gnome 或 KDE；在这些情况下，我通常指定图像而不是纯色。}：
 
 @smallexample
 xsetroot -solid Navy -fg white &
