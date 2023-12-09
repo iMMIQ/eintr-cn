@@ -12880,49 +12880,30 @@ Edebug 不仅仅能够与你一起逐步执行函数。你可以设置它，让�
 有关 Edebug 的详细信息，请参阅@ref{Edebug, , , elisp, GNU Emacs Lisp 参考手册}。
 
 @need 1500
-@node Debugging Exercises
-@section Debugging Exercises
+@node 调试练习
+@section 调试练习
 
 @itemize @bullet
 @item
-Install the @code{@value{COUNT-WORDS}} function and then cause it to
-enter the built-in debugger when you call it.  Run the command on a
-region containing two words.  You will need to press @kbd{d} a
-remarkable number of times.  On your system, is a hook called after
-the command finishes?  (For information on hooks, see @ref{Command
-Overview, , Command Loop Overview, elisp, The GNU Emacs Lisp Reference
-Manual}.)
+安装 @code{@value{COUNT-WORDS}} 函数，然后在调用它时使其进入内置调试器。在包含两个单词的区域上运行该命令。你将需要按下 @kbd{d} 键很多次。在你的系统上，命令完成后是否有一个叫做 hook 的钩子？（有关 hooks 的信息，请参见 @ref{Command Overview, , Command Loop Overview, elisp, The GNU Emacs Lisp Reference Manual}。）
 
 @item
-Copy @code{@value{COUNT-WORDS}} into the @file{*scratch*} buffer,
-instrument the function for Edebug, and walk through its execution.
-The function does not need to have a bug, although you can introduce
-one if you wish.  If the function lacks a bug, the walk-through
-completes without problems.
+将 @code{@value{COUNT-WORDS}} 复制到 @file{*scratch*} 缓冲区中，为 Edebug 工具为该函数设置断点，并步进执行。该函数不一定要有 bug，尽管你可以引入一个如果愿意的话。如果函数没有 bug，步进执行将顺利完成。
 
 @item
-While running Edebug, type @kbd{?} to see a list of all the Edebug commands.
-(The @code{global-edebug-prefix} is usually @kbd{C-x X}, i.e.,
-@kbd{@key{CTRL}-x} followed by an upper case @kbd{X}; use this prefix
-for commands made outside of the Edebug debugging buffer.)
+在运行 Edebug 时，按下 @kbd{?} 键以查看所有 Edebug 命令的列表。（@code{global-edebug-prefix} 通常是 @kbd{C-x X}，即按下 @kbd{@key{CTRL}-x} 后再按一个大写的 @kbd{X}；在 Edebug 调试缓冲区之外使用此前缀执行命令。）
 
 @item
-In the Edebug debugging buffer, use the @kbd{p}
-(@code{edebug-bounce-point}) command to see where in the region the
-@code{@value{COUNT-WORDS}} is working.
+在 Edebug 调试缓冲区中，使用 @kbd{p} 命令（@code{edebug-bounce-point}）查看 @code{@value{COUNT-WORDS}} 在区域中的工作位置。
 
 @item
-Move point to some spot further down the function and then type the
-@kbd{h} (@code{edebug-goto-here}) command to jump to that location.
+将光标移动到函数内部的某个位置，然后键入 @kbd{h} 命令（@code{edebug-goto-here}）跳转到该位置。
 
 @item
-Use the @kbd{t} (@code{edebug-trace-mode}) command to cause Edebug to
-walk through the function on its own; use an upper case @kbd{T} for
-@code{edebug-Trace-fast-mode}.
+使用 @kbd{t} 命令（@code{edebug-trace-mode}）使 Edebug 自动步进执行函数；使用大写的 @kbd{T} 来使用 @code{edebug-Trace-fast-mode}。
 
 @item
-Set a breakpoint, then run Edebug in Trace mode until it reaches the
-stopping point.
+设置一个断点，然后在 Trace 模式下运行 Edebug，直到达到停止点。
 @end itemize
 
 @node 结论

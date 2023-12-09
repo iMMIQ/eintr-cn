@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Debugging Exercises (Programming in Emacs Lisp)</title>
+<title>调试练习 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Debugging Exercises (Programming in Emacs Lisp)">
-<meta name="keywords" content="Debugging Exercises (Programming in Emacs Lisp)">
+<meta name="description" content="调试练习 (Programming in Emacs Lisp)">
+<meta name="keywords" content="调试练习 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -53,46 +53,28 @@ ul.mark-bullet {list-style-type: disc}
 </head>
 
 <body lang="en">
-<div class="section-level-extent" id="Debugging-Exercises">
+<div class="section-level-extent" id="g_t_8c03_8bd5_7ec3_4e60">
 <div class="nav-panel">
 <p>
 Previous: <a href="edebug.html" accesskey="p" rel="prev"><code class="code">edebug</code> 源码级调试器</a>, Up: <a href="Diao-Shi-.html" accesskey="u" rel="up">调试</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Debugging-Exercises-1">17.5 Debugging Exercises</h3>
+<h3 class="section" id="Diao-Shi-Lian-Xi-">17.5 调试练习</h3>
 
 <ul class="itemize mark-bullet">
-<li>Install the <code class="code">count-words-example</code> function and then cause it to
-enter the built-in debugger when you call it.  Run the command on a
-region containing two words.  You will need to press <kbd class="kbd">d</kbd> a
-remarkable number of times.  On your system, is a hook called after
-the command finishes?  (For information on hooks, see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Command-Overview.html#Command-Overview">Command Loop Overview</a> in <cite class="cite">The GNU Emacs Lisp Reference
-Manual</cite>.)
+<li>安装 <code class="code">count-words-example</code> 函数，然后在调用它时使其进入内置调试器。在包含两个单词的区域上运行该命令。你将需要按下 <kbd class="kbd">d</kbd> 键很多次。在你的系统上，命令完成后是否有一个叫做 hook 的钩子？（有关 hooks 的信息，请参见 <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Command-Overview.html#Command-Overview">Command Loop Overview</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
 
-</li><li>Copy <code class="code">count-words-example</code> into the <samp class="file">*scratch*</samp> buffer,
-instrument the function for Edebug, and walk through its execution.
-The function does not need to have a bug, although you can introduce
-one if you wish.  If the function lacks a bug, the walk-through
-completes without problems.
+</li><li>将 <code class="code">count-words-example</code> 复制到 <samp class="file">*scratch*</samp> 缓冲区中，为 Edebug 工具为该函数设置断点，并步进执行。该函数不一定要有 bug，尽管你可以引入一个如果愿意的话。如果函数没有 bug，步进执行将顺利完成。
 
-</li><li>While running Edebug, type <kbd class="kbd">?</kbd> to see a list of all the Edebug commands.
-(The <code class="code">global-edebug-prefix</code> is usually <kbd class="kbd">C-x X</kbd>, i.e.,
-<kbd class="kbd"><kbd class="key">CTRL</kbd>-x</kbd> followed by an upper case <kbd class="kbd">X</kbd>; use this prefix
-for commands made outside of the Edebug debugging buffer.)
+</li><li>在运行 Edebug 时，按下 <kbd class="kbd">?</kbd> 键以查看所有 Edebug 命令的列表。（<code class="code">global-edebug-prefix</code> 通常是 <kbd class="kbd">C-x X</kbd>，即按下 <kbd class="kbd"><kbd class="key">CTRL</kbd>-x</kbd> 后再按一个大写的 <kbd class="kbd">X</kbd>；在 Edebug 调试缓冲区之外使用此前缀执行命令。）
 
-</li><li>In the Edebug debugging buffer, use the <kbd class="kbd">p</kbd>
-(<code class="code">edebug-bounce-point</code>) command to see where in the region the
-<code class="code">count-words-example</code> is working.
+</li><li>在 Edebug 调试缓冲区中，使用 <kbd class="kbd">p</kbd> 命令（<code class="code">edebug-bounce-point</code>）查看 <code class="code">count-words-example</code> 在区域中的工作位置。
 
-</li><li>Move point to some spot further down the function and then type the
-<kbd class="kbd">h</kbd> (<code class="code">edebug-goto-here</code>) command to jump to that location.
+</li><li>将光标移动到函数内部的某个位置，然后键入 <kbd class="kbd">h</kbd> 命令（<code class="code">edebug-goto-here</code>）跳转到该位置。
 
-</li><li>Use the <kbd class="kbd">t</kbd> (<code class="code">edebug-trace-mode</code>) command to cause Edebug to
-walk through the function on its own; use an upper case <kbd class="kbd">T</kbd> for
-<code class="code">edebug-Trace-fast-mode</code>.
+</li><li>使用 <kbd class="kbd">t</kbd> 命令（<code class="code">edebug-trace-mode</code>）使 Edebug 自动步进执行函数；使用大写的 <kbd class="kbd">T</kbd> 来使用 <code class="code">edebug-Trace-fast-mode</code>。
 
-</li><li>Set a breakpoint, then run Edebug in Trace mode until it reaches the
-stopping point.
+</li><li>设置一个断点，然后在 Trace 模式下运行 Edebug，直到达到停止点。
 </li></ul>
 
 </div>
