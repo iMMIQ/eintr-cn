@@ -12406,38 +12406,34 @@ xmodmap -e "keysym Alt_L = Meta_L Alt_L"
 @end smallexample
 
 @need 1700
-@node Mode Line
-@section A Modified Mode Line
+@node 模式行
+@section 修改后的模式行
 @vindex mode-line-format
-@cindex Mode line format
+@cindex 模式行格式
 
-Finally, a feature I really like: a modified mode line.
+最后，有一个我真的很喜欢的功能：修改后的模式行。
 
-When I work over a network, I forget which machine I am using.  Also,
-I tend to lose track of where I am, and which line point is on.
+当我通过网络工作时，我会忘记我使用的是哪台机器。而且，我往往会迷失在当前位置、光标所在行等信息中。
 
-So I reset my mode line to look like this:
+因此，我将我的模式行重置为以下样式：
 
 @smallexample
--:-- foo.texi   rattlesnake:/home/bob/  Line 1  (Texinfo Fill) Top
+-:-- foo.texi   rattlesnake:/home/bob/  行 1  (Texinfo 填充) 顶部
 @end smallexample
 
-I am visiting a file called @file{foo.texi}, on my machine
-@file{rattlesnake} in my @file{/home/bob} buffer.  I am on line 1, in
-Texinfo mode, and am at the top of the buffer.
+我正在访问一个名为@file{foo.texi}的文件，位于我的机器@file{rattlesnake}上，位于@file{/home/bob}缓冲区。我在第1行，在Texinfo模式下，并且位于缓冲区的顶部。
 
 @need 1200
-My @file{.emacs} file has a section that looks like this:
+我的@file{.emacs}文件有一个如下的部分：
 
 @smallexample
 @group
-;; Set a Mode Line that tells me which machine, which directory,
-;; and which line I am on, plus the other customary information.
+;; 设置一个模式行，告诉我所在的机器、目录和所在的行，以及其他通常的信息。
 (setq-default mode-line-format
  (quote
   (#("-" 0 1
      (help-echo
-      "mouse-1: select window, mouse-2: delete others ..."))
+      "mouse-1: 选择窗口, mouse-2: 删除其他..."))
    mode-line-mule-info
    mode-line-modified
    mode-line-frame-identification
@@ -12452,18 +12448,18 @@ My @file{.emacs} file has a section that looks like this:
    default-directory
    #(" " 0 1
      (help-echo
-      "mouse-1: select window, mouse-2: delete others ..."))
-   (line-number-mode " Line %l ")
+      "mouse-1: 选择窗口, mouse-2: 删除其他..."))
+   (line-number-mode " 行 %l ")
    global-mode-string
 @end group
 @group
    #("   %[(" 0 6
      (help-echo
-      "mouse-1: select window, mouse-2: delete others ..."))
+      "mouse-1: 选择窗口, mouse-2: 删除其他..."))
    (:eval (format-time-string "%F"))
    mode-line-process
    minor-mode-alist
-   #("%n" 0 2 (help-echo "mouse-2: widen" local-map (keymap ...)))
+   #("%n" 0 2 (help-echo "mouse-2: 扩大" local-map (keymap ...)))
    ")%] "
    (-3 . "%P")
    ;;   "-%-"
@@ -12472,71 +12468,36 @@ My @file{.emacs} file has a section that looks like this:
 @end smallexample
 
 @noindent
-Here, I redefine the default mode line.  Most of the parts are from
-the original; but I make a few changes.  I set the @emph{default} mode
-line format so as to permit various modes, such as Info, to override
-it.
+在这里，我重新定义了默认的模式行。列表中的大多数部分来自原始模式行；但我做了一些更改。我设置了@emph{默认}的模式行格式，以允许各种模式（如Info）覆盖它。
 
-Many elements in the list are self-explanatory:
-@code{mode-line-modified} is a variable that tells whether the buffer
-has been modified, @code{mode-name} tells the name of the mode, and so
-on.  However, the format looks complicated because of two features we
-have not discussed.
+列表中的许多元素都是不言自明的：
+@code{mode-line-modified}是一个变量，表示缓冲区是否被修改，@code{mode-name}表示模式的名称等等。但是，格式看起来很复杂，是因为我们还没有讨论的两个特性。
 
-@cindex Properties, in mode line example
-The first string in the mode line is a dash or hyphen, @samp{-}.  In
-the old days, it would have been specified simply as @code{"-"}.  But
-nowadays, Emacs can add properties to a string, such as highlighting
-or, as in this case, a help feature.  If you place your mouse cursor
-over the hyphen, some help information appears (By default, you must
-wait seven-tenths of a second before the information appears.  You can
-change that timing by changing the value of @code{tooltip-delay}.)
+@cindex 在模式行示例中的属性
+模式行中的第一个字符串是一个破折号，@samp{-}。在过去，它将简单地指定为@code{"-"}。但现在，Emacs可以为字符串添加属性，如高亮或者在本例中，一个帮助功能。如果将鼠标光标放在连字符上，将显示一些帮助信息（默认情况下，您必须等待七分之一秒才能看到信息。您可以通过更改@code{tooltip-delay}的值来更改该时间。）
 
 @need 1000
-The new string format has a special syntax:
+新字符串格式具有特殊的语法：
 
 @smallexample
-#("-" 0 1 (help-echo "mouse-1: select window, ..."))
+#("-" 0 1 (help-echo "mouse-1: 选择窗口, ..."))
 @end smallexample
 
 @noindent
-The @code{#(} begins a list.  The first element of the list is the
-string itself, just one @samp{-}.  The second and third
-elements specify the range over which the fourth element applies.  A
-range starts @emph{after} a character, so a zero means the range
-starts just before the first character; a 1 means that the range ends
-just after the first character.  The third element is the property for
-the range.  It consists of a property list,  a
-property name, in this case, @samp{help-echo}, followed by a value, in this
-case, a string.  The second, third, and fourth elements of this new
-string format can be repeated.
+@code{#(}开始一个列表。列表的第一个元素是字符串本身，只有一个@samp{-}。第二个和第三个元素指定第四个元素适用的范围。范围从字符之后开始，所以零表示范围从第一个字符之前开始；1表示范围在第一个字符之后结束。第三个元素是范围的属性。它包含一个属性列表，一个属性名称，在本例中是@samp{help-echo}，后跟一个值，在本例中是一个字符串。新字符串格式的第二、第三和第四个元素可以重复。
 
-@xref{Text Properties, , Text Properties, elisp, The GNU Emacs Lisp
-Reference Manual}, and see @ref{Mode Line Format, , Mode Line Format,
-elisp, The GNU Emacs Lisp Reference Manual}, for more information.
+@xref{Text Properties, , 文本属性, elisp, GNU Emacs Lisp参考手册}，并参见@ref{Mode Line Format, , 模式行格式, elisp, GNU Emacs Lisp参考手册}，获取更多信息。
 
 @code{mode-line-buffer-identification}
-displays the current buffer name.  It is a list
-beginning @code{(#("%12b" 0 4 @dots{}}.
-The @code{#(} begins the list.
+显示当前缓冲区的名称。它是一个以@code{(#("%12b" 0 4 @dots{}}开头的列表。
+@code{#(}开始列表。
 
-The @samp{"%12b"} displays the current buffer name, using the
-@code{buffer-name} function with which we are familiar; the @samp{12}
-specifies the maximum number of characters that will be displayed.
-When a name has fewer characters, whitespace is added to fill out to
-this number.  (Buffer names can and often should be longer than 12
-characters; this length works well in a typical 80 column wide
-window.)
+@samp{"%12b"}显示当前缓冲区的名称，使用我们熟悉的@code{buffer-name}函数；@samp{12}指定将显示的最大字符数。当名称字符较少时，将添加空格以填充到这个数字。 （缓冲区名称可以并且通常应该比12个字符长；在典型的80列宽窗口中，此长度效果很好。）
 
-@code{:eval} says to evaluate the following form and use the result as
-a string to display.  In this case, the expression displays the first
-component of the full system name.  The end of the first component is
-a @samp{.} (period), so I use the @code{string-match} function to
-tell me the length of the first component.  The substring from the
-zeroth character to that length is the name of the machine.
+@code{:eval}表示评估以下表达式，并将结果用作要显示的字符串。在这种情况下，该表达式显示完整系统名称的第一个组成部分。第一个组成部分的末尾是@samp{.}（句点），因此我使用@code{string-match}函数告诉我第一个组成部分的长度。从第零个字符到该长度的子字符串是机器的名称。
 
 @need 1250
-This is the expression:
+这是表达式：
 
 @smallexample
 @group
@@ -12545,29 +12506,18 @@ This is the expression:
 @end group
 @end smallexample
 
-@samp{%[} and @samp{%]} cause a pair of square brackets
-to appear for each recursive editing level.  @samp{%n} says ``Narrow''
-when narrowing is in effect.  @samp{%P} tells you the percentage of
-the buffer that is above the bottom of the window, or ``Top'', ``Bottom'',
-or ``All''.  (A lower case @samp{p} tell you the percentage above the
-@emph{top} of the window.)  @samp{%-} inserts enough dashes to fill
-out the line.
+@samp{%[}和@samp{%]}使每个递归编辑级别都出现一对方括号。 @samp{%n}在缩小效果生效时说“Narrow”。“%P”告诉您在窗口底部之上的缓冲区百分比，或者是“Top”、“Bottom”或“All”（小写的@samp{p}告诉您在窗口顶部之上的百分比）。 @samp{%-}插入足够的破折号以填满整行。
 
-Remember, you don't have to like Emacs to like it---your own
-Emacs can have different colors, different commands, and different
-keys than a default Emacs.
+记住，你不一定非要喜欢Emacs才能使用它---你自己的Emacs可以有不同的颜色、不同的命令和不同的键盘快捷键，与默认的Emacs不同。
 
-On the other hand, if you want to bring up a plain out-of-the-box
-Emacs, with no customization, type:
+另一方面，如果您想要启动一个纯粹的开箱即用的Emacs，没有定制，请键入：
 
 @smallexample
 emacs -q
 @end smallexample
 
 @noindent
-This will start an Emacs that does @emph{not} load your
-@file{~/.emacs} initialization file.  A plain, default Emacs.  Nothing
-more.
+这将启动一个不加载您的@file{~/.emacs}初始化文件的Emacs。一个纯粹的、默认的Emacs。没有更多。
 
 @node Debugging
 @chapter Debugging
