@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>语法 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="语法 (Programming in Emacs Lisp)">
+<meta name="keywords" content="语法 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" rel="up" title="在 defun 中计算单词数">
+<link href="count_002dwords_002din_002ddefun.html" rel="next" title="count-words-in-defun">
+<link href="Dan-Ci-He-Fu-Hao-.html" rel="prev" title="单词和符号">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_8bed_6cd5">
+<div class="nav-panel">
+<p>
+Next: <a href="count_002dwords_002din_002ddefun.html" accesskey="n" rel="next">The <code class="code">count-words-in-defun</code> Function</a>, Previous: <a href="Dan-Ci-He-Fu-Hao-.html" accesskey="p" rel="prev">如何计数？</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="He-Wei-Dan-Ci-Huo-Fu-Hao-De-Zu-Cheng-Bu-Fen-_003f">14.2 何为单词或符号的组成部分？</h3>
+<a class="index-entry-id" id="index-Yu-Fa-Lei-Bie-He-Biao-"></a>
+
+<p>Emacs将不同的字符视为属于不同的<em class="dfn">语法类别</em>。例如，正则表达式&lsquo;<samp class="samp">\\w+</samp>&rsquo;是一个模式，指定一个或多个<em class="emph">单词组成</em>字符。单词组成字符属于一个语法类别。其他语法类别包括标点字符类，如句点和逗号，以及空白字符类，如空格和制表符。（更多信息，请参阅see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Tables.html#Syntax-Tables">Syntax Tables</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
+</p>
+<p>语法表指定哪些字符属于哪些类别。通常，连字符不被指定为单词组成字符。相反，它被指定为符号名称中的字符类，但不是单词。这意味着<code class="code">count-words-example</code>函数以与单词间空格相同的方式处理它，这就是为什么<code class="code">count-words-example</code>将&lsquo;<samp class="samp">multiply-by-seven</samp>&rsquo;计为三个单词的原因。
+</p>
+<p>有两种方法可以使Emacs将&lsquo;<samp class="samp">multiply-by-seven</samp>&rsquo;计为一个符号：修改语法表或修改正则表达式。
+</p>
+<p>我们可以通过修改Emacs为每种模式保留的语法表来重新定义连字符为单词组成字符。这个动作将满足我们的目的，除了连字符仅仅是符号中最常见的不是单词组成字符的字符；还有其他字符。
+</p>
+<p>或者，我们可以重新定义<code class="code">count-words-example</code>定义中使用的正则表达式，以包括符号。这个过程具有清晰的优点，但任务有点棘手。
+</p>
+<p>第一部分相当简单：模式必须匹配至少一个是单词或符号组成字符的字符。因此：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">&quot;\\(\\w\\|\\s_\\)+&quot;
+</pre></div>
+
+<p>&lsquo;<samp class="samp">\\(</samp>&rsquo;是包含&lsquo;<samp class="samp">\\w</samp>&rsquo;和&lsquo;<samp class="samp">\\s_</samp>&rsquo;作为选择项的分组结构的第一部分，由&lsquo;<samp class="samp">\\|</samp>&rsquo;分隔。&lsquo;<samp class="samp">\\w</samp>&rsquo;匹配任何单词组成字符，而&lsquo;<samp class="samp">\\s_</samp>&rsquo;匹配任何是符号名称但不是单词组成字符的字符。组后面的&lsquo;<samp class="samp">+</samp>&rsquo;表示单词或符号组成字符必须至少匹配一次。
+</p>
+<p>然而，正则表达式的第二部分设计更难。我们希望第一部分后面可以选择跟随零个或多个不是单词或符号组成字符的字符。起初，我认为可以用以下方式定义这个：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">&quot;\\(\\W\\|\\S_\\)*&quot;
+</pre></div>
+
+<p>大写的&lsquo;<samp class="samp">W</samp>&rsquo;和&lsquo;<samp class="samp">S</samp>&rsquo;匹配<em class="emph">不是</em>单词或符号组成字符的字符。不幸的是，这个表达式匹配任何不是单词组成字符或符号组成字符的字符。这匹配任何字符！
+</p>
+<p>我然后注意到我的测试区域中的每个单词或符号后面都跟着空白（空格、制表符或换行符）。所以我尝试在匹配一个或多个单词或符号组成字符的模式之后放置一个匹配一个或多个空格的模式。这也失败了。单词和符号通常由空白分隔，但在实际代码中，括号可能跟随符号，标点可能跟随单词。因此最后，我设计了一个模式，其中单词或符号组成字符后面可以选择跟随不是空白字符的字符，然后可以选择跟随空白字符。
+</p>
+<p>以下是完整的正则表达式：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">&quot;\\(\\w\\|\\s_\\)+[^ \t\n]*[ \t\n]*&quot;
+</pre></div>
+
+</div>
+
+
+
+</body>
+</html>
