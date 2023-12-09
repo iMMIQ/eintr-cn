@@ -11829,31 +11829,24 @@ alias geo george@@foobar.wiz.edu
 @noindent
 当你给George写一封邮件时，请将地址写为 @samp{geo}；邮件客户端将自动将 @samp{geo} 展开为完整的地址。
 
-@node Indent Tabs Mode
-@section Indent Tabs Mode
-@cindex Tabs, preventing
+@node 缩进选项
+@section 缩进选项
+@cindex 防止制表符
 @findex indent-tabs-mode
 
-By default, Emacs inserts tabs in place of multiple spaces when it
-formats a region.  (For example, you might indent many lines of text
-all at once with the @code{indent-region} command.)  Tabs look fine on
-a terminal or with ordinary printing, but they produce badly indented
-output when you use @TeX{} or Texinfo since @TeX{} ignores tabs.
+默认情况下，Emacs在格式化区域时会用制表符替代多个空格。（例如，您可能会一次性缩进多行文本，使用 @code{indent-region} 命令。）在终端或普通打印中，制表符看起来很好，但在使用 @TeX{} 或 Texinfo 时会产生糟糕的缩进输出，因为 @TeX{} 忽略制表符。
 
 @need 1250
-The following turns off Indent Tabs mode:
+以下是关闭缩进选项的方法：
 
 @smallexample
 @group
-;;; Prevent Extraneous Tabs
+;;; 防止多余的制表符
 (setq-default indent-tabs-mode nil)
 @end group
 @end smallexample
 
-Note that this line uses @code{setq-default} rather than the
-@code{setq} that we have seen before; @code{setq-default}
-sets values only in buffers that do not have their own local
-values for the variable.
+请注意，此行使用的是 @code{setq-default}，而不是我们之前见过的 @code{setq}；@code{setq-default} 仅在变量在没有本地值的缓冲区中才设置值。
 
 @ifinfo
 @xref{Just Spaces, , Tabs vs.@: Spaces, emacs, The GNU Emacs Manual}.
@@ -11862,8 +11855,7 @@ values for the variable.
 Manual}.
 @end ifinfo
 @iftex
-See sections ``Tabs vs.@: Spaces'' and ``Local Variables in
-Files'' in @cite{The GNU Emacs Manual}.
+请参阅 @cite{The GNU Emacs Manual} 中的“Tabs vs.@: Spaces”和“文件中的局部变量”部分。
 @end iftex
 
 @need 1700
