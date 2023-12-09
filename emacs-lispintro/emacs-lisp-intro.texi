@@ -2357,7 +2357,7 @@ multiply-by-seven 是一个 Lisp 函数。
 @itemize @bullet
 @item
 如果您的代码只是针对您个人的，您可以将函数定义的代码放入您的 @file{.emacs} 初始化文件中。当您启动 Emacs 时，您的 @file{.emacs} 文件会自动评估，并安装其中的所有函数定义。
-@xref{Emacs Initialization, , 您的 @file{.emacs} 文件}。
+@xref{Emacs 初始化, , 您的 @file{.emacs} 文件}。
 
 @item
 或者，您可以将要安装的函数定义放入一个或多个单独的文件中，并使用 @code{load} 函数使 Emacs 评估并安装这些文件中的每个函数。
@@ -6283,7 +6283,7 @@ delete-and-extract-region是用C语言编写的。
 @findex set-variable
 @noindent
 您可以（仍然可以）使用 @code{set-variable} 命令临时更改 @code{shell-command-default-error-buffer} 的值。但是，使用 @code{set-variable} 设置的选项仅在编辑会话期间设置。新值在会话之间不会保存。每次Emacs启动时，它都会读取原始值，除非您在 @file{.emacs} 文件中更改了该值，要么手动设置它，要么使用 @code{customize}。
-@xref{Emacs Initialization, , 您的 @file{.emacs} 文件}。
+@xref{Emacs 初始化, , 您的 @file{.emacs} 文件}。
 
 对我来说，@code{set-variable} 命令的主要用途是建议我可能希望在 @file{.emacs} 文件中设置的变量。现在有700多个这样的变量，太多了，记不住。幸运的是，在调用 @code{M-x set-variable} 命令后，您可以按 @key{TAB} 键查看变量的列表。
 （@xref{Examining, , 检查和设置变量, emacs, GNU Emacs手册}。）
@@ -11489,84 +11489,52 @@ Emacs 将打印一个类似于以下的图形：
 
 编写一个线图版本的图形打印函数。
 
-@node Emacs Initialization
-@chapter Your @file{.emacs} File
-@cindex @file{.emacs} file
-@cindex Customizing your @file{.emacs} file
-@cindex Initialization file
+@node Emacs 初始化
+@chapter 你的 @file{.emacs} 文件
+@cindex @file{.emacs} 文件
+@cindex 定制你的 @file{.emacs} 文件
+@cindex 初始化文件
 
-``You don't have to like Emacs to like it''---this seemingly
-paradoxical statement is the secret of GNU Emacs.  The plain, out-of-the-box
-Emacs is a generic tool.  Most people who use it customize
-it to suit themselves.
+``你不一定要喜欢Emacs才能喜欢它''---这个看似矛盾的说法是GNU Emacs的秘密。默认的、开箱即用的Emacs是一个通用工具。大多数人使用它来进行定制，以适应自己的需求。
 
-GNU Emacs is mostly written in Emacs Lisp; this means that by writing
-expressions in Emacs Lisp you can change or extend Emacs.
+GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式，你可以改变或扩展Emacs的功能。
 
 @menu
-* Default Configuration::
-* Site-wide Init::              You can write site-wide init files.
-* defcustom::                   Emacs will write code for you.
-* Beginning init File::         How to write a @file{.emacs} init file.
-* Text and Auto-fill::          Automatically wrap lines.
-* Mail Aliases::                Use abbreviations for email addresses.
-* Indent Tabs Mode::            Don't use tabs with @TeX{}
-* Key Bindings::                Create some personal key bindings.
-* Keymaps::                     More about key binding.
-* Loading Files::               Load (i.e., evaluate) files automatically.
-* Autoload::                    Make functions available.
-* Simple Extension::            Define a function; bind it to a key.
-* X11 Colors::                  Colors in X.
-* Miscellaneous::
-* Mode Line::                   How to customize your mode line.
+* 默认配置::
+* 站点级别的初始化::              你可以编写站点级别的初始化文件。
+* defcustom::                   Emacs会为你生成代码。
+* 编写初始化文件::         如何编写 @file{.emacs} 初始化文件。
+* 文本和自动换行::          自动换行。
+* 邮件别名::                使用电子邮件地址的缩写。
+* 缩进制表模式::            在@TeX{}中不使用制表符。
+* 键绑定::                创建一些个人的键绑定。
+* 键位图::                     更多关于键绑定的信息。
+* 加载文件::               自动加载文件（即，评估文件）。
+* Autoload::                    使函数可用。
+* 简单扩展::            定义一个函数；将其绑定到一个键上。
+* X11颜色::                  X中的颜色。
+* 杂项::
+* 模式行::                   如何定制你的模式行。
 @end menu
 
 @ifnottex
-@node Default Configuration
-@unnumberedsec Emacs's Default Configuration
+@node 默认配置
+@unnumberedsec Emacs的默认配置
 @end ifnottex
 
-There are those who appreciate Emacs's default configuration.  After
-all, Emacs starts you in C mode when you edit a C file, starts you in
-Fortran mode when you edit a Fortran file, and starts you in
-Fundamental mode when you edit an unadorned file.  This all makes
-sense, if you do not know who is going to use Emacs.  Who knows what a
-person hopes to do with an unadorned file?  Fundamental mode is the
-right default for such a file, just as C mode is the right default for
-editing C code.  (Enough programming languages have syntaxes
-that enable them to share or nearly share features, so C mode is
-now provided by CC mode, the C Collection.)
+有些人欣赏Emacs的默认配置。毕竟，当你编辑C文件时，Emacs会启动C模式，编辑Fortran文件时会启动Fortran模式，而编辑未装饰的文件时会启动Fundamental模式。如果你不知道谁将使用Emacs，这一切都是有道理的。谁知道一个人希望用未装饰的文件做什么？对于这样的文件，Fundamental模式是正确的默认选择，就像编辑C代码时C模式是正确的默认选择一样。（足够多的编程语言有语法使它们能够共享或几乎共享功能，因此C模式现在由CC模式提供，即C集合。）
 
-But when you do know who is going to use Emacs---you,
-yourself---then it makes sense to customize Emacs.
+但当你知道将要使用Emacs的是谁---就是你自己---那么定制Emacs就是有意义的。
 
-For example, I seldom want Fundamental mode when I edit an
-otherwise undistinguished file; I want Text mode.  This is why I
-customize Emacs: so it suits me.
+例如，当我编辑一个除了没有区别的文件时，我很少想要Fundamental模式；我想要Text模式。这就是为什么我定制Emacs的原因：使其适合我。
 
-You can customize and extend Emacs by writing or adapting a
-@file{~/.emacs} file.  This is your personal initialization file; its
-contents, written in Emacs Lisp, tell Emacs what to do.@footnote{You
-may also add @file{.el} to @file{~/.emacs} and call it a
-@file{~/.emacs.el} file.  In the past, you were forbidden to type the
-extra keystrokes that the name @file{~/.emacs.el} requires, but now
-you may.  The new format is consistent with the Emacs Lisp file
-naming conventions; the old format saves typing.}
+你可以通过编写或调整 @file{~/.emacs} 文件来定制和扩展Emacs。这是你的个人初始化文件；其中的内容，用Emacs Lisp编写，告诉Emacs应该做什么。@footnote{你还可以将 @file{.el} 添加到 @file{~/.emacs} 并称之为 @file{~/.emacs.el} 文件。过去，你不能输入名称 @file{~/.emacs.el} 需要的额外按键，但现在你可以。新的格式符合Emacs Lisp文件命名规范；旧的格式节省了打字。}
 
-A @file{~/.emacs} file contains Emacs Lisp code.  You can write this
-code yourself; or you can use Emacs's @code{customize} feature to write
-the code for you.  You can combine your own expressions and
-auto-written Customize expressions in your @file{.emacs} file.
+一个 @file{~/.emacs} 文件包含Emacs Lisp代码。你可以自己编写这些代码；或者你可以使用Emacs的 @code{customize} 功能为你编写代码。你可以在你的 @file{.emacs} 文件中结合自己的表达式和自动生成的定制表达式。
 
-(I myself prefer to write my own expressions, except for those,
-particularly fonts, that I find easier to manipulate using the
-@code{customize} command.  I combine the two methods.)
+（我个人更喜欢编写自己的表达式，除非是那些，特别是字体之类，我发现使用 @code{customize} 命令更容易操作。我将这两种方法结合在一起。）
 
-Most of this chapter is about writing expressions yourself.  It
-describes a simple @file{.emacs} file; for more information, see
-@ref{Init File, , The Init File, emacs, The GNU Emacs Manual}, and
-@ref{Init File, , The Init File, elisp, The GNU Emacs Lisp Reference
-Manual}.
+本章的大部分内容是关于自己编写表达式的。它描述了一个简单的 @file{.emacs} 文件；有关更多信息，请参见 @ref{Init File, , The Init File, emacs, The GNU Emacs Manual} 和 @ref{Init File, , The Init File, elisp, The GNU Emacs Lisp Reference Manual}。
 
 @node Site-wide Init
 @section Site-wide Initialization Files
