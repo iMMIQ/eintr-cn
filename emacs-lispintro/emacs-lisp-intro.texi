@@ -12240,29 +12240,28 @@ xsetroot -solid Navy -fg white &
 
 @need 1700
 @node Miscellaneous
-@section Miscellaneous Settings for a @file{.emacs} File
+@section Emacs @file{.emacs} 文件的其他设置
 
 @need 1250
-Here are a few miscellaneous settings:
+以下是一些杂项设置：
 @sp 1
 
 @itemize @minus
 @item
-Set the shape and color of the mouse cursor:
+设置鼠标指针的形状和颜色：
 
 @smallexample
 @group
-; Cursor shapes are defined in
-; '/usr/include/X11/cursorfont.h';
-; for example, the 'target' cursor is number 128;
-; the 'top_left_arrow' cursor is number 132.
+; 鼠标指针形状在 '/usr/include/X11/cursorfont.h' 中定义；
+; 例如，'target' 鼠标指针是编号 128；
+; 'top_left_arrow' 鼠标指针是编号 132。
 @end group
 
 @group
 (let ((mpointer (x-get-resource "*mpointer"
                                 "*emacs*mpointer")))
-  ;; If you have not set your mouse pointer
-  ;;     then set it, otherwise leave as is:
+  ;; 如果你没有设置鼠标指针
+  ;; 则设置它，否则保持原样:
   (if (eq mpointer nil)
       (setq mpointer "132")) ; top_left_arrow
 @end group
@@ -12273,8 +12272,7 @@ Set the shape and color of the mouse cursor:
 @end smallexample
 
 @item
-Or you can set the values of a variety of features in an alist, like
-this:
+或者你可以在一个关联列表中设置各种特性的值，如下所示：
 
 @smallexample
 @group
@@ -12299,22 +12297,20 @@ this:
 @end smallexample
 
 @item
-Convert @kbd{@key{CTRL}-h} into @key{DEL} and @key{DEL}
-into @kbd{@key{CTRL}-h}.@*
-(Some older keyboards needed this, although I have not seen the
-problem recently.)
+将 @kbd{@key{CTRL}-h} 转换为 @key{DEL}，将 @key{DEL} 转换为 @kbd{@key{CTRL}-h}。@*
+(一些较旧的键盘可能需要这样做，尽管我最近没有遇到这个问题。)
 
 @smallexample
 @group
-;; Translate 'C-h' to <DEL>.
+;; 将 'C-h' 转换为 <DEL>。
 ; (keyboard-translate ?\C-h ?\C-?)
 
-;; Translate <DEL> to 'C-h'.
+;; 将 <DEL> 转换为 'C-h'。
 (keyboard-translate ?\C-? ?\C-h)
 @end group
 @end smallexample
 
-@item Turn off a blinking cursor!
+@item 关闭光标的闪烁！
 
 @smallexample
 @group
@@ -12324,38 +12320,37 @@ problem recently.)
 @end smallexample
 
 @noindent
-or start GNU Emacs with the command @code{emacs -nbc}.
+或者使用命令 @code{emacs -nbc} 启动 GNU Emacs。
 
 @need 1250
-@item When using @command{grep}@*
-@samp{-i}@w{  }   Ignore case distinctions@*
-@samp{-n}@w{  }   Prefix each line of output with line number@*
-@samp{-H}@w{  }   Print the filename for each match.@*
-@samp{-e}@w{  }   Protect patterns beginning with a hyphen character, @samp{-}
+@item 使用 @command{grep}@*
+@samp{-i}@w{  }   忽略大小写@*
+@samp{-n}@w{  }   在输出中添加每行的行号@*
+@samp{-H}@w{  }   为每个匹配项打印文件名@*
+@samp{-e}@w{  }   保护以连字符字符 @samp{-} 开头的模式
 
 @smallexample
 (setq grep-command "grep -i -nH -e ")
 @end smallexample
 
-@item Find an existing buffer, even if it has a different name@*
-This avoids problems with symbolic links.
+@item 查找已存在的缓冲区，即使它有不同的名称@*
+这可以避免符号链接的问题。
 
 @smallexample
 (setq find-file-existing-other-name t)
 @end smallexample
 
-@item Set your language environment and default input method
+@item 设置语言环境和默认输入法
 
 @smallexample
 @group
 (set-language-environment "latin-1")
-;; Remember you can enable or disable multilingual text input
-;; with the @code{toggle-input-method'} (@kbd{C-\}) command
+;; 记住你可以使用 @code{toggle-input-method'} (@kbd{C-\}) 命令启用或禁用多语言文本输入
 (setq default-input-method "latin-1-prefix")
 @end group
 @end smallexample
 
-If you want to write with Chinese GB characters, set this instead:
+如果你想用中文 GB 字符写作，请设置如下：
 
 @smallexample
 @group
@@ -12365,42 +12360,34 @@ If you want to write with Chinese GB characters, set this instead:
 @end smallexample
 @end itemize
 
-@subsubheading Fixing Unpleasant Key Bindings
-@cindex Key bindings, fixing
-@cindex Bindings, key, fixing unpleasant
+@subsubheading 修复不愉快的键绑定
+@cindex 键绑定，修复
+@cindex 绑定，键，修复不愉快的
 
-Some systems bind keys unpleasantly.  Sometimes, for example, the
-@key{CTRL} key appears in an awkward spot rather than at the far left
-of the home row.
+一些系统将键绑定得不太舒服。有时，例如，@key{CTRL} 键出现在一个尴尬的位置，而不是在键盘的最左侧。
 
-Usually, when people fix these sorts of key bindings, they do not
-change their @file{~/.emacs} file.  Instead, they bind the proper keys
-on their consoles with the @code{loadkeys} or @code{install-keymap}
-commands in their boot script and then include @code{xmodmap} commands
-in their @file{.xinitrc} or @file{.Xsession} file for X Windows.
+通常情况下，当人们修复这些类型的键绑定时，他们不会更改他们的 @file{~/.emacs} 文件。相反，他们会在启动脚本中使用 @code{loadkeys} 或 @code{install-keymap} 命令在控制台上绑定正确的键，并在他们的 @file{.xinitrc} 或 @file{.Xsession} 文件中包含 @code{xmodmap} 命令以供 X 窗口系统使用。
 
 @need 1250
 @noindent
-For a boot script:
+对于启动脚本：
 
 @smallexample
 @group
 loadkeys /usr/share/keymaps/i386/qwerty/emacs2.kmap.gz
-@exdent or
+@exdent 或
 install-keymap emacs2
 @end group
 @end smallexample
 
 @need 1250
 @noindent
-For a @file{.xinitrc} or @file{.Xsession} file when the @key{Caps
-Lock} key is at the far left of the home row:
+对于 @file{.xinitrc} 或 @file{.Xsession} 文件，当 @key{Caps Lock} 键位于键盘的最左侧时：
 
 @smallexample
 @group
-# Bind the key labeled 'Caps Lock' to 'Control'
-# (Such a broken user interface suggests that keyboard manufacturers
-# think that computers are typewriters from 1885.)
+# 将标有 'Caps Lock' 的键绑定为 'Control'
+# (这样破碎的用户界面表明键盘制造商认为计算机是来自1885年的打字机。)
 
 xmodmap -e "clear Lock"
 xmodmap -e "add Control = Caps_Lock"
@@ -12409,12 +12396,11 @@ xmodmap -e "add Control = Caps_Lock"
 
 @need 1250
 @noindent
-In a @file{.xinitrc} or @file{.Xsession} file, to convert an @key{ALT}
-key to a @key{META} key:
+在 @file{.xinitrc} 或 @file{.Xsession} 文件中，将 @key{ALT} 键转换为 @key{META} 键：
 
 @smallexample
 @group
-# Some ill designed keyboards have a key labeled ALT and no Meta
+# 一些设计不当的键盘有一个标有 ALT 的键而没有 Meta
 xmodmap -e "keysym Alt_L = Meta_L Alt_L"
 @end group
 @end smallexample

@@ -61,33 +61,31 @@ ul.mark-minus {list-style-type: "\2212"}
 Next: <a href="Mode-Line.html" accesskey="n" rel="next">A Modified Mode Line</a>, Previous: <a href="X11-Yan-Se-.html" accesskey="p" rel="prev">X11 颜色</a>, Up: <a href="Emacs-Chu-Shi-Hua-.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Miscellaneous-Settings-for-a-_002eemacs-File">16.13 Miscellaneous Settings for a <samp class="file">.emacs</samp> File</h3>
+<h3 class="section" id="Emacs-_002eemacs-WenJian-De-Qi-Ta-She-Zhi-">16.13 Emacs <samp class="file">.emacs</samp> 文件的其他设置</h3>
 
-<p>Here are a few miscellaneous settings:
+<p>以下是一些杂项设置：
 </p><br>
 
 <ul class="itemize mark-minus">
-<li>Set the shape and color of the mouse cursor:
+<li>设置鼠标指针的形状和颜色：
 
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">; Cursor shapes are defined in
-; '/usr/include/X11/cursorfont.h';
-; for example, the 'target' cursor is number 128;
-; the 'top_left_arrow' cursor is number 132.
+<div class="group"><pre class="example-preformatted">; 鼠标指针形状在 '/usr/include/X11/cursorfont.h' 中定义；
+; 例如，'target' 鼠标指针是编号 128；
+; 'top_left_arrow' 鼠标指针是编号 132。
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">(let ((mpointer (x-get-resource &quot;*mpointer&quot;
                                 &quot;*emacs*mpointer&quot;)))
-  ;; If you have not set your mouse pointer
-  ;;     then set it, otherwise leave as is:
+  ;; 如果你没有设置鼠标指针
+  ;; 则设置它，否则保持原样:
   (if (eq mpointer nil)
       (setq mpointer &quot;132&quot;)) ; top_left_arrow
 </pre></div><div class="group"><pre class="example-preformatted">  (setq x-pointer-shape (string-to-number mpointer))
   (set-mouse-color &quot;white&quot;))
 </pre></div></div>
 
-</li><li>Or you can set the values of a variety of features in an alist, like
-this:
+</li><li>或者你可以在一个关联列表中设置各种特性的值，如下所示：
 
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq-default
@@ -107,55 +105,52 @@ this:
    ))
 </pre></div></div>
 
-</li><li>Convert <kbd class="kbd"><kbd class="key">CTRL</kbd>-h</kbd> into <kbd class="key">DEL</kbd> and <kbd class="key">DEL</kbd>
-into <kbd class="kbd"><kbd class="key">CTRL</kbd>-h</kbd>.<br>
-(Some older keyboards needed this, although I have not seen the
-problem recently.)
+</li><li>将 <kbd class="kbd"><kbd class="key">CTRL</kbd>-h</kbd> 转换为 <kbd class="key">DEL</kbd>，将 <kbd class="key">DEL</kbd> 转换为 <kbd class="kbd"><kbd class="key">CTRL</kbd>-h</kbd>。<br>
+(一些较旧的键盘可能需要这样做，尽管我最近没有遇到这个问题。)
 
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;; Translate 'C-h' to &lt;DEL&gt;.
+<div class="group"><pre class="example-preformatted">;; 将 'C-h' 转换为 &lt;DEL&gt;。
 ; (keyboard-translate ?\C-h ?\C-?)
 
-;; Translate &lt;DEL&gt; to 'C-h'.
+;; 将 &lt;DEL&gt; 转换为 'C-h'。
 (keyboard-translate ?\C-? ?\C-h)
 </pre></div></div>
 
-</li><li>Turn off a blinking cursor!
+</li><li>关闭光标的闪烁！
 
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(if (fboundp 'blink-cursor-mode)
     (blink-cursor-mode -1))
 </pre></div></div>
 
-<p>or start GNU Emacs with the command <code class="code">emacs -nbc</code>.
+<p>或者使用命令 <code class="code">emacs -nbc</code> 启动 GNU Emacs。
 </p>
-</li><li>When using <code class="command">grep</code><br>
-&lsquo;<samp class="samp">-i</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   Ignore case distinctions<br>
-&lsquo;<samp class="samp">-n</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   Prefix each line of output with line number<br>
-&lsquo;<samp class="samp">-H</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   Print the filename for each match.<br>
-&lsquo;<samp class="samp">-e</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   Protect patterns beginning with a hyphen character, &lsquo;<samp class="samp">-</samp>&rsquo;
+</li><li>使用 <code class="command">grep</code><br>
+&lsquo;<samp class="samp">-i</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   忽略大小写<br>
+&lsquo;<samp class="samp">-n</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   在输出中添加每行的行号<br>
+&lsquo;<samp class="samp">-H</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   为每个匹配项打印文件名<br>
+&lsquo;<samp class="samp">-e</samp>&rsquo;&nbsp;&nbsp;<!-- /@w -->   保护以连字符字符 &lsquo;<samp class="samp">-</samp>&rsquo; 开头的模式
 
 <div class="example smallexample">
 <pre class="example-preformatted">(setq grep-command &quot;grep -i -nH -e &quot;)
 </pre></div>
 
-</li><li>Find an existing buffer, even if it has a different name<br>
-This avoids problems with symbolic links.
+</li><li>查找已存在的缓冲区，即使它有不同的名称<br>
+这可以避免符号链接的问题。
 
 <div class="example smallexample">
 <pre class="example-preformatted">(setq find-file-existing-other-name t)
 </pre></div>
 
-</li><li>Set your language environment and default input method
+</li><li>设置语言环境和默认输入法
 
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(set-language-environment &quot;latin-1&quot;)
-;; Remember you can enable or disable multilingual text input
-;; with the <code class="code">toggle-input-method'</code> (<kbd class="kbd">C-\</kbd>) command
+;; 记住你可以使用 <code class="code">toggle-input-method'</code> (<kbd class="kbd">C-\</kbd>) 命令启用或禁用多语言文本输入
 (setq default-input-method &quot;latin-1-prefix&quot;)
 </pre></div></div>
 
-<p>If you want to write with Chinese GB characters, set this instead:
+<p>如果你想用中文 GB 字符写作，请设置如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(set-language-environment &quot;Chinese-GB&quot;)
@@ -163,45 +158,36 @@ This avoids problems with symbolic links.
 </pre></div></div>
 </li></ul>
 
-<h4 class="subsubheading" id="Fixing-Unpleasant-Key-Bindings">Fixing Unpleasant Key Bindings</h4>
-<a class="index-entry-id" id="index-Key-bindings_002c-fixing"></a>
-<a class="index-entry-id" id="index-Bindings_002c-key_002c-fixing-unpleasant"></a>
+<h4 class="subsubheading" id="Xiu-Fu-Bu-Yu-Kuai-De-Jian-Bang-Ding-">修复不愉快的键绑定</h4>
+<a class="index-entry-id" id="index-Jian-Bang-Ding-_002cXiu-Fu-"></a>
+<a class="index-entry-id" id="index-Bang-Ding-_002cJian-_002cXiu-Fu-Bu-Yu-Kuai-De-"></a>
 
-<p>Some systems bind keys unpleasantly.  Sometimes, for example, the
-<kbd class="key">CTRL</kbd> key appears in an awkward spot rather than at the far left
-of the home row.
+<p>一些系统将键绑定得不太舒服。有时，例如，<kbd class="key">CTRL</kbd> 键出现在一个尴尬的位置，而不是在键盘的最左侧。
 </p>
-<p>Usually, when people fix these sorts of key bindings, they do not
-change their <samp class="file">~/.emacs</samp> file.  Instead, they bind the proper keys
-on their consoles with the <code class="code">loadkeys</code> or <code class="code">install-keymap</code>
-commands in their boot script and then include <code class="code">xmodmap</code> commands
-in their <samp class="file">.xinitrc</samp> or <samp class="file">.Xsession</samp> file for X Windows.
+<p>通常情况下，当人们修复这些类型的键绑定时，他们不会更改他们的 <samp class="file">~/.emacs</samp> 文件。相反，他们会在启动脚本中使用 <code class="code">loadkeys</code> 或 <code class="code">install-keymap</code> 命令在控制台上绑定正确的键，并在他们的 <samp class="file">.xinitrc</samp> 或 <samp class="file">.Xsession</samp> 文件中包含 <code class="code">xmodmap</code> 命令以供 X 窗口系统使用。
 </p>
-<p>For a boot script:
+<p>对于启动脚本：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">loadkeys /usr/share/keymaps/i386/qwerty/emacs2.kmap.gz
-</pre><pre class="exdent">or
+</pre><pre class="exdent">或
 </pre><pre class="example-preformatted">install-keymap emacs2
 </pre></div></div>
 
-<p>For a <samp class="file">.xinitrc</samp> or <samp class="file">.Xsession</samp> file when the <kbd class="key">Caps
-Lock</kbd> key is at the far left of the home row:
+<p>对于 <samp class="file">.xinitrc</samp> 或 <samp class="file">.Xsession</samp> 文件，当 <kbd class="key">Caps Lock</kbd> 键位于键盘的最左侧时：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted"># Bind the key labeled 'Caps Lock' to 'Control'
-# (Such a broken user interface suggests that keyboard manufacturers
-# think that computers are typewriters from 1885.)
+<div class="group"><pre class="example-preformatted"># 将标有 'Caps Lock' 的键绑定为 'Control'
+# (这样破碎的用户界面表明键盘制造商认为计算机是来自1885年的打字机。)
 
 xmodmap -e &quot;clear Lock&quot;
 xmodmap -e &quot;add Control = Caps_Lock&quot;
 </pre></div></div>
 
-<p>In a <samp class="file">.xinitrc</samp> or <samp class="file">.Xsession</samp> file, to convert an <kbd class="key">ALT</kbd>
-key to a <kbd class="key">META</kbd> key:
+<p>在 <samp class="file">.xinitrc</samp> 或 <samp class="file">.Xsession</samp> 文件中，将 <kbd class="key">ALT</kbd> 键转换为 <kbd class="key">META</kbd> 键：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted"># Some ill designed keyboards have a key labeled ALT and no Meta
+<div class="group"><pre class="example-preformatted"># 一些设计不当的键盘有一个标有 ALT 的键而没有 Meta
 xmodmap -e &quot;keysym Alt_L = Meta_L Alt_L&quot;
 </pre></div></div>
 
