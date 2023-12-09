@@ -11536,51 +11536,26 @@ GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式
 
 本章的大部分内容是关于自己编写表达式的。它描述了一个简单的 @file{.emacs} 文件；有关更多信息，请参见 @ref{Init File, , The Init File, emacs, The GNU Emacs Manual} 和 @ref{Init File, , The Init File, elisp, The GNU Emacs Lisp Reference Manual}。
 
-@node Site-wide Init
-@section Site-wide Initialization Files
+@node 站点范围的初始化
+@section 站点范围初始化文件
 
-@cindex @file{default.el} init file
-@cindex @file{site-init.el} init file
-@cindex @file{site-load.el} init file
-In addition to your personal initialization file, Emacs automatically
-loads various site-wide initialization files, if they exist.  These
-have the same form as your @file{.emacs} file, but are loaded by
-everyone.
+@cindex @file{default.el} 初始化文件
+@cindex @file{site-init.el} 初始化文件
+@cindex @file{site-load.el} 初始化文件
+除了个人初始化文件外，Emacs 还会自动加载各种站点范围的初始化文件，如果这些文件存在的话。这些文件与你的 @file{.emacs} 文件具有相同的形式，但会被所有用户加载。
 
-Two site-wide initialization files, @file{site-load.el} and
-@file{site-init.el}, are loaded into Emacs and then dumped if a
-dumped version of Emacs is created, as is most common.  (Dumped
-copies of Emacs load more quickly.  However, once a file is loaded and
-dumped, a change to it does not lead to a change in Emacs unless you
-load it yourself or re-dump Emacs.  @xref{Building Emacs, , Building
-Emacs, elisp, The GNU Emacs Lisp Reference Manual}, and the
-@file{INSTALL} file.)
+有两个站点范围的初始化文件，@file{site-load.el} 和 @file{site-init.el}，它们会在 Emacs 启动时被加载，然后如果创建了 Emacs 的已转储版本，它们会被转储。（已转储的 Emacs 拥有更快的加载速度。然而，一旦文件被加载并转储，对它的更改不会导致 Emacs 的变化，除非你自己加载它或重新转储 Emacs。@xref{Building Emacs, , Building Emacs, elisp, The GNU Emacs Lisp Reference Manual}，以及 @file{INSTALL} 文件。）
 
-Three other site-wide initialization files are loaded automatically
-each time you start Emacs, if they exist.  These are
-@file{site-start.el}, which is loaded @emph{before} your @file{.emacs}
-file, and @file{default.el}, and the terminal type file, which are both
-loaded @emph{after} your @file{.emacs} file.
+另外，还有三个站点范围的初始化文件，每次启动 Emacs 时都会自动加载，如果它们存在的话。这些文件分别是 @file{site-start.el}，它在你的 @file{.emacs} 文件之前加载，以及 @file{default.el} 和终端类型文件，它们在你的 @file{.emacs} 文件之后加载。
 
-Settings and definitions in your @file{.emacs} file will overwrite
-conflicting settings and definitions in a @file{site-start.el} file,
-if it exists; but the settings and definitions in a @file{default.el}
-or terminal type file will overwrite those in your @file{.emacs} file.
-(You can prevent interference from a terminal type file by setting
-@code{term-file-prefix} to @code{nil}.  @xref{Simple Extension, , A
-Simple Extension}.)
+在你的 @file{.emacs} 文件中的设置和定义会覆盖 @file{site-start.el} 文件中的冲突设置和定义（如果存在的话）。但是，在 @file{default.el} 或终端类型文件中的设置和定义会覆盖你的 @file{.emacs} 文件中的设置和定义。（你可以通过将 @code{term-file-prefix} 设置为 @code{nil} 来阻止终端类型文件的干扰。@xref{Simple Extension, , A Simple Extension}。）
 
-@c Rewritten to avoid overfull hbox.
-The @file{INSTALL} file that comes in the distribution contains
-descriptions of the @file{site-init.el} and @file{site-load.el} files.
+@c 重写以避免 hbox 溢出。
+分发中附带的 @file{INSTALL} 文件包含了对 @file{site-init.el} 和 @file{site-load.el} 文件的描述。
 
-The @file{loadup.el}, @file{startup.el}, and @file{loaddefs.el} files
-control loading.  These files are in the @file{lisp} directory of the
-Emacs distribution and are worth perusing.
+@file{loadup.el}、@file{startup.el} 和 @file{loaddefs.el} 文件控制加载过程。这些文件位于 Emacs 分发包的 @file{lisp} 目录中，值得一读。
 
-The @file{loaddefs.el} file contains a good many suggestions as to
-what to put into your own @file{.emacs} file, or into a site-wide
-initialization file.
+@file{loaddefs.el} 文件包含了许多关于要放入你自己的 @file{.emacs} 文件或站点范围初始化文件的建议。
 
 @node defcustom
 @section Specifying Variables using @code{defcustom}
