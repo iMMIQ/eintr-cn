@@ -9930,21 +9930,11 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 
 这是一个相当庞大的项目！但是，如果我们慢慢来，它并不难。
 
-@node Words and Symbols
-@section What to Count?
-@cindex Words and symbols in defun
+@node 单词和符号
+@section 如何计数？
+@cindex defun 中的单词和符号
 
-When we first start thinking about how to count the words in a
-function definition, the first question is (or ought to be) what are
-we going to count?  When we speak of ``words'' with respect to a Lisp
-function definition, we are actually speaking, in large part, of
-symbols.  For example, the following @code{multiply-by-seven}
-function contains the five symbols @code{defun},
-@code{multiply-by-seven}, @code{number}, @code{*}, and @code{7}.  In
-addition, in the documentation string, it contains the four words
-@samp{Multiply}, @samp{NUMBER}, @samp{by}, and @samp{seven}.  The
-symbol @samp{number} is repeated, so the definition contains a total
-of ten words and symbols.
+当我们首次考虑如何计算函数定义中的单词时，第一个问题是（或者应该是）我们要计数什么？当我们谈到与 Lisp 函数定义相关的“单词”时，实际上在很大程度上我们是在谈论符号。例如，下面的 @code{multiply-by-seven} 函数包含五个符号：@code{defun}、@code{multiply-by-seven}、@code{number}、@code{*} 和 @code{7}。此外，在文档字符串中，它包含四个单词：@samp{Multiply}、@samp{NUMBER}、@samp{by} 和 @samp{seven}。符号 @samp{number} 被重复使用，因此定义包含总共十个单词和符号。
 
 @smallexample
 @group
@@ -9955,34 +9945,18 @@ of ten words and symbols.
 @end smallexample
 
 @noindent
-However, if we mark the @code{multiply-by-seven} definition with
-@kbd{C-M-h} (@code{mark-defun}), and then call
-@code{@value{COUNT-WORDS}} on it, we will find that
-@code{@value{COUNT-WORDS}} claims the definition has eleven words, not
-ten!  Something is wrong!
+然而，如果我们使用 @kbd{C-M-h}（@code{mark-defun}）标记 @code{multiply-by-seven} 定义，然后调用 @code{@value{COUNT-WORDS}}，我们会发现 @code{@value{COUNT-WORDS}} 声称该定义有十一个单词，而不是十个！有些地方出错了！
 
-The problem is twofold: @code{@value{COUNT-WORDS}} does not count the
-@samp{*} as a word, and it counts the single symbol,
-@code{multiply-by-seven}, as containing three words.  The hyphens are
-treated as if they were interword spaces rather than intraword
-connectors: @samp{multiply-by-seven} is counted as if it were written
-@samp{multiply by seven}.
+问题有两个方面：@code{@value{COUNT-WORDS}} 不将 @samp{*} 视为一个单词，而将单个符号 @code{multiply-by-seven} 视为包含三个单词。连字符被视为单词间的空格而不是单词内的连接符：@samp{multiply-by-seven} 被计算为如果它被写成 @samp{multiply by seven}。
 
-The cause of this confusion is the regular expression search within
-the @code{@value{COUNT-WORDS}} definition that moves point forward word
-by word.  In the canonical version of @code{@value{COUNT-WORDS}}, the
-regexp is:
+混淆的原因在于 @code{@value{COUNT-WORDS}} 定义中的正则表达式搜索，该搜索按单词向前移动点。在 @code{@value{COUNT-WORDS}} 的典型版本中，正则表达式为：
 
 @smallexample
 "\\w+\\W*"
 @end smallexample
 
 @noindent
-This regular expression is a pattern defining one or more word
-constituent characters possibly followed by one or more characters
-that are not word constituents.  What is meant by ``word constituent
-characters'' brings us to the issue of syntax, which is worth a section
-of its own.
+该正则表达式是一个模式，定义了一个或多个单词构成字符，后面可能跟着一个或多个不是单词构成字符的字符。关于“单词构成字符”是什么，这就引出了语法问题，值得单独讨论一节。
 
 @node Syntax
 @section What Constitutes a Word or Symbol?

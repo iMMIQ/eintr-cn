@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>单词和符号 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="单词和符号 (Programming in Emacs Lisp)">
+<meta name="keywords" content="单词和符号 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" rel="up" title="在 defun 中计算单词数">
+<link href="Syntax.html" rel="next" title="Syntax">
+<link href="Fen-Er-Zhi-Zhi-.html" rel="prev" title="分而治之">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_5355_8bcd_548c_7b26_53f7">
+<div class="nav-panel">
+<p>
+Next: <a href="Syntax.html" accesskey="n" rel="next">What Constitutes a Word or Symbol?</a>, Previous: <a href="Fen-Er-Zhi-Zhi-.html" accesskey="p" rel="prev">分而治之</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Ru-He-Ji-Shu-_003f">14.1 如何计数？</h3>
+<a class="index-entry-id" id="index-defun-ZhongDe-Dan-Ci-He-Fu-Hao-"></a>
+
+<p>当我们首次考虑如何计算函数定义中的单词时，第一个问题是（或者应该是）我们要计数什么？当我们谈到与 Lisp 函数定义相关的“单词”时，实际上在很大程度上我们是在谈论符号。例如，下面的 <code class="code">multiply-by-seven</code> 函数包含五个符号：<code class="code">defun</code>、<code class="code">multiply-by-seven</code>、<code class="code">number</code>、<code class="code">*</code> 和 <code class="code">7</code>。此外，在文档字符串中，它包含四个单词：&lsquo;<samp class="samp">Multiply</samp>&rsquo;、&lsquo;<samp class="samp">NUMBER</samp>&rsquo;、&lsquo;<samp class="samp">by</samp>&rsquo; 和 &lsquo;<samp class="samp">seven</samp>&rsquo;。符号 &lsquo;<samp class="samp">number</samp>&rsquo; 被重复使用，因此定义包含总共十个单词和符号。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun multiply-by-seven (number)
+  &quot;Multiply NUMBER by seven.&quot;
+  (* 7 number))
+</pre></div></div>
+
+<p>然而，如果我们使用 <kbd class="kbd">C-M-h</kbd>（<code class="code">mark-defun</code>）标记 <code class="code">multiply-by-seven</code> 定义，然后调用 <code class="code">count-words-example</code>，我们会发现 <code class="code">count-words-example</code> 声称该定义有十一个单词，而不是十个！有些地方出错了！
+</p>
+<p>问题有两个方面：<code class="code">count-words-example</code> 不将 &lsquo;<samp class="samp">*</samp>&rsquo; 视为一个单词，而将单个符号 <code class="code">multiply-by-seven</code> 视为包含三个单词。连字符被视为单词间的空格而不是单词内的连接符：&lsquo;<samp class="samp">multiply-by-seven</samp>&rsquo; 被计算为如果它被写成 &lsquo;<samp class="samp">multiply by seven</samp>&rsquo;。
+</p>
+<p>混淆的原因在于 <code class="code">count-words-example</code> 定义中的正则表达式搜索，该搜索按单词向前移动点。在 <code class="code">count-words-example</code> 的典型版本中，正则表达式为：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">&quot;\\w+\\W*&quot;
+</pre></div>
+
+<p>该正则表达式是一个模式，定义了一个或多个单词构成字符，后面可能跟着一个或多个不是单词构成字符的字符。关于“单词构成字符”是什么，这就引出了语法问题，值得单独讨论一节。
+</p>
+</div>
+
+
+
+</body>
+</html>
