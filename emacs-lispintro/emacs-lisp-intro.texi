@@ -12752,36 +12752,31 @@ M-x cancel-debug-on-entry @key{RET} triangle-bugged @key{RET}
 (如果你在Info中阅读此内容，请现在取消 @code{debug-on-entry}。)
 
 @node debug-on-quit
-@section @code{debug-on-quit} and @code{(debug)}
+@section @code{debug-on-quit}和@code{(debug)}
 
-In addition to setting @code{debug-on-error} or calling @code{debug-on-entry},
-there are two other ways to start @code{debug}.
+除了设置@code{debug-on-error}或调用@code{debug-on-entry}之外，还有两种启动@code{debug}的方法。
 
 @findex debug-on-quit
-You can start @code{debug} whenever you type @kbd{C-g}
-(@code{keyboard-quit}) by setting the variable @code{debug-on-quit} to
-@code{t}.  This is useful for debugging infinite loops.
+通过将变量@code{debug-on-quit}设置为@code{t}，你可以在键入@kbd{C-g}（@code{keyboard-quit}）时随时启动@code{debug}。这对于调试无限循环非常有用。
 
 @need 1500
-@cindex @code{(debug)} in code
-Or, you can insert a line that says @code{(debug)} into your code
-where you want the debugger to start, like this:
+@cindex 在代码中使用@code{(debug)}
+或者，你可以在代码中插入一行，如下所示，以在想要启动调试器的地方开始@code{(debug)}：
 
 @smallexample
 @group
 (defun triangle-bugged (number)
-  "Return sum of numbers 1 through NUMBER inclusive."
+  "返回从1累加到NUMBER的数字的总和。"
   (let ((total 0))
     (while (> number 0)
       (setq total (+ total number))
-      (debug)                         ; @r{Start debugger.}
-      (setq number (1= number)))      ; @r{Error here.}
+      (debug)                         ; @r{启动调试器。}
+      (setq number (1- number)))      ; @r{错误出现在这里。}
     total))
 @end group
 @end smallexample
 
-The @code{debug} function is described in detail in @ref{Debugger, ,
-The Lisp Debugger, elisp, The GNU Emacs Lisp Reference Manual}.
+@code{debug}函数的详细信息在@ref{Debugger, ,Lisp 调试器, elisp, GNU Emacs Lisp参考手册}中有描述。
 
 @node edebug
 @section The @code{edebug} Source Level Debugger

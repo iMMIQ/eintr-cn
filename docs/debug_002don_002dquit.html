@@ -60,32 +60,28 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 Next: <a href="edebug.html" accesskey="n" rel="next">The <code class="code">edebug</code> Source Level Debugger</a>, Previous: <a href="debug_002don_002dentry.html" accesskey="p" rel="prev"><code class="code">debug-on-entry</code></a>, Up: <a href="Diao-Shi-.html" accesskey="u" rel="up">调试</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="debug_002don_002dquit-and-_0028debug_0029">17.3 <code class="code">debug-on-quit</code> and <code class="code">(debug)</code></h3>
+<h3 class="section" id="debug_002don_002dquitHe-_0028debug_0029">17.3 <code class="code">debug-on-quit</code>和<code class="code">(debug)</code></h3>
 
-<p>In addition to setting <code class="code">debug-on-error</code> or calling <code class="code">debug-on-entry</code>,
-there are two other ways to start <code class="code">debug</code>.
+<p>除了设置<code class="code">debug-on-error</code>或调用<code class="code">debug-on-entry</code>之外，还有两种启动<code class="code">debug</code>的方法。
 </p>
 <a class="index-entry-id" id="index-debug_002don_002dquit"></a>
-<p>You can start <code class="code">debug</code> whenever you type <kbd class="kbd">C-g</kbd>
-(<code class="code">keyboard-quit</code>) by setting the variable <code class="code">debug-on-quit</code> to
-<code class="code">t</code>.  This is useful for debugging infinite loops.
+<p>通过将变量<code class="code">debug-on-quit</code>设置为<code class="code">t</code>，你可以在键入<kbd class="kbd">C-g</kbd>（<code class="code">keyboard-quit</code>）时随时启动<code class="code">debug</code>。这对于调试无限循环非常有用。
 </p>
-<a class="index-entry-id" id="index-_0028debug_0029-in-code"></a>
-<p>Or, you can insert a line that says <code class="code">(debug)</code> into your code
-where you want the debugger to start, like this:
+<a class="index-entry-id" id="index-Zai-Dai-Ma-ZhongShi-Yong-_0028debug_0029"></a>
+<p>或者，你可以在代码中插入一行，如下所示，以在想要启动调试器的地方开始<code class="code">(debug)</code>：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun triangle-bugged (number)
-  &quot;Return sum of numbers 1 through NUMBER inclusive.&quot;
+  &quot;返回从1累加到NUMBER的数字的总和。&quot;
   (let ((total 0))
     (while (&gt; number 0)
       (setq total (+ total number))
-      (debug)                         ; <span class="r">Start debugger.</span>
-      (setq number (1= number)))      ; <span class="r">Error here.</span>
+      (debug)                         ; <span class="r">启动调试器。</span>
+      (setq number (1- number)))      ; <span class="r">错误出现在这里。</span>
     total))
 </pre></div></div>
 
-<p>The <code class="code">debug</code> function is described in detail in <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Debugger.html#Debugger">The Lisp Debugger</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>.
+<p><code class="code">debug</code>函数的详细信息在<a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Debugger.html#Debugger">Lisp 调试器</a> in <cite class="cite">GNU Emacs Lisp参考手册</cite>中有描述。
 </p>
 </div>
 
