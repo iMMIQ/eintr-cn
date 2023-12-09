@@ -2255,7 +2255,7 @@ multiply-by-seven 是一个 Lisp 函数。
 @noindent
 刚才提到的两个示例均以相同的方式工作，将光标向前移动三个句子。 (由于 @code{multiply-by-seven} 未绑定到键，它无法用作绑定键的示例。)
 
-(@xref{Key Bindings, , 一些按键绑定}, 了解如何将命令绑定到键。)
+(@xref{按键绑定, , 一些按键绑定}, 了解如何将命令绑定到键。)
 
 通过键入数字键后跟一个数字，例如 @kbd{M-3 M-e}，或者通过键入 @kbd{C-u} 然后是一个数字，例如 @kbd{C-u 3 M-e}，将一个 @dfn{前缀参数} 传递给交互式函数（如果键入 @kbd{C-u} 而没有数字，则默认为 4）。
 
@@ -11859,120 +11859,77 @@ Manual}.
 @end iftex
 
 @need 1700
-@node Key Bindings
-@section Some Key Bindings
+@node 按键绑定
+@section 一些按键绑定
 
-Now for some personal key bindings:
+现在来看一些个人按键绑定：
 
 @smallexample
 @group
-;;; Compare windows
+;;; 比较窗口
 (global-set-key "\C-cw" 'compare-windows)
 @end group
 @end smallexample
 
 @findex compare-windows
-@code{compare-windows} is a nifty command that compares the text in
-your current window with text in the next window.  It makes the
-comparison by starting at point in each window, moving over text in
-each window as far as they match.  I use this command all the time.
+@code{compare-windows} 是一个巧妙的命令，用于比较当前窗口中的文本与下一个窗口中的文本。它通过从每个窗口的光标位置开始，在每个窗口中移动文本，直到找到不匹配的部分。我经常使用这个命令。
 
-This also shows how to set a key globally, for all modes.
+这也展示了如何在所有模式中全局设置按键。
 
-@cindex Setting a key globally
-@cindex Global set key
-@cindex Key setting globally
+@cindex 全局设置按键
+@cindex 全局按键设置
+@cindex 按键全局设置
 @findex global-set-key
-The command is @code{global-set-key}.  It is followed by the
-key binding.  In a @file{.emacs} file, the keybinding is written as
-shown: @code{\C-c} stands for Control-C, which means to press the
-control key and the @kbd{c} key at the same time.  The @code{w} means
-to press the @kbd{w} key.  The key binding is surrounded by double
-quotation marks.  In documentation, you would write this as
-@w{@kbd{C-c w}}.  (If you were binding a @key{META} key, such as
-@kbd{M-c}, rather than a @key{CTRL} key, you would write
-@w{@code{\M-c}} in your @file{.emacs} file.  @xref{Init Rebinding, ,
-Rebinding Keys in Your Init File, emacs, The GNU Emacs Manual}, for
-details.)
+该命令是 @code{global-set-key}。它后面跟着按键绑定。在 @file{.emacs} 文件中，按键绑定的写法如下：@code{\C-c} 代表 Control-C，意味着同时按下 Control 键和 @kbd{c} 键。@code{w} 代表按下 @kbd{w} 键。按键绑定用双引号括起来。在文档中，你应该这样写：@w{@kbd{C-c w}}。（如果你要绑定一个 @key{META} 键，例如 @kbd{M-c}，而不是 @key{CTRL} 键，你应该在 @file{.emacs} 文件中写成 @w{@code{\M-c}}。详见 @xref{Init Rebinding, , 重新绑定按键在你的初始化文件中, emacs, GNU Emacs 手册}，获取详细信息。）
 
-The command invoked by the keys is @code{compare-windows}.  Note that
-@code{compare-windows} is preceded by a single-quote; otherwise, Emacs
-would first try to evaluate the symbol to determine its value.
+由这些按键调用的命令是 @code{compare-windows}。注意，@code{compare-windows} 前面有一个单引号；否则，Emacs 将首先尝试评估符号以确定其值。
 
-These three things, the double quotation marks, the backslash before
-the @samp{C}, and the single-quote are necessary parts of
-key binding that I tend to forget.  Fortunately, I have come to
-remember that I should look at my existing @file{.emacs} file, and
-adapt what is there.
+这三个元素，双引号、@samp{C} 前面的反斜杠，以及单引号，是我经常忘记的按键绑定的必要部分。幸运的是，我已经记住了应该查看我的现有 @file{.emacs} 文件，并适应其中的内容。
 
-As for the key binding itself: @kbd{C-c w}.  This combines the prefix
-key, @kbd{C-c}, with a single character, in this case, @kbd{w}.  This
-set of keys, @kbd{C-c} followed by a single character, is strictly
-reserved for individuals' own use.  (I call these @dfn{own} keys, since
-these are for my own use.)  You should always be able to create such a
-key binding for your own use without stomping on someone else's
-key binding.  If you ever write an extension to Emacs, please avoid
-taking any of these keys for public use.  Create a key like @kbd{C-c
-C-w} instead.  Otherwise, we will run out of own keys.
+至于按键绑定本身：@kbd{C-c w}。这将前缀键 @kbd{C-c} 与一个单字符 @kbd{w} 结合在一起。这组按键，@kbd{C-c} 后跟一个单字符，严格保留供个人使用。 （我称这些为 @dfn{个人} 按键，因为这些是我自己使用的。）你应该始终能够创建这样的按键绑定，而不会覆盖其他人的按键绑定。如果你曾经编写过 Emacs 的扩展，请避免为公共使用占用这些按键。请创建一个类似 @kbd{C-c C-w} 的按键。否则，我们将用完个人按键。
 
 @need 1250
-Here is another key binding, with a comment:
+这里是另一个按键绑定，附有注释：
 
 @smallexample
 @group
-;;; Key binding for 'occur'
-; I use occur a lot, so let's bind it to a key:
+;;; 为 'occur' 绑定按键
+; 我经常使用 occur，所以让我们绑定一个按键：
 (global-set-key "\C-co" 'occur)
 @end group
 @end smallexample
 
 @findex occur
-The @code{occur} command shows all the lines in the current buffer
-that contain a match for a regular expression.  When the region is
-active, @code{occur} restricts matches to such region.  Otherwise it
-uses the entire buffer.
-Matching lines are shown in a buffer called @file{*Occur*}.
-That buffer serves as a menu to jump to occurrences.
+@code{occur} 命令显示当前缓冲区中与正则表达式匹配的所有行。当区域处于活动状态时，@code{occur} 限制匹配于该区域。否则，它使用整个缓冲区。匹配的行显示在一个名为 @file{*Occur*} 的缓冲区中。该缓冲区作为跳转到匹配行的菜单。
 
 @findex global-unset-key
-@cindex Unbinding key
-@cindex Key unbinding
+@cindex 解除按键绑定
+@cindex 按键解绑定
 @need 1250
-Here is how to unbind a key, so it does not
-work:
+以下是如何解绑按键，使其无效：
 
 @smallexample
 @group
-;;; Unbind 'C-x f'
+;;; 解绑 'C-x f'
 (global-unset-key "\C-xf")
 @end group
 @end smallexample
 
-There is a reason for this unbinding: I found I inadvertently typed
-@w{@kbd{C-x f}} when I meant to type @kbd{C-x C-f}.  Rather than find a
-file, as I intended, I accidentally set the width for filled text,
-almost always to a width I did not want.  Since I hardly ever reset my
-default width, I simply unbound the key.
+这解绑的原因是：我发现我在意图输入 @kbd{C-x C-f} 时无意中键入了 @w{@kbd{C-x f}}。与其找到一个文件，我无意中设置了填充文本的宽度，几乎总是设置成我不想要的宽度。由于我几乎从不重新设置默认宽度，我简单地解绑了该按键。
 
-@findex list-buffers@r{, rebound}
-@findex buffer-menu@r{, bound to key}
+@findex list-buffers@r{，重新绑定}
+@findex buffer-menu@r{，绑定到按键}
 @need 1250
-The following rebinds an existing key:
+以下是如何重新绑定现有按键：
 
 @smallexample
 @group
-;;; Rebind 'C-x C-b' for 'buffer-menu'
+;;; 为 'buffer-menu' 重新绑定 'C-x C-b'
 (global-set-key "\C-x\C-b" 'buffer-menu)
 @end group
 @end smallexample
 
-By default, @kbd{C-x C-b} runs the
-@code{list-buffers} command.  This command lists
-your buffers in @emph{another} window.  Since I
-almost always want to do something in that
-window, I prefer the  @code{buffer-menu}
-command, which not only lists the buffers,
-but moves point into that window.
+默认情况下，@kbd{C-x C-b} 运行 @code{list-buffers} 命令。该命令在 @emph{另一个} 窗口中列出你的缓冲区。由于我几乎总是想在那个窗口中执行某些操作，我更喜欢 @code{buffer-menu} 命令，它不仅列出缓冲区，还将光标移到该窗口。
 
 @node Keymaps
 @section Keymaps
