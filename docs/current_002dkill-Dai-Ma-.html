@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Code for current-kill (Programming in Emacs Lisp)</title>
+<title>current-kill 代码 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Code for current-kill (Programming in Emacs Lisp)">
-<meta name="keywords" content="Code for current-kill (Programming in Emacs Lisp)">
+<meta name="description" content="current-kill 代码 (Programming in Emacs Lisp)">
+<meta name="keywords" content="current-kill 代码 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -39,7 +39,7 @@ ISBN 1-882114-43-4
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="current_002dkill.html" rel="up" title="current-kill">
-<link href="Understanding-current_002dkill.html" rel="next" title="Understanding current-kill">
+<link href="Li-Jie-current_002dkill.html" rel="next" title="理解 current-kill">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -51,46 +51,41 @@ div.example {margin-left: 3.2em}
 </head>
 
 <body lang="en">
-<div class="unnumberedsubsec-level-extent" id="Code-for-current_002dkill">
+<div class="unnumberedsubsec-level-extent" id="current_002dkill-_4ee3_7801">
 <div class="nav-panel">
 <p>
-Next: <a href="Understanding-current_002dkill.html" accesskey="n" rel="next"><code class="code">current-kill</code> in Outline</a>, Up: <a href="current_002dkill.html" accesskey="u" rel="up">The <code class="code">current-kill</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Li-Jie-current_002dkill.html" accesskey="n" rel="next">在大纲中理解 <code class="code">current-kill</code></a>, Up: <a href="current_002dkill.html" accesskey="u" rel="up">The <code class="code">current-kill</code> 函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="The-code-for-current_002dkill">The code for <code class="code">current-kill</code></h4>
+<h4 class="unnumberedsubsec" id="current_002dkill-De-Dai-Ma-"><code class="code">current-kill</code> 的代码</h4>
 
-
-<p>The <code class="code">current-kill</code> function is used by <code class="code">yank</code> and by
-<code class="code">yank-pop</code>.  Here is the code for <code class="code">current-kill</code>:
+<p><code class="code">current-kill</code> 函数被 <code class="code">yank</code> 和 <code class="code">yank-pop</code> 使用。下面是 <code class="code">current-kill</code> 的代码：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun current-kill (n &amp;optional do-not-move)
-  &quot;Rotate the yanking point by N places, and then return that kill.
-If N is zero and `interprogram-paste-function' is set to a
-function that returns a string or a list of strings, and if that
-function doesn't return nil, then that string (or list) is added
-to the front of the kill ring and the string (or first string in
-the list) is returned as the latest kill.
-</pre></div><div class="group"><pre class="example-preformatted">If N is not zero, and if `yank-pop-change-selection' is
-non-nil, use `interprogram-cut-function' to transfer the
-kill at the new yank point into the window system selection.
-</pre></div><div class="group"><pre class="example-preformatted">If optional arg DO-NOT-MOVE is non-nil, then don't actually
-move the yanking point; just return the Nth kill forward.&quot;
+  &quot;将插入点在 kill 环中旋转 N 个位置，然后返回该 kill。
+如果 N 为零，并且 `interprogram-paste-function' 设置为返回字符串或字符串列表的函数，
+并且该函数不返回 nil，则将该字符串（或列表）添加到 kill 环的最前面，并将该字符串
+（或列表的第一个字符串）作为最新的 kill 返回。
+
+如果 N 不为零，并且 `yank-pop-change-selection' 为非 nil，则使用
+`interprogram-cut-function' 将新的插入点处的 kill 转移到窗口系统的选择中。
+
+如果可选参数 DO-NOT-MOVE 为非 nil，则实际上不移动插入点；只是返回第 N 个 kill。&quot;
 
   (let ((interprogram-paste (and (= n 0)
                                  interprogram-paste-function
                                  (funcall interprogram-paste-function))))
 </pre></div><div class="group"><pre class="example-preformatted">    (if interprogram-paste
         (progn
-          ;; Disable the interprogram cut function when we add the new
-          ;; text to the kill ring, so Emacs doesn't try to own the
-          ;; selection, with identical text.
+          ;; 在将新文本添加到 kill 环时禁用 interprogram cut 函数，
+          ;; 以便 Emacs 不尝试拥有相同的文本选择。
           (let ((interprogram-cut-function nil))
             (if (listp interprogram-paste)
               (mapc 'kill-new (nreverse interprogram-paste))
               (kill-new interprogram-paste)))
           (car kill-ring))
-</pre></div><div class="group"><pre class="example-preformatted">      (or kill-ring (error &quot;Kill ring is empty&quot;))
+</pre></div><div class="group"><pre class="example-preformatted">      (or kill-ring (error &quot;Kill 环为空&quot;))
       (let ((ARGth-kill-element
              (nthcdr (mod (- n (length kill-ring-yank-pointer))
                           (length kill-ring))
@@ -104,24 +99,16 @@ move the yanking point; just return the Nth kill forward.&quot;
         (car ARGth-kill-element)))))
 </pre></div></div>
 
-<p>Remember also that the <code class="code">kill-new</code> function sets
-<code class="code">kill-ring-yank-pointer</code> to the latest element of the kill
-ring, which means that all the functions that call it set the value
-indirectly: <code class="code">kill-append</code>, <code class="code">copy-region-as-kill</code>,
-<code class="code">kill-ring-save</code>, <code class="code">kill-line</code>, and <code class="code">kill-region</code>.
+<p>还要记住，<code class="code">kill-new</code> 函数将 <code class="code">kill-ring-yank-pointer</code> 设置为 kill 环的最新元素，
+这意味着所有调用它的函数都间接地设置了该值：<code class="code">kill-append</code>、<code class="code">copy-region-as-kill</code>、
+<code class="code">kill-ring-save</code>、<code class="code">kill-line</code> 和 <code class="code">kill-region</code>。
 </p>
-<p>Here is the line in <code class="code">kill-new</code>, which is explained in
-<a class="ref" href="kill_002dnew-Han-Shu-.html"><code class="code">kill-new</code> 函数</a>.
+<p>下面是 <code class="code">kill-new</code> 中的一行，详见 <a class="ref" href="kill_002dnew-Han-Shu-.html"><code class="code">kill-new</code> 函数</a>。
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(setq kill-ring-yank-pointer kill-ring)
 </pre></div>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Understanding-current_002dkill.html"><code class="code">current-kill</code> in Outline</a>, Up: <a href="current_002dkill.html">The <code class="code">current-kill</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

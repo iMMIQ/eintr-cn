@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>What the Kill Ring Does (Programming in Emacs Lisp)</title>
+<title>Kill Ring 的作用 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="What the Kill Ring Does (Programming in Emacs Lisp)">
-<meta name="keywords" content="What the Kill Ring Does (Programming in Emacs Lisp)">
+<meta name="description" content="Kill Ring 的作用 (Programming in Emacs Lisp)">
+<meta name="keywords" content="Kill Ring 的作用 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -52,37 +52,26 @@ kbd.kbd {font-style: oblique}
 </head>
 
 <body lang="en">
-<div class="unnumberedsec-level-extent" id="What-the-Kill-Ring-Does">
+<div class="unnumberedsec-level-extent" id="Kill-Ring-_7684_4f5c_7528">
 <div class="nav-panel">
 <p>
-Next: <a href="current_002dkill.html" accesskey="n" rel="next">The <code class="code">current-kill</code> Function</a>, Up: <a href="Kill-Ring.html" accesskey="u" rel="up">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="current_002dkill.html" accesskey="n" rel="next">The <code class="code">current-kill</code> 函数</a>, Up: <a href="Kill-Ring.html" accesskey="u" rel="up">处理 Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="unnumberedsec" id="What-the-Kill-Ring-Does-1">What the Kill Ring Does</h3>
+<h3 class="unnumberedsec" id="Kill-Ring-De-Zuo-Yong-">Kill Ring 的作用</h3>
 
-<p>The kill ring has a default maximum length of sixty items; this number
-is too large for an explanation.  Instead, set it to four.  Please
-evaluate the following:
+<p>Kill ring 的默认最大长度是六十个元素；这个数字对于解释来说太大了。相反，将其设置为四。请执行以下操作：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq old-kill-ring-max kill-ring-max)
 (setq kill-ring-max 4)
 </pre></div></div>
 
-<p>Then, please copy each line of the following indented example into the
-kill ring.  You may kill each line with <kbd class="kbd">C-k</kbd> or mark it and copy
-it with <kbd class="kbd">M-w</kbd>.
+<p>然后，请将以下缩进的示例中的每行复制到 kill ring 中。您可以使用 <kbd class="kbd">C-k</kbd> 杀死每行，或者用 <kbd class="kbd">M-w</kbd> 标记并复制。
 </p>
-<p>(In a read-only buffer, such as the <samp class="file">*info*</samp> buffer, the kill
-command, <kbd class="kbd">C-k</kbd> (<code class="code">kill-line</code>), will not remove the text,
-merely copy it to the kill ring.  However, your machine may beep at
-you.  Alternatively, for silence, you may copy the region of each line
-with the <kbd class="kbd">M-w</kbd> (<code class="code">kill-ring-save</code>) command.  You must mark
-each line for this command to succeed, but it does not matter at which
-end you put point or mark.)
+<p>（在只读缓冲区中，如 <samp class="file">*info*</samp> 缓冲区中，杀死命令 <kbd class="kbd">C-k</kbd>（<code class="code">kill-line</code>）不会删除文本，只会将其复制到 kill ring 中。然而，您的机器可能会响铃。或者，为了保持安静，您可以使用 <kbd class="kbd">M-w</kbd>（<code class="code">kill-ring-save</code>）命令复制每行的区域。您必须为该命令标记每一行，但无论将点放在哪一端都没有关系。）
 </p>
-<p>Please invoke the calls in order, so that five elements attempt to
-fill the kill ring:
+<p>请按顺序调用这些调用，以使五个元素尝试填充 kill ring：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">first some text
@@ -92,32 +81,27 @@ fourth line of text
 fifth bit of text
 </pre></div></div>
 
-<p>Then find the value of <code class="code">kill-ring</code> by evaluating
+<p>然后通过评估以下表达式找到 <code class="code">kill-ring</code> 的值：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">kill-ring
 </pre></div>
 
-<p>It is:
+<p>它是：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(&quot;fifth bit of text&quot; &quot;fourth line of text&quot;
 &quot;third line&quot; &quot;second piece of text&quot;)
 </pre></div></div>
 
-<p>The first element, &lsquo;<samp class="samp">first some text</samp>&rsquo;, was dropped.
+<p>第一个元素，&lsquo;<samp class="samp">first some text</samp>&rsquo;，被删除。
 </p>
-<p>To return to the old value for the length of the kill ring, evaluate:
+<p>要恢复 kill ring 长度的旧值，请执行：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(setq kill-ring-max old-kill-ring-max)
 </pre></div>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="current_002dkill.html">The <code class="code">current-kill</code> Function</a>, Up: <a href="Kill-Ring.html">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

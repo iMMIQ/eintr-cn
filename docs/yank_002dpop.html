@@ -55,22 +55,20 @@ div.example {margin-left: 3.2em}
 <div class="appendixsec-level-extent" id="yank_002dpop">
 <div class="nav-panel">
 <p>
-Next: <a href="ring-file.html" accesskey="n" rel="next">The <samp class="file">ring.el</samp> File</a>, Previous: <a href="yank.html" accesskey="p" rel="prev"><code class="code">yank</code></a>, Up: <a href="Kill-Ring.html" accesskey="u" rel="up">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="ring-file.html" accesskey="n" rel="next">The <samp class="file">ring.el</samp> File</a>, Previous: <a href="yank.html" accesskey="p" rel="prev"><code class="code">yank</code></a>, Up: <a href="Kill-Ring.html" accesskey="u" rel="up">处理 Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h3 class="appendixsec" id="yank_002dpop-1">B.3 <code class="code">yank-pop</code></h3>
 <a class="index-entry-id" id="index-yank_002dpop"></a>
 
-<p>After understanding <code class="code">yank</code> and <code class="code">current-kill</code>, you know how
-to approach the <code class="code">yank-pop</code> function.  Leaving out the
-documentation to save space, it looks like this:
+<p>在理解了 <code class="code">yank</code> 和 <code class="code">current-kill</code> 之后，你就知道如何处理 <code class="code">yank-pop</code> 函数了。为了节省空间，下面是省略了文档的函数定义：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun yank-pop (&amp;optional arg)
   &quot;&hellip;&quot;
   (interactive &quot;*p&quot;)
   (if (not (eq last-command 'yank))
-      (error &quot;Previous command was not a yank&quot;))
+      (error &quot;上一个命令不是 yank&quot;))
 </pre></div><div class="group"><pre class="example-preformatted">  (setq this-command 'yank)
   (unless arg (setq arg 1))
   (let ((inhibit-read-only t)
@@ -81,14 +79,13 @@ documentation to save space, it looks like this:
     (setq yank-undo-function nil)
 </pre></div><div class="group"><pre class="example-preformatted">    (set-marker (mark-marker) (point) (current-buffer))
     (insert-for-yank (current-kill arg))
-    ;; Set the window start back where it was in the yank command,
-    ;; if possible.
+    ;; 如果可能，将窗口的起始位置设置回 yank 命令之前的位置。
     (set-window-start (selected-window) yank-window-start t)
 </pre></div><div class="group"><pre class="example-preformatted">    (if before
-        ;; This is like exchange-point-and-mark,
-        ;;     but doesn't activate the mark.
-        ;; It is cleaner to avoid activation, even though the command
-        ;; loop would deactivate the mark because we inserted text.
+        ;; 这类似于 exchange-point-and-mark，
+        ;; 但不激活标记。
+        ;; 即使命令循环会因为我们插入文本而取消激活标记，
+        ;; 这样做更干净，因为我们避免了激活。
         (goto-char (prog1 (mark t)
                      (set-marker (mark-marker)
                                  (point)
@@ -96,31 +93,14 @@ documentation to save space, it looks like this:
   nil)
 </pre></div></div>
 
-<p>The function is interactive with a small &lsquo;<samp class="samp">p</samp>&rsquo; so the prefix
-argument is processed and passed to the function.  The command can
-only be used after a previous yank; otherwise an error message is
-sent.  This check uses the variable <code class="code">last-command</code> which is set
-by <code class="code">yank</code> and is discussed elsewhere.
-(See <a class="xref" href="copy_002dregion_002das_002dkill.html"><code class="code">copy-region-as-kill</code></a>.)
+<p>这个函数是交互式的，带有一个小的 &lsquo;<samp class="samp">p</samp>&rsquo;，因此前缀参数会被处理并传递给函数。该命令只能在先前的 yank 后使用；否则会发送错误消息。此检查使用变量 <code class="code">last-command</code>，该变量由 <code class="code">yank</code> 设置，并在其他地方进行了讨论。(See <a class="xref" href="copy_002dregion_002das_002dkill.html"><code class="code">copy-region-as-kill</code></a>。)
 </p>
-<p>The <code class="code">let</code> clause sets the variable <code class="code">before</code> to true or false
-depending whether point is before or after mark and then the region
-between point and mark is deleted.  This is the region that was just
-inserted by the previous yank and it is this text that will be
-replaced.
+<p><code class="code">let</code> 子句将变量 <code class="code">before</code> 设置为 true 或 false，具体取决于 point 是否在 mark 之前，然后删除 point 和 mark 之间的区域。这是由前一个 yank 命令刚插入的区域，也就是将被替换的文本。
 </p>
-<p><code class="code">funcall</code> calls its first argument as a function, passing
-remaining arguments to it.  The first argument is whatever the
-<code class="code">or</code> expression returns.  The two remaining arguments are the
-positions of point and mark set by the preceding <code class="code">yank</code> command.
+<p><code class="code">funcall</code> 将其第一个参数作为函数调用，并将其余参数传递给它。第一个参数是 <code class="code">or</code> 表达式返回的内容。其余两个参数是由前一个 <code class="code">yank</code> 命令设置的 point 和 mark 的位置。
 </p>
-<p>There is more, but that is the hardest part.
+<p>还有更多内容，但这是最难的部分。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="ring-file.html">The <samp class="file">ring.el</samp> File</a>, Previous: <a href="yank.html"><code class="code">yank</code></a>, Up: <a href="Kill-Ring.html">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

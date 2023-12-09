@@ -38,9 +38,9 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Understanding-current_002dkill.html" rel="up" title="Understanding current-kill">
-<link href="Determining-the-Element.html" rel="next" title="Determining the Element">
-<link href="Body-of-current_002dkill.html" rel="prev" title="Body of current-kill">
+<link href="Li-Jie-current_002dkill.html" rel="up" title="理解 current-kill">
+<link href="Que-Ding-Yuan-Su-.html" rel="next" title="确定元素">
+<link href="current_002dkill-Han-Shu-Ti-.html" rel="prev" title="current-kill 函数体">
 <style type="text/css">
 <!--
 -->
@@ -54,27 +54,14 @@ ISBN 1-882114-43-4
 <div class="unnumberedsubsubsec-level-extent" id="Digression-concerning-error">
 <div class="nav-panel">
 <p>
-Next: <a href="Determining-the-Element.html" accesskey="n" rel="next">Determining the Element</a>, Previous: <a href="Body-of-current_002dkill.html" accesskey="p" rel="prev">The Body of <code class="code">current-kill</code></a>, Up: <a href="Understanding-current_002dkill.html" accesskey="u" rel="up"><code class="code">current-kill</code> in Outline</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Que-Ding-Yuan-Su-.html" accesskey="n" rel="next">确定元素</a>, Previous: <a href="current_002dkill-Han-Shu-Ti-.html" accesskey="p" rel="prev"><code class="code">current-kill</code> 函数体</a>, Up: <a href="Li-Jie-current_002dkill.html" accesskey="u" rel="up">在大纲中理解 <code class="code">current-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsubsec" id="Digression-about-the-word-_0060_0060error_0027_0027">Digression about the word &ldquo;error&rdquo;</h4>
+<h4 class="unnumberedsubsubsec" id="You-Guan-Zhu-Yu-_201cerror_201dDe-Chi-Ti-Tao-Lun-">有关术语“error”的离题讨论</h4>
 
-<p>In my opinion, it is slightly misleading, at least to humans, to use
-the term &ldquo;error&rdquo; as the name of the <code class="code">error</code> function.  A better
-term would be &ldquo;cancel&rdquo;.  Strictly speaking, of course, you cannot
-point to, much less rotate a pointer to a list that has no length, so
-from the point of view of the computer, the word &ldquo;error&rdquo; is correct.
-But a human expects to attempt this sort of thing, if only to find out
-whether the kill ring is full or empty.  This is an act of
-exploration.
+<p>在我看来，将“error”作为 <code class="code">error</code> 函数的名称，至少对人类来说，有点误导。一个更好的术语应该是“cancel”（取消）。严格来说，当然，你不能指向，更不用说旋转指向一个长度为零的列表，因此从计算机的角度来看，“error”一词是正确的。但是人类期望尝试这种事情，即使只是为了找出 kill 环是满的还是空的。这是一种探索的行为。
 </p>
-<p>From the human point of view, the act of exploration and discovery is
-not necessarily an error, and therefore should not be labeled as one,
-even in the bowels of a computer.  As it is, the code in Emacs implies
-that a human who is acting virtuously, by exploring his or her
-environment, is making an error.  This is bad.  Even though the computer
-takes the same steps as it does when there is an error, a term such as
-&ldquo;cancel&rdquo; would have a clearer connotation.
+<p>从人类的角度来看，探索和发现的行为不一定是错误的，因此不应该被标记为错误，即使在计算机的深处。事实上，Emacs 中的代码暗示了一个以探索环境为美德的人类正在犯错误。这是不好的。即使计算机采取与错误相同的步骤，诸如“cancel”这样的术语会有一个更清晰的内涵。
 </p>
 </div>
 

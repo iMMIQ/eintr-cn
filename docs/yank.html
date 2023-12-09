@@ -56,40 +56,31 @@ kbd.kbd {font-style: oblique}
 <div class="appendixsec-level-extent" id="yank">
 <div class="nav-panel">
 <p>
-Next: <a href="yank_002dpop.html" accesskey="n" rel="next"><code class="code">yank-pop</code></a>, Previous: <a href="current_002dkill.html" accesskey="p" rel="prev">The <code class="code">current-kill</code> Function</a>, Up: <a href="Kill-Ring.html" accesskey="u" rel="up">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="yank_002dpop.html" accesskey="n" rel="next"><code class="code">yank-pop</code></a>, Previous: <a href="current_002dkill.html" accesskey="p" rel="prev">The <code class="code">current-kill</code> 函数</a>, Up: <a href="Kill-Ring.html" accesskey="u" rel="up">处理 Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h3 class="appendixsec" id="yank-1">B.2 <code class="code">yank</code></h3>
 <a class="index-entry-id" id="index-yank"></a>
 
-<p>After learning about <code class="code">current-kill</code>, the code for the
-<code class="code">yank</code> function is almost easy.
+<p>在学习了<code class="code">current-kill</code>之后，<code class="code">yank</code>函数的代码几乎变得很简单。
 </p>
-<p>The <code class="code">yank</code> function does not use the
-<code class="code">kill-ring-yank-pointer</code> variable directly.  It calls
-<code class="code">insert-for-yank</code> which calls <code class="code">current-kill</code> which sets the
-<code class="code">kill-ring-yank-pointer</code> variable.
+<p><code class="code">yank</code>函数不直接使用<code class="code">kill-ring-yank-pointer</code>变量。它调用<code class="code">insert-for-yank</code>，而<code class="code">insert-for-yank</code>又调用<code class="code">current-kill</code>，后者设置了<code class="code">kill-ring-yank-pointer</code>变量。
 </p>
-<p>The code looks like this:
+<p>代码如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun yank (&amp;optional arg)
-  &quot;Reinsert (\&quot;paste\&quot;) the last stretch of killed text.
-More precisely, reinsert the stretch of killed text most recently
-killed OR yanked.  Put point at end, and set mark at beginning.
-With just \\[universal-argument] as argument, same but put point at beginning (and mark at end).
-With argument N, reinsert the Nth most recently killed stretch of killed
-text.
+  &quot;重新插入（\&quot;粘贴\&quot;）最近一次删除的文本段。
+更准确地说，重新插入最近一次删除或粘贴的文本段。将光标放在末尾，并在开头设置标记。
+使用 \\[universal-argument] 作为参数时，效果相同，但将光标放在开头（标记放在末尾）。
+带有参数N时，重新插入第N个最近删除的文本段。
 
-When this command inserts killed text into the buffer, it honors
-`yank-excluded-properties' and `yank-handler' as described in the
-doc string for `insert-for-yank-1', which see.
+当此命令将删除的文本插入缓冲区时，将遵循`yank-excluded-properties'和`yank-handler'，如`insert-for-yank-1'的文档字符串所述，请参见。
 
-See also the command `yank-pop' (\\[yank-pop]).&quot;
+还可以参考命令`yank-pop'（\\[yank-pop]）.&quot;
 </pre></div><div class="group"><pre class="example-preformatted">  (interactive &quot;*P&quot;)
   (setq yank-window-start (window-start))
-  ;; If we don't get all the way thru, make last-command indicate that
-  ;; for the following command.
+  ;; 如果没有完全执行，使last-command指示随后的命令。
   (setq this-command t)
   (push-mark (point))
 </pre></div><div class="group"><pre class="example-preformatted">  (insert-for-yank (current-kill (cond
@@ -97,46 +88,26 @@ See also the command `yank-pop' (\\[yank-pop]).&quot;
                                   ((eq arg '-) -2)
                                   (t (1- arg)))))
   (if (consp arg)
-      ;; This is like exchange-point-and-mark, but doesn't activate the mark.
-      ;; It is cleaner to avoid activation, even though the command
-      ;; loop would deactivate the mark because we inserted text.
+      ;; 这类似于exchange-point-and-mark，但不激活标记。
+      ;; 尽管命令循环会因为插入文本而取消激活标记，但避免激活更清晰。
       (goto-char (prog1 (mark t)
                    (set-marker (mark-marker) (point) (current-buffer)))))
-</pre></div><div class="group"><pre class="example-preformatted">  ;; If we do get all the way thru, make this-command indicate that.
+</pre></div><div class="group"><pre class="example-preformatted">  ;; 如果完全执行，使this-command指示。
   (if (eq this-command t)
       (setq this-command 'yank))
   nil)
 </pre></div></div>
 
-<p>The key expression is <code class="code">insert-for-yank</code>, which inserts the string
-returned by <code class="code">current-kill</code>, but removes some text properties from
-it.
+<p>关键表达式是<code class="code">insert-for-yank</code>，它插入由<code class="code">current-kill</code>返回的字符串，但从中删除了一些文本属性。
 </p>
-<p>However, before getting to that expression, the function sets the value
-of <code class="code">yank-window-start</code> to the position returned by the
-<code class="code">(window-start)</code> expression, the position at which the display
-currently starts.  The <code class="code">yank</code> function also sets
-<code class="code">this-command</code> and pushes the mark.
+<p>然而，在到达该表达式之前，函数将<code class="code">yank-window-start</code>的值设置为<code class="code">(window-start)</code>表达式返回的位置，即显示当前开始的位置。<code class="code">yank</code>函数还设置了<code class="code">this-command</code>并推送了标记。
 </p>
-<p>After it yanks the appropriate element, if the optional argument is a
-<small class="sc">CONS</small> rather than a number or nothing, it puts point at beginning
-of the yanked text and mark at its end.
+<p>在它插入适当的元素之后，如果可选参数是<small class="sc">CONS</small>而不是数字或为空，它将光标放在插入的文本的开头，并在其末尾设置标记。
 </p>
-<p>(The <code class="code">prog1</code> function is like <code class="code">progn</code> but returns the value
-of its first argument rather than the value of its last argument.  Its
-first argument is forced to return the buffer&rsquo;s mark as an integer.
-You can see the documentation for these functions by placing point
-over them in this buffer and then typing <kbd class="kbd">C-h f</kbd>
-(<code class="code">describe-function</code>) followed by a <kbd class="kbd">RET</kbd>; the default is the
-function.)
+<p>（<code class="code">prog1</code>函数类似于<code class="code">progn</code>，但返回其第一个参数的值，而不是其最后一个参数的值。其第一个参数被强制为整数返回缓冲区的标记。可以通过将光标置于此缓冲区中的这些函数上，然后键入<kbd class="kbd">C-h f</kbd>（<code class="code">describe-function</code>）并随后键入<kbd class="kbd">RET</kbd>来查看这些函数的文档；默认为函数。）
 </p>
-<p>The last part of the function tells what to do when it succeeds.
+<p>函数成功时的最后部分说明了要做什么。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="yank_002dpop.html"><code class="code">yank-pop</code></a>, Previous: <a href="current_002dkill.html">The <code class="code">current-kill</code> Function</a>, Up: <a href="Kill-Ring.html">Handling the Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

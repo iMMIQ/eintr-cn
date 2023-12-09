@@ -12989,36 +12989,30 @@ Reference Manual}，了解更多有关构建的信息。)
 这是我使用的模式。它不是完美的，但足够好。 @w{@samp{\\b}} 匹配空字符串，只要它位于单词的开头或结尾； @w{@samp{[^@@ \n\t]+}} 匹配一个或多个字符，这
 
 @node Kill Ring
-@appendix Handling the Kill Ring
-@cindex Kill ring handling
-@cindex Handling the kill ring
-@cindex Ring, making a list like a
+@appendix 处理 Kill Ring
+@cindex Kill ring 处理
+@cindex 处理 kill ring
+@cindex Ring，生成类似列表的
 
-The kill ring is a list that is transformed into a ring by the
-workings of the @code{current-kill} function.  The @code{yank} and
-@code{yank-pop} commands use the @code{current-kill} function.
+Kill ring 是一个列表，通过 @code{current-kill} 函数的作用被转化为一个环。@code{yank} 和 @code{yank-pop} 命令使用 @code{current-kill} 函数。
 
-This appendix describes the @code{current-kill} function as well as
-both the @code{yank} and the @code{yank-pop} commands, but first,
-consider the workings of the kill ring.
+本附录描述了 @code{current-kill} 函数以及 @code{yank} 和 @code{yank-pop} 命令，但首先，让我们了解一下 kill ring 的工作原理。
 
 @menu
-* What the Kill Ring Does::
+* Kill Ring 的作用::
 * current-kill::
-* yank::                        Paste a copy of a clipped element.
-* yank-pop::                    Insert element pointed to.
+* yank::                        粘贴剪贴板元素的副本。
+* yank-pop::                    插入指向的元素。
 * ring file::
 @end menu
 
 @ifnottex
-@node What the Kill Ring Does
-@unnumberedsec What the Kill Ring Does
+@node Kill Ring 的作用
+@unnumberedsec Kill Ring 的作用
 @end ifnottex
 
 @need 1250
-The kill ring has a default maximum length of sixty items; this number
-is too large for an explanation.  Instead, set it to four.  Please
-evaluate the following:
+Kill ring 的默认最大长度是六十个元素；这个数字对于解释来说太大了。相反，将其设置为四。请执行以下操作：
 
 @smallexample
 @group
@@ -13028,23 +13022,14 @@ evaluate the following:
 @end smallexample
 
 @noindent
-Then, please copy each line of the following indented example into the
-kill ring.  You may kill each line with @kbd{C-k} or mark it and copy
-it with @kbd{M-w}.
+然后，请将以下缩进的示例中的每行复制到 kill ring 中。您可以使用 @kbd{C-k} 杀死每行，或者用 @kbd{M-w} 标记并复制。
 
 @noindent
-(In a read-only buffer, such as the @file{*info*} buffer, the kill
-command, @kbd{C-k} (@code{kill-line}), will not remove the text,
-merely copy it to the kill ring.  However, your machine may beep at
-you.  Alternatively, for silence, you may copy the region of each line
-with the @kbd{M-w} (@code{kill-ring-save}) command.  You must mark
-each line for this command to succeed, but it does not matter at which
-end you put point or mark.)
+（在只读缓冲区中，如 @file{*info*} 缓冲区中，杀死命令 @kbd{C-k}（@code{kill-line}）不会删除文本，只会将其复制到 kill ring 中。然而，您的机器可能会响铃。或者，为了保持安静，您可以使用 @kbd{M-w}（@code{kill-ring-save}）命令复制每行的区域。您必须为该命令标记每一行，但无论将点放在哪一端都没有关系。）
 
 @need 1250
 @noindent
-Please invoke the calls in order, so that five elements attempt to
-fill the kill ring:
+请按顺序调用这些调用，以使五个元素尝试填充 kill ring：
 
 @smallexample
 @group
@@ -13058,7 +13043,7 @@ fifth bit of text
 
 @need 1250
 @noindent
-Then find the value of @code{kill-ring} by evaluating
+然后通过评估以下表达式找到 @code{kill-ring} 的值：
 
 @smallexample
 kill-ring
@@ -13066,7 +13051,7 @@ kill-ring
 
 @need 800
 @noindent
-It is:
+它是：
 
 @smallexample
 @group
@@ -13076,60 +13061,49 @@ It is:
 @end smallexample
 
 @noindent
-The first element, @samp{first some text}, was dropped.
+第一个元素，@samp{first some text}，被删除。
 
 @need 1250
-To return to the old value for the length of the kill ring, evaluate:
+要恢复 kill ring 长度的旧值，请执行：
 
 @smallexample
 (setq kill-ring-max old-kill-ring-max)
 @end smallexample
 
 @node current-kill
-@appendixsec The @code{current-kill} Function
+@appendixsec The @code{current-kill} 函数
 @findex current-kill
 
-The @code{current-kill} function changes the element in the kill ring
-to which @code{kill-ring-yank-pointer} points.  (Also, the
-@code{kill-new} function sets @code{kill-ring-yank-pointer} to point
-to the latest element of the kill ring.  The @code{kill-new}
-function is used directly or indirectly by @code{kill-append},
-@code{copy-region-as-kill}, @code{kill-ring-save}, @code{kill-line},
-and @code{kill-region}.)
+@code{current-kill} 函数改变 kill 环中由 @code{kill-ring-yank-pointer} 指向的元素。
+（同时，@code{kill-new} 函数将 @code{kill-ring-yank-pointer} 设置为指向 kill 环的最新元素。
+@code{kill-new} 函数直接或间接地被 @code{kill-append}、@code{copy-region-as-kill}、
+@code{kill-ring-save}、@code{kill-line} 和 @code{kill-region} 使用。）
 
 @menu
-* Code for current-kill::
-* Understanding current-kill::
+* current-kill 代码::
+* 理解 current-kill::
 @end menu
 
 @ifnottex
-@node Code for current-kill
-@unnumberedsubsec The code for @code{current-kill}
+@node current-kill 代码
+@unnumberedsubsec @code{current-kill} 的代码
 @end ifnottex
 
-
 @need 1500
-The @code{current-kill} function is used by @code{yank} and by
-@code{yank-pop}.  Here is the code for @code{current-kill}:
+@code{current-kill} 函数被 @code{yank} 和 @code{yank-pop} 使用。下面是 @code{current-kill} 的代码：
 
 @smallexample
 @group
 (defun current-kill (n &optional do-not-move)
-  "Rotate the yanking point by N places, and then return that kill.
-If N is zero and `interprogram-paste-function' is set to a
-function that returns a string or a list of strings, and if that
-function doesn't return nil, then that string (or list) is added
-to the front of the kill ring and the string (or first string in
-the list) is returned as the latest kill.
-@end group
-@group
-If N is not zero, and if `yank-pop-change-selection' is
-non-nil, use `interprogram-cut-function' to transfer the
-kill at the new yank point into the window system selection.
-@end group
-@group
-If optional arg DO-NOT-MOVE is non-nil, then don't actually
-move the yanking point; just return the Nth kill forward."
+  "将插入点在 kill 环中旋转 N 个位置，然后返回该 kill。
+如果 N 为零，并且 `interprogram-paste-function' 设置为返回字符串或字符串列表的函数，
+并且该函数不返回 nil，则将该字符串（或列表）添加到 kill 环的最前面，并将该字符串
+（或列表的第一个字符串）作为最新的 kill 返回。
+
+如果 N 不为零，并且 `yank-pop-change-selection' 为非 nil，则使用
+`interprogram-cut-function' 将新的插入点处的 kill 转移到窗口系统的选择中。
+
+如果可选参数 DO-NOT-MOVE 为非 nil，则实际上不移动插入点；只是返回第 N 个 kill。"
 
   (let ((interprogram-paste (and (= n 0)
                                  interprogram-paste-function
@@ -13138,9 +13112,8 @@ move the yanking point; just return the Nth kill forward."
 @group
     (if interprogram-paste
         (progn
-          ;; Disable the interprogram cut function when we add the new
-          ;; text to the kill ring, so Emacs doesn't try to own the
-          ;; selection, with identical text.
+          ;; 在将新文本添加到 kill 环时禁用 interprogram cut 函数，
+          ;; 以便 Emacs 不尝试拥有相同的文本选择。
           (let ((interprogram-cut-function nil))
             (if (listp interprogram-paste)
               (mapc 'kill-new (nreverse interprogram-paste))
@@ -13148,7 +13121,7 @@ move the yanking point; just return the Nth kill forward."
           (car kill-ring))
 @end group
 @group
-      (or kill-ring (error "Kill ring is empty"))
+      (or kill-ring (error "Kill 环为空"))
       (let ((ARGth-kill-element
              (nthcdr (mod (- n (length kill-ring-yank-pointer))
                           (length kill-ring))
@@ -13163,71 +13136,55 @@ move the yanking point; just return the Nth kill forward."
 @end group
 @end smallexample
 
-Remember also that the @code{kill-new} function sets
-@code{kill-ring-yank-pointer} to the latest element of the kill
-ring, which means that all the functions that call it set the value
-indirectly: @code{kill-append}, @code{copy-region-as-kill},
-@code{kill-ring-save}, @code{kill-line}, and @code{kill-region}.
+还要记住，@code{kill-new} 函数将 @code{kill-ring-yank-pointer} 设置为 kill 环的最新元素，
+这意味着所有调用它的函数都间接地设置了该值：@code{kill-append}、@code{copy-region-as-kill}、
+@code{kill-ring-save}、@code{kill-line} 和 @code{kill-region}。
 
 @need 1500
-Here is the line in @code{kill-new}, which is explained in
-@ref{kill-new 函数, , @code{kill-new} 函数}.
+下面是 @code{kill-new} 中的一行，详见 @ref{kill-new 函数, , @code{kill-new} 函数}。
 
 @smallexample
 (setq kill-ring-yank-pointer kill-ring)
 @end smallexample
 
 @ifnottex
-@node Understanding current-kill
-@unnumberedsubsec @code{current-kill} in Outline
+@node 理解 current-kill
+@unnumberedsubsec 在大纲中理解 @code{current-kill}
 @end ifnottex
 
-The @code{current-kill} function looks complex, but as usual, it can
-be understood by taking it apart piece by piece.  First look at it in
-skeletal form:
+@code{current-kill} 函数看起来复杂，但通常情况下，通过逐步分解可以理解它。
+首先以骨架形式查看：
 
 @smallexample
 @group
 (defun current-kill (n &optional do-not-move)
-  "Rotate the yanking point by N places, and then return that kill."
+  "将插入点在 kill 环中旋转 N 个位置，然后返回该 kill。"
   (let @var{varlist}
     @var{body}@dots{})
 @end group
 @end smallexample
 
-This function takes two arguments, one of which is optional.  It has a
-documentation string.  It is @emph{not} interactive.
+此函数接受两个参数，其中一个是可选的。它有一个文档字符串。它 @emph{不}是交互式的。
 
 @menu
-* Body of current-kill::
-* Digression concerning error::  How to mislead humans, but not computers.
-* Determining the Element::
+* current-kill 体::
+* 有关错误的离题讨论:: 如何误导人类，但不是计算机。
+* 确定元素::
 @end menu
 
 @ifnottex
-@node Body of current-kill
-@unnumberedsubsubsec The Body of @code{current-kill}
+@node current-kill 函数体
+@unnumberedsubsubsec @code{current-kill} 函数体
 @end ifnottex
 
-The body of the function definition is a @code{let} expression, which
-itself has a body as well as a @var{varlist}.
+函数定义体是一个 @code{let} 表达式，它本身有一个体和一个 @var{varlist}。
 
-The @code{let} expression declares a variable that will be only usable
-within the bounds of this function.  This variable is called
-@code{interprogram-paste} and is for copying to another program.  It
-is not for copying within this instance of GNU Emacs.  Most window
-systems provide a facility for interprogram pasting.  Sadly, that
-facility usually provides only for the last element.  Most windowing
-systems have not adopted a ring of many possibilities, even though
-Emacs has provided it for decades.
+@code{let} 表达式声明了一个仅在此函数范围内可用的变量。这个变量称为 @code{interprogram-paste}，用于复制到另一个程序，而不是在此 GNU Emacs 实例内进行复制。大多数窗口系统提供了跨程序粘贴的功能。遗憾的是，这个功能通常只提供最后一个元素。尽管 Emacs 几十年来一直提供了许多可能性的环形，但大多数窗口系统尚未采用。
 
-The @code{if} expression has two parts, one if there exists
-@code{interprogram-paste} and one if not.
+@code{if} 表达式有两个部分，一个是如果存在 @code{interprogram-paste}，另一个是如果不存在。
 
 @need 2000
-Let us consider the else-part of the @code{current-kill}
-function.  (The then-part uses the @code{kill-new} function, which
-we have already described.  @xref{kill-new 函数, , @code{kill-new} 函数}.)
+让我们考虑 @code{current-kill} 函数的 else-部分。（then-部分使用我们已经描述的 @code{kill-new} 函数。@xref{kill-new 函数, , @code{kill-new} 函数}）。
 
 @smallexample
 @group
@@ -13243,83 +13200,49 @@ we have already described.  @xref{kill-new 函数, , @code{kill-new} 函数}.)
 @end smallexample
 
 @noindent
-The code first checks whether the kill ring has content; otherwise it
-signals an error.
+代码首先检查 kill 环是否有内容；否则，它会发出一个错误。
 
 @need 1000
-Note that the @code{or} expression is very similar to testing length
-with an @code{if}:
+请注意，@code{or} 表达式与使用 @code{if} 测试长度非常相似：
 
 @findex zerop
 @findex error
 @smallexample
 @group
-(if (zerop (length kill-ring))          ; @r{if-part}
-    (error "Kill ring is empty"))       ; @r{then-part}
-  ;; No else-part
+(if (zerop (length kill-ring))          ; @r{if-部分}
+    (error "Kill ring is empty"))       ; @r{then-部分}
+  ;; 没有 else-部分
 @end group
 @end smallexample
 
 @noindent
-If there is not anything in the kill ring, its length must be zero and
-an error message sent to the user: @samp{Kill ring is empty}.  The
-@code{current-kill} function uses an @code{or} expression which is
-simpler.  But an @code{if} expression reminds us what goes on.
+如果 kill 环中没有任何内容，它的长度必须为零，并向用户发送错误消息：@samp{Kill ring is empty}。@code{current-kill} 函数使用一个更简单的 @code{or} 表达式。但是，一个 @code{if} 表达式提醒我们发生了什么。
 
-This @code{if} expression uses the function @code{zerop} which returns
-true if the value it is testing is zero.  When @code{zerop} tests
-true, the then-part of the @code{if} is evaluated.  The then-part is a
-list starting with the function @code{error}, which is a function that
-is similar to the @code{message} function
-(@pxref{message, , The @code{message} Function}) in that
-it prints a one-line message in the echo area.  However, in addition
-to printing a message, @code{error} also stops evaluation of the
-function within which it is embedded.  This means that the rest of the
-function will not be evaluated if the length of the kill ring is zero.
+此 @code{if} 表达式使用函数 @code{zerop}，如果它测试的值为零，则返回 true。当 @code{zerop} 测试为 true 时，@code{if} 的 then-部分将被评估。then-部分是以函数 @code{error} 开头的列表，它是一种类似于 @code{message} 函数的函数
+(@pxref{message, , The @code{message} Function})，因为它在回显区域打印一行消息。然而，除了打印消息之外，@code{error} 还会停止它嵌套在其中的函数的评估。这意味着如果 kill 环的长度为零，则函数的其余部分将不会被评估。
 
-Then the @code{current-kill} function selects the element to return.
-The selection depends on the number of places that @code{current-kill}
-rotates and on where @code{kill-ring-yank-pointer} points.
+然后，@code{current-kill} 函数选择要返回的元素。选择取决于 @code{current-kill} 旋转的位置以及 @code{kill-ring-yank-pointer} 指向的位置。
 
-Next, either the optional @code{do-not-move} argument is true or the
-current value of @code{kill-ring-yank-pointer} is set to point to the
-list.  Finally, another expression returns the first element of the
-list even if the @code{do-not-move} argument is true.
+接下来，如果可选的 @code{do-not-move} 参数为 true，或者当前值 @code{kill-ring-yank-pointer} 被设置为指向列表。最后，另一个表达式返回列表的第一个元素，即使 @code{do-not-move} 参数为 true。
 
 @ifnottex
 @node Digression concerning error
-@unnumberedsubsubsec Digression about the word ``error''
+@unnumberedsubsubsec 有关术语“error”的离题讨论
 @end ifnottex
 
-In my opinion, it is slightly misleading, at least to humans, to use
-the term ``error'' as the name of the @code{error} function.  A better
-term would be ``cancel''.  Strictly speaking, of course, you cannot
-point to, much less rotate a pointer to a list that has no length, so
-from the point of view of the computer, the word ``error'' is correct.
-But a human expects to attempt this sort of thing, if only to find out
-whether the kill ring is full or empty.  This is an act of
-exploration.
+在我看来，将“error”作为 @code{error} 函数的名称，至少对人类来说，有点误导。一个更好的术语应该是“cancel”（取消）。严格来说，当然，你不能指向，更不用说旋转指向一个长度为零的列表，因此从计算机的角度来看，“error”一词是正确的。但是人类期望尝试这种事情，即使只是为了找出 kill 环是满的还是空的。这是一种探索的行为。
 
-From the human point of view, the act of exploration and discovery is
-not necessarily an error, and therefore should not be labeled as one,
-even in the bowels of a computer.  As it is, the code in Emacs implies
-that a human who is acting virtuously, by exploring his or her
-environment, is making an error.  This is bad.  Even though the computer
-takes the same steps as it does when there is an error, a term such as
-``cancel'' would have a clearer connotation.
+从人类的角度来看，探索和发现的行为不一定是错误的，因此不应该被标记为错误，即使在计算机的深处。事实上，Emacs 中的代码暗示了一个以探索环境为美德的人类正在犯错误。这是不好的。即使计算机采取与错误相同的步骤，诸如“cancel”这样的术语会有一个更清晰的内涵。
 
 @ifnottex
-@node Determining the Element
-@unnumberedsubsubsec Determining the Element
+@node 确定元素
+@unnumberedsubsubsec 确定元素
 @end ifnottex
 
-Among other actions, the else-part of the @code{if} expression sets
-the value of @code{kill-ring-yank-pointer} to
-@code{ARGth-kill-element} when the kill ring has something in it and
-the value of @code{do-not-move} is @code{nil}.
+在 @code{if} 表达式的 else 部分中，除了执行其他动作外，当 kill 环中有内容且 @code{do-not-move} 的值为 @code{nil} 时，@code{if} 表达式的 else 部分会将 @code{kill-ring-yank-pointer} 的值设置为 @code{ARGth-kill-element}。
 
 @need 800
-The code looks like this:
+代码如下：
 
 @smallexample
 @group
@@ -13329,22 +13252,15 @@ The code looks like this:
 @end group
 @end smallexample
 
-This needs some examination.  Unless it is not supposed to move the
-pointer, the @code{current-kill} function changes where
-@code{kill-ring-yank-pointer} points.
-That is what the
-@w{@code{(setq kill-ring-yank-pointer ARGth-kill-element))}}
-expression does.  Also, clearly, @code{ARGth-kill-element} is being
-set to be equal to some @sc{cdr} of the kill ring, using the
-@code{nthcdr} function that is described in an earlier section.
-(@xref{copy-region-as-kill}.)  How does it do this?
+这需要一些解释。除非不打算移动指针，@code{current-kill} 函数会改变 @code{kill-ring-yank-pointer} 指向的位置。
+这就是 @w{@code{(setq kill-ring-yank-pointer ARGth-kill-element))}} 表达式的作用。
+显然，@code{ARGth-kill-element} 被设置为与 kill 环的某个 @sc{cdr} 相等，使用了在前面一节中描述的 @code{nthcdr} 函数。
+(@xref{copy-region-as-kill}。) 它是如何实现的呢？
 
-As we have seen before (@pxref{nthcdr}), the @code{nthcdr} function
-works by repeatedly taking the @sc{cdr} of a list---it takes the
-@sc{cdr} of the @sc{cdr} of the @sc{cdr} @dots{}
+正如我们之前所看到的 (@pxref{nthcdr})，@code{nthcdr} 函数通过反复取列表的 @sc{cdr} 来工作---它取 @sc{cdr} 的 @sc{cdr} 的 @sc{cdr} @dots{}
 
 @need 800
-The two following expressions produce the same result:
+以下两个表达式产生相同的结果：
 
 @smallexample
 @group
@@ -13354,32 +13270,26 @@ The two following expressions produce the same result:
 @end group
 @end smallexample
 
-However, the @code{nthcdr} expression is more complicated.  It uses
-the @code{mod} function to determine which @sc{cdr} to select.
+然而，@code{nthcdr} 表达式更加复杂。它使用 @code{mod} 函数来确定要选择哪个 @sc{cdr}。
 
-(You will remember to look at inner functions first; indeed, we will
-have to go inside the @code{mod}.)
+(记得先看内部函数；事实上，我们将不得不深入了解 @code{mod}。)
 
-The @code{mod} function returns the value of its first argument modulo
-the second; that is to say, it returns the remainder after dividing
-the first argument by the second.  The value returned has the same
-sign as the second argument.
+@code{mod} 函数返回其第一个参数对第二个参数取模的值；换句话说，它返回第一个参数除以第二个参数后的余数。返回值与第二个参数具有相同的符号。
 
 @need 800
-Thus,
+因此，
 
 @smallexample
 @group
 (mod 12 4)
-  @result{} 0  ;; @r{because there is no remainder}
+  @result{} 0  ;; @r{因为没有余数}
 (mod 13 4)
   @result{} 1
 @end group
 @end smallexample
 
 @need 1250
-In this case, the first argument is often smaller than the second.
-That is fine.
+在这种情况下，第一个参数通常小于第二个参数。这没问题。
 
 @smallexample
 @group
@@ -13390,23 +13300,17 @@ That is fine.
 @end group
 @end smallexample
 
-We can guess what the @code{-} function does.  It is like @code{+} but
-subtracts instead of adds; the @code{-} function subtracts its second
-argument from its first.  Also, we already know what the @code{length}
-function does (@pxref{长度}).  It returns the length of a list.
+我们可以猜测 @code{-} 函数的作用。它类似于 @code{+}，但是执行减法而不是加法；@code{-} 函数从其第一个参数中减去第二个参数。此外，我们已经知道 @code{length} 函数的作用 (@pxref{长度})。它返回列表的长度。
 
-And @code{n} is the name of the required argument to the
-@code{current-kill} function.
+而 @code{n} 是 @code{current-kill} 函数的必需参数的名称。
 
 @need 1250
-So when the first argument to @code{nthcdr} is zero, the @code{nthcdr}
-expression returns the whole list, as you can see by evaluating the
-following:
+因此，当 @code{nthcdr} 的第一个参数为零时，@code{nthcdr} 表达式返回整个列表，如下所示：
 
 @smallexample
 @group
-;; kill-ring-yank-pointer @r{and} kill-ring @r{have a length of four}
-;; @r{and} (mod (- 0 4) 4) @result{} 0
+;; kill-ring-yank-pointer 和 kill-ring 的长度均为四
+;; 而 (mod (- 0 4) 4) 的结果为 0
 (nthcdr (mod (- 0 4) 4)
         '("fourth line of text"
           "third line"
@@ -13416,9 +13320,7 @@ following:
 @end smallexample
 
 @need 1250
-When the first argument to the @code{current-kill} function is one,
-the @code{nthcdr} expression returns the list without its first
-element.
+当 @code{current-kill} 函数的第一个参数为一时，@code{nthcdr} 表达式返回不包含其第一个元素的列表。
 
 @smallexample
 @group
@@ -13430,22 +13332,16 @@ element.
 @end group
 @end smallexample
 
-@cindex @samp{global variable} defined
-@cindex @samp{variable, global}, defined
-Incidentally, both @code{kill-ring} and @code{kill-ring-yank-pointer}
-are @dfn{global variables}.  That means that any expression in Emacs
-Lisp can access them.  They are not like the local variables set by
-@code{let} or like the symbols in an argument list.
-Local variables can only be accessed
-within the @code{let} that defines them or the function that specifies
-them in an argument list (and within expressions called by them).
+@cindex @samp{全局变量} 定义
+@cindex @samp{变量, 全局}，定义
+顺便说一下，@code{kill-ring} 和 @code{kill-ring-yank-pointer} 都是 @dfn{全局变量}。这意味着 Emacs Lisp 中的任何表达式都可以访问它们。它们不像由 @code{let} 定义的局部变量或参数列表中指定的符号那样。局部变量只能在定义它们的 @code{let} 内部或在参数列表中指定它们的函数内访问（以及由它们调用的表达式内访问）。
 
-@c texi2dvi fails when the name of the section is within ifnottex ...
+@c texi2dvi 在 section 的名称在 ifnottex 中时会失败...
 @ifnottex
-(@xref{避免混淆, , @code{let} 避免混淆}, and
+(@xref{避免混淆, , @code{let} 避免混淆}, 和
 @end ifnottex
 @iftex
-(@xref{Permanent Installation, , @code{let} Prevents Confusion}, and
+(@xref{Permanent Installation, , @code{let} Prevents Confusion}, 和
 @end iftex
 @ref{defun, , The @code{defun} Macro}.)
 
@@ -13453,39 +13349,30 @@ them in an argument list (and within expressions called by them).
 @appendixsec @code{yank}
 @findex yank
 
-After learning about @code{current-kill}, the code for the
-@code{yank} function is almost easy.
+在学习了@code{current-kill}之后，@code{yank}函数的代码几乎变得很简单。
 
-The @code{yank} function does not use the
-@code{kill-ring-yank-pointer} variable directly.  It calls
-@code{insert-for-yank} which calls @code{current-kill} which sets the
-@code{kill-ring-yank-pointer} variable.
+@code{yank}函数不直接使用@code{kill-ring-yank-pointer}变量。它调用@code{insert-for-yank}，而@code{insert-for-yank}又调用@code{current-kill}，后者设置了@code{kill-ring-yank-pointer}变量。
 
 @need 1250
-The code looks like this:
+代码如下：
 
-@c in GNU Emacs 22
+@c 在GNU Emacs 22中
 @smallexample
 @group
 (defun yank (&optional arg)
-  "Reinsert (\"paste\") the last stretch of killed text.
-More precisely, reinsert the stretch of killed text most recently
-killed OR yanked.  Put point at end, and set mark at beginning.
-With just \\[universal-argument] as argument, same but put point at beginning (and mark at end).
-With argument N, reinsert the Nth most recently killed stretch of killed
-text.
+  "重新插入（\"粘贴\"）最近一次删除的文本段。
+更准确地说，重新插入最近一次删除或粘贴的文本段。将光标放在末尾，并在开头设置标记。
+使用 \\[universal-argument] 作为参数时，效果相同，但将光标放在开头（标记放在末尾）。
+带有参数N时，重新插入第N个最近删除的文本段。
 
-When this command inserts killed text into the buffer, it honors
-`yank-excluded-properties' and `yank-handler' as described in the
-doc string for `insert-for-yank-1', which see.
+当此命令将删除的文本插入缓冲区时，将遵循`yank-excluded-properties'和`yank-handler'，如`insert-for-yank-1'的文档字符串所述，请参见。
 
-See also the command `yank-pop' (\\[yank-pop])."
+还可以参考命令`yank-pop'（\\[yank-pop]）."
 @end group
 @group
   (interactive "*P")
   (setq yank-window-start (window-start))
-  ;; If we don't get all the way thru, make last-command indicate that
-  ;; for the following command.
+  ;; 如果没有完全执行，使last-command指示随后的命令。
   (setq this-command t)
   (push-mark (point))
 @end group
@@ -13495,51 +13382,34 @@ See also the command `yank-pop' (\\[yank-pop])."
                                   ((eq arg '-) -2)
                                   (t (1- arg)))))
   (if (consp arg)
-      ;; This is like exchange-point-and-mark, but doesn't activate the mark.
-      ;; It is cleaner to avoid activation, even though the command
-      ;; loop would deactivate the mark because we inserted text.
+      ;; 这类似于exchange-point-and-mark，但不激活标记。
+      ;; 尽管命令循环会因为插入文本而取消激活标记，但避免激活更清晰。
       (goto-char (prog1 (mark t)
                    (set-marker (mark-marker) (point) (current-buffer)))))
 @end group
 @group
-  ;; If we do get all the way thru, make this-command indicate that.
+  ;; 如果完全执行，使this-command指示。
   (if (eq this-command t)
       (setq this-command 'yank))
   nil)
 @end group
 @end smallexample
 
-The key expression is @code{insert-for-yank}, which inserts the string
-returned by @code{current-kill}, but removes some text properties from
-it.
+关键表达式是@code{insert-for-yank}，它插入由@code{current-kill}返回的字符串，但从中删除了一些文本属性。
 
-However, before getting to that expression, the function sets the value
-of @code{yank-window-start} to the position returned by the
-@code{(window-start)} expression, the position at which the display
-currently starts.  The @code{yank} function also sets
-@code{this-command} and pushes the mark.
+然而，在到达该表达式之前，函数将@code{yank-window-start}的值设置为@code{(window-start)}表达式返回的位置，即显示当前开始的位置。@code{yank}函数还设置了@code{this-command}并推送了标记。
 
-After it yanks the appropriate element, if the optional argument is a
-@sc{cons} rather than a number or nothing, it puts point at beginning
-of the yanked text and mark at its end.
+在它插入适当的元素之后，如果可选参数是@sc{cons}而不是数字或为空，它将光标放在插入的文本的开头，并在其末尾设置标记。
 
-(The @code{prog1} function is like @code{progn} but returns the value
-of its first argument rather than the value of its last argument.  Its
-first argument is forced to return the buffer's mark as an integer.
-You can see the documentation for these functions by placing point
-over them in this buffer and then typing @kbd{C-h f}
-(@code{describe-function}) followed by a @kbd{RET}; the default is the
-function.)
+（@code{prog1}函数类似于@code{progn}，但返回其第一个参数的值，而不是其最后一个参数的值。其第一个参数被强制为整数返回缓冲区的标记。可以通过将光标置于此缓冲区中的这些函数上，然后键入@kbd{C-h f}（@code{describe-function}）并随后键入@kbd{RET}来查看这些函数的文档；默认为函数。）
 
-The last part of the function tells what to do when it succeeds.
+函数成功时的最后部分说明了要做什么。
 
 @node yank-pop
 @appendixsec @code{yank-pop}
 @findex yank-pop
 
-After understanding @code{yank} and @code{current-kill}, you know how
-to approach the @code{yank-pop} function.  Leaving out the
-documentation to save space, it looks like this:
+在理解了 @code{yank} 和 @code{current-kill} 之后，你就知道如何处理 @code{yank-pop} 函数了。为了节省空间，下面是省略了文档的函数定义：
 
 @c GNU Emacs 22
 @smallexample
@@ -13548,7 +13418,7 @@ documentation to save space, it looks like this:
   "@dots{}"
   (interactive "*p")
   (if (not (eq last-command 'yank))
-      (error "Previous command was not a yank"))
+      (error "上一个命令不是 yank"))
 @end group
 @group
   (setq this-command 'yank)
@@ -13565,16 +13435,15 @@ documentation to save space, it looks like this:
 @group
     (set-marker (mark-marker) (point) (current-buffer))
     (insert-for-yank (current-kill arg))
-    ;; Set the window start back where it was in the yank command,
-    ;; if possible.
+    ;; 如果可能，将窗口的起始位置设置回 yank 命令之前的位置。
     (set-window-start (selected-window) yank-window-start t)
 @end group
 @group
     (if before
-        ;; This is like exchange-point-and-mark,
-        ;;     but doesn't activate the mark.
-        ;; It is cleaner to avoid activation, even though the command
-        ;; loop would deactivate the mark because we inserted text.
+        ;; 这类似于 exchange-point-and-mark，
+        ;; 但不激活标记。
+        ;; 即使命令循环会因为我们插入文本而取消激活标记，
+        ;; 这样做更干净，因为我们避免了激活。
         (goto-char (prog1 (mark t)
                      (set-marker (mark-marker)
                                  (point)
@@ -13583,34 +13452,19 @@ documentation to save space, it looks like this:
 @end group
 @end smallexample
 
-The function is interactive with a small @samp{p} so the prefix
-argument is processed and passed to the function.  The command can
-only be used after a previous yank; otherwise an error message is
-sent.  This check uses the variable @code{last-command} which is set
-by @code{yank} and is discussed elsewhere.
-(@xref{copy-region-as-kill}.)
+这个函数是交互式的，带有一个小的 @samp{p}，因此前缀参数会被处理并传递给函数。该命令只能在先前的 yank 后使用；否则会发送错误消息。此检查使用变量 @code{last-command}，该变量由 @code{yank} 设置，并在其他地方进行了讨论。(@xref{copy-region-as-kill}。)
 
-The @code{let} clause sets the variable @code{before} to true or false
-depending whether point is before or after mark and then the region
-between point and mark is deleted.  This is the region that was just
-inserted by the previous yank and it is this text that will be
-replaced.
+@code{let} 子句将变量 @code{before} 设置为 true 或 false，具体取决于 point 是否在 mark 之前，然后删除 point 和 mark 之间的区域。这是由前一个 yank 命令刚插入的区域，也就是将被替换的文本。
 
-@code{funcall} calls its first argument as a function, passing
-remaining arguments to it.  The first argument is whatever the
-@code{or} expression returns.  The two remaining arguments are the
-positions of point and mark set by the preceding @code{yank} command.
+@code{funcall} 将其第一个参数作为函数调用，并将其余参数传递给它。第一个参数是 @code{or} 表达式返回的内容。其余两个参数是由前一个 @code{yank} 命令设置的 point 和 mark 的位置。
 
-There is more, but that is the hardest part.
+还有更多内容，但这是最难的部分。
 
 @node ring file
 @appendixsec The @file{ring.el} File
 @cindex @file{ring.el} file
 
-Interestingly, GNU Emacs posses a file called @file{ring.el} that
-provides many of the features we just discussed.  But functions such
-as @code{kill-ring-yank-pointer} do not use this library, possibly
-because they were written earlier.
+有趣的是，GNU Emacs 拥有一个名为 @file{ring.el} 的文件，它提供了我们刚刚讨论的许多功能。但诸如 @code{kill-ring-yank-pointer} 等功能并未使用该库，可能是因为它们是较早编写的。
 
 @node Full Graph
 @appendix A Graph with Labeled Axes
