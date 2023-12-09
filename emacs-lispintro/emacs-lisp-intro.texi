@@ -10142,42 +10142,21 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 
 下一个问题是计算单个文件中多个定义中的单词和符号数。
 
-@node Several defuns
-@section Count Several @code{defuns} Within a File
+@node 多个 defuns
+@section 统计文件中的多个 @code{defun}
 
-A file such as @file{simple.el} may have a hundred or more function
-definitions within it.  Our long term goal is to collect statistics on
-many files, but as a first step, our immediate goal is to collect
-statistics on one file.
+一个文件，比如 @file{simple.el}，可能包含一百个或更多的函数定义。我们的长期目标是收集许多文件的统计信息，但作为第一步，我们的即时目标是在一个文件中收集统计信息。
 
-The information will be a series of numbers, each number being the
-length of a function definition.  We can store the numbers in a list.
+信息将是一系列数字，每个数字代表一个函数定义的长度。我们可以将这些数字存储在一个列表中。
 
-We know that we will want to incorporate the information regarding one
-file with information about many other files; this means that the
-function for counting definition lengths within one file need only
-return the list of lengths.  It need not and should not display any
-messages.
+我们知道我们将要将关于一个文件的信息与许多其他文件的信息结合起来；这意味着在一个文件中计算定义长度的函数只需要返回长度列表，而不需要也不应该显示任何消息。
 
-The word count commands contain one expression to jump point forward
-word by word and another expression to count the jumps.  The function
-to return the lengths of definitions can be designed to work the same
-way, with one expression to jump point forward definition by
-definition and another expression to construct the lengths' list.
+字数统计命令包含一个表达式，用于逐个单词向前跳转，以及另一个表达式，用于计算跳转的次数。用于返回定义长度的函数可以被设计成以相同的方式工作，其中一个表达式用于逐个定义向前跳转，另一个表达式用于构造长度列表。
 
-This statement of the problem makes it elementary to write the
-function definition.  Clearly, we will start the count at the
-beginning of the file, so the first command will be @code{(goto-char
-(point-min))}.  Next, we start the @code{while} loop; and the
-true-or-false test of the loop can be a regular expression search for
-the next function definition---so long as the search succeeds, point
-is moved forward and then the body of the loop is evaluated.  The body
-needs an expression that constructs the lengths' list.  @code{cons},
-the list construction command, can be used to create the list.  That
-is almost all there is to it.
+问题的陈述使编写函数定义变得非常基础。显然，我们将从文件的开头开始计数，因此第一个命令将是 @code{(goto-char (point-min))}。接下来，我们启动 @code{while} 循环；循环的真假测试可以是对下一个函数定义进行正则表达式搜索---只要搜索成功，点就向前移动，然后评估循环体。循环体需要一个表达式，用于构造长度列表。列表构造命令 @code{cons} 可以用来创建列表。就是这样简单。
 
 @need 800
-Here is what this fragment of code looks like:
+以下是这段代码片段的样子：
 
 @smallexample
 @group
@@ -10188,14 +10167,11 @@ Here is what this fragment of code looks like:
 @end group
 @end smallexample
 
-What we have left out is the mechanism for finding the file that
-contains the function definitions.
+我们遗漏的是找到包含函数定义的文件的机制。
 
-In previous examples, we either used this, the Info file, or we
-switched back and forth to some other buffer, such as the
-@file{*scratch*} buffer.
+在以前的例子中，我们要么使用当前文件，Info 文件，要么在其他缓冲区之间切换，比如 @file{*scratch*} 缓冲区。
 
-Finding a file is a new process that we have not yet discussed.
+找到文件是我们尚未讨论的一个新过程。
 
 @node Find a File
 @section Find a File

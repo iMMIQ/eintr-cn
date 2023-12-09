@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>多个 defuns (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="多个 defuns (Programming in Emacs Lisp)">
+<meta name="keywords" content="多个 defuns (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" rel="up" title="在 defun 中计算单词数">
+<link href="Find-a-File.html" rel="next" title="Find a File">
+<link href="count_002dwords_002din_002ddefun.html" rel="prev" title="count-words-in-defun">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_591a_4e2a-defuns">
+<div class="nav-panel">
+<p>
+Next: <a href="Find-a-File.html" accesskey="n" rel="next">Find a File</a>, Previous: <a href="count_002dwords_002din_002ddefun.html" accesskey="p" rel="prev"><code class="code">count-words-in-defun</code> 函数</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Tong-Ji-WenJian-ZhongDe-Duo-Ge-defun">14.4 统计文件中的多个 <code class="code">defun</code></h3>
+
+<p>一个文件，比如 <samp class="file">simple.el</samp>，可能包含一百个或更多的函数定义。我们的长期目标是收集许多文件的统计信息，但作为第一步，我们的即时目标是在一个文件中收集统计信息。
+</p>
+<p>信息将是一系列数字，每个数字代表一个函数定义的长度。我们可以将这些数字存储在一个列表中。
+</p>
+<p>我们知道我们将要将关于一个文件的信息与许多其他文件的信息结合起来；这意味着在一个文件中计算定义长度的函数只需要返回长度列表，而不需要也不应该显示任何消息。
+</p>
+<p>字数统计命令包含一个表达式，用于逐个单词向前跳转，以及另一个表达式，用于计算跳转的次数。用于返回定义长度的函数可以被设计成以相同的方式工作，其中一个表达式用于逐个定义向前跳转，另一个表达式用于构造长度列表。
+</p>
+<p>问题的陈述使编写函数定义变得非常基础。显然，我们将从文件的开头开始计数，因此第一个命令将是 <code class="code">(goto-char (point-min))</code>。接下来，我们启动 <code class="code">while</code> 循环；循环的真假测试可以是对下一个函数定义进行正则表达式搜索&mdash;只要搜索成功，点就向前移动，然后评估循环体。循环体需要一个表达式，用于构造长度列表。列表构造命令 <code class="code">cons</code> 可以用来创建列表。就是这样简单。
+</p>
+<p>以下是这段代码片段的样子：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(goto-char (point-min))
+(while (re-search-forward &quot;^(defun&quot; nil t)
+  (setq lengths-list
+        (cons (count-words-in-defun) lengths-list)))
+</pre></div></div>
+
+<p>我们遗漏的是找到包含函数定义的文件的机制。
+</p>
+<p>在以前的例子中，我们要么使用当前文件，Info 文件，要么在其他缓冲区之间切换，比如 <samp class="file">*scratch*</samp> 缓冲区。
+</p>
+<p>找到文件是我们尚未讨论的一个新过程。
+</p>
+</div>
+
+
+
+</body>
+</html>
