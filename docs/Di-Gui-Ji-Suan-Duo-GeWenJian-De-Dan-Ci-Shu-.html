@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Several files recursively (Programming in Emacs Lisp)</title>
+<title>递归计算多个文件的单词数 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Several files recursively (Programming in Emacs Lisp)">
-<meta name="keywords" content="Several files recursively (Programming in Emacs Lisp)">
+<meta name="description" content="递归计算多个文件的单词数 (Programming in Emacs Lisp)">
+<meta name="keywords" content="递归计算多个文件的单词数 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -53,32 +53,23 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 </head>
 
 <body lang="en">
-<div class="section-level-extent" id="Several-files-recursively">
+<div class="section-level-extent" id="g_t_9012_5f52_8ba1_7b97_591a_4e2a_6587_4ef6_7684_5355_8bcd_6570">
 <div class="nav-panel">
 <p>
 Next: <a href="Prepare-the-data.html" accesskey="n" rel="next">Prepare the Data for Display in a Graph</a>, Previous: <a href="Duo-GeWenJian-.html" accesskey="p" rel="prev">统计不同文件中 <code class="code">defuns</code> 的词数</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Recursively-Count-Words-in-Different-Files">14.8 Recursively Count Words in Different Files</h3>
+<h3 class="section" id="Di-Gui-Ji-Suan-Bu-Tong-WenJian-ZhongDe-Dan-Ci-Shu-">14.8 递归计算不同文件中的单词数</h3>
 
-<p>Besides a <code class="code">while</code> loop, you can work on each of a list of files
-with recursion.  A recursive version of <code class="code">lengths-list-many-files</code>
-is short and simple.
+<p>除了使用 <code class="code">while</code> 循环外，你还可以通过递归来处理文件列表中的每个文件。一个递归版本的 <code class="code">lengths-list-many-files</code> 很短而简单。
 </p>
-<p>The recursive function has the usual parts: the do-again-test, the
-next-step-expression, and the recursive call.  The do-again-test
-determines whether the function should call itself again, which it
-will do if the <code class="code">list-of-files</code> contains any remaining elements;
-the next-step-expression resets the <code class="code">list-of-files</code> to the
-<small class="sc">CDR</small> of itself, so eventually the list will be empty; and the
-recursive call calls itself on the shorter list.  The complete
-function is shorter than this description!
+<p>递归函数具有通常的部分：再次执行测试、下一步表达式和递归调用。再次执行测试确定函数是否应该再次调用自身，如果 <code class="code">list-of-files</code> 包含任何剩余元素，它将调用自身；下一步表达式将 <code class="code">list-of-files</code> 重置为其自身的 <small class="sc">CDR</small>，所以最终列表将为空；递归调用在较短的列表上调用自身。整个函数比这个描述还要短！
 <a class="index-entry-id" id="index-recursive_002dlengths_002dlist_002dmany_002dfiles"></a>
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun recursive-lengths-list-many-files (list-of-files)
-  &quot;Return list of lengths of each defun in LIST-OF-FILES.&quot;
-  (if list-of-files                     ; <span class="r">do-again-test</span>
+  &quot;返回 LIST-OF-FILES 中每个 defun 的长度列表。&quot;
+  (if list-of-files                     ; <span class="r">再次执行测试</span>
       (append
        (lengths-list-file
         (expand-file-name (car list-of-files)))
@@ -86,24 +77,13 @@ function is shorter than this description!
         (cdr list-of-files)))))
 </pre></div></div>
 
-<p>In a sentence, the function returns the lengths&rsquo; list for the first of
-the <code class="code">list-of-files</code> appended to the result of calling itself on
-the rest of the <code class="code">list-of-files</code>.
+<p>简而言之，该函数返回第一个 <code class="code">list-of-files</code> 的长度列表，附加到对其余 <code class="code">list-of-files</code> 调用自身的结果上。
 </p>
-<p>Here is a test of <code class="code">recursive-lengths-list-many-files</code>, along with
-the results of running <code class="code">lengths-list-file</code> on each of the files
-individually.
+<p>这里是对 <code class="code">recursive-lengths-list-many-files</code> 的测试，以及在每个文件上分别运行 <code class="code">lengths-list-file</code> 的结果。
 </p>
-<p>Install <code class="code">recursive-lengths-list-many-files</code> and
-<code class="code">lengths-list-file</code>, if necessary, and then evaluate the
-following expressions.  You may need to change the files&rsquo; pathnames;
-those here work when this Info file and the Emacs sources are located
-in their customary places.  To change the expressions, copy them to
-the <samp class="file">*scratch*</samp> buffer, edit them, and then evaluate them.
+<p>如果需要，安装 <code class="code">recursive-lengths-list-many-files</code> 和 <code class="code">lengths-list-file</code>，然后评估以下表达式。您可能需要更改文件的路径；这些路径在此 Info 文件和 Emacs 源代码位于其习惯位置时有效。要更改表达式，将其复制到 <samp class="file">*scratch*</samp> 缓冲区，编辑它们，然后评估它们。
 </p>
-<p>The results are shown after the &lsquo;<samp class="samp">&rArr;</samp>&rsquo;.  (These results are
-for files from Emacs version 22.1.1; files from other versions of
-Emacs may produce different results.)
+<p>结果在 &lsquo;<samp class="samp">&rArr;</samp>&rsquo; 之后显示。（这些结果是针对 Emacs 版本 22.1.1 的文件；来自其他版本的 Emacs 的文件可能会产生不同的结果。）
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(cd &quot;/usr/local/share/emacs/22.1.1/&quot;)
@@ -127,16 +107,10 @@ Emacs may produce different results.)
        &rArr; (283 263 480 90 38 32 29 95 178 180 321 218 324 82 71)
 </pre></div></div>
 
-<p>The <code class="code">recursive-lengths-list-many-files</code> function produces the
-output we want.
+<p><code class="code">recursive-lengths-list-many-files</code> 函数产生了我们想要的输出。
 </p>
-<p>The next step is to prepare the data in the list for display in a graph.
+<p>下一步是准备列表中的数据以在图表中显示。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Prepare-the-data.html">Prepare the Data for Display in a Graph</a>, Previous: <a href="Duo-GeWenJian-.html">统计不同文件中 <code class="code">defuns</code> 的词数</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -10433,28 +10433,19 @@ debug.el
 ((1 2 3 4) 5 6 7 8)
 @end smallexample
 
-@node Several files recursively
-@section Recursively Count Words in Different Files
+@node 递归计算多个文件的单词数
+@section 递归计算不同文件中的单词数
 
-Besides a @code{while} loop, you can work on each of a list of files
-with recursion.  A recursive version of @code{lengths-list-many-files}
-is short and simple.
+除了使用 @code{while} 循环外，你还可以通过递归来处理文件列表中的每个文件。一个递归版本的 @code{lengths-list-many-files} 很短而简单。
 
-The recursive function has the usual parts: the do-again-test, the
-next-step-expression, and the recursive call.  The do-again-test
-determines whether the function should call itself again, which it
-will do if the @code{list-of-files} contains any remaining elements;
-the next-step-expression resets the @code{list-of-files} to the
-@sc{cdr} of itself, so eventually the list will be empty; and the
-recursive call calls itself on the shorter list.  The complete
-function is shorter than this description!
+递归函数具有通常的部分：再次执行测试、下一步表达式和递归调用。再次执行测试确定函数是否应该再次调用自身，如果 @code{list-of-files} 包含任何剩余元素，它将调用自身；下一步表达式将 @code{list-of-files} 重置为其自身的 @sc{cdr}，所以最终列表将为空；递归调用在较短的列表上调用自身。整个函数比这个描述还要短！
 @findex recursive-lengths-list-many-files
 
 @smallexample
 @group
 (defun recursive-lengths-list-many-files (list-of-files)
-  "Return list of lengths of each defun in LIST-OF-FILES."
-  (if list-of-files                     ; @r{do-again-test}
+  "返回 LIST-OF-FILES 中每个 defun 的长度列表。"
+  (if list-of-files                     ; @r{再次执行测试}
       (append
        (lengths-list-file
         (expand-file-name (car list-of-files)))
@@ -10464,26 +10455,15 @@ function is shorter than this description!
 @end smallexample
 
 @noindent
-In a sentence, the function returns the lengths' list for the first of
-the @code{list-of-files} appended to the result of calling itself on
-the rest of the @code{list-of-files}.
+简而言之，该函数返回第一个 @code{list-of-files} 的长度列表，附加到对其余 @code{list-of-files} 调用自身的结果上。
 
-Here is a test of @code{recursive-lengths-list-many-files}, along with
-the results of running @code{lengths-list-file} on each of the files
-individually.
+这里是对 @code{recursive-lengths-list-many-files} 的测试，以及在每个文件上分别运行 @code{lengths-list-file} 的结果。
 
-Install @code{recursive-lengths-list-many-files} and
-@code{lengths-list-file}, if necessary, and then evaluate the
-following expressions.  You may need to change the files' pathnames;
-those here work when this Info file and the Emacs sources are located
-in their customary places.  To change the expressions, copy them to
-the @file{*scratch*} buffer, edit them, and then evaluate them.
+如果需要，安装 @code{recursive-lengths-list-many-files} 和 @code{lengths-list-file}，然后评估以下表达式。您可能需要更改文件的路径；这些路径在此 Info 文件和 Emacs 源代码位于其习惯位置时有效。要更改表达式，将其复制到 @file{*scratch*} 缓冲区，编辑它们，然后评估它们。
 
-The results are shown after the @samp{@result{}}.  (These results are
-for files from Emacs version 22.1.1; files from other versions of
-Emacs may produce different results.)
+结果在 @samp{@result{}} 之后显示。（这些结果是针对 Emacs 版本 22.1.1 的文件；来自其他版本的 Emacs 的文件可能会产生不同的结果。）
 
-@c !!! 22.1.1 lisp sources location here
+@c !!! 22.1.1 lisp 源代码路径在此
 @smallexample
 @group
 (cd "/usr/local/share/emacs/22.1.1/")
@@ -10511,10 +10491,9 @@ Emacs may produce different results.)
 @end group
 @end smallexample
 
-The @code{recursive-lengths-list-many-files} function produces the
-output we want.
+@code{recursive-lengths-list-many-files} 函数产生了我们想要的输出。
 
-The next step is to prepare the data in the list for display in a graph.
+下一步是准备列表中的数据以在图表中显示。
 
 @node Prepare the data
 @section Prepare the Data for Display in a Graph
