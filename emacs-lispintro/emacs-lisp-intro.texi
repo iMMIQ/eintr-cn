@@ -12632,19 +12632,15 @@ Debugger entered--Lisp error: (void-function 1=)
 @section @code{debug-on-entry}
 @findex debug-on-entry
 
-Emacs starts the debugger automatically when your function has an
-error.
+当你的函数发生错误时，Emacs会自动启动调试器。
 
-Incidentally, you can start the debugger manually for all versions of
-Emacs; the advantage is that the debugger runs even if you do not have
-a bug in your code.  Sometimes your code will be free of bugs!
+顺便提一下，你可以手动启动调试器，适用于所有版本的Emacs；其中的优势是，即使你的代码没有错误，调试器也会运行。有时候你的代码是没有bug的！
 
-You can enter the debugger when you call the function by calling
-@code{debug-on-entry}.
+你可以通过调用 @code{debug-on-entry} 在调用函数时手动进入调试器。
 
 @need 1250
 @noindent
-Type:
+输入以下命令：
 
 @smallexample
 M-x debug-on-entry @key{RET} triangle-bugged @key{RET}
@@ -12652,16 +12648,14 @@ M-x debug-on-entry @key{RET} triangle-bugged @key{RET}
 
 @need 1250
 @noindent
-Now, evaluate the following:
+然后，评估以下表达式：
 
 @smallexample
 (triangle-bugged 5)
 @end smallexample
 
 @noindent
-All versions of Emacs will create a @file{*Backtrace*} buffer and tell
-you that it is beginning to evaluate the @code{triangle-bugged}
-function:
+所有版本的Emacs都会创建一个 @file{*Backtrace*} 缓冲区，并告诉你它正在开始评估 @code{triangle-bugged} 函数：
 
 @smallexample
 @group
@@ -12679,9 +12673,7 @@ Debugger entered--entering a function:
 @end group
 @end smallexample
 
-In the @file{*Backtrace*} buffer, type @kbd{d}.  Emacs will evaluate
-the first expression in @code{triangle-bugged}; the buffer will look
-like this:
+在 @file{*Backtrace*} 缓冲区中，输入 @kbd{d}。Emacs将评估 @code{triangle-bugged} 函数中的第一个表达式；缓冲区将如下所示：
 
 @smallexample
 @group
@@ -12703,12 +12695,10 @@ Debugger entered--beginning evaluation of function call form:
 @end smallexample
 
 @noindent
-Now, type @kbd{d} again, eight times, slowly.  Each time you type
-@kbd{d}, Emacs will evaluate another expression in the function
-definition.
+现在，再次输入 @kbd{d}，慢慢输入八次。每次输入 @kbd{d}，Emacs将评估函数定义中的另一个表达式。
 
 @need 1750
-Eventually, the buffer will look like this:
+最终，缓冲区将如下所示：
 
 @smallexample
 @group
@@ -12725,19 +12715,17 @@ Debugger entered--beginning evaluation of function call form:
   eval((triangle-bugged 5) nil)
 @group
 @end group
-  eval-expression((triangle-bugged 5) nil nil 127)
-  funcall-interactively(eval-expression (triangle-bugged 5) nil nil 127)
-  call-interactively(eval-expression nil nil)
-  command-execute(eval-expression)
+  eval-expression((triangle-bugged 5) nil)
+  funcall-interactively((triangle-bugged 5) nil)
+  call-interactively((triangle-bugged 5) nil)
+  command-execute((triangle-bugged 5))
 ---------- Buffer: *Backtrace* ----------
 @end group
 @end smallexample
 
 @need 1500
 @noindent
-Finally, after you type @kbd{d} two more times, Emacs will reach the
-error, and the top two lines of the @file{*Backtrace*} buffer will look
-like this:
+最后，在再次输入 @kbd{d} 两次后，Emacs将达到错误点，并且 @file{*Backtrace*} 缓冲区的前两行将如下所示：
 
 @smallexample
 @group
@@ -12749,21 +12737,19 @@ Debugger entered--Lisp error: (void-function 1=)
 @end group
 @end smallexample
 
-By typing @kbd{d}, you were able to step through the function.
+通过输入 @kbd{d}，你能够逐步执行函数。
 
-You can quit a @file{*Backtrace*} buffer by typing @kbd{q} in it; this
-quits the trace, but does not cancel @code{debug-on-entry}.
+你可以通过在 @file{*Backtrace*} 缓冲区中输入 @kbd{q} 来退出；这将退出跟踪，但不会取消 @code{debug-on-entry}。
 
 @findex cancel-debug-on-entry
-To cancel the effect of @code{debug-on-entry}, call
-@code{cancel-debug-on-entry} and the name of the function, like this:
+要取消 @code{debug-on-entry} 的效果，调用 @code{cancel-debug-on-entry} 和函数的名称，如下：
 
 @smallexample
 M-x cancel-debug-on-entry @key{RET} triangle-bugged @key{RET}
 @end smallexample
 
 @noindent
-(If you are reading this in Info, cancel @code{debug-on-entry} now.)
+(如果你在Info中阅读此内容，请现在取消 @code{debug-on-entry}。)
 
 @node debug-on-quit
 @section @code{debug-on-quit} and @code{(debug)}

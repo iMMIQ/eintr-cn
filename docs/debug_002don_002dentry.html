@@ -63,31 +63,25 @@ Next: <a href="debug_002don_002dquit.html" accesskey="n" rel="next"><code class=
 <h3 class="section" id="debug_002don_002dentry-1">17.2 <code class="code">debug-on-entry</code></h3>
 <a class="index-entry-id" id="index-debug_002don_002dentry"></a>
 
-<p>Emacs starts the debugger automatically when your function has an
-error.
+<p>当你的函数发生错误时，Emacs会自动启动调试器。
 </p>
-<p>Incidentally, you can start the debugger manually for all versions of
-Emacs; the advantage is that the debugger runs even if you do not have
-a bug in your code.  Sometimes your code will be free of bugs!
+<p>顺便提一下，你可以手动启动调试器，适用于所有版本的Emacs；其中的优势是，即使你的代码没有错误，调试器也会运行。有时候你的代码是没有bug的！
 </p>
-<p>You can enter the debugger when you call the function by calling
-<code class="code">debug-on-entry</code>.
+<p>你可以通过调用 <code class="code">debug-on-entry</code> 在调用函数时手动进入调试器。
 </p>
-<p>Type:
+<p>输入以下命令：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">M-x debug-on-entry <kbd class="key">RET</kbd> triangle-bugged <kbd class="key">RET</kbd>
 </pre></div>
 
-<p>Now, evaluate the following:
+<p>然后，评估以下表达式：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(triangle-bugged 5)
 </pre></div>
 
-<p>All versions of Emacs will create a <samp class="file">*Backtrace*</samp> buffer and tell
-you that it is beginning to evaluate the <code class="code">triangle-bugged</code>
-function:
+<p>所有版本的Emacs都会创建一个 <samp class="file">*Backtrace*</samp> 缓冲区，并告诉你它正在开始评估 <code class="code">triangle-bugged</code> 函数：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
@@ -101,9 +95,7 @@ Debugger entered--entering a function:
 ---------- Buffer: *Backtrace* ----------
 </pre></div></div>
 
-<p>In the <samp class="file">*Backtrace*</samp> buffer, type <kbd class="kbd">d</kbd>.  Emacs will evaluate
-the first expression in <code class="code">triangle-bugged</code>; the buffer will look
-like this:
+<p>在 <samp class="file">*Backtrace*</samp> 缓冲区中，输入 <kbd class="kbd">d</kbd>。Emacs将评估 <code class="code">triangle-bugged</code> 函数中的第一个表达式；缓冲区将如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
@@ -120,11 +112,9 @@ Debugger entered--beginning evaluation of function call form:
 ---------- Buffer: *Backtrace* ----------
 </pre></div></div>
 
-<p>Now, type <kbd class="kbd">d</kbd> again, eight times, slowly.  Each time you type
-<kbd class="kbd">d</kbd>, Emacs will evaluate another expression in the function
-definition.
+<p>现在，再次输入 <kbd class="kbd">d</kbd>，慢慢输入八次。每次输入 <kbd class="kbd">d</kbd>，Emacs将评估函数定义中的另一个表达式。
 </p>
-<p>Eventually, the buffer will look like this:
+<p>最终，缓冲区将如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
@@ -136,16 +126,14 @@ Debugger entered--beginning evaluation of function call form:
         (setq number ...)) total)
 * triangle-bugged(5)
   eval((triangle-bugged 5) nil)
-</pre><div class="group"></div><pre class="example-preformatted">  eval-expression((triangle-bugged 5) nil nil 127)
-  funcall-interactively(eval-expression (triangle-bugged 5) nil nil 127)
-  call-interactively(eval-expression nil nil)
-  command-execute(eval-expression)
+</pre><div class="group"></div><pre class="example-preformatted">  eval-expression((triangle-bugged 5) nil)
+  funcall-interactively((triangle-bugged 5) nil)
+  call-interactively((triangle-bugged 5) nil)
+  command-execute((triangle-bugged 5))
 ---------- Buffer: *Backtrace* ----------
 </pre></div></div>
 
-<p>Finally, after you type <kbd class="kbd">d</kbd> two more times, Emacs will reach the
-error, and the top two lines of the <samp class="file">*Backtrace*</samp> buffer will look
-like this:
+<p>最后，在再次输入 <kbd class="kbd">d</kbd> 两次后，Emacs将达到错误点，并且 <samp class="file">*Backtrace*</samp> 缓冲区的前两行将如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
@@ -155,20 +143,18 @@ Debugger entered--Lisp error: (void-function 1=)
 ---------- Buffer: *Backtrace* ----------
 </pre></div></div>
 
-<p>By typing <kbd class="kbd">d</kbd>, you were able to step through the function.
+<p>通过输入 <kbd class="kbd">d</kbd>，你能够逐步执行函数。
 </p>
-<p>You can quit a <samp class="file">*Backtrace*</samp> buffer by typing <kbd class="kbd">q</kbd> in it; this
-quits the trace, but does not cancel <code class="code">debug-on-entry</code>.
+<p>你可以通过在 <samp class="file">*Backtrace*</samp> 缓冲区中输入 <kbd class="kbd">q</kbd> 来退出；这将退出跟踪，但不会取消 <code class="code">debug-on-entry</code>。
 </p>
 <a class="index-entry-id" id="index-cancel_002ddebug_002don_002dentry"></a>
-<p>To cancel the effect of <code class="code">debug-on-entry</code>, call
-<code class="code">cancel-debug-on-entry</code> and the name of the function, like this:
+<p>要取消 <code class="code">debug-on-entry</code> 的效果，调用 <code class="code">cancel-debug-on-entry</code> 和函数的名称，如下：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">M-x cancel-debug-on-entry <kbd class="key">RET</kbd> triangle-bugged <kbd class="key">RET</kbd>
 </pre></div>
 
-<p>(If you are reading this in Info, cancel <code class="code">debug-on-entry</code> now.)
+<p>(如果你在Info中阅读此内容，请现在取消 <code class="code">debug-on-entry</code>。)
 </p>
 </div>
 <hr>
