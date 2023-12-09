@@ -839,7 +839,7 @@ GNU Emacs Lisp在很大程度上受到Maclisp的启发，Maclisp是在20世纪60
 
 即使您不了解GNU Emacs，您仍然可以从本文中有所收获。但是，我建议您学习Emacs，即使只是为了学会在计算机屏幕上移动。您可以使用内置教程来自学如何使用Emacs。要使用它，输入@kbd{C-h t}。（这意味着您同时按下和释放@key{CTRL}键和@kbd{h}键，然后按下和释放@kbd{t}键。）
 
-此外，我经常通过列出用于调用标准Emacs命令的按键，然后在括号中给出命令的名称，来引用Emacs的标准命令之一，就像这样：@kbd{M-C-\}（@code{indent-region}）。这意味着@code{indent-region}命令通常是通过键入@kbd{M-C-\}来调用的。（如果您愿意，您可以更改用于调用命令的按键；这被称为@dfn{rebinding, 重新绑定}。@xref{Keymaps, , Keymaps}。）@kbd{M-C-\}的缩写意味着你需要同时按下@key{META}键、@key{CTRL}键和@kbd{\}键。在许多现代键盘上，@key{META}键帽上标着@key{ALT}。像这样的组合被称为组合键(keychord)。如果你的键盘没有@key{META}键，单击@key{ESC}键来代替它。在这种情况下，@kbd{M-C-\}意味着您按下并释放@key{ESC}键，然后同时按下@key{CTRL}键和@kbd{\}键。但通常@kbd{M-C-\}意味着同时按下标有@key{ALT}的键和@key{CTRL}键，同时再按@kbd{\}键。
+此外，我经常通过列出用于调用标准Emacs命令的按键，然后在括号中给出命令的名称，来引用Emacs的标准命令之一，就像这样：@kbd{M-C-\}（@code{indent-region}）。这意味着@code{indent-region}命令通常是通过键入@kbd{M-C-\}来调用的。（如果您愿意，您可以更改用于调用命令的按键；这被称为@dfn{rebinding, 重新绑定}。@xref{键位映射, , 键位映射}。）@kbd{M-C-\}的缩写意味着你需要同时按下@key{META}键、@key{CTRL}键和@kbd{\}键。在许多现代键盘上，@key{META}键帽上标着@key{ALT}。像这样的组合被称为组合键(keychord)。如果你的键盘没有@key{META}键，单击@key{ESC}键来代替它。在这种情况下，@kbd{M-C-\}意味着您按下并释放@key{ESC}键，然后同时按下@key{CTRL}键和@kbd{\}键。但通常@kbd{M-C-\}意味着同时按下标有@key{ALT}的键和@key{CTRL}键，同时再按@kbd{\}键。
 
 除了长按单个组合键外，您还可以在你输入的内容前加上@kbd{C-u}，这被称为@dfn{通用参数}。@kbd{C-u}组合键会将参数传递给后续的命令。因此，要以6空格缩进一段纯文本的区域，首先标记该区域，然后输入@w{@kbd{C-u 6 M-C-\}}。（如果您不指定一个数字，Emacs将默认数字为4，或者以不同于其他情况的方式运行该命令。）@xref{Arguments, , Numeric Arguments, emacs, The GNU Emacs Manual}。
 
@@ -11931,33 +11931,22 @@ Manual}.
 
 默认情况下，@kbd{C-x C-b} 运行 @code{list-buffers} 命令。该命令在 @emph{另一个} 窗口中列出你的缓冲区。由于我几乎总是想在那个窗口中执行某些操作，我更喜欢 @code{buffer-menu} 命令，它不仅列出缓冲区，还将光标移到该窗口。
 
-@node Keymaps
-@section Keymaps
-@cindex Keymaps
-@cindex Rebinding keys
+@node 键位映射
+@section 键位映射
+@cindex 键位映射
+@cindex 重新绑定键位
 
-Emacs uses @dfn{keymaps} to record which keys call which commands.
-When you use @code{global-set-key} to set the key binding for a single
-command in all parts of Emacs, you are specifying the key binding in
-@code{current-global-map}.
+Emacs 使用 @dfn{键位映射} 记录哪些键调用哪些命令。当你使用 @code{global-set-key} 在 Emacs 的所有部分为单个命令设置键绑定时，你正在指定键绑定在 @code{current-global-map} 中。
 
-Specific modes, such as C mode or Text mode, have their own keymaps;
-the mode-specific keymaps override the global map that is shared by
-all buffers.
+特定模式，如 C 模式或文本模式，有它们自己的键位映射；模式特定的键位映射会覆盖所有缓冲区共享的全局映射。
 
-The @code{global-set-key} function binds, or rebinds, the global
-keymap.  For example, the following binds the key @kbd{C-x C-b} to the
-function @code{buffer-menu}:
+@code{global-set-key} 函数绑定或重新绑定全局键位映射。例如，下面将键 @kbd{C-x C-b} 绑定到函数 @code{buffer-menu}：
 
 @smallexample
 (global-set-key "\C-x\C-b" 'buffer-menu)
 @end smallexample
 
-Mode-specific keymaps are bound using the @code{define-key} function,
-which takes a specific keymap as an argument, as well as the key and
-the command.  For example, my @file{.emacs} file contains the
-following expression to bind the @code{texinfo-insert-@@group} command
-to @kbd{C-c C-c g}:
+模式特定的键位映射使用 @code{define-key} 函数进行绑定，该函数接受特定的键位映射作为参数，以及键和命令。例如，我的 @file{.emacs} 文件包含以下表达式，将命令 @code{texinfo-insert-@@group} 绑定到键 @kbd{C-c C-c g}：
 
 @smallexample
 @group
@@ -11966,38 +11955,27 @@ to @kbd{C-c C-c g}:
 @end smallexample
 
 @noindent
-The @code{texinfo-insert-@@group} function itself is a little extension
-to Texinfo mode that inserts @samp{@@group} into a Texinfo file.  I
-use this command all the time and prefer to type the three strokes
-@kbd{C-c C-c g} rather than the six strokes @kbd{@@ g r o u p}.
-(@samp{@@group} and its matching @samp{@@end group} are commands that
-keep all enclosed text together on one page; many multi-line examples
-in this book are surrounded by @samp{@@group @dots{} @@end group}.)
+@code{texinfo-insert-@@group} 函数本身是对 Texinfo 模式的一个小扩展，它在 Texinfo 文件中插入 @samp{@@group}。我经常使用这个命令，而且更喜欢输入三个按键 @kbd{C-c C-c g}，而不是六个按键 @kbd{@@ g r o u p}。
+（@samp{@@group} 及其匹配的 @samp{@@end group} 是一对命令，将所有包含的文本保持在一页上；本书中的许多多行示例都被 @samp{@@group @dots{} @@end group} 包围。）
 
 @need 1250
-Here is the @code{texinfo-insert-@@group} function definition:
+以下是 @code{texinfo-insert-@@group} 函数的定义：
 
 @smallexample
 @group
 (defun texinfo-insert-@@group ()
-  "Insert the string @@group in a Texinfo buffer."
+  "在 Texinfo 缓冲区中插入字符串 @@group。"
   (interactive)
   (beginning-of-line)
   (insert "@@group\n"))
 @end group
 @end smallexample
 
-(Of course, I could have used Abbrev mode to save typing, rather than
-write a function to insert a word; but I prefer key strokes consistent
-with other Texinfo mode key bindings.)
+（当然，我本可以使用 Abbrev 模式来节省输入，而不是编写一个插入单词的函数；但我更喜欢与其他 Texinfo 模式键绑定一致的按键。）
 
-You will see numerous @code{define-key} expressions in
-@file{loaddefs.el} as well as in the various mode libraries, such as
-@file{cc-mode.el} and @file{lisp-mode.el}.
+在 @file{loaddefs.el} 以及各种模式库如 @file{cc-mode.el} 和 @file{lisp-mode.el} 中，你会看到许多 @code{define-key} 表达式。
 
-@xref{Key Bindings, , Customizing Key Bindings, emacs, The GNU Emacs
-Manual}, and @ref{Keymaps, , Keymaps, elisp, The GNU Emacs Lisp
-Reference Manual}, for more information about keymaps.
+@xref{键绑定, , 定制键绑定, emacs, GNU Emacs 手册}，以及 @ref{键位映射, , 键位映射, elisp, GNU Emacs Lisp 参考手册}，获取更多关于键位映射的信息。
 
 @node Loading Files
 @section Loading Files
