@@ -38,7 +38,7 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Debugging.html" rel="up" title="Debugging">
+<link href="Diao-Shi-.html" rel="up" title="调试">
 <link href="debug_002don_002dentry.html" rel="next" title="debug-on-entry">
 <style type="text/css">
 <!--
@@ -56,45 +56,39 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="section-level-extent" id="debug">
 <div class="nav-panel">
 <p>
-Next: <a href="debug_002don_002dentry.html" accesskey="n" rel="next"><code class="code">debug-on-entry</code></a>, Up: <a href="Debugging.html" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="debug_002don_002dentry.html" accesskey="n" rel="next"><code class="code">debug-on-entry</code></a>, Up: <a href="Diao-Shi-.html" accesskey="u" rel="up">调试</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h3 class="section" id="debug-1">17.1 <code class="code">debug</code></h3>
 <a class="index-entry-id" id="index-debug"></a>
 
-<p>Suppose you have written a function definition that is intended to
-return the sum of the numbers 1 through a given number.  (This is the
-<code class="code">triangle</code> function discussed earlier.  See <a class="xref" href="Di-Jian-ShiLi.html">Example with Decrementing Counter</a>, for a discussion.)
+<p>假设你已经编写了一个函数定义，该函数旨在返回给定数字范围内数字的总和。 (这是先前讨论的 <code class="code">triangle</code> 函数。See <a class="xref" href="Di-Jian-ShiLi.html">具有递减计数器的示例</a> 进行讨论。)
 </p>
-<p>However, your function definition has a bug.  You have mistyped
-&lsquo;<samp class="samp">1=</samp>&rsquo; for &lsquo;<samp class="samp">1-</samp>&rsquo;.  Here is the broken definition:
+<p>然而，你的函数定义中存在一个错误。你误将 &lsquo;<samp class="samp">1=</samp>&rsquo; 写成了 &lsquo;<samp class="samp">1-</samp>&rsquo;。以下是有问题的定义：
 </p>
 <a class="index-entry-id" id="index-triangle_002dbugged"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun triangle-bugged (number)
-  &quot;Return sum of numbers 1 through NUMBER inclusive.&quot;
+  &quot;返回1到NUMBER（含）的数字之和。&quot;
   (let ((total 0))
     (while (&gt; number 0)
       (setq total (+ total number))
-      (setq number (1= number)))      ; <span class="r">Error here.</span>
+      (setq number (1= number)))      ; <span class="r">这里有错误。</span>
     total))
 </pre></div></div>
 
-<p>If you are reading this in Info, you can evaluate this definition in
-the normal fashion.  You will see <code class="code">triangle-bugged</code> appear in the
-echo area.
+<p>如果你在Info中阅读这个，可以以正常方式评估这个定义。你将在回显区域看到 <code class="code">triangle-bugged</code>。
 </p>
-<p>Now evaluate the <code class="code">triangle-bugged</code> function with an
-argument of 4:
+<p>现在用参数4评估 <code class="code">triangle-bugged</code> 函数：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(triangle-bugged 4)
 </pre></div>
 
-<p>This will create and enter a <samp class="file">*Backtrace*</samp> buffer that says:
+<p>这将创建并进入一个 <samp class="file">*Backtrace*</samp> 缓冲区，显示：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">---------- Buffer: *Backtrace* ----------
+<div class="group"><pre class="example-preformatted">---------- 缓冲区: *Backtrace* ----------
 Debugger entered--Lisp error: (void-function 1=)
   (1= number)
   (setq number (1= number))
@@ -108,58 +102,39 @@ Debugger entered--Lisp error: (void-function 1=)
   funcall-interactively(eval-expression (triangle-bugged 4) nil nil 127)
   call-interactively(eval-expression nil nil)
   command-execute(eval-expression)
----------- Buffer: *Backtrace* ----------
+---------- 缓冲区: *Backtrace* ----------
 </pre></div></div>
 
-<p>(I have reformatted this example slightly; the debugger does not fold
-long lines.  As usual, you can quit the debugger by typing <kbd class="kbd">q</kbd> in
-the <samp class="file">*Backtrace*</samp> buffer.)
+<p>（我稍微重新格式化了这个示例；调试器不会折叠长行。通常情况下，你可以在 <samp class="file">*Backtrace*</samp> 缓冲区中键入 <kbd class="kbd">q</kbd> 退出调试器。）
 </p>
-<p>In practice, for a bug as simple as this, the Lisp error line will
-tell you what you need to know to correct the definition.  The
-function <code class="code">1=</code> is void.
+<p>在实践中，对于这么简单的错误，Lisp错误行会告诉你正确的信息来修正定义。函数 <code class="code">1=</code> 是无效的。
 </p>
-<p>However, suppose you are not quite certain what is going on?
-You can read the complete backtrace.
+<p>然而，假设你不太确定发生了什么？你可以阅读完整的回溯信息。
 </p>
-<p>Emacs automatically starts the debugger that puts you in the
-<samp class="file">*Backtrace*</samp> buffer.  You can also start the debugger manually
-as described below.
+<p>Emacs会自动启动调试器并将你放在 <samp class="file">*Backtrace*</samp> 缓冲区中。你也可以按照下面的描述手动启动调试器。
 </p>
-<p>Read the <samp class="file">*Backtrace*</samp> buffer from the bottom up; it tells you
-what Emacs did that led to the error.  Emacs made an interactive call
-to <kbd class="kbd">C-x C-e</kbd> (<code class="code">eval-last-sexp</code>), which led to the evaluation
-of the <code class="code">triangle-bugged</code> expression.  Each line above tells you
-what the Lisp interpreter evaluated next.
+<p>从下到上阅读 <samp class="file">*Backtrace*</samp> 缓冲区；它告诉你导致错误的Emacs操作。Emacs进行了对 <kbd class="kbd">C-x C-e</kbd>（<code class="code">eval-last-sexp</code>）的交互调用，这导致了对 <code class="code">triangle-bugged</code> 表达式的评估。每一行以上告诉你Lisp解释器接下来评估了什么。
 </p>
-<p>The third line from the top of the buffer is
+<p>从缓冲区底部开始数第三行是
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(setq number (1= number))
 </pre></div>
 
-<p>Emacs tried to evaluate this expression; in order to do so, it tried
-to evaluate the inner expression shown on the second line from the
-top:
+<p>Emacs试图评估这个表达式；为了这样做，它试图评估缓冲区从上到下显示的内部表达式：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(1= number)
 </pre></div>
 
-<p>This is where the error occurred; as the top line says:
+<p>这就是错误发生的地方；正如最上面的行所说：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">Debugger entered--Lisp error: (void-function 1=)
 </pre></div>
 
-<p>You can correct the mistake, re-evaluate the function definition, and
-then run your test again.
+<p>你可以纠正错误，重新评估函数定义，然后再次运行你的测试。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="debug_002don_002dentry.html"><code class="code">debug-on-entry</code></a>, Up: <a href="Debugging.html">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

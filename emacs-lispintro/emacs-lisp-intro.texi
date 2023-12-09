@@ -12519,70 +12519,60 @@ emacs -q
 @noindent
 这将启动一个不加载您的@file{~/.emacs}初始化文件的Emacs。一个纯粹的、默认的Emacs。没有更多。
 
-@node Debugging
-@chapter Debugging
-@cindex debugging
+@node 调试
+@chapter 调试
+@cindex 调试
 
-GNU Emacs has two debuggers, @code{debug} and @code{edebug}.  The
-first is built into the internals of Emacs and is always with you;
-the second requires that you instrument a function before you can use it.
+GNU Emacs有两个调试器，@code{debug} 和 @code{edebug}。第一个内置于Emacs的内部，随时可用；第二个需要在使用之前对函数进行仪表化。
 
-Both debuggers are described extensively in @ref{Debugging, ,
-Debugging Lisp Programs, elisp, The GNU Emacs Lisp Reference Manual}.
-In this chapter, I will walk through a short example of each.
+这两个调试器在 @ref{Debugging, , 调试Lisp程序, elisp, GNU Emacs Lisp参考手册} 中都有详细描述。在本章中，我将分别演示这两种调试器的简短示例。
 
 @menu
-* debug::                       How to use the built-in debugger.
-* debug-on-entry::              Start debugging when you call a function.
-* debug-on-quit::               Start debugging when you quit with @kbd{C-g}.
-* edebug::                      How to use Edebug, a source level debugger.
-* Debugging Exercises::
+* debug::                       如何使用内置调试器。
+* debug-on-entry::              在调用函数时开始调试。
+* debug-on-quit::               在按下 @kbd{C-g} 时开始调试。
+* edebug::                      如何使用Edebug，一个源代码级调试器。
+* 调试练习::
 @end menu
 
 @node debug
 @section @code{debug}
 @findex debug
 
-Suppose you have written a function definition that is intended to
-return the sum of the numbers 1 through a given number.  (This is the
-@code{triangle} function discussed earlier.  @xref{递减示例, , Example with Decrementing Counter}, for a discussion.)
-@c xref{递减循环,, Loop with a Decrementing Counter}, for a discussion.)
+假设你已经编写了一个函数定义，该函数旨在返回给定数字范围内数字的总和。 (这是先前讨论的 @code{triangle} 函数。@xref{递减示例, , 具有递减计数器的示例} 进行讨论。)
+@c xref{递减循环,, 具有递减计数器的循环} 进行讨论。)
 
-However, your function definition has a bug.  You have mistyped
-@samp{1=} for @samp{1-}.  Here is the broken definition:
+然而，你的函数定义中存在一个错误。你误将 @samp{1=} 写成了 @samp{1-}。以下是有问题的定义：
 
 @findex triangle-bugged
 @smallexample
 @group
 (defun triangle-bugged (number)
-  "Return sum of numbers 1 through NUMBER inclusive."
+  "返回1到NUMBER（含）的数字之和。"
   (let ((total 0))
     (while (> number 0)
       (setq total (+ total number))
-      (setq number (1= number)))      ; @r{Error here.}
+      (setq number (1= number)))      ; @r{这里有错误。}
     total))
 @end group
 @end smallexample
 
-If you are reading this in Info, you can evaluate this definition in
-the normal fashion.  You will see @code{triangle-bugged} appear in the
-echo area.
+如果你在Info中阅读这个，可以以正常方式评估这个定义。你将在回显区域看到 @code{triangle-bugged}。
 
 @need 1250
-Now evaluate the @code{triangle-bugged} function with an
-argument of 4:
+现在用参数4评估 @code{triangle-bugged} 函数：
 
 @smallexample
 (triangle-bugged 4)
 @end smallexample
 
 @noindent
-This will create and enter a @file{*Backtrace*} buffer that says:
+这将创建并进入一个 @file{*Backtrace*} 缓冲区，显示：
 
 @noindent
 @smallexample
 @group
----------- Buffer: *Backtrace* ----------
+---------- 缓冲区: *Backtrace* ----------
 Debugger entered--Lisp error: (void-function 1=)
   (1= number)
   (setq number (1= number))
@@ -12598,43 +12588,30 @@ Debugger entered--Lisp error: (void-function 1=)
   funcall-interactively(eval-expression (triangle-bugged 4) nil nil 127)
   call-interactively(eval-expression nil nil)
   command-execute(eval-expression)
----------- Buffer: *Backtrace* ----------
+---------- 缓冲区: *Backtrace* ----------
 @end group
 @end smallexample
 
 @noindent
-(I have reformatted this example slightly; the debugger does not fold
-long lines.  As usual, you can quit the debugger by typing @kbd{q} in
-the @file{*Backtrace*} buffer.)
+（我稍微重新格式化了这个示例；调试器不会折叠长行。通常情况下，你可以在 @file{*Backtrace*} 缓冲区中键入 @kbd{q} 退出调试器。）
 
-In practice, for a bug as simple as this, the Lisp error line will
-tell you what you need to know to correct the definition.  The
-function @code{1=} is void.
+在实践中，对于这么简单的错误，Lisp错误行会告诉你正确的信息来修正定义。函数 @code{1=} 是无效的。
 
-However, suppose you are not quite certain what is going on?
-You can read the complete backtrace.
+然而，假设你不太确定发生了什么？你可以阅读完整的回溯信息。
 
-Emacs automatically starts the debugger that puts you in the
-@file{*Backtrace*} buffer.  You can also start the debugger manually
-as described below.
+Emacs会自动启动调试器并将你放在 @file{*Backtrace*} 缓冲区中。你也可以按照下面的描述手动启动调试器。
 
-Read the @file{*Backtrace*} buffer from the bottom up; it tells you
-what Emacs did that led to the error.  Emacs made an interactive call
-to @kbd{C-x C-e} (@code{eval-last-sexp}), which led to the evaluation
-of the @code{triangle-bugged} expression.  Each line above tells you
-what the Lisp interpreter evaluated next.
+从下到上阅读 @file{*Backtrace*} 缓冲区；它告诉你导致错误的Emacs操作。Emacs进行了对 @kbd{C-x C-e}（@code{eval-last-sexp}）的交互调用，这导致了对 @code{triangle-bugged} 表达式的评估。每一行以上告诉你Lisp解释器接下来评估了什么。
 
 @need 1250
-The third line from the top of the buffer is
+从缓冲区底部开始数第三行是
 
 @smallexample
 (setq number (1= number))
 @end smallexample
 
 @noindent
-Emacs tried to evaluate this expression; in order to do so, it tried
-to evaluate the inner expression shown on the second line from the
-top:
+Emacs试图评估这个表达式；为了这样做，它试图评估缓冲区从上到下显示的内部表达式：
 
 @smallexample
 (1= number)
@@ -12642,15 +12619,14 @@ top:
 
 @need 1250
 @noindent
-This is where the error occurred; as the top line says:
+这就是错误发生的地方；正如最上面的行所说：
 
 @smallexample
 Debugger entered--Lisp error: (void-function 1=)
 @end smallexample
 
 @noindent
-You can correct the mistake, re-evaluate the function definition, and
-then run your test again.
+你可以纠正错误，重新评估函数定义，然后再次运行你的测试。
 
 @node debug-on-entry
 @section @code{debug-on-entry}
