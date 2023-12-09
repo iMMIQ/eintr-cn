@@ -11801,39 +11801,33 @@ Manual}.
 (setq colon-double-space t)
 @end smallexample
 
-@node Mail Aliases
-@section Mail Aliases
+@node 邮件别名
+@section 邮件别名
 
-Here is a @code{setq} that turns on mail aliases, along with more
-reminders.
+以下是一个启用邮件别名的 @code{setq}，以及更多的提醒。
 
 @smallexample
 @group
-;;; Message mode
-; To enter message mode, type 'C-x m'
-; To enter RMAIL (for reading mail),
-; type 'M-x rmail'
+;;; 消息模式
+; 进入消息模式，输入 'C-x m'
+; 进入 RMAIL（阅读邮件），
+; 输入 'M-x rmail'
 (setq mail-aliases t)
 @end group
 @end smallexample
 
-@cindex Mail aliases
+@cindex 邮件别名
 @noindent
-This @code{setq} sets the value of the variable
-@code{mail-aliases} to @code{t}.  Since @code{t} means true, the line
-says, in effect, ``Yes, use mail aliases.''
+这个 @code{setq} 将变量 @code{mail-aliases} 的值设置为 @code{t}。由于 @code{t} 表示真，这一行实际上是说：“是的，使用邮件别名。”
 
-Mail aliases are convenient short names for long email addresses or
-for lists of email addresses.  The file where you keep your aliases
-is @file{~/.mailrc}.  You write an alias like this:
+邮件别名是方便的短名称，用于表示长电子邮件地址或电子邮件地址列表。保存别名的文件是 @file{~/.mailrc}。你可以这样写一个别名：
 
 @smallexample
 alias geo george@@foobar.wiz.edu
 @end smallexample
 
 @noindent
-When you write a message to George, address it to @samp{geo}; the
-mailer will automatically expand @samp{geo} to the full address.
+当你给George写一封邮件时，请将地址写为 @samp{geo}；邮件客户端将自动将 @samp{geo} 展开为完整的地址。
 
 @node Indent Tabs Mode
 @section Indent Tabs Mode

@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Mail Aliases (Programming in Emacs Lisp)</title>
+<title>邮件别名 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Mail Aliases (Programming in Emacs Lisp)">
-<meta name="keywords" content="Mail Aliases (Programming in Emacs Lisp)">
+<meta name="description" content="邮件别名 (Programming in Emacs Lisp)">
+<meta name="keywords" content="邮件别名 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -52,40 +52,34 @@ div.example {margin-left: 3.2em}
 </head>
 
 <body lang="en">
-<div class="section-level-extent" id="Mail-Aliases">
+<div class="section-level-extent" id="g_t_90ae_4ef6_522b_540d">
 <div class="nav-panel">
 <p>
 Next: <a href="Indent-Tabs-Mode.html" accesskey="n" rel="next">Indent Tabs Mode</a>, Previous: <a href="WenBen-He-Zi-Dong-Tian-Chong-.html" accesskey="p" rel="prev">文本和自动填充模式</a>, Up: <a href="Emacs-Chu-Shi-Hua-.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Mail-Aliases-1">16.5 Mail Aliases</h3>
+<h3 class="section" id="You-Jian-Bie-Ming-">16.5 邮件别名</h3>
 
-<p>Here is a <code class="code">setq</code> that turns on mail aliases, along with more
-reminders.
+<p>以下是一个启用邮件别名的 <code class="code">setq</code>，以及更多的提醒。
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; Message mode
-; To enter message mode, type 'C-x m'
-; To enter RMAIL (for reading mail),
-; type 'M-x rmail'
+<div class="group"><pre class="example-preformatted">;;; 消息模式
+; 进入消息模式，输入 'C-x m'
+; 进入 RMAIL（阅读邮件），
+; 输入 'M-x rmail'
 (setq mail-aliases t)
 </pre></div></div>
 
-<a class="index-entry-id" id="index-Mail-aliases"></a>
-<p>This <code class="code">setq</code> sets the value of the variable
-<code class="code">mail-aliases</code> to <code class="code">t</code>.  Since <code class="code">t</code> means true, the line
-says, in effect, &ldquo;Yes, use mail aliases.&rdquo;
+<a class="index-entry-id" id="index-You-Jian-Bie-Ming-"></a>
+<p>这个 <code class="code">setq</code> 将变量 <code class="code">mail-aliases</code> 的值设置为 <code class="code">t</code>。由于 <code class="code">t</code> 表示真，这一行实际上是说：“是的，使用邮件别名。”
 </p>
-<p>Mail aliases are convenient short names for long email addresses or
-for lists of email addresses.  The file where you keep your aliases
-is <samp class="file">~/.mailrc</samp>.  You write an alias like this:
+<p>邮件别名是方便的短名称，用于表示长电子邮件地址或电子邮件地址列表。保存别名的文件是 <samp class="file">~/.mailrc</samp>。你可以这样写一个别名：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">alias geo george@foobar.wiz.edu
 </pre></div>
 
-<p>When you write a message to George, address it to &lsquo;<samp class="samp">geo</samp>&rsquo;; the
-mailer will automatically expand &lsquo;<samp class="samp">geo</samp>&rsquo; to the full address.
+<p>当你给George写一封邮件时，请将地址写为 &lsquo;<samp class="samp">geo</samp>&rsquo;；邮件客户端将自动将 &lsquo;<samp class="samp">geo</samp>&rsquo; 展开为完整的地址。
 </p>
 </div>
 
