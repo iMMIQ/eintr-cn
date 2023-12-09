@@ -38,7 +38,7 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Several-files.html" rel="up" title="Several files">
+<link href="Duo-GeWenJian-.html" rel="up" title="多个文件">
 <link href="append.html" rel="next" title="append">
 <style type="text/css">
 <!--
@@ -55,93 +55,66 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsec-level-extent" id="lengths_002dlist_002dmany_002dfiles">
 <div class="nav-panel">
 <p>
-Next: <a href="append.html" accesskey="n" rel="next">The <code class="code">append</code> Function</a>, Up: <a href="Several-files.html" accesskey="u" rel="up">Count Words in <code class="code">defuns</code> in Different Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="append.html" accesskey="n" rel="next"><code class="code">append</code> 函数</a>, Up: <a href="Duo-GeWenJian-.html" accesskey="u" rel="up">统计不同文件中 <code class="code">defuns</code> 的词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="Determine-the-lengths-of-defuns">Determine the lengths of <code class="code">defuns</code></h4>
+<h4 class="unnumberedsubsec" id="Que-Ding-defuns-De-Chang-Du-">确定 <code class="code">defuns</code> 的长度</h4>
 
-<p>The design using a <code class="code">while</code> loop is routine.  The argument passed
-to the function is a list of files.  As we saw earlier (see <a class="pxref" href="Xun-Huan-ShiLi.html">使用 <code class="code">while</code> 循环和列表</a>), you can write a <code class="code">while</code> loop so that the body of the
-loop is evaluated if such a list contains elements, but to exit the
-loop if the list is empty.  For this design to work, the body of the
-loop must contain an expression that shortens the list each time the
-body is evaluated, so that eventually the list is empty.  The usual
-technique is to set the value of the list to the value of the <small class="sc">CDR</small>
-of the list each time the body is evaluated.
+<p>使用 <code class="code">while</code> 循环的设计是常规的。传递给函数的参数是一个文件列表。正如我们之前看到的 (see <a class="pxref" href="Xun-Huan-ShiLi.html">使用 <code class="code">while</code> 循环和列表</a>)，可以编写一个 <code class="code">while</code> 循环，使得在列表包含元素的情况下计算循环体，但在列表为空时退出循环。为了使此设计工作，循环体必须包含一个表达式，该表达式在每次计算循环体时缩短列表，以便最终列表为空。通常的技术是在每次计算循环体时将列表的值设置为列表的 <small class="sc">CDR</small> 的值。
 </p>
-<p>The template looks like this:
+<p>模板如下：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(while <var class="var">test-whether-list-is-empty</var>
-  <var class="var">body</var>&hellip;
-  <var class="var">set-list-to-cdr-of-list</var>)
+<div class="group"><pre class="example-preformatted">(while <var class="var">测试列表是否为空</var>
+  <var class="var">循环体</var>&hellip;
+  <var class="var">设置列表为列表的cdr</var>)
 </pre></div></div>
 
-<p>Also, we remember that a <code class="code">while</code> loop returns <code class="code">nil</code> (the
-result of evaluating the true-or-false-test), not the result of any
-evaluation within its body.  (The evaluations within the body of the
-loop are done for their side effects.)  However, the expression that
-sets the lengths&rsquo; list is part of the body&mdash;and that is the value
-that we want returned by the function as a whole.  To do this, we
-enclose the <code class="code">while</code> loop within a <code class="code">let</code> expression, and
-arrange that the last element of the <code class="code">let</code> expression contains
-the value of the lengths&rsquo; list.  (See <a class="xref" href="Zeng-Liang-ShiLi.html">Loop
-Example with an Incrementing Counter</a>.)
+<p>此外，我们要记住，<code class="code">while</code> 循环返回 <code class="code">nil</code>（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 <code class="code">while</code> 循环封装在一个 <code class="code">let</code> 表达式内，并安排 <code class="code">let</code> 表达式的最后一个元素包含长度列表的值。(See <a class="xref" href="Zeng-Liang-ShiLi.html">带有增量计数器的循环示例</a>。)
 </p>
 <a class="index-entry-id" id="index-lengths_002dlist_002dmany_002dfiles"></a>
-<p>These considerations lead us directly to the function itself:
+<p>这些考虑直接引导我们到函数本身：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; <span class="r">Use <code class="code">while</code> loop.</span>
+<div class="group"><pre class="example-preformatted">;;; <span class="r">使用 <code class="code">while</code> 循环。</span>
 (defun lengths-list-many-files (list-of-files)
-  &quot;Return list of lengths of defuns in LIST-OF-FILES.&quot;
+  &quot;返回 LIST-OF-FILES 中 <code class="code">defuns</code> 的长度列表。&quot;
 </pre></div><div class="group"><pre class="example-preformatted">  (let (lengths-list)
 
-;;; <span class="r">true-or-false-test</span>
+;;; <span class="r">真假测试</span>
     (while list-of-files
       (setq lengths-list
             (append
              lengths-list
 
-;;; <span class="r">Generate a lengths&rsquo; list.</span>
+;;; <span class="r">生成长度列表。</span>
              (lengths-list-file
               (expand-file-name (car list-of-files)))))
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">Make files&rsquo; list shorter.</span>
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">使文件列表变短。</span>
       (setq list-of-files (cdr list-of-files)))
 
-;;; <span class="r">Return final value of lengths&rsquo; list.</span>
+;;; <span class="r">返回长度列表的最终值。</span>
     lengths-list))
 </pre></div></div>
 
-<p><code class="code">expand-file-name</code> is a built-in function that converts a file
-name to the absolute, long, path name form.  The function employs the
-name of the directory in which the function is called.
+<p><code class="code">expand-file-name</code> 是一个内置函数，将文件名转换为绝对路径形式。该函数使用调用函数所在目录的名称。
 </p>
-<p>Thus, if <code class="code">expand-file-name</code> is called on <code class="code">debug.el</code> when
-Emacs is visiting the
-<samp class="file">/usr/local/share/emacs/22.1.1/lisp/emacs-lisp/</samp> directory,
+<p>因此，如果在 Emacs 访问 <samp class="file">/usr/local/share/emacs/22.1.1/lisp/emacs-lisp/</samp> 目录时，对 <code class="code">debug.el</code> 调用 <code class="code">expand-file-name</code>，
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">debug.el
 </pre></div>
 
-<p>becomes
+<p>变成了
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">/usr/local/share/emacs/22.1.1/lisp/emacs-lisp/debug.el
 </pre></div>
 
-<p>The only other new element of this function definition is the as yet
-unstudied function <code class="code">append</code>, which merits a short section for
-itself.
+<p>该函数定义的另一个新元素是尚未学习的 <code class="code">append</code> 函数，它值得有一个专门的小节。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="append.html">The <code class="code">append</code> Function</a>, Up: <a href="Several-files.html">Count Words in <code class="code">defuns</code> in Different Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

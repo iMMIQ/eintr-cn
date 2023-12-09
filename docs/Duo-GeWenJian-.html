@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Several files (Programming in Emacs Lisp)</title>
+<title>多个文件 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Several files (Programming in Emacs Lisp)">
-<meta name="keywords" content="Several files (Programming in Emacs Lisp)">
+<meta name="description" content="多个文件 (Programming in Emacs Lisp)">
+<meta name="keywords" content="多个文件 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -51,26 +51,22 @@ ISBN 1-882114-43-4
 </head>
 
 <body lang="en">
-<div class="section-level-extent" id="Several-files">
+<div class="section-level-extent" id="g_t_591a_4e2a_6587_4ef6">
 <div class="nav-panel">
 <p>
 Next: <a href="Several-files-recursively.html" accesskey="n" rel="next">Recursively Count Words in Different Files</a>, Previous: <a href="lengths_002dlist_002dfile.html" accesskey="p" rel="prev"><code class="code">lengths-list-file</code> 详解</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Count-Words-in-defuns-in-Different-Files">14.7 Count Words in <code class="code">defuns</code> in Different Files</h3>
+<h3 class="section" id="Tong-Ji-Bu-Tong-WenJian-Zhong-defuns-De-Ci-Shu-">14.7 统计不同文件中 <code class="code">defuns</code> 的词数</h3>
 
-<p>In the previous section, we created a function that returns a list of
-the lengths of each definition in a file.  Now, we want to define a
-function to return a master list of the lengths of the definitions in
-a list of files.
+<p>在前一节中，我们创建了一个函数，该函数返回文件中每个定义的长度的列表。现在，我们想要定义一个函数，返回一个包含多个文件中定义长度的主列表。
 </p>
-<p>Working on each of a list of files is a repetitious act, so we can use
-either a <code class="code">while</code> loop or recursion.
+<p>处理文件列表中的每个文件是一个重复的操作，因此我们可以使用 <code class="code">while</code> 循环或递归。
 </p>
 
 <ul class="mini-toc">
-<li><a href="lengths_002dlist_002dmany_002dfiles.html" accesskey="1">Determine the lengths of <code class="code">defuns</code></a></li>
-<li><a href="append.html" accesskey="2">The <code class="code">append</code> Function</a></li>
+<li><a href="lengths_002dlist_002dmany_002dfiles.html" accesskey="1">确定 <code class="code">defuns</code> 的长度</a></li>
+<li><a href="append.html" accesskey="2"><code class="code">append</code> 函数</a></li>
 </ul>
 </div>
 

@@ -10315,100 +10315,76 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 新版本的 @file{debug.el} 包含比早期版本更多的 defuns；而我的新机器比旧机器要快得多。)
 请注意，文件中的最后一个定义的长度在列表中是最先的。
 
-@node Several files
-@section Count Words in @code{defuns} in Different Files
+@node 多个文件
+@section 统计不同文件中 @code{defuns} 的词数
 
-In the previous section, we created a function that returns a list of
-the lengths of each definition in a file.  Now, we want to define a
-function to return a master list of the lengths of the definitions in
-a list of files.
+在前一节中，我们创建了一个函数，该函数返回文件中每个定义的长度的列表。现在，我们想要定义一个函数，返回一个包含多个文件中定义长度的主列表。
 
-Working on each of a list of files is a repetitious act, so we can use
-either a @code{while} loop or recursion.
+处理文件列表中的每个文件是一个重复的操作，因此我们可以使用 @code{while} 循环或递归。
 
 @menu
-* lengths-list-many-files::     Return a list of the lengths of defuns.
-* append::                      Attach one list to another.
+* lengths-list-many-files::     返回 @code{defuns} 长度的列表。
+* append::                      将一个列表附加到另一个列表。
 @end menu
 
 @ifnottex
 @node lengths-list-many-files
-@unnumberedsubsec Determine the lengths of @code{defuns}
+@unnumberedsubsec 确定 @code{defuns} 的长度
 @end ifnottex
 
-The design using a @code{while} loop is routine.  The argument passed
-to the function is a list of files.  As we saw earlier (@pxref{循环示例}), you can write a @code{while} loop so that the body of the
-loop is evaluated if such a list contains elements, but to exit the
-loop if the list is empty.  For this design to work, the body of the
-loop must contain an expression that shortens the list each time the
-body is evaluated, so that eventually the list is empty.  The usual
-technique is to set the value of the list to the value of the @sc{cdr}
-of the list each time the body is evaluated.
+使用 @code{while} 循环的设计是常规的。传递给函数的参数是一个文件列表。正如我们之前看到的 (@pxref{循环示例})，可以编写一个 @code{while} 循环，使得在列表包含元素的情况下计算循环体，但在列表为空时退出循环。为了使此设计工作，循环体必须包含一个表达式，该表达式在每次计算循环体时缩短列表，以便最终列表为空。通常的技术是在每次计算循环体时将列表的值设置为列表的 @sc{cdr} 的值。
 
 @need 800
-The template looks like this:
+模板如下：
 
 @smallexample
 @group
-(while @var{test-whether-list-is-empty}
-  @var{body}@dots{}
-  @var{set-list-to-cdr-of-list})
+(while @var{测试列表是否为空}
+  @var{循环体}@dots{}
+  @var{设置列表为列表的cdr})
 @end group
 @end smallexample
 
-Also, we remember that a @code{while} loop returns @code{nil} (the
-result of evaluating the true-or-false-test), not the result of any
-evaluation within its body.  (The evaluations within the body of the
-loop are done for their side effects.)  However, the expression that
-sets the lengths' list is part of the body---and that is the value
-that we want returned by the function as a whole.  To do this, we
-enclose the @code{while} loop within a @code{let} expression, and
-arrange that the last element of the @code{let} expression contains
-the value of the lengths' list.  (@xref{增量示例, , Loop
-Example with an Incrementing Counter}.)
+此外，我们要记住，@code{while} 循环返回 @code{nil}（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 @code{while} 循环封装在一个 @code{let} 表达式内，并安排 @code{let} 表达式的最后一个元素包含长度列表的值。(@xref{增量示例, , 带有增量计数器的循环示例}。)
 
 @findex lengths-list-many-files
 @need 1250
-These considerations lead us directly to the function itself:
+这些考虑直接引导我们到函数本身：
 
 @smallexample
 @group
-;;; @r{Use @code{while} loop.}
+;;; @r{使用 @code{while} 循环。}
 (defun lengths-list-many-files (list-of-files)
-  "Return list of lengths of defuns in LIST-OF-FILES."
+  "返回 LIST-OF-FILES 中 @code{defuns} 的长度列表。"
 @end group
 @group
   (let (lengths-list)
 
-;;; @r{true-or-false-test}
+;;; @r{真假测试}
     (while list-of-files
       (setq lengths-list
             (append
              lengths-list
 
-;;; @r{Generate a lengths' list.}
+;;; @r{生成长度列表。}
              (lengths-list-file
               (expand-file-name (car list-of-files)))))
 @end group
 
 @group
-;;; @r{Make files' list shorter.}
+;;; @r{使文件列表变短。}
       (setq list-of-files (cdr list-of-files)))
 
-;;; @r{Return final value of lengths' list.}
+;;; @r{返回长度列表的最终值。}
     lengths-list))
 @end group
 @end smallexample
 
-@code{expand-file-name} is a built-in function that converts a file
-name to the absolute, long, path name form.  The function employs the
-name of the directory in which the function is called.
+@code{expand-file-name} 是一个内置函数，将文件名转换为绝对路径形式。该函数使用调用函数所在目录的名称。
 
-@c !!! 22.1.1 lisp sources location here
+@c !!! 22.1.1 lisp 源代码位置在这里
 @need 1500
-Thus, if @code{expand-file-name} is called on @code{debug.el} when
-Emacs is visiting the
-@file{/usr/local/share/emacs/22.1.1/lisp/emacs-lisp/} directory,
+因此，如果在 Emacs 访问 @file{/usr/local/share/emacs/22.1.1/lisp/emacs-lisp/} 目录时，对 @code{debug.el} 调用 @code{expand-file-name}，
 
 @smallexample
 debug.el
@@ -10416,22 +10392,20 @@ debug.el
 
 @need 800
 @noindent
-becomes
+变成了
 
-@c !!! 22.1.1 lisp sources location here
+@c !!! 22.1.1 lisp 源代码位置在这里
 @smallexample
 /usr/local/share/emacs/22.1.1/lisp/emacs-lisp/debug.el
 @end smallexample
 
-The only other new element of this function definition is the as yet
-unstudied function @code{append}, which merits a short section for
-itself.
+该函数定义的另一个新元素是尚未学习的 @code{append} 函数，它值得有一个专门的小节。
 
 @node append
-@subsection The @code{append} Function
+@subsection @code{append} 函数
 
 @need 800
-The @code{append} function attaches one list to another.  Thus,
+@code{append} 函数将一个列表附加到另一个列表。因此，
 
 @smallexample
 (append '(1 2 3 4) '(5 6 7 8))
@@ -10439,15 +10413,13 @@ The @code{append} function attaches one list to another.  Thus,
 
 @need 800
 @noindent
-produces the list
+产生了列表
 
 @smallexample
 (1 2 3 4 5 6 7 8)
 @end smallexample
 
-This is exactly how we want to attach two lengths' lists produced by
-@code{lengths-list-file} to each other.  The results contrast with
-@code{cons},
+这正是我们希望将 @code{lengths-list-file} 生成的两个长度列表附加到一起的方式。与 @code{cons} 的结果形成对比，
 
 @smallexample
 (cons '(1 2 3 4) '(5 6 7 8))
@@ -10455,8 +10427,7 @@ This is exactly how we want to attach two lengths' lists produced by
 
 @need 1250
 @noindent
-which constructs a new list in which the first argument to @code{cons}
-becomes the first element of the new list:
+它构造一个新列表，其中 @code{cons} 的第一个参数成为新列表的第一个元素：
 
 @smallexample
 ((1 2 3 4) 5 6 7 8)

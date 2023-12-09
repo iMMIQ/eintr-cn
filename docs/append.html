@@ -38,7 +38,7 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Several-files.html" rel="up" title="Several files">
+<link href="Duo-GeWenJian-.html" rel="up" title="多个文件">
 <link href="lengths_002dlist_002dmany_002dfiles.html" rel="prev" title="lengths-list-many-files">
 <style type="text/css">
 <!--
@@ -54,33 +54,30 @@ div.example {margin-left: 3.2em}
 <div class="subsection-level-extent" id="append">
 <div class="nav-panel">
 <p>
-Previous: <a href="lengths_002dlist_002dmany_002dfiles.html" accesskey="p" rel="prev">Determine the lengths of <code class="code">defuns</code></a>, Up: <a href="Several-files.html" accesskey="u" rel="up">Count Words in <code class="code">defuns</code> in Different Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="lengths_002dlist_002dmany_002dfiles.html" accesskey="p" rel="prev">确定 <code class="code">defuns</code> 的长度</a>, Up: <a href="Duo-GeWenJian-.html" accesskey="u" rel="up">统计不同文件中 <code class="code">defuns</code> 的词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="subsection" id="The-append-Function">14.7.1 The <code class="code">append</code> Function</h4>
+<h4 class="subsection" id="append-Han-Shu-">14.7.1 <code class="code">append</code> 函数</h4>
 
-<p>The <code class="code">append</code> function attaches one list to another.  Thus,
+<p><code class="code">append</code> 函数将一个列表附加到另一个列表。因此，
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(append '(1 2 3 4) '(5 6 7 8))
 </pre></div>
 
-<p>produces the list
+<p>产生了列表
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(1 2 3 4 5 6 7 8)
 </pre></div>
 
-<p>This is exactly how we want to attach two lengths&rsquo; lists produced by
-<code class="code">lengths-list-file</code> to each other.  The results contrast with
-<code class="code">cons</code>,
+<p>这正是我们希望将 <code class="code">lengths-list-file</code> 生成的两个长度列表附加到一起的方式。与 <code class="code">cons</code> 的结果形成对比，
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(cons '(1 2 3 4) '(5 6 7 8))
 </pre></div>
 
-<p>which constructs a new list in which the first argument to <code class="code">cons</code>
-becomes the first element of the new list:
+<p>它构造一个新列表，其中 <code class="code">cons</code> 的第一个参数成为新列表的第一个元素：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">((1 2 3 4) 5 6 7 8)
