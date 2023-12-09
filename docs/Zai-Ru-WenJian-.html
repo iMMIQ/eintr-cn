@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>载入文件 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="载入文件 (Programming in Emacs Lisp)">
+<meta name="keywords" content="载入文件 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Emacs-Chu-Shi-Hua-.html" rel="up" title="Emacs 初始化">
+<link href="Autoload.html" rel="next" title="Autoload">
+<link href="Jian-Wei-Ying-She-.html" rel="prev" title="键位映射">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_8f7d_5165_6587_4ef6">
+<div class="nav-panel">
+<p>
+Next: <a href="Autoload.html" accesskey="n" rel="next">Autoloading</a>, Previous: <a href="Jian-Wei-Ying-She-.html" accesskey="p" rel="prev">键位映射</a>, Up: <a href="Emacs-Chu-Shi-Hua-.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Zai-Ru-WenJian-">16.9 载入文件</h3>
+<a class="index-entry-id" id="index-Zai-Ru-WenJian-"></a>
+
+<p>GNU Emacs 社区的许多成员都编写了对 Emacs 的扩展。随着时间的推移，这些扩展通常会被包含在新的发行版中。例如，日历和日记包现在是标准的 GNU Emacs 的一部分，就像 Calc 一样。
+</p>
+<p>您可以使用 <code class="code">load</code> 命令来评估一个完整的文件，从而将文件中的所有函数和变量安装到 Emacs 中。例如：
+</p>
+
+<div class="example smallexample">
+<pre class="example-preformatted">(load &quot;~/emacs/slowsplit&quot;)
+</pre></div>
+
+<p>这将评估（即加载）<samp class="file">slowsplit.el</samp>文件，或者如果存在的话，加载<samp class="file">emacs</samp>子目录中更快的、字节编译的<samp class="file">slowsplit.elc</samp>文件。该文件包含了 John Robinson 在 1989 年编写的函数 <code class="code">split-window-quietly</code>。
+</p>
+<p><code class="code">split-window-quietly</code> 函数以最小的重绘方式分割窗口。我在 1989 年安装它，因为它在我当时使用的速度为 1200 波特的终端上运行良好。如今，我只偶尔遇到这样的慢速连接，但我继续使用该函数，因为我喜欢它将缓冲区的下半部分留在新窗口的下半部分，而将上半部分留在上面的窗口中。
+</p>
+<p>要替换默认的 <code class="code">split-window-vertically</code> 的键绑定，您还必须取消该键的绑定，并将键绑定到 <code class="code">split-window-quietly</code>，如下所示：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(global-unset-key &quot;\C-x2&quot;)
+(global-set-key &quot;\C-x2&quot; 'split-window-quietly)
+</pre></div></div>
+
+<a class="index-entry-id" id="index-load_002dpath"></a>
+<p>如果您像我一样加载了许多扩展，那么您可以将该扩展文件所在的确切位置指定为 Emacs 的 <code class="code">load-path</code> 的一部分，而不是像上面那样。然后，当 Emacs 加载文件时，它将在其默认目录列表以及该目录中搜索。 （默认列表在构建 Emacs 时在 <samp class="file">paths.h</samp> 中指定。）
+</p>
+<p>以下命令将您的 <samp class="file">~/emacs</samp> 目录添加到现有的加载路径中：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; Emacs 加载路径
+(setq load-path (cons &quot;~/emacs&quot; load-path))
+</pre></div></div>
+
+<p>顺便说一下，<code class="code">load-library</code> 是 <code class="code">load</code> 函数的交互式接口。完整的函数如下：
+</p>
+<a class="index-entry-id" id="index-load_002dlibrary"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun load-library (library)
+  &quot;加载名为 LIBRARY 的 Emacs Lisp 库。
+这是对函数 `load' 的接口。在 `load-path' 中搜索 LIBRARY，既包括 `load-suffixes'，也包括（以及 `load-file-rep-suffixes'）。
+
+有关更多详细信息，请参见 Info 节点 `(emacs)Lisp Libraries'。
+有关 `load-file' 对 `load' 的另一种接口，请参见 `Lisp Libraries' 节点中的信息。&quot;
+  (interactive
+   (list (completing-read &quot;加载库: &quot;
+                          (apply-partially 'locate-file-completion-table
+                                           load-path
+                                           (get-load-suffixes)))))
+  (load library))
+</pre></div></div>
+
+<p>函数的名称 <code class="code">load-library</code> 来自于“library”作为“file”的传统同义词的使用。该命令的源代码位于 <samp class="file">files.el</samp> 库中。
+</p>
+<p>另一个执行略有不同任务的交互式命令是 <code class="code">load-file</code>。有关 <code class="code">load-library</code> 与该命令之间区别的信息，请参阅 &lsquo;Lisp Libraries, , Libraries of Lisp Code for Emacs, emacs, The GNU Emacs Manual&lsquo;。
+</p>
+</div>
+
+
+
+</body>
+</html>

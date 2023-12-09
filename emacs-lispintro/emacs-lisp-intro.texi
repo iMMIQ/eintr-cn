@@ -2354,12 +2354,10 @@ multiply-by-seven 是一个 Lisp 函数。
 
 @itemize @bullet
 @item
-如果您的代码只是针对您个人的，您可以将函数定义的代码放入您的 @file{.emacs} 初始化文件中。当您启动 Emacs 时，您的 @file{.emacs} 文件会自动评估，并安装其中的所有函数定义。
-@xref{Emacs 初始化, , 您的 @file{.emacs} 文件}。
+如果您的代码只是针对您个人的，您可以将函数定义的代码放入您的 @file{.emacs} 初始化文件中。当您启动 Emacs 时，您的 @file{.emacs} 文件会自动评估，并安装其中的所有函数定义。@xref{Emacs 初始化, , 您的 @file{.emacs} 文件}。
 
 @item
-或者，您可以将要安装的函数定义放入一个或多个单独的文件中，并使用 @code{load} 函数使 Emacs 评估并安装这些文件中的每个函数。
-@xref{Loading Files, , 加载文件}。
+或者，您可以将要安装的函数定义放入一个或多个单独的文件中，并使用 @code{load} 函数使 Emacs 评估并安装这些文件中的每个函数。@xref{载入文件, , 加载文件}。
 
 @item
 第三，如果您有整个站点都会使用的代码，通常将其放入一个名为 @file{site-init.el} 的文件中，在构建 Emacs 时加载该文件。这使得代码对使用您的计算机的每个人都可用。（请参阅 Emacs 发行版的 @file{INSTALL} 文件。）
@@ -11977,19 +11975,14 @@ Emacs 使用 @dfn{键位映射} 记录哪些键调用哪些命令。当你使用
 
 @xref{键绑定, , 定制键绑定, emacs, GNU Emacs 手册}，以及 @ref{键位映射, , 键位映射, elisp, GNU Emacs Lisp 参考手册}，获取更多关于键位映射的信息。
 
-@node Loading Files
-@section Loading Files
-@cindex Loading files
-@c findex load
+@node 载入文件
+@section 载入文件
+@cindex 载入文件
+@c findex 载入
 
-Many people in the GNU Emacs community have written extensions to
-Emacs.  As time goes by, these extensions are often included in new
-releases.  For example, the Calendar and Diary packages are now part
-of the standard GNU Emacs, as is Calc.
+GNU Emacs 社区的许多成员都编写了对 Emacs 的扩展。随着时间的推移，这些扩展通常会被包含在新的发行版中。例如，日历和日记包现在是标准的 GNU Emacs 的一部分，就像 Calc 一样。
 
-You can use a @code{load} command to evaluate a complete file and
-thereby install all the functions and variables in the file into Emacs.
-For example:
+您可以使用 @code{load} 命令来评估一个完整的文件，从而将文件中的所有函数和变量安装到 Emacs 中。例如：
 
 @c (auto-compression-mode t)
 
@@ -11997,24 +11990,12 @@ For example:
 (load "~/emacs/slowsplit")
 @end smallexample
 
-This evaluates, i.e., loads, the @file{slowsplit.el} file or if it
-exists, the faster, byte compiled @file{slowsplit.elc} file from the
-@file{emacs} sub-directory of your home directory.  The file contains
-the function @code{split-window-quietly}, which John Robinson wrote in
-1989.
+这将评估（即加载）@file{slowsplit.el}文件，或者如果存在的话，加载@file{emacs}子目录中更快的、字节编译的@file{slowsplit.elc}文件。该文件包含了 John Robinson 在 1989 年编写的函数 @code{split-window-quietly}。
 
-The @code{split-window-quietly} function splits a window with the
-minimum of redisplay.  I installed it in 1989 because it worked well
-with the slow 1200 baud terminals I was then using.  Nowadays, I only
-occasionally come across such a slow connection, but I continue to use
-the function because I like the way it leaves the bottom half of a
-buffer in the lower of the new windows and the top half in the upper
-window.
+@code{split-window-quietly} 函数以最小的重绘方式分割窗口。我在 1989 年安装它，因为它在我当时使用的速度为 1200 波特的终端上运行良好。如今，我只偶尔遇到这样的慢速连接，但我继续使用该函数，因为我喜欢它将缓冲区的下半部分留在新窗口的下半部分，而将上半部分留在上面的窗口中。
 
 @need 1250
-To replace the key binding for the default
-@code{split-window-vertically}, you must also unset that key and bind
-the keys to @code{split-window-quietly}, like this:
+要替换默认的 @code{split-window-vertically} 的键绑定，您还必须取消该键的绑定，并将键绑定到 @code{split-window-quietly}，如下所示：
 
 @smallexample
 @group
@@ -12024,40 +12005,31 @@ the keys to @code{split-window-quietly}, like this:
 @end smallexample
 
 @vindex load-path
-If you load many extensions, as I do, then instead of specifying the
-exact location of the extension file, as shown above, you can specify
-that directory as part of Emacs's @code{load-path}.  Then, when Emacs
-loads a file, it will search that directory as well as its default
-list of directories.  (The default list is specified in @file{paths.h}
-when Emacs is built.)
+如果您像我一样加载了许多扩展，那么您可以将该扩展文件所在的确切位置指定为 Emacs 的 @code{load-path} 的一部分，而不是像上面那样。然后，当 Emacs 加载文件时，它将在其默认目录列表以及该目录中搜索。 （默认列表在构建 Emacs 时在 @file{paths.h} 中指定。）
 
 @need 1250
-The following command adds your @file{~/emacs} directory to the
-existing load path:
+以下命令将您的 @file{~/emacs} 目录添加到现有的加载路径中：
 
 @smallexample
 @group
-;;; Emacs Load Path
+;;; Emacs 加载路径
 (setq load-path (cons "~/emacs" load-path))
 @end group
 @end smallexample
 
-Incidentally, @code{load-library} is an interactive interface to the
-@code{load} function.  The complete function looks like this:
+顺便说一下，@code{load-library} 是 @code{load} 函数的交互式接口。完整的函数如下：
 
 @findex load-library
 @smallexample
 @group
 (defun load-library (library)
-  "Load the Emacs Lisp library named LIBRARY.
-This is an interface to the function `load'.  LIBRARY is searched
-for in `load-path', both with and without `load-suffixes' (as
-well as `load-file-rep-suffixes').
+  "加载名为 LIBRARY 的 Emacs Lisp 库。
+这是对函数 `load' 的接口。在 `load-path' 中搜索 LIBRARY，既包括 `load-suffixes'，也包括（以及 `load-file-rep-suffixes'）。
 
-See Info node `(emacs)Lisp Libraries' for more details.
-See `load-file' for a different interface to `load'."
+有关更多详细信息，请参见 Info 节点 `(emacs)Lisp Libraries'。
+有关 `load-file' 对 `load' 的另一种接口，请参见 `Lisp Libraries' 节点中的信息。"
   (interactive
-   (list (completing-read "Load library: "
+   (list (completing-read "加载库: "
                           (apply-partially 'locate-file-completion-table
                                            load-path
                                            (get-load-suffixes)))))
@@ -12065,14 +12037,9 @@ See `load-file' for a different interface to `load'."
 @end group
 @end smallexample
 
-The name of the function, @code{load-library}, comes from the use of
-``library'' as a conventional synonym for ``file''.  The source for the
-@code{load-library} command is in the @file{files.el} library.
+函数的名称 @code{load-library} 来自于“library”作为“file”的传统同义词的使用。该命令的源代码位于 @file{files.el} 库中。
 
-Another interactive command that does a slightly different job is
-@code{load-file}.  @xref{Lisp Libraries, , Libraries of Lisp Code for
-Emacs, emacs, The GNU Emacs Manual}, for information on the
-distinction between @code{load-library} and this command.
+另一个执行略有不同任务的交互式命令是 @code{load-file}。有关 @code{load-library} 与该命令之间区别的信息，请参阅 `Lisp Libraries, , Libraries of Lisp Code for Emacs, emacs, The GNU Emacs Manual`。
 
 @node Autoload
 @section Autoloading
