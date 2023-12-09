@@ -11284,75 +11284,48 @@ graph-blank 的宽度必须与 graph-symbol 相同。")
 现在，最后，我们来到我们的第一个实际图表打印函数。这将打印图表的主体，而不是垂直和水平轴的标签，因此我们可以称其为 @code{graph-body-print}。
 
 @node graph-body-print
-@section The @code{graph-body-print} Function
+@section 函数 @code{graph-body-print}
 @findex graph-body-print
 
-After our preparation in the preceding section, the
-@code{graph-body-print} function is straightforward.  The function
-will print column after column of asterisks and blanks, using the
-elements of a numbers' list to specify the number of asterisks in each
-column.  This is a repetitive act, which means we can use a
-decrementing @code{while} loop or recursive function for the job.  In
-this section, we will write the definition using a @code{while} loop.
+在前一节的准备工作完成后，@code{graph-body-print} 函数就很简单了。该函数将按列打印星号和空格，使用数字列表中的元素来指定每列中星号的数量。这是一个重复的操作，这意味着我们可以使用递减的 @code{while} 循环或递归函数来完成这项工作。在本节中，我们将使用 @code{while} 循环来编写定义。
 
-The @code{column-of-graph} function requires the height of the graph
-as an argument, so we should determine and record that as a local variable.
+@code{column-of-graph} 函数需要图表的高度作为参数，因此我们应该确定并记录它作为一个局部变量。
 
-This leads us to the following template for the @code{while} loop
-version of this function:
+这导致了以下 @code{while} 循环版本的函数模板：
 
 @smallexample
 @group
 (defun graph-body-print (numbers-list)
-  "@var{documentation}@dots{}"
+  "@var{文档}@dots{}"
   (let ((height  @dots{}
          @dots{}))
 @end group
 
 @group
     (while numbers-list
-      @var{insert-columns-and-reposition-point}
+      @var{插入列并重新定位点}
       (setq numbers-list (cdr numbers-list)))))
 @end group
 @end smallexample
 
 @noindent
-We need to fill in the slots of the template.
+我们需要填写模板的空白部分。
 
-Clearly, we can use the @code{(apply 'max numbers-list)} expression to
-determine the height of the graph.
+显然，我们可以使用表达式 @code{(apply 'max numbers-list)} 来确定图表的高度。
 
-The @code{while} loop will cycle through the @code{numbers-list} one
-element at a time.  As it is shortened by the @code{(setq numbers-list
-(cdr numbers-list))} expression, the @sc{car} of each instance of the
-list is the value of the argument for @code{column-of-graph}.
+@code{while} 循环将逐个元素循环遍历 @code{numbers-list}。由于它被 @code{(setq numbers-list (cdr numbers-list))} 表达式缩短，列表的每个实例的 @sc{car} 是传递给 @code{column-of-graph} 的参数值。
 
-At each cycle of the @code{while} loop, the @code{insert-rectangle}
-function inserts the list returned by @code{column-of-graph}.  Since
-the @code{insert-rectangle} function moves point to the lower right of
-the inserted rectangle, we need to save the location of point at the
-time the rectangle is inserted, move back to that position after the
-rectangle is inserted, and then move horizontally to the next place
-from which @code{insert-rectangle} is called.
+在 @code{while} 循环的每个循环中，@code{insert-rectangle} 函数插入由 @code{column-of-graph} 返回的列表。由于 @code{insert-rectangle} 函数将点移动到插入的矩形的右下角，我们需要保存矩形插入时点的位置，在插入矩形后返回到该位置，然后水平移动到下一个调用 @code{insert-rectangle} 的位置。
 
-If the inserted columns are one character wide, as they will be if
-single blanks and asterisks are used, the repositioning command is
-simply @code{(forward-char 1)}; however, the width of a column may be
-greater than one.  This means that the repositioning command should be
-written @code{(forward-char symbol-width)}.  The @code{symbol-width}
-itself is the length of a @code{graph-blank} and can be found using
-the expression @code{(length graph-blank)}.  The best place to bind
-the @code{symbol-width} variable to the value of the width of graph
-column is in the varlist of the @code{let} expression.
+如果插入的列只有一个字符宽，就像使用单个空格和星号时一样，重新定位命令就是简单的 @code{(forward-char 1)}；然而，列的宽度可能大于一个字符。这意味着重新定位命令应该写为 @code{(forward-char symbol-width)}。@code{symbol-width} 本身是一个 @code{graph-blank} 的长度，可以使用表达式 @code{(length graph-blank)} 找到。将 @code{symbol-width} 变量绑定到图列的宽度值的最佳位置是在 @code{let} 表达式的 varlist 中。
 
-@need 1250
-These considerations lead to the following function definition:
+这些考虑导致了以下函数定义：
 
 @smallexample
 @group
 (defun graph-body-print (numbers-list)
-  "Print a bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values."
+  "打印 NUMBERS-LIST 的条形图。
+numbers-list 由 Y 轴的值组成。"
 
   (let ((height (apply 'max numbers-list))
         (symbol-width (length graph-blank))
@@ -11368,12 +11341,12 @@ The numbers-list consists of the Y-axis values."
       (forward-char symbol-width)
 @end group
 @group
-      ;; @r{Draw graph column by column.}
+      ;; @r{逐列绘制图形。}
       (sit-for 0)
       (setq numbers-list (cdr numbers-list)))
 @end group
 @group
-    ;; @r{Place point for X axis labels.}
+    ;; @r{为 X 轴标签定位点。}
     (forward-line height)
     (insert "\n")
 ))
@@ -11381,54 +11354,45 @@ The numbers-list consists of the Y-axis values."
 @end smallexample
 
 @noindent
-The one unexpected expression in this function is the
-@w{@code{(sit-for 0)}} expression in the @code{while} loop.  This
-expression makes the graph printing operation more interesting to
-watch than it would be otherwise.  The expression causes Emacs to
-@dfn{sit} or do nothing for a zero length of time and then redraw the
-screen.  Placed here, it causes Emacs to redraw the screen column by
-column.  Without it, Emacs would not redraw the screen until the
-function exits.
+这个函数中唯一意外的表达式是 @w{@code{(sit-for 0)}} 表达式在 @code{while} 循环中。这个表达式使得图形打印操作比没有它更有趣。该表达式导致 Emacs 在零时间内“坐下”或什么都不做，然后重新绘制屏幕。放在这里，它导致 Emacs 逐列重新绘制屏幕。如果没有它，Emacs 将在函数退出时才重新绘制屏幕。
 
-We can test @code{graph-body-print} with a short list of numbers.
+我们可以使用一组短数字列表测试 @code{graph-body-print}。
 
 @enumerate
 @item
-Install @code{graph-symbol}, @code{graph-blank},
-@code{column-of-graph}, which are in
+安装 @code{graph-symbol}、@code{graph-blank}、
+@code{column-of-graph}，它们在
 @iftex
 @ref{Readying a Graph, , Readying a Graph},
 @end iftex
 @ifnottex
 @ref{图表的列},
 @end ifnottex
-and @code{graph-body-print}.
+以及 @code{graph-body-print}。
 
 @need 800
 @item
-Copy the following expression:
+复制以下表达式：
 
 @smallexample
 (graph-body-print '(1 2 3 4 6 4 3 5 7 6 5 2 3))
 @end smallexample
 
 @item
-Switch to the @file{*scratch*} buffer and place the cursor where you
-want the graph to start.
+切换到 @file{*scratch*} 缓冲区，并将光标放在要开始绘制图表的位置。
 
 @item
-Type @kbd{M-:} (@code{eval-expression}).
+输入 @kbd{M-:} (@code{eval-expression}).
 
 @item
-Yank the @code{graph-body-print} expression into the minibuffer
-with @kbd{C-y} (@code{yank)}.
+使用 @kbd{C-y} (@code{yank}) 将 @code{graph-body-print} 表达式粘贴到迷你缓冲区中。
 
 @item
-Press @key{RET} to evaluate the @code{graph-body-print} expression.
+按 @key{RET} 以评估 @code{graph-body-print} 表达式。
 @end enumerate
 
 @need 800
-Emacs will print a graph like this:
+Emacs 将打印一个类似于以下的图形：
 
 @smallexample
 @group

@@ -62,69 +62,43 @@ span.w-nolinebreak-text {white-space: nowrap}
 Next: <a href="recursive_002dgraph_002dbody_002dprint.html" accesskey="n" rel="next">The <code class="code">recursive-graph-body-print</code> Function</a>, Previous: <a href="Tu-Biao-De-Lie-.html" accesskey="p" rel="prev">打印图表的列</a>, Up: <a href="Zhun-Bei-Tu-Biao-.html" accesskey="u" rel="up">准备图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-graph_002dbody_002dprint-Function">15.1 The <code class="code">graph-body-print</code> Function</h3>
+<h3 class="section" id="Han-Shu-graph_002dbody_002dprint">15.1 函数 <code class="code">graph-body-print</code></h3>
 <a class="index-entry-id" id="index-graph_002dbody_002dprint"></a>
 
-<p>After our preparation in the preceding section, the
-<code class="code">graph-body-print</code> function is straightforward.  The function
-will print column after column of asterisks and blanks, using the
-elements of a numbers&rsquo; list to specify the number of asterisks in each
-column.  This is a repetitive act, which means we can use a
-decrementing <code class="code">while</code> loop or recursive function for the job.  In
-this section, we will write the definition using a <code class="code">while</code> loop.
+<p>在前一节的准备工作完成后，<code class="code">graph-body-print</code> 函数就很简单了。该函数将按列打印星号和空格，使用数字列表中的元素来指定每列中星号的数量。这是一个重复的操作，这意味着我们可以使用递减的 <code class="code">while</code> 循环或递归函数来完成这项工作。在本节中，我们将使用 <code class="code">while</code> 循环来编写定义。
 </p>
-<p>The <code class="code">column-of-graph</code> function requires the height of the graph
-as an argument, so we should determine and record that as a local variable.
+<p><code class="code">column-of-graph</code> 函数需要图表的高度作为参数，因此我们应该确定并记录它作为一个局部变量。
 </p>
-<p>This leads us to the following template for the <code class="code">while</code> loop
-version of this function:
+<p>这导致了以下 <code class="code">while</code> 循环版本的函数模板：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun graph-body-print (numbers-list)
-  &quot;<var class="var">documentation</var>&hellip;&quot;
+  &quot;<var class="var">文档</var>&hellip;&quot;
   (let ((height  &hellip;
          &hellip;))
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">    (while numbers-list
-      <var class="var">insert-columns-and-reposition-point</var>
+      <var class="var">插入列并重新定位点</var>
       (setq numbers-list (cdr numbers-list)))))
 </pre></div></div>
 
-<p>We need to fill in the slots of the template.
+<p>我们需要填写模板的空白部分。
 </p>
-<p>Clearly, we can use the <code class="code">(apply 'max numbers-list)</code> expression to
-determine the height of the graph.
+<p>显然，我们可以使用表达式 <code class="code">(apply 'max numbers-list)</code> 来确定图表的高度。
 </p>
-<p>The <code class="code">while</code> loop will cycle through the <code class="code">numbers-list</code> one
-element at a time.  As it is shortened by the <code class="code">(setq numbers-list
-(cdr numbers-list))</code> expression, the <small class="sc">CAR</small> of each instance of the
-list is the value of the argument for <code class="code">column-of-graph</code>.
+<p><code class="code">while</code> 循环将逐个元素循环遍历 <code class="code">numbers-list</code>。由于它被 <code class="code">(setq numbers-list (cdr numbers-list))</code> 表达式缩短，列表的每个实例的 <small class="sc">CAR</small> 是传递给 <code class="code">column-of-graph</code> 的参数值。
 </p>
-<p>At each cycle of the <code class="code">while</code> loop, the <code class="code">insert-rectangle</code>
-function inserts the list returned by <code class="code">column-of-graph</code>.  Since
-the <code class="code">insert-rectangle</code> function moves point to the lower right of
-the inserted rectangle, we need to save the location of point at the
-time the rectangle is inserted, move back to that position after the
-rectangle is inserted, and then move horizontally to the next place
-from which <code class="code">insert-rectangle</code> is called.
+<p>在 <code class="code">while</code> 循环的每个循环中，<code class="code">insert-rectangle</code> 函数插入由 <code class="code">column-of-graph</code> 返回的列表。由于 <code class="code">insert-rectangle</code> 函数将点移动到插入的矩形的右下角，我们需要保存矩形插入时点的位置，在插入矩形后返回到该位置，然后水平移动到下一个调用 <code class="code">insert-rectangle</code> 的位置。
 </p>
-<p>If the inserted columns are one character wide, as they will be if
-single blanks and asterisks are used, the repositioning command is
-simply <code class="code">(forward-char 1)</code>; however, the width of a column may be
-greater than one.  This means that the repositioning command should be
-written <code class="code">(forward-char symbol-width)</code>.  The <code class="code">symbol-width</code>
-itself is the length of a <code class="code">graph-blank</code> and can be found using
-the expression <code class="code">(length graph-blank)</code>.  The best place to bind
-the <code class="code">symbol-width</code> variable to the value of the width of graph
-column is in the varlist of the <code class="code">let</code> expression.
+<p>如果插入的列只有一个字符宽，就像使用单个空格和星号时一样，重新定位命令就是简单的 <code class="code">(forward-char 1)</code>；然而，列的宽度可能大于一个字符。这意味着重新定位命令应该写为 <code class="code">(forward-char symbol-width)</code>。<code class="code">symbol-width</code> 本身是一个 <code class="code">graph-blank</code> 的长度，可以使用表达式 <code class="code">(length graph-blank)</code> 找到。将 <code class="code">symbol-width</code> 变量绑定到图列的宽度值的最佳位置是在 <code class="code">let</code> 表达式的 varlist 中。
 </p>
-<p>These considerations lead to the following function definition:
+<p>这些考虑导致了以下函数定义：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun graph-body-print (numbers-list)
-  &quot;Print a bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.&quot;
+  &quot;打印 NUMBERS-LIST 的条形图。
+numbers-list 由 Y 轴的值组成。&quot;
 
   (let ((height (apply 'max numbers-list))
         (symbol-width (length graph-blank))
@@ -137,50 +111,41 @@ The numbers-list consists of the Y-axis values.&quot;
        (column-of-graph height (car numbers-list)))
       (goto-char from-position)
       (forward-char symbol-width)
-</pre></div><div class="group"><pre class="example-preformatted">      ;; <span class="r">Draw graph column by column.</span>
+</pre></div><div class="group"><pre class="example-preformatted">      ;; <span class="r">逐列绘制图形。</span>
       (sit-for 0)
       (setq numbers-list (cdr numbers-list)))
-</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Place point for X axis labels.</span>
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">为 X 轴标签定位点。</span>
     (forward-line height)
     (insert &quot;\n&quot;)
 ))
 </pre></div></div>
 
-<p>The one unexpected expression in this function is the
-<code class="code"><span class="w-nolinebreak-text">(sit-for</span>&nbsp;0)</code><!-- /@w --> expression in the <code class="code">while</code> loop.  This
-expression makes the graph printing operation more interesting to
-watch than it would be otherwise.  The expression causes Emacs to
-<em class="dfn">sit</em> or do nothing for a zero length of time and then redraw the
-screen.  Placed here, it causes Emacs to redraw the screen column by
-column.  Without it, Emacs would not redraw the screen until the
-function exits.
+<p>这个函数中唯一意外的表达式是 <code class="code"><span class="w-nolinebreak-text">(sit-for</span>&nbsp;0)</code><!-- /@w --> 表达式在 <code class="code">while</code> 循环中。这个表达式使得图形打印操作比没有它更有趣。该表达式导致 Emacs 在零时间内“坐下”或什么都不做，然后重新绘制屏幕。放在这里，它导致 Emacs 逐列重新绘制屏幕。如果没有它，Emacs 将在函数退出时才重新绘制屏幕。
 </p>
-<p>We can test <code class="code">graph-body-print</code> with a short list of numbers.
+<p>我们可以使用一组短数字列表测试 <code class="code">graph-body-print</code>。
 </p>
 <ol class="enumerate">
-<li> Install <code class="code">graph-symbol</code>, <code class="code">graph-blank</code>,
-<code class="code">column-of-graph</code>, which are in
+<li> 安装 <code class="code">graph-symbol</code>、<code class="code">graph-blank</code>、
+<code class="code">column-of-graph</code>，它们在
 <a class="ref" href="Tu-Biao-De-Lie-.html">打印图表的列</a>,
-and <code class="code">graph-body-print</code>.
+以及 <code class="code">graph-body-print</code>。
 
-</li><li> Copy the following expression:
+</li><li> 复制以下表达式：
 
 <div class="example smallexample">
 <pre class="example-preformatted">(graph-body-print '(1 2 3 4 6 4 3 5 7 6 5 2 3))
 </pre></div>
 
-</li><li> Switch to the <samp class="file">*scratch*</samp> buffer and place the cursor where you
-want the graph to start.
+</li><li> 切换到 <samp class="file">*scratch*</samp> 缓冲区，并将光标放在要开始绘制图表的位置。
 
-</li><li> Type <kbd class="kbd">M-:</kbd> (<code class="code">eval-expression</code>).
+</li><li> 输入 <kbd class="kbd">M-:</kbd> (<code class="code">eval-expression</code>).
 
-</li><li> Yank the <code class="code">graph-body-print</code> expression into the minibuffer
-with <kbd class="kbd">C-y</kbd> (<code class="code">yank)</code>.
+</li><li> 使用 <kbd class="kbd">C-y</kbd> (<code class="code">yank</code>) 将 <code class="code">graph-body-print</code> 表达式粘贴到迷你缓冲区中。
 
-</li><li> Press <kbd class="key">RET</kbd> to evaluate the <code class="code">graph-body-print</code> expression.
+</li><li> 按 <kbd class="key">RET</kbd> 以评估 <code class="code">graph-body-print</code> 表达式。
 </li></ol>
 
-<p>Emacs will print a graph like this:
+<p>Emacs 将打印一个类似于以下的图形：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">                    *
