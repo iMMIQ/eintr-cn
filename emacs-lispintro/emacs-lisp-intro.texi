@@ -11720,42 +11720,29 @@ Emacs 将在您的 @file{.emacs} 文件末尾附近写入一个 @code{custom-set
 
 当然，你不需要在你的 @file{.emacs} 文件中包含这些注释。我在我的文件中包含它们是因为我老是忘记模式帮助或注释的约定——但我能记得在这里查看以提醒自己。
 
-@node Text and Auto-fill
-@section Text and Auto Fill Mode
+@node 文本和自动填充
+@section 文本和自动填充模式
 
-Now we come to the part that turns on Text mode and
-Auto Fill mode.
+现在我们来讨论打开文本模式和自动填充模式的部分。
 
 @smallexample
 @group
-;;; Text mode and Auto Fill mode
-;; The next two lines put Emacs into Text mode
-;; and Auto Fill mode, and are for writers who
-;; want to start writing prose rather than code.
+;;; 文本模式和自动填充模式
+;; 下面两行将Emacs置于文本模式和自动填充模式，适用于希望开始写散文而非代码的作者。
 (setq-default major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 @end group
 @end smallexample
 
-Here is the first part of this @file{.emacs} file that does something
-besides remind a forgetful human!
+这是这个 @file{.emacs} 文件的第一部分，不仅提醒了健忘的人类！
 
-The first of the two lines in parentheses tells Emacs to turn on Text
-mode when you find a file, @emph{unless} that file should go into some
-other mode, such as C mode.
+括号中的两行中的第一行告诉Emacs在找到文件时打开文本模式，@emph{除非}该文件应该进入其他模式，比如C模式。
 
-@cindex Per-buffer, local variables list
-@cindex Local variables list, per-buffer,
-@cindex Automatic mode selection
-@cindex Mode selection, automatic
-When Emacs reads a file, it looks at the extension to the file name,
-if any.  (The extension is the part that comes after a @samp{.}.)  If
-the file ends with a @samp{.c} or @samp{.h} extension then Emacs turns
-on C mode.  Also, Emacs looks at first nonblank line of the file; if
-the line says @w{@samp{-*- C -*-}}, Emacs turns on C mode.  Emacs
-possesses a list of extensions and specifications that it uses
-automatically.  In addition, Emacs looks near the last page for a
-per-buffer, local variables list, if any.
+@cindex 缓冲区特定的本地变量列表
+@cindex 本地变量列表，缓冲区特定的
+@cindex 自动模式选择
+@cindex 模式选择，自动
+当Emacs读取一个文件时，它查看文件名的扩展名，如果有的话（扩展名是 @samp{.} 后面的部分）。如果文件以 @samp{.c} 或 @samp{.h} 结尾，那么Emacs将打开C模式。此外，Emacs查看文件的第一非空行；如果该行说 @w{@samp{-*- C -*-}}，Emacs将打开C模式。Emacs拥有一个自动使用的扩展名和规范列表。此外，Emacs在文件的最后一页附近查找每个缓冲区的本地变量列表，如果有的话。
 
 @ifinfo
 @xref{Choosing Modes, , How Major Modes are Chosen, emacs, The GNU
@@ -11765,78 +11752,50 @@ Emacs Manual}.
 Manual}.
 @end ifinfo
 @iftex
-See sections ``How Major Modes are Chosen'' and ``Local Variables in
-Files'' in @cite{The GNU Emacs Manual}.
+请参阅 @cite{GNU Emacs Manual} 中的 ``How Major Modes are Chosen'' 和 ``Local Variables in Files'' 部分。
 @end iftex
 
-Now, back to the @file{.emacs} file.
+现在，回到 @file{.emacs} 文件。
 
 @need 800
-Here is the line again; how does it work?
+这里是上一行；它是如何工作的？
 
-@cindex Text Mode turned on
+@cindex 打开文本模式
 @smallexample
 (setq major-mode 'text-mode)
 @end smallexample
 
 @noindent
-This line is a short, but complete Emacs Lisp expression.
+这一行是一个简短但完整的Emacs Lisp表达式。
 
-We are already familiar with @code{setq}.  It sets the following variable,
-@code{major-mode}, to the subsequent value, which is @code{text-mode}.
-The single-quote before @code{text-mode} tells Emacs to deal directly
-with the @code{text-mode} symbol, not with whatever it might stand for.
-@xref{set & setq, , Setting the Value of a Variable},
-for a reminder of how @code{setq} works.
-The main point is that there is no difference between the procedure you
-use to set a value in your @file{.emacs} file and the procedure you use
-anywhere else in Emacs.
+我们已经熟悉了 @code{setq}。它将变量 @code{major-mode} 设置为后续的值，即 @code{text-mode}。在 @code{text-mode} 之前的单引号告诉Emacs直接处理 @code{text-mode} 符号，而不是处理它可能代表的任何东西。参见 @xref{set & setq, , Setting the Value of a Variable}，了解 @code{setq} 的工作原理。主要的观点是，在你的 @file{.emacs} 文件中设置值的过程与在Emacs的其他任何地方使用的过程没有区别。
 
 @need 800
-Here is the next line:
+这是下一行：
 
-@cindex Auto Fill mode turned on
+@cindex 打开自动填充模式
 @findex add-hook
 @smallexample
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 @end smallexample
 
 @noindent
-In this line, the @code{add-hook} command adds
-@code{turn-on-auto-fill} to the variable.
+在这一行中，@code{add-hook} 命令将 @code{turn-on-auto-fill} 添加到变量中。
 
-@code{turn-on-auto-fill} is the name of a program, that, you guessed
-it!, turns on Auto Fill mode.
+@code{turn-on-auto-fill} 是一个程序的名称，猜对了！它打开自动填充模式。
 
-Every time Emacs turns on Text mode, Emacs runs the commands hooked
-onto Text mode.  So every time Emacs turns on Text mode, Emacs also
-turns on Auto Fill mode.
+每次Emacs打开文本模式时，Emacs都会运行挂钩到文本模式的命令。因此，每次Emacs打开文本模式时，Emacs也会打开自动填充模式。
 
-In brief, the first line causes Emacs to enter Text mode when you edit a
-file, unless the file name extension, a first non-blank line, or local
-variables to tell Emacs otherwise.
+简而言之，第一行使Emacs在编辑文件时进入文本模式，除非文件名扩展名、第一非空行或本地变量告诉Emacs使用其他模式。
 
-Text mode among other actions, sets the syntax table to work
-conveniently for writers.  In Text mode, Emacs considers an apostrophe
-as part of a word like a letter; but Emacs does not consider a period
-or a space as part of a word.  Thus, @kbd{M-f} moves you over
-@samp{it's}.  On the other hand, in C mode, @kbd{M-f} stops just after
-the @samp{t} of @samp{it's}.
+文本模式在其他操作中将语法表设置为方便写作者使用。在文本模式中，Emacs将撇号视为单词的一部分，如字母一样；但Emacs不将句点或空格视为单词的一部分。因此，@kbd{M-f} 可以将光标移到 @samp{it's} 上。另一方面，在C模式中，@kbd{M-f} 在 @samp{it's} 的 @samp{t} 后停止。
 
-The second line causes Emacs to turn on Auto Fill mode when it turns
-on Text mode.  In Auto Fill mode, Emacs automatically breaks a line
-that is too wide and brings the excessively wide part of the line down
-to the next line.  Emacs breaks lines between words, not within them.
+第二行使Emacs在打开文本模式时打开自动填充模式。在自动填充模式中，Emacs会自动断开太宽的行，并将行的过宽部分移到下一行。Emacs在单词之间断开行，而不是在它们内部。
 
-When Auto Fill mode is turned off, lines continue to the right as you
-type them.  Depending on how you set the value of
-@code{truncate-lines}, the words you type either disappear off the
-right side of the screen, or else are shown, in a rather ugly and
-unreadable manner, as a continuation line on the screen.
+当关闭自动填充模式时，行将根据您输入它们而继续向右延伸。根据您设置的 @code{truncate-lines} 的值，您输入的单词可能会从屏幕右侧消失，或者以一种相当丑陋和不可读的方式显示在屏幕上，作为续行。
 
 @need 1250
-In addition, in this part of my @file{.emacs} file, I tell the Emacs
-fill commands to insert two spaces after a colon:
+此外，在我的 @file{.emacs} 文件的这一部分中，我告诉Emacs填充命令在冒号后插入两个空格：
 
 @smallexample
 (setq colon-double-space t)
