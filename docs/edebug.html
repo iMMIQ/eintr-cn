@@ -61,133 +61,88 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 Next: <a href="Debugging-Exercises.html" accesskey="n" rel="next">Debugging Exercises</a>, Previous: <a href="debug_002don_002dquit.html" accesskey="p" rel="prev"><code class="code">debug-on-quit</code>和<code class="code">(debug)</code></a>, Up: <a href="Diao-Shi-.html" accesskey="u" rel="up">调试</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-edebug-Source-Level-Debugger">17.4 The <code class="code">edebug</code> Source Level Debugger</h3>
-<a class="index-entry-id" id="index-Source-level-debugger"></a>
+<h3 class="section" id="edebug-Yuan-Ma-Ji-Diao-Shi-Qi-">17.4 <code class="code">edebug</code> 源码级调试器</h3>
+<a class="index-entry-id" id="index-Yuan-Ma-Ji-Diao-Shi-Qi-"></a>
 <a class="index-entry-id" id="index-edebug"></a>
 
-<p>Edebug is a source level debugger.  Edebug normally displays the
-source of the code you are debugging, with an arrow at the left that
-shows which line you are currently executing.
+<p>Edebug 是一个源码级调试器。Edebug 通常显示你正在调试的代码的源码，左边有一个箭头，指示你当前执行的是哪一行。
 </p>
-<p>You can walk through the execution of a function, line by line, or run
-quickly until reaching a <em class="dfn">breakpoint</em> where execution stops.
+<p>你可以逐行地走过函数的执行，或者快速运行直到达到一个<em class="dfn">断点</em>，在那里停止执行。
 </p>
-<p>Edebug is described in <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html#Edebug">Edebug</a> in <cite class="cite">The GNU Emacs
-Lisp Reference Manual</cite>.
+<p>有关 Edebug 的详细信息，请参阅<a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html#Edebug">Edebug</a> in <cite class="cite">GNU Emacs Lisp 参考手册</cite>。
 </p>
-<p>Here is a bugged function definition for <code class="code">triangle-recursively</code>.
-See <a class="xref" href="Di-Gui-San-Jiao-Xing-Han-Shu-.html">Recursion in place of a counter</a>,
-for a review of it.
+<p>下面是一个有bug的 <code class="code">triangle-recursively</code> 函数定义。参见See <a class="xref" href="Di-Gui-San-Jiao-Xing-Han-Shu-.html">替代计数的递归</a>进行查看。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun triangle-recursively-bugged (number)
-  &quot;Return sum of numbers 1 through NUMBER inclusive.
-Uses recursion.&quot;
+  &quot;返回1到NUMBER（包括）之间数字的和，使用递归。&quot;
   (if (= number 1)
       1
     (+ number
        (triangle-recursively-bugged
-        (1= number)))))               ; <span class="r">Error here.</span>
+        (1= number)))))               ; <span class="r">这里有错误。</span>
 </pre></div></div>
 
-<p>Normally, you would install this definition by positioning your cursor
-after the function&rsquo;s closing parenthesis and typing <kbd class="kbd">C-x C-e</kbd>
-(<code class="code">eval-last-sexp</code>) or else by positioning your cursor within the
-definition and typing <kbd class="kbd">C-M-x</kbd> (<code class="code">eval-defun</code>).  (By default,
-the <code class="code">eval-defun</code> command works only in Emacs Lisp mode or in Lisp
-Interaction mode.)
+<p>通常，你会通过将光标定位在函数的闭括号之后，然后输入 <kbd class="kbd">C-x C-e</kbd>（<code class="code">eval-last-sexp</code>），或者将光标定位在定义内部，然后输入 <kbd class="kbd">C-M-x</kbd>（<code class="code">eval-defun</code>）来安装这个定义。 （默认情况下，<code class="code">eval-defun</code> 命令仅在 Emacs Lisp 模式或 Lisp 交互模式下工作。）
 </p>
-<p>However, to prepare this function definition for Edebug, you must
-first <em class="dfn">instrument</em> the code using a different command.  You can do
-this by positioning your cursor within or just after the definition
-and typing
+<p>然而，为了准备这个函数定义以供 Edebug 使用，你必须首先使用不同的命令进行<em class="dfn">仪器化</em>。你可以将光标定位在定义内部或之后，然后输入
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">M-x edebug-defun <kbd class="key">RET</kbd>
 </pre></div>
 
-<p>This will cause Emacs to load Edebug automatically if it is not
-already loaded, and properly instrument the function.
+<p>这将导致 Emacs 在需要时自动加载 Edebug（如果尚未加载），并正确地仪器化该函数。
 </p>
-<p>After instrumenting the function, place your cursor after the
-following expression and type <kbd class="kbd">C-x C-e</kbd> (<code class="code">eval-last-sexp</code>):
+<p>在仪器化函数之后，将光标放在以下表达式之后，然后输入 <kbd class="kbd">C-x C-e</kbd>（<code class="code">eval-last-sexp</code>）：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(triangle-recursively-bugged 3)
 </pre></div>
 
-<p>You will be jumped back to the source for
-<code class="code">triangle-recursively-bugged</code> and the cursor positioned at the
-beginning of the <code class="code">if</code> line of the function.  Also, you will see
-an arrowhead at the left hand side of that line.  The arrowhead marks
-the line where the function is executing.  (In the following examples,
-we show the arrowhead with &lsquo;<samp class="samp">=&gt;</samp>&rsquo;; in a windowing system, you may
-see the arrowhead as a solid triangle in the window fringe.)
+<p>你将跳转回 <code class="code">triangle-recursively-bugged</code> 的源码，光标定位在函数的 <code class="code">if</code> 行的开头。此外，你将在该行的左侧看到一个箭头。箭头标记了函数执行的行。在下面的示例中，我们使用&lsquo;<samp class="samp">=&gt;</samp>&rsquo;显示箭头；在窗口系统中，你可能会在窗口边缘看到箭头作为一个实心三角形。
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">=&gt;&lowast;(if (= number 1)
 </pre></div>
 
-<p>In the example, the location of point is displayed as &lsquo;<samp class="samp">&lowast;</samp>&rsquo;
-(in a printed book, it is displayed with a five pointed star).
+<p>在示例中，点的位置显示为 &lsquo;<samp class="samp">&lowast;</samp>&rsquo;（在印刷书籍中，它显示为一个五角星）。
 </p>
-<p>If you now press <kbd class="key">SPC</kbd>, point will move to the next expression to
-be executed; the line will look like this:
+<p>如果现在按下 <kbd class="key">SPC</kbd> 键，点将移动到下一个要执行的表达式；该行将如下所示：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">=&gt;(if &lowast;(= number 1)
 </pre></div>
 
-<p>As you continue to press <kbd class="key">SPC</kbd>, point will move from expression to
-expression.  At the same time, whenever an expression returns a value,
-that value will be displayed in the echo area.  For example, after you
-move point past <code class="code">number</code>, you will see the following:
+<p>随着你继续按下 <kbd class="key">SPC</kbd>，点将从一个表达式移动到另一个表达式。与此同时，每当一个表达式返回一个值时，该值将显示在回显区域。例如，当你将点移到 <code class="code">number</code> 后面时，你将看到以下内容：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">Result: 3 (#o3, #x3, ?\C-c)
 </pre></div>
 
-<p>This means the value of <code class="code">number</code> is 3, which is octal three,
-hexadecimal three, and <small class="sc">ASCII</small> Control-C (the third letter of the
-alphabet, in case you need to know this information).
+<p>这意味着 <code class="code">number</code> 的值是3，即八进制三，十六进制三，和 ASCII 控制字符C（字母表的第三个字母，如果你需要知道这些信息）。
 </p>
-<p>You can continue moving through the code until you reach the line with
-the error.  Before evaluation, that line looks like this:
+<p>你可以继续移动代码，直到到达包含错误的行。在评估之前，该行看起来像这样：
 </p>
 <div class="example smallexample">
-<pre class="example-preformatted">=&gt;        &lowast;(1= number)))))               ; <span class="r">Error here.</span>
+<pre class="example-preformatted">=&gt;        &lowast;(1= number)))))               ; <span class="r">这里有错误。</span>
 </pre></div>
 
-<p>When you press <kbd class="key">SPC</kbd> once again, you will produce an error message
-that says:
+<p>当你再次按下 <kbd class="key">SPC</kbd> 时，将会产生一个错误消息，说：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">Symbol's function definition is void: 1=
 </pre></div>
 
-<p>This is the bug.
+<p>这就是bug。
 </p>
-<p>Press <kbd class="kbd">q</kbd> to quit Edebug.
+<p>按下 <kbd class="kbd">q</kbd> 退出 Edebug。
 </p>
-<p>To remove instrumentation from a function definition, simply
-re-evaluate it with a command that does not instrument it.
-For example, you could place your cursor after the definition&rsquo;s
-closing parenthesis and type <kbd class="kbd">C-x C-e</kbd>.
+<p>要从函数定义中删除仪器化，只需使用不对其进行仪器化的命令重新评估它。例如，你可以将光标放在定义的闭括号之后，然后输入 <kbd class="kbd">C-x C-e</kbd>。
 </p>
-<p>Edebug does a great deal more than walk with you through a function.
-You can set it so it races through on its own, stopping only at an
-error or at specified stopping points; you can cause it to display the
-changing values of various expressions; you can find out how many
-times a function is called, and more.
+<p>Edebug 不仅仅能够与你一起逐步执行函数。你可以设置它，让它自己快速执行，只在错误或指定的停止点停下；你可以让它显示各种表达式的变化值；你可以了解一个函数被调用了多少次，等等。
 </p>
-<p>Edebug is described in <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html#Edebug">Edebug</a> in <cite class="cite">The GNU Emacs
-Lisp Reference Manual</cite>.
+<p>有关 Edebug 的详细信息，请参阅<a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html#Edebug">Edebug</a> in <cite class="cite">GNU Emacs Lisp 参考手册</cite>。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Debugging-Exercises.html">Debugging Exercises</a>, Previous: <a href="debug_002don_002dquit.html"><code class="code">debug-on-quit</code>和<code class="code">(debug)</code></a>, Up: <a href="Diao-Shi-.html">调试</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
