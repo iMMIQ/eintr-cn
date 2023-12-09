@@ -10173,52 +10173,38 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 
 找到文件是我们尚未讨论的一个新过程。
 
-@node Find a File
-@section Find a File
-@cindex Find a File
+@node 查找文件
+@section 查找文件
+@cindex 查找文件
 
-To find a file in Emacs, you use the @kbd{C-x C-f} (@code{find-file})
-command.  This command is almost, but not quite right for the lengths
-problem.
+在Emacs中查找文件，您可以使用@kbd{C-x C-f}（@code{find-file}）命令。这个命令几乎完全符合长度问题，但还需要稍作调整。
 
 @need 1200
-Let's look at the source for @code{find-file}:
+让我们看一下@code{find-file}的源代码：
 
 @smallexample
 @group
 (defun find-file (filename)
-  "Edit file FILENAME.
-Switch to a buffer visiting file FILENAME,
-creating one if none already exists."
+  "编辑文件 FILENAME。
+切换到访问文件 FILENAME 的缓冲区，如果不存在则创建一个。"
   (interactive "FFind file: ")
   (switch-to-buffer (find-file-noselect filename)))
 @end group
 @end smallexample
 
 @noindent
-(The most recent version of the @code{find-file} function definition
-permits you to specify optional wildcards to visit multiple files;
-that makes the definition more complex and we will not discuss it
-here, since it is not relevant.  You can see its source using either
-@kbd{M-.} (@code{xref-find-definitions}) or @kbd{C-h f}
-(@code{describe-function}).)
+（@code{find-file}函数定义的最新版本允许您指定可选的通配符以访问多个文件；这使得定义更加复杂，我们在这里不讨论，因为这与问题无关。您可以使用@kbd{M-.}（@code{xref-find-definitions}）或@kbd{C-h f}（@code{describe-function}）查看其源代码。）
 
 @ignore
-In Emacs 22
+在Emacs 22
 (defun find-file (filename &optional wildcards)
-  "Edit file FILENAME.
-Switch to a buffer visiting file FILENAME,
-creating one if none already exists.
-Interactively, the default if you just type @key{RET} is the current directory,
-but the visited file name is available through the minibuffer history:
-type M-n to pull it into the minibuffer.
+  "编辑文件 FILENAME。
+切换到访问文件 FILENAME 的缓冲区，如果不存在则创建一个。
+在交互模式下，如果只是按 @key{RET} 键，它会默认到当前目录，但可以通过迷你缓冲区历史记录访问文件名：输入 M-n 将其拉入迷你缓冲区。
 
-Interactively, or if WILDCARDS is non-nil in a call from Lisp,
-expand wildcards (if any) and visit multiple files.  You can
-suppress wildcard expansion by setting `find-file-wildcards' to nil.
+在交互模式下，或者在Lisp调用中WILDCARDS为非nil时，展开通配符（如果有的话）并访问多个文件。您可以通过将`find-file-wildcards'设置为nil来禁止通配符展开。
 
-To visit a file without any kind of conversion and without
-automatically choosing a major mode, use \\[find-file-literally]."
+要访问文件而不进行任何类型的转换并且不自动选择主模式，请使用 \\[find-file-literally]。"
   (interactive (find-file-read-args "Find file: " nil))
   (let ((value (find-file-noselect filename nil nil wildcards)))
     (if (listp value)
@@ -10226,36 +10212,15 @@ automatically choosing a major mode, use \\[find-file-literally]."
       (switch-to-buffer value))))
 @end ignore
 
-The definition I am showing possesses short but complete documentation
-and an interactive specification that prompts you for a file name when
-you use the command interactively.  The body of the definition
-contains two functions, @code{find-file-noselect} and
-@code{switch-to-buffer}.
+我展示的定义具有简短但完整的文档和交互规范，在您以交互方式使用命令时会提示您输入文件名。定义的主体包含两个函数，@code{find-file-noselect} 和 @code{switch-to-buffer}。
 
-According to its documentation as shown by @kbd{C-h f} (the
-@code{describe-function} command), the @code{find-file-noselect}
-function reads the named file into a buffer and returns the buffer.
-(Its most recent version includes an optional @var{wildcards} argument,
-too, as well as another to read a file literally and another to
-suppress warning messages.  These optional arguments are irrelevant.)
+根据@kbd{C-h f}（@code{describe-function}命令）显示的文档，@code{find-file-noselect}函数将指定的文件读入缓冲区并返回该缓冲区。（其最新版本还包括一个可选的@var{wildcards}参数，以及另一个以文本方式读取文件和另一个以抑制警告消息的参数。这些可选参数与问题无关。）
 
-However, the @code{find-file-noselect} function does not select the
-buffer in which it puts the file.  Emacs does not switch its attention
-(or yours if you are using @code{find-file-noselect}) to the selected
-buffer.  That is what @code{switch-to-buffer} does: it switches the
-buffer to which Emacs attention is directed; and it switches the
-buffer displayed in the window to the new buffer.  We have discussed
-buffer switching elsewhere.  (@xref{切换缓冲区}.)
+然而，@code{find-file-noselect}函数不会选择放置文件的缓冲区。Emacs不会切换其注意力（或者如果您正在使用@code{find-file-noselect}，那么是您的注意力）到选定的缓冲区。这就是@code{switch-to-buffer}的作用：它切换Emacs关注的缓冲区；并且将窗口中显示的缓冲区切换到新的缓冲区。我们已经在其他地方讨论了缓冲区切换。 （@xref{切换缓冲区}。）
 
-In this histogram project, we do not need to display each file on the
-screen as the program determines the length of each definition within
-it.  Instead of employing @code{switch-to-buffer}, we can work with
-@code{set-buffer}, which redirects the attention of the computer
-program to a different buffer but does not redisplay it on the screen.
-So instead of calling on @code{find-file} to do the job, we must write
-our own expression.
+在这个直方图项目中，我们不需要在屏幕上显示每个文件，因为程序确定其中每个定义的长度。我们可以使用@code{set-buffer}而不是@code{switch-to-buffer}，后者会将屏幕上的缓冲区重新显示。因此，我们不必调用@code{find-file}来执行这项任务，而是必须编写我们自己的表达式。
 
-The task is easy: use @code{find-file-noselect} and @code{set-buffer}.
+任务很简单：使用@code{find-file-noselect}和@code{set-buffer}。
 
 @node lengths-list-file
 @section @code{lengths-list-file} in Detail
