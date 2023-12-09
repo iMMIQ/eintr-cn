@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>图表的列 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="图表的列 (Programming in Emacs Lisp)">
+<meta name="keywords" content="图表的列 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Zhun-Bei-Tu-Biao-.html" rel="up" title="准备图表">
+<link href="graph_002dbody_002dprint.html" rel="next" title="graph-body-print">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsec-level-extent" id="g_t_56fe_8868_7684_5217">
+<div class="nav-panel">
+<p>
+Next: <a href="graph_002dbody_002dprint.html" accesskey="n" rel="next">The <code class="code">graph-body-print</code> Function</a>, Up: <a href="Zhun-Bei-Tu-Biao-.html" accesskey="u" rel="up">准备图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="unnumberedsec" id="Da-Yin-Tu-Biao-De-Lie-">打印图表的列</h3>
+
+<p>由于Emacs被设计为灵活且适用于各种终端，包括字符终端，图表需要由打字机符号之一制作。
+星号就可以；随着图表打印函数的改进，我们可以选择使用用户选项来指定符号。
+</p>
+<p>我们可以将这个函数称为<code class="code">graph-body-print</code>；它将以<code class="code">numbers-list</code>作为其唯一参数。
+在这个阶段，我们不会为图表标记，而只会打印其主体。
+</p>
+<p><code class="code">graph-body-print</code>函数为<code class="code">numbers-list</code>中的每个元素插入一个垂直的星号列。
+每行的高度由<code class="code">numbers-list</code>的该元素的值确定。
+</p>
+<p>插入列是一种重复性的操作；这意味着可以使用<code class="code">while</code>循环或递归来编写此函数。
+</p>
+<p>我们的第一个挑战是发现如何打印星号列。通常，在Emacs中，我们通过逐行输入以水平方式将字符打印到屏幕上。
+我们有两条路可以走：编写我们自己的列插入函数或发现Emacs中是否存在这样一个函数。
+</p>
+<p>为了查看Emacs中是否存在这样的函数，我们可以使用<kbd class="kbd">M-x apropos</kbd>命令。此命令类似于<kbd class="kbd">C-h a</kbd>（<code class="code">command-apropos</code>）命令，
+但后者仅找到命令函数。<kbd class="kbd">M-x apropos</kbd>命令列出与正则表达式匹配的所有符号，包括不是交互式的函数。
+<a class="index-entry-id" id="index-apropos"></a>
+</p>
+<p>我们要寻找的是某个打印或插入列的命令。很可能，该函数的名称将包含“print”或“insert”或“column”这个词。
+因此，我们可以简单地输入<kbd class="kbd">M-x apropos <kbd class="key">RET</kbd> print\|insert\|column <kbd class="key">RET</kbd></kbd>并查看结果。
+在我的系统上，这个命令曾经花费了相当长的时间，然后产生了一个包含79个函数和变量的列表。现在它几乎不花费任何时间，
+并生成包含211个函数和变量的列表。在列表中扫描，唯一看起来可能完成这项工作的函数是<code class="code">insert-rectangle</code>。
+</p>
+<p>事实上，这正是我们想要的函数；其文档如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">insert-rectangle:
+在点的上左角插入RECTANGLE的文本。
+RECTANGLE的第一行插入在点处，
+其第二行插入在点的下面的垂直位置，依此类推。
+RECTANGLE应该是一个字符串列表。
+此命令执行后，标记位于左上角，
+点位于右下角。
+</pre></div></div>
+
+<p>我们可以进行一次快速测试，确保它能够按照我们的期望工作。
+</p>
+<p>在将光标放在<code class="code">insert-rectangle</code>表达式之后，键入<kbd class="kbd">C-u C-x C-e</kbd>（<code class="code">eval-last-sexp</code>），
+以下是在点和下面插入了字符串&lsquo;<samp class="samp">&quot;first&quot;</samp>&rsquo;、&lsquo;<samp class="samp">&quot;second&quot;</samp>&rsquo;和&lsquo;<samp class="samp">&quot;third&quot;</samp>&rsquo;的函数结果。
+此外，该函数返回<code class="code">nil</code>。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(insert-rectangle '(&quot;first&quot; &quot;second&quot; &quot;third&quot;))first
+                                              second
+                                              thirdnil
+</pre></div></div>
+
+<p>当然，我们不会将<code class="code">insert-rectangle</code>表达式本身的文本插入我们正在创建图表的缓冲区，
+而是将从我们的程序中调用该函数。但是，我们必须确保点在缓冲区中<code class="code">insert-rectangle</code>函数将插入其列的位置。
+</p>
+<p>如果您在Info中阅读此内容，您可以通过切换到另一个缓冲区，例如<samp class="file">*scratch*</samp>缓冲区，
+将点放在缓冲区的某个位置，键入<kbd class="kbd">M-:</kbd>，在提示符处键入<code class="code">insert-rectangle</code>表达式，
+然后键入<kbd class="key">RET</kbd>。这会导致Emacs在小缓冲区中评估表达式，但将点的值用作<samp class="file">*scratch*</samp>缓冲区中点的位置的值。
+（<kbd class="kbd">M-:</kbd>是<code class="code">eval-expression</code>的键绑定。此外，由于表达式在小缓冲区中评估，因此<code class="code">nil</code>不会出现在<samp class="file">*scratch*</samp>缓冲区中，
+因为表达式在小缓冲区中评估。）
+</p>
+<p>当我们这样做时，我们发现点最终位于最后插入行的末尾——也就是说，此函数将点作为副作用移动了。
+如果我们在此位置重复命令，将点放在此位置，下一个插入将在上一个插入的下方和右侧。
+我们不想要这个！如果我们要制作一个条形图，那么列需要相互并列。
+</p>
+<p>因此，我们发现列插入<code class="code">while</code>循环的每个周期必须将点重新定位到我们想要的位置，
+并且该位置将位于列的顶部而不是底部。此外，我们记得当打印图表时，我们不希望所有列的高度都相同。
+这意味着每个列的顶部可能与前一个列的顶部高度不同。我们不能简单地将点重新定位到相同的行，而是可能移到右边……。
+</p>
+<p>我们计划使用星号制作条形图的列。列中的星号数量是由<code class="code">numbers-list</code>的当前元素指定的数量。
+我们需要构建一个合适长度的星号列表，以便每次调用<code class="code">insert-rectangle</code>时都会插入正确的位置。
+</p>
+<p>如果此列表仅包含所需数量的星号，则必须为图的打印正确位置将点移动到图的基础上方的正确行。
+这可能会很困难。
+</p>
+<p>另一方面，如果我们可以找到一种方法，将<code class="code">insert-rectangle</code>传递一个每次都是相同长度的列表，
+那么我们就可以每次都将点放在相同的行上，但对于每个新列都将其右移一列。如果这样做，那么传递给<code class="code">insert-rectangle</code>的列表中的一些条目必须是空白，而不是星号。
+例如，如果图的最大高度为5，但列的高度为3，则<code class="code">insert-rectangle</code>需要一个参数，如下所示：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(&quot; &quot; &quot; &quot; &quot;*&quot; &quot;*&quot; &quot;*&quot;)
+</pre></div>
+
+<p>最后的提议并不那么困难，只要我们能确定列高度。我们有两种方法来指定列高度：我们可以任意规定它将是多少，这对于该高度的图表是可以的；
+或者我们可以搜索数字列表，将其最大高度用作图的最大高度。如果后者的操作很困难，那么前者的过程将是最简单的，
+但是Emacs内置了一个确定其参数的最大值的函数。我们可以使用该函数。该函数称为<code class="code">max</code>，它返回其参数的最大值，这些参数必须是数字。例如，
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(max  3 4 6 5 7 3)
+</pre></div>
+
+<p>返回7。（相应的函数称为<code class="code">min</code>，返回其参数的最小值。）
+<a class="index-entry-id" id="index-max"></a>
+<a class="index-entry-id" id="index-min"></a>
+</p>
+<p>但我们不能简单地在<code class="code">numbers-list</code>上调用<code class="code">max</code>函数；<code class="code">max</code>函数期望数字作为其参数，而不是数字列表。
+因此，以下表达式，
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(max  '(3 4 6 5 7 3))
+</pre></div>
+
+<p>产生以下错误消息：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Wrong type of argument:  number-or-marker-p, (3 4 6 5 7 3)
+</pre></div>
+
+<a class="index-entry-id" id="index-apply"></a>
+<p>我们需要一个函数，将参数列表传递给函数。这个函数是<code class="code">apply</code>。该函数将其第一个参数（函数）应用于其余的参数，
+其中最后一个参数可以是一个列表。
+</p>
+<p>例如，
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(apply 'max 3 4 7 3 '(4 8 5))
+</pre></div>
+
+<p>返回8。
+</p>
+<p>（顺便说一下，如果没有像这样的书，我不知道您将如何了解此函数。通过猜测其名称的一部分，然后使用<code class="code">apropos</code>，
+可以发现其他函数，如<code class="code">search-forward</code>或<code class="code">insert-rectangle</code>。尽管它在隐喻上的基础很清晰——将其第一个参数应用于其余部分——但我怀疑初学者在使用<code class="code">apropos</code>或其他工具时是否会想到使用这个特定的词。当然，我可能是错的；毕竟，首次命名该函数的人必须发明它。）
+</p>
+<p><code class="code">apply</code>的第二个和后续的参数是可选的，因此我们可以使用<code class="code">apply</code>来调用一个函数并将其列表元素传递给它，
+就像这样，它也返回8：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(apply 'max '(4 8 5))
+</pre></div>
+
+<p>我们将使用<code class="code">apply</code>的这种方式。<code class="code">recursive-lengths-list-many-files</code>函数返回一个数字列表，
+我们可以将<code class="code">max</code>应用于它（我们也可以将<code class="code">max</code>应用于排序后的数字列表；列表是否排序都无关紧要）。
+</p>
+<p>因此，找到图的最大高度的操作是这样的：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq max-graph-height (apply 'max numbers-list))
+</pre></div>
+
+<p>现在我们可以回到创建图表列的问题。告诉了图的最大高度和列中星号的数量后，
+函数应返回<code class="code">insert-rectangle</code>命令插入的列表。
+</p>
+<p>每一列由星号或空格组成。由于函数传递了列的高度和列中星号的数量，因此可以通过从列的高度中减去星号的数量来找到空格的数量。给定空格的数量和星号的数量，可以使用两个 <code class="code">while</code> 循环构造列表：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">第一个版本。</span>
+(defun column-of-graph (max-graph-height actual-height)
+  &quot;返回一个图表列的字符串列表。&quot;
+  (let ((insert-list nil)
+        (number-of-top-blanks
+         (- max-graph-height actual-height)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">    ;; <span class="r">填充星号。</span>
+    (while (&gt; actual-height 0)
+      (setq insert-list (cons &quot;*&quot; insert-list))
+      (setq actual-height (1- actual-height)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">    ;; <span class="r">填充空格。</span>
+    (while (&gt; number-of-top-blanks 0)
+      (setq insert-list (cons &quot; &quot; insert-list))
+      (setq number-of-top-blanks
+            (1- number-of-top-blanks)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">    ;; <span class="r">返回整个列表。</span>
+    insert-list))
+</pre></div></div>
+
+<p>如果安装了此函数，然后评估以下表达式，您将看到它按预期返回列表：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(column-of-graph 5 3)
+</pre></div>
+
+<p>返回
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(&quot; &quot; &quot; &quot; &quot;*&quot; &quot;*&quot; &quot;*&quot;)
+</pre></div>
+
+<p>如上所写，<code class="code">column-of-graph</code> 包含一个主要缺陷：用于空白和列中标记条目的符号是硬编码的，分别是空格和星号。这对于原型来说是可以的，但您或其他用户可能希望使用其他符号。例如，在测试图函数时，您可能想要使用句点代替空格，以确保每次调用 <code class="code">insert-rectangle</code> 函数时点被正确重新定位；或者您可能想要用 &lsquo;<samp class="samp">+</samp>&rsquo; 符号或其他符号替换星号。您甚至可能希望创建一个宽度超过一个显示列的图表列。程序应该更加灵活。为了实现这一点，我们可以用两个变量 <code class="code">graph-blank</code> 和 <code class="code">graph-symbol</code> 替换空白和星号，并分别定义这两个变量。
+</p>
+<p>此外，文档写得不好。这些考虑因素引导我们到函数的第二个版本：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defvar graph-symbol &quot;*&quot;
+  &quot;用于图表的符号字符串，通常是星号。&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defvar graph-blank &quot; &quot;
+  &quot;用于图表的空白字符串，通常是空格。
+graph-blank 的宽度必须与 graph-symbol 相同。&quot;)
+</pre></div></div>
+
+<p>（有关 <code class="code">defvar</code> 的解释，请参见 <a class="ref" href="defvar.html">用 <code class="code">defvar</code> 初始化变量</a>。）
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">第二个版本。</span>
+(defun column-of-graph (max-graph-height actual-height)
+  &quot;返回 MAX-GRAPH-HEIGHT 个字符串；ACTUAL-HEIGHT 是图表符号。
+
+</pre></div><div class="group"><pre class="example-preformatted">图表符号是列表末尾的连续条目。
+列表将作为图表的一列插入。
+这些字符串要么是 graph-blank，要么是 graph-symbol。&quot;
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">  (let ((insert-list nil)
+        (number-of-top-blanks
+         (- max-graph-height actual-height)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">    ;; <span class="r">填充 <code class="code">graph-symbols</code>。</span>
+    (while (&gt; actual-height 0)
+      (setq insert-list (cons graph-symbol insert-list))
+      (setq actual-height (1- actual-height)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">    ;; <span class="r">填充 <code class="code">graph-blanks</code>。</span>
+    (while (&gt; number-of-top-blanks 0)
+      (setq insert-list (cons graph-blank insert-list))
+      (setq number-of-top-blanks
+            (1- number-of-top-blanks)))
+
+    ;; <span class="r">返回整个列表。</span>
+    insert-list))
+</pre></div></div>
+
+<p>如果我们愿意，我们可以再次重写 <code class="code">column-of-graph</code>，以提供线图和条形图的可选支持。这不难做到。想象一下线图不过是每个条的顶部以下部分为空格的条形图。为了构建线图的列，该函数首先构建一个比值短一的空格列表，然后使用 <code class="code">cons</code> 将图符附加到列表；然后再次使用 <code class="code">cons</code> 将顶部空格附加到列表。
+</p>
+<p>容易看出如何编写这样的函数，但由于我们不需要它，我们将不予实现。但是这项工作是可以完成的，如果完成了，将使用 <code class="code">column-of-graph</code> 完成。更重要的是，几乎不需要在任何其他地方进行更改。如果我们有兴趣进行增强，这是个简单的任务。
+</p>
+<p>现在，最后，我们来到我们的第一个实际图表打印函数。这将打印图表的主体，而不是垂直和水平轴的标签，因此我们可以称其为 <code class="code">graph-body-print</code>。
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="graph_002dbody_002dprint.html">The <code class="code">graph-body-print</code> Function</a>, Up: <a href="Zhun-Bei-Tu-Biao-.html">准备图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

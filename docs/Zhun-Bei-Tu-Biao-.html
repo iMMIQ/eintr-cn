@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Readying a Graph (Programming in Emacs Lisp)</title>
+<title>准备图表 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Readying a Graph (Programming in Emacs Lisp)">
-<meta name="keywords" content="Readying a Graph (Programming in Emacs Lisp)">
+<meta name="description" content="准备图表 (Programming in Emacs Lisp)">
+<meta name="keywords" content="准备图表 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -51,38 +51,31 @@ ISBN 1-882114-43-4
 </head>
 
 <body lang="en">
-<div class="chapter-level-extent" id="Readying-a-Graph">
+<div class="chapter-level-extent" id="g_t_51c6_5907_56fe_8868">
 <div class="nav-panel">
 <p>
 Next: <a href="Emacs-Initialization.html" accesskey="n" rel="next">Your <samp class="file">.emacs</samp> File</a>, Previous: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="p" rel="prev">在 <code class="code">defun</code> 中计算单词数</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h2 class="chapter" id="Readying-a-Graph-1">15 Readying a Graph</h2>
-<a class="index-entry-id" id="index-Readying-a-graph"></a>
-<a class="index-entry-id" id="index-Graph-prototype"></a>
-<a class="index-entry-id" id="index-Prototype-graph"></a>
-<a class="index-entry-id" id="index-Body-of-graph"></a>
+<h2 class="chapter" id="Zhun-Bei-Tu-Biao-">15 准备图表</h2>
+<a class="index-entry-id" id="index-Zhun-Bei-Tu-Biao-"></a>
+<a class="index-entry-id" id="index-Tu-Biao-Yuan-Xing-"></a>
+<a class="index-entry-id" id="index-Yuan-Xing-Tu-Biao-"></a>
+<a class="index-entry-id" id="index-Tu-Biao-Zhu-Ti-"></a>
 
-<p>Our goal is to construct a graph showing the numbers of function
-definitions of various lengths in the Emacs lisp sources.
+<p>我们的目标是构建一个图表，显示Emacs Lisp源代码中各个长度的函数定义数量。
 </p>
-<p>As a practical matter, if you were creating a graph, you would
-probably use a program such as <code class="code">gnuplot</code> to do the job.
-(<code class="code">gnuplot</code> is nicely integrated into GNU Emacs.)  In this case,
-however, we create one from scratch, and in the process we will
-re-acquaint ourselves with some of what we learned before and learn
-more.
+<p>实际上，如果你要创建一个图表，你可能会使用诸如<code class="code">gnuplot</code>等程序来完成这项工作。
+（<code class="code">gnuplot</code>已经很好地集成到GNU Emacs中。）但在这种情况下，我们将从头开始创建一个图表，
+在这个过程中，我们将重新熟悉之前学到的一些知识，并学到更多。
 </p>
-<p>In this chapter, we will first write a simple graph printing function.
-This first definition will be a <em class="dfn">prototype</em>, a rapidly written
-function that enables us to reconnoiter this unknown graph-making
-territory.  We will discover dragons, or find that they are myth.
-After scouting the terrain, we will feel more confident and enhance
-the function to label the axes automatically.
+<p>在这一章中，我们将首先编写一个简单的图表打印函数。这个初步定义将是一个<em class="dfn">原型</em>，
+一个迅速编写的函数，使我们能够侦察这个未知的制图领域。我们将发现是否存在困难，或者它们只是虚构。
+在侦察完地形后，我们将更加自信，并增强该函数以自动标记坐标轴。
 </p>
 
 <ul class="mini-toc">
-<li><a href="Columns-of-a-graph.html" accesskey="1">Printing the Columns of a Graph</a></li>
+<li><a href="Tu-Biao-De-Lie-.html" accesskey="1">打印图表的列</a></li>
 <li><a href="graph_002dbody_002dprint.html" accesskey="2">The <code class="code">graph-body-print</code> Function</a></li>
 <li><a href="recursive_002dgraph_002dbody_002dprint.html" accesskey="3">The <code class="code">recursive-graph-body-print</code> Function</a></li>
 <li><a href="Printed-Axes.html" accesskey="4">Need for Printed Axes</a></li>

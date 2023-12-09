@@ -10993,106 +10993,79 @@ t
 确实，@code{sorted-lengths}列表中有两个小于110的元素，两个元素介于 110 和 119 之间，两个元素介于 120 和 129 之间，依此类推。有四个值等于或大于 200 的元素。
 
 @c The next step is to turn this numbers' list into a graph.
-@node Readying a Graph
-@chapter Readying a Graph
-@cindex Readying a graph
-@cindex Graph prototype
-@cindex Prototype graph
-@cindex Body of graph
+@node 准备图表
+@chapter 准备图表
+@cindex 准备图表
+@cindex 图表原型
+@cindex 原型图表
+@cindex 图表主体
 
-Our goal is to construct a graph showing the numbers of function
-definitions of various lengths in the Emacs lisp sources.
+我们的目标是构建一个图表，显示Emacs Lisp源代码中各个长度的函数定义数量。
 
-As a practical matter, if you were creating a graph, you would
-probably use a program such as @code{gnuplot} to do the job.
-(@code{gnuplot} is nicely integrated into GNU Emacs.)  In this case,
-however, we create one from scratch, and in the process we will
-re-acquaint ourselves with some of what we learned before and learn
-more.
+实际上，如果你要创建一个图表，你可能会使用诸如@code{gnuplot}等程序来完成这项工作。
+（@code{gnuplot}已经很好地集成到GNU Emacs中。）但在这种情况下，我们将从头开始创建一个图表，
+在这个过程中，我们将重新熟悉之前学到的一些知识，并学到更多。
 
-In this chapter, we will first write a simple graph printing function.
-This first definition will be a @dfn{prototype}, a rapidly written
-function that enables us to reconnoiter this unknown graph-making
-territory.  We will discover dragons, or find that they are myth.
-After scouting the terrain, we will feel more confident and enhance
-the function to label the axes automatically.
+在这一章中，我们将首先编写一个简单的图表打印函数。这个初步定义将是一个@dfn{原型}，
+一个迅速编写的函数，使我们能够侦察这个未知的制图领域。我们将发现是否存在困难，或者它们只是虚构。
+在侦察完地形后，我们将更加自信，并增强该函数以自动标记坐标轴。
 
 @menu
-* Columns of a graph::
-* graph-body-print::            How to print the body of a graph.
+* 图表的列::
+* graph-body-print::            如何打印图表的主体。
 * recursive-graph-body-print::
-* Printed Axes::
-* Line Graph Exercise::
+* 打印坐标轴::
+* 折线图练习::
 @end menu
 
 @ifnottex
-@node Columns of a graph
-@unnumberedsec Printing the Columns of a Graph
+@node 图表的列
+@unnumberedsec 打印图表的列
 @end ifnottex
 
-Since Emacs is designed to be flexible and work with all kinds of
-terminals, including character-only terminals, the graph will need to
-be made from one of the typewriter symbols.  An asterisk will do; as
-we enhance the graph-printing function, we can make the choice of
-symbol a user option.
+由于Emacs被设计为灵活且适用于各种终端，包括字符终端，图表需要由打字机符号之一制作。
+星号就可以；随着图表打印函数的改进，我们可以选择使用用户选项来指定符号。
 
-We can call this function @code{graph-body-print}; it will take a
-@code{numbers-list} as its only argument.  At this stage, we will not
-label the graph, but only print its body.
+我们可以将这个函数称为@code{graph-body-print}；它将以@code{numbers-list}作为其唯一参数。
+在这个阶段，我们不会为图表标记，而只会打印其主体。
 
-The @code{graph-body-print} function inserts a vertical column of
-asterisks for each element in the @code{numbers-list}.  The height of
-each line is determined by the value of that element of the
-@code{numbers-list}.
+@code{graph-body-print}函数为@code{numbers-list}中的每个元素插入一个垂直的星号列。
+每行的高度由@code{numbers-list}的该元素的值确定。
 
-Inserting columns is a repetitive act; that means that this function can
-be written either with a @code{while} loop or recursively.
+插入列是一种重复性的操作；这意味着可以使用@code{while}循环或递归来编写此函数。
 
-Our first challenge is to discover how to print a column of asterisks.
-Usually, in Emacs, we print characters onto a screen horizontally,
-line by line, by typing.  We have two routes we can follow: write our
-own column-insertion function or discover whether one exists in Emacs.
+我们的第一个挑战是发现如何打印星号列。通常，在Emacs中，我们通过逐行输入以水平方式将字符打印到屏幕上。
+我们有两条路可以走：编写我们自己的列插入函数或发现Emacs中是否存在这样一个函数。
 
-To see whether there is one in Emacs, we can use the @kbd{M-x apropos}
-command.  This command is like the @kbd{C-h a} (@code{command-apropos})
-command, except that the latter finds only those functions that are
-commands.  The @kbd{M-x apropos} command lists all symbols that match
-a regular expression, including functions that are not interactive.
+为了查看Emacs中是否存在这样的函数，我们可以使用@kbd{M-x apropos}命令。此命令类似于@kbd{C-h a}（@code{command-apropos}）命令，
+但后者仅找到命令函数。@kbd{M-x apropos}命令列出与正则表达式匹配的所有符号，包括不是交互式的函数。
 @findex apropos
 
-What we want to look for is some command that prints or inserts
-columns.  Very likely, the name of the function will contain either
-the word ``print'' or the word ``insert'' or the word ``column''.
-Therefore, we can simply type @kbd{M-x apropos @key{RET}
-print\|insert\|column @key{RET}} and look at the result.  On my system, this
-command once took quite some time, and then produced a list of 79
-functions and variables.  Now it does not take much time at all and
-produces a list of 211 functions and variables.  Scanning down the
-list, the only function that looks as if it might do the job is
-@code{insert-rectangle}.
+我们要寻找的是某个打印或插入列的命令。很可能，该函数的名称将包含“print”或“insert”或“column”这个词。
+因此，我们可以简单地输入@kbd{M-x apropos @key{RET} print\|insert\|column @key{RET}}并查看结果。
+在我的系统上，这个命令曾经花费了相当长的时间，然后产生了一个包含79个函数和变量的列表。现在它几乎不花费任何时间，
+并生成包含211个函数和变量的列表。在列表中扫描，唯一看起来可能完成这项工作的函数是@code{insert-rectangle}。
 
 @need 1200
-Indeed, this is the function we want; its documentation says:
+事实上，这正是我们想要的函数；其文档如下：
 
 @smallexample
 @group
 insert-rectangle:
-Insert text of RECTANGLE with upper left corner at point.
-RECTANGLE's first line is inserted at point,
-its second line is inserted at a point vertically under point, etc.
-RECTANGLE should be a list of strings.
-After this command, the mark is at the upper left corner
-and point is at the lower right corner.
+在点的上左角插入RECTANGLE的文本。
+RECTANGLE的第一行插入在点处，
+其第二行插入在点的下面的垂直位置，依此类推。
+RECTANGLE应该是一个字符串列表。
+此命令执行后，标记位于左上角，
+点位于右下角。
 @end group
 @end smallexample
 
-We can run a quick test, to make sure it does what we expect of it.
+我们可以进行一次快速测试，确保它能够按照我们的期望工作。
 
-Here is the result of placing the cursor after the
-@code{insert-rectangle} expression and typing @kbd{C-u C-x C-e}
-(@code{eval-last-sexp}).  The function inserts the strings
-@samp{"first"}, @samp{"second"}, and @samp{"third"} at and below
-point.  Also the function returns @code{nil}.
+在将光标放在@code{insert-rectangle}表达式之后，键入@kbd{C-u C-x C-e}（@code{eval-last-sexp}），
+以下是在点和下面插入了字符串@samp{"first"}、@samp{"second"}和@samp{"third"}的函数结果。
+此外，该函数返回@code{nil}。
 
 @smallexample
 @group
@@ -11103,87 +11076,52 @@ point.  Also the function returns @code{nil}.
 @end smallexample
 
 @noindent
-Of course, we won't be inserting the text of the
-@code{insert-rectangle} expression itself into the buffer in which we
-are making the graph, but will call the function from our program.  We
-shall, however, have to make sure that point is in the buffer at the
-place where the @code{insert-rectangle} function will insert its
-column of strings.
+当然，我们不会将@code{insert-rectangle}表达式本身的文本插入我们正在创建图表的缓冲区，
+而是将从我们的程序中调用该函数。但是，我们必须确保点在缓冲区中@code{insert-rectangle}函数将插入其列的位置。
 
-If you are reading this in Info, you can see how this works by
-switching to another buffer, such as the @file{*scratch*} buffer,
-placing point somewhere in the buffer, typing @kbd{M-:}, typing the
-@code{insert-rectangle} expression into the minibuffer at the prompt,
-and then typing @key{RET}.  This causes Emacs to evaluate the
-expression in the minibuffer, but to use as the value of point the
-position of point in the @file{*scratch*} buffer.  (@kbd{M-:}  is the
-key binding for @code{eval-expression}. Also, @code{nil} does not
-appear in the @file{*scratch*} buffer since the expression is
-evaluated in the minibuffer.)
+如果您在Info中阅读此内容，您可以通过切换到另一个缓冲区，例如@file{*scratch*}缓冲区，
+将点放在缓冲区的某个位置，键入@kbd{M-:}，在提示符处键入@code{insert-rectangle}表达式，
+然后键入@key{RET}。这会导致Emacs在小缓冲区中评估表达式，但将点的值用作@file{*scratch*}缓冲区中点的位置的值。
+（@kbd{M-:}是@code{eval-expression}的键绑定。此外，由于表达式在小缓冲区中评估，因此@code{nil}不会出现在@file{*scratch*}缓冲区中，
+因为表达式在小缓冲区中评估。）
 
-We find when we do this that point ends up at the end of the last
-inserted line---that is to say, this function moves point as a
-side-effect.  If we were to repeat the command, with point at this
-position, the next insertion would be below and to the right of the
-previous insertion.  We don't want this!  If we are going to make a
-bar graph, the columns need to be beside each other.
+当我们这样做时，我们发现点最终位于最后插入行的末尾——也就是说，此函数将点作为副作用移动了。
+如果我们在此位置重复命令，将点放在此位置，下一个插入将在上一个插入的下方和右侧。
+我们不想要这个！如果我们要制作一个条形图，那么列需要相互并列。
 
-So we discover that each cycle of the column-inserting @code{while}
-loop must reposition point to the place we want it, and that place
-will be at the top, not the bottom, of the column.  Moreover, we
-remember that when we print a graph, we do not expect all the columns
-to be the same height.  This means that the top of each column may be
-at a different height from the previous one.  We cannot simply
-reposition point to the same line each time, but moved over to the
-right---or perhaps we can@dots{}
+因此，我们发现列插入@code{while}循环的每个周期必须将点重新定位到我们想要的位置，
+并且该位置将位于列的顶部而不是底部。此外，我们记得当打印图表时，我们不希望所有列的高度都相同。
+这意味着每个列的顶部可能与前一个列的顶部高度不同。我们不能简单地将点重新定位到相同的行，而是可能移到右边……。
 
-We are planning to make the columns of the bar graph out of asterisks.
-The number of asterisks in the column is the number specified by the
-current element of the @code{numbers-list}.  We need to construct a
-list of asterisks of the right length for each call to
-@code{insert-rectangle}.  If this list consists solely of the requisite
-number of asterisks, then we will have to position point the right number
-of lines above the base for the graph to print correctly.  This could
-be difficult.
+我们计划使用星号制作条形图的列。列中的星号数量是由@code{numbers-list}的当前元素指定的数量。
+我们需要构建一个合适长度的星号列表，以便每次调用@code{insert-rectangle}时都会插入正确的位置。
 
-Alternatively, if we can figure out some way to pass
-@code{insert-rectangle} a list of the same length each time, then we
-can place point on the same line each time, but move it over one
-column to the right for each new column.  If we do this, however, some
-of the entries in the list passed to @code{insert-rectangle} must be
-blanks rather than asterisks.  For example, if the maximum height of
-the graph is 5, but the height of the column is 3, then
-@code{insert-rectangle} requires an argument that looks like this:
+如果此列表仅包含所需数量的星号，则必须为图的打印正确位置将点移动到图的基础上方的正确行。
+这可能会很困难。
+
+另一方面，如果我们可以找到一种方法，将@code{insert-rectangle}传递一个每次都是相同长度的列表，
+那么我们就可以每次都将点放在相同的行上，但对于每个新列都将其右移一列。如果这样做，那么传递给@code{insert-rectangle}的列表中的一些条目必须是空白，而不是星号。
+例如，如果图的最大高度为5，但列的高度为3，则@code{insert-rectangle}需要一个参数，如下所示：
 
 @smallexample
 (" " " " "*" "*" "*")
 @end smallexample
 
-This last proposal is not so difficult, so long as we can determine
-the column height.  There are two ways for us to specify the column
-height: we can arbitrarily state what it will be, which would work
-fine for graphs of that height; or we can search through the list of
-numbers and use the maximum height of the list as the maximum height
-of the graph.  If the latter operation were difficult, then the former
-procedure would be easiest, but there is a function built into Emacs
-that determines the maximum of its arguments.  We can use that
-function.  The function is called @code{max} and it returns the
-largest of all its arguments, which must be numbers.  Thus, for
-example,
+最后的提议并不那么困难，只要我们能确定列高度。我们有两种方法来指定列高度：我们可以任意规定它将是多少，这对于该高度的图表是可以的；
+或者我们可以搜索数字列表，将其最大高度用作图的最大高度。如果后者的操作很困难，那么前者的过程将是最简单的，
+但是Emacs内置了一个确定其参数的最大值的函数。我们可以使用该函数。该函数称为@code{max}，它返回其参数的最大值，这些参数必须是数字。例如，
 
 @smallexample
 (max  3 4 6 5 7 3)
 @end smallexample
 
 @noindent
-returns 7.  (A corresponding function called @code{min} returns the
-smallest of all its arguments.)
+返回7。（相应的函数称为@code{min}，返回其参数的最小值。）
 @findex max
 @findex min
 
-However, we cannot simply call @code{max} on the @code{numbers-list};
-the @code{max} function expects numbers as its argument, not a list of
-numbers.  Thus, the following expression,
+但我们不能简单地在@code{numbers-list}上调用@code{max}函数；@code{max}函数期望数字作为其参数，而不是数字列表。
+因此，以下表达式，
 
 @smallexample
 (max  '(3 4 6 5 7 3))
@@ -11191,91 +11129,70 @@ numbers.  Thus, the following expression,
 
 @need 800
 @noindent
-produces the following error message;
+产生以下错误消息：
 
 @smallexample
 Wrong type of argument:  number-or-marker-p, (3 4 6 5 7 3)
 @end smallexample
 
 @findex apply
-We need a function that passes a list of arguments to a function.
-This function is @code{apply}.  This function applies its first
-argument (a function) to its remaining arguments, the last of which
-may be a list.
+我们需要一个函数，将参数列表传递给函数。这个函数是@code{apply}。该函数将其第一个参数（函数）应用于其余的参数，
+其中最后一个参数可以是一个列表。
 
 @need 1250
-For example,
+例如，
 
 @smallexample
 (apply 'max 3 4 7 3 '(4 8 5))
 @end smallexample
 
 @noindent
-returns 8.
+返回8。
 
-(Incidentally, I don't know how you would learn of this function
-without a book such as this.  It is possible to discover other
-functions, like @code{search-forward} or @code{insert-rectangle}, by
-guessing at a part of their names and then using @code{apropos}.  Even
-though its base in metaphor is clear---apply its first argument to
-the rest---I doubt a novice would come up with that particular word
-when using @code{apropos} or other aid.  Of course, I could be wrong;
-after all, the function was first named by someone who had to invent
-it.)
+（顺便说一下，如果没有像这样的书，我不知道您将如何了解此函数。通过猜测其名称的一部分，然后使用@code{apropos}，
+可以发现其他函数，如@code{search-forward}或@code{insert-rectangle}。尽管它在隐喻上的基础很清晰——将其第一个参数应用于其余部分——但我怀疑初学者在使用@code{apropos}或其他工具时是否会想到使用这个特定的词。当然，我可能是错的；毕竟，首次命名该函数的人必须发明它。）
 
-The second and subsequent arguments to @code{apply} are optional, so
-we can use @code{apply} to call a function and pass the elements of a
-list to it, like this, which also returns 8:
+@code{apply}的第二个和后续的参数是可选的，因此我们可以使用@code{apply}来调用一个函数并将其列表元素传递给它，
+就像这样，它也返回8：
 
 @smallexample
 (apply 'max '(4 8 5))
 @end smallexample
 
-This latter way is how we will use @code{apply}.  The
-@code{recursive-lengths-list-many-files} function returns a numbers'
-list to which we can apply @code{max} (we could also apply @code{max} to
-the sorted numbers' list; it does not matter whether the list is
-sorted or not.)
+我们将使用@code{apply}的这种方式。@code{recursive-lengths-list-many-files}函数返回一个数字列表，
+我们可以将@code{max}应用于它（我们也可以将@code{max}应用于排序后的数字列表；列表是否排序都无关紧要）。
 
 @need 800
-Hence, the operation for finding the maximum height of the graph is this:
+因此，找到图的最大高度的操作是这样的：
 
 @smallexample
 (setq max-graph-height (apply 'max numbers-list))
 @end smallexample
 
-Now we can return to the question of how to create a list of strings
-for a column of the graph.  Told the maximum height of the graph
-and the number of asterisks that should appear in the column, the
-function should return a list of strings for the
-@code{insert-rectangle} command to insert.
+现在我们可以回到创建图表列的问题。告诉了图的最大高度和列中星号的数量后，
+函数应返回@code{insert-rectangle}命令插入的列表。
 
-Each column is made up of asterisks or blanks.  Since the function is
-passed the value of the height of the column and the number of
-asterisks in the column, the number of blanks can be found by
-subtracting the number of asterisks from the height of the column.
-Given the number of blanks and the number of asterisks, two
-@code{while} loops can be used to construct the list:
+每一列由星号或空格组成。由于函数传递了列的高度和列中星号的数量，因此可以通过从列的高度中减去星号的数量来找到空格的数量。给定空格的数量和星号的数量，可以使用两个 @code{while} 循环构造列表：
 
 @smallexample
 @group
-;;; @r{First version.}
+;;; @r{第一个版本。}
 (defun column-of-graph (max-graph-height actual-height)
-  "Return list of strings that is one column of a graph."
+  "返回一个图表列的字符串列表。"
   (let ((insert-list nil)
         (number-of-top-blanks
          (- max-graph-height actual-height)))
 @end group
 
 @group
-    ;; @r{Fill in asterisks.}
+    ;; @r{填充星号。}
     (while (> actual-height 0)
       (setq insert-list (cons "*" insert-list))
       (setq actual-height (1- actual-height)))
 @end group
 
 @group
-    ;; @r{Fill in blanks.}
+    ;; @r{填充空格。}
     (while (> number-of-top-blanks 0)
       (setq insert-list (cons " " insert-list))
       (setq number-of-top-blanks
@@ -11283,13 +11200,12 @@ Given the number of blanks and the number of asterisks, two
 @end group
 
 @group
-    ;; @r{Return whole list.}
+    ;; @r{返回整个列表。}
     insert-list))
 @end group
 @end smallexample
 
-If you install this function and then evaluate the following
-expression you will see that it returns the list as desired:
+如果安装了此函数，然后评估以下表达式，您将看到它按预期返回列表：
 
 @smallexample
 (column-of-graph 5 3)
@@ -11297,59 +11213,43 @@ expression you will see that it returns the list as desired:
 
 @need 800
 @noindent
-returns
+返回
 
 @smallexample
 (" " " " "*" "*" "*")
 @end smallexample
 
-As written, @code{column-of-graph} contains a major flaw: the symbols
-used for the blank and for the marked entries in the column are
-hard-coded as a space and asterisk.  This is fine for a prototype,
-but you, or another user, may wish to use other symbols.  For example,
-in testing the graph function, you may want to use a period in place
-of the space, to make sure the point is being repositioned properly
-each time the @code{insert-rectangle} function is called; or you might
-want to substitute a @samp{+} sign or other symbol for the asterisk.
-You might even want to make a graph-column that is more than one
-display column wide.  The program should be more flexible.  The way to
-do that is to replace the blank and the asterisk with two variables
-that we can call @code{graph-blank} and @code{graph-symbol} and define
-those variables separately.
+如上所写，@code{column-of-graph} 包含一个主要缺陷：用于空白和列中标记条目的符号是硬编码的，分别是空格和星号。这对于原型来说是可以的，但您或其他用户可能希望使用其他符号。例如，在测试图函数时，您可能想要使用句点代替空格，以确保每次调用 @code{insert-rectangle} 函数时点被正确重新定位；或者您可能想要用 @samp{+} 符号或其他符号替换星号。您甚至可能希望创建一个宽度超过一个显示列的图表列。程序应该更加灵活。为了实现这一点，我们可以用两个变量 @code{graph-blank} 和 @code{graph-symbol} 替换空白和星号，并分别定义这两个变量。
 
-Also, the documentation is not well written.  These considerations
-lead us to the second version of the function:
+此外，文档写得不好。这些考虑因素引导我们到函数的第二个版本：
 
 @smallexample
 @group
 (defvar graph-symbol "*"
-  "String used as symbol in graph, usually an asterisk.")
+  "用于图表的符号字符串，通常是星号。")
 @end group
 
 @group
 (defvar graph-blank " "
-  "String used as blank in graph, usually a blank space.
-graph-blank must be the same number of columns wide
-as graph-symbol.")
+  "用于图表的空白字符串，通常是空格。
+graph-blank 的宽度必须与 graph-symbol 相同。")
 @end group
 @end smallexample
 
 @noindent
-(For an explanation of @code{defvar}, see
-@ref{defvar, , Initializing a Variable with @code{defvar}}.)
+（有关 @code{defvar} 的解释，请参见 @ref{defvar, , 用 @code{defvar} 初始化变量}。）
 
 @smallexample
 @group
-;;; @r{Second version.}
+;;; @r{第二个版本。}
 (defun column-of-graph (max-graph-height actual-height)
-  "Return MAX-GRAPH-HEIGHT strings; ACTUAL-HEIGHT are graph-symbols.
+  "返回 MAX-GRAPH-HEIGHT 个字符串；ACTUAL-HEIGHT 是图表符号。
 
 @end group
 @group
-The graph-symbols are contiguous entries at the end
-of the list.
-The list will be inserted as one column of a graph.
-The strings are either graph-blank or graph-symbol."
+图表符号是列表末尾的连续条目。
+列表将作为图表的一列插入。
+这些字符串要么是 graph-blank，要么是 graph-symbol。"
 @end group
 
 @group
@@ -11359,44 +11259,29 @@ The strings are either graph-blank or graph-symbol."
 @end group
 
 @group
-    ;; @r{Fill in @code{graph-symbols}.}
+    ;; @r{填充 @code{graph-symbols}。}
     (while (> actual-height 0)
       (setq insert-list (cons graph-symbol insert-list))
       (setq actual-height (1- actual-height)))
 @end group
 
 @group
-    ;; @r{Fill in @code{graph-blanks}.}
+    ;; @r{填充 @code{graph-blanks}。}
     (while (> number-of-top-blanks 0)
       (setq insert-list (cons graph-blank insert-list))
       (setq number-of-top-blanks
             (1- number-of-top-blanks)))
 
-    ;; @r{Return whole list.}
+    ;; @r{返回整个列表。}
     insert-list))
 @end group
 @end smallexample
 
-If we wished, we could rewrite @code{column-of-graph} a third time to
-provide optionally for a line graph as well as for a bar graph.  This
-would not be hard to do.  One way to think of a line graph is that it
-is no more than a bar graph in which the part of each bar that is
-below the top is blank.  To construct a column for a line graph, the
-function first constructs a list of blanks that is one shorter than
-the value, then it uses @code{cons} to attach a graph symbol to the
-list; then it uses @code{cons} again to attach the top blanks to
-the list.
+如果我们愿意，我们可以再次重写 @code{column-of-graph}，以提供线图和条形图的可选支持。这不难做到。想象一下线图不过是每个条的顶部以下部分为空格的条形图。为了构建线图的列，该函数首先构建一个比值短一的空格列表，然后使用 @code{cons} 将图符附加到列表；然后再次使用 @code{cons} 将顶部空格附加到列表。
 
-It is easy to see how to write such a function, but since we don't
-need it, we will not do it.  But the job could be done, and if it were
-done, it would be done with @code{column-of-graph}.  Even more
-important, it is worth noting that few changes would have to be made
-anywhere else.  The enhancement, if we ever wish to make it, is
-simple.
+容易看出如何编写这样的函数，但由于我们不需要它，我们将不予实现。但是这项工作是可以完成的，如果完成了，将使用 @code{column-of-graph} 完成。更重要的是，几乎不需要在任何其他地方进行更改。如果我们有兴趣进行增强，这是个简单的任务。
 
-Now, finally, we come to our first actual graph printing function.
-This prints the body of a graph, not the labels for the vertical and
-horizontal axes, so we can call this @code{graph-body-print}.
+现在，最后，我们来到我们的第一个实际图表打印函数。这将打印图表的主体，而不是垂直和水平轴的标签，因此我们可以称其为 @code{graph-body-print}。
 
 @node graph-body-print
 @section The @code{graph-body-print} Function
@@ -11515,7 +11400,7 @@ Install @code{graph-symbol}, @code{graph-blank},
 @ref{Readying a Graph, , Readying a Graph},
 @end iftex
 @ifnottex
-@ref{Columns of a graph},
+@ref{图表的列},
 @end ifnottex
 and @code{graph-body-print}.
 
@@ -13599,8 +13484,8 @@ Set a breakpoint, then run Edebug in Trace mode until it reaches the
 stopping point.
 @end itemize
 
-@node Conclusion
-@chapter Conclusion
+@node 结论
+@chapter 结论
 
 我们现在已经到达了这个介绍的结尾。您现在已经学到足够的关于在Emacs Lisp中编程的知识，足以设置值、为自己和朋友编写简单的@file{.emacs}文件，以及编写对Emacs进行简单定制和扩展的代码。
 
@@ -14382,7 +14267,7 @@ because they were written earlier.
 @appendix A Graph with Labeled Axes
 
 Printed axes help you understand a graph.  They convey scale.  In an
-earlier chapter (@pxref{Readying a Graph, ,  Readying a Graph}), we
+earlier chapter (@pxref{准备图表, ,  准备图表}), we
 wrote the code to print the body of a graph.  Here we write the code
 for printing and labeling vertical and horizontal axes, along with the
 body itself.
@@ -15882,7 +15767,7 @@ The function @code{1+} which adds one to its argument, is executed on
 
 Contrast this with @code{apply}, which applies its first argument to
 all the remaining.
-(@xref{Readying a Graph, , Readying a Graph}, for an explanation of
+(@xref{准备图表, , 准备图表}, for an explanation of
 @code{apply}.)
 
 @need 1250
