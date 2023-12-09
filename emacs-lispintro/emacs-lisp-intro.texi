@@ -11407,24 +11407,18 @@ Emacs 将打印一个类似于以下的图形：
 @end smallexample
 
 @node recursive-graph-body-print
-@section The @code{recursive-graph-body-print} Function
+@section 函数 @code{recursive-graph-body-print}
 @findex recursive-graph-body-print
 
-The @code{graph-body-print} function may also be written recursively.
-The recursive solution is divided into two parts: an outside wrapper
-that uses a @code{let} expression to determine the values of several
-variables that need only be found once, such as the maximum height of
-the graph, and an inside function that is called recursively to print
-the graph.
+函数 @code{graph-body-print} 也可以使用递归的方式来实现。递归解决方案分为两部分：一个外部包装器，它使用 @code{let} 表达式确定一些变量的值，这些变量只需找到一次，例如图形的最大高度；以及一个内部函数，该函数被递归调用以打印图形。
 
 @need 1250
-The wrapper is uncomplicated:
+外部包装器比较简单：
 
 @smallexample
 @group
 (defun recursive-graph-body-print (numbers-list)
-  "Print a bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values."
+  "打印 NUMBERS-LIST 的条形图。"
   (let ((height (apply 'max numbers-list))
         (symbol-width (length graph-blank))
         from-position)
@@ -11435,22 +11429,13 @@ The numbers-list consists of the Y-axis values."
 @end group
 @end smallexample
 
-The recursive function is a little more difficult.  It has four parts:
-the do-again-test, the printing code, the recursive call, and the
-next-step-expression.  The do-again-test is a @code{when}
-expression that determines whether the @code{numbers-list} contains
-any remaining elements; if it does, the function prints one column of
-the graph using the printing code and calls itself again.  The
-function calls itself again according to the value produced by the
-next-step-expression which causes the call to act on a shorter
-version of the @code{numbers-list}.
+递归函数稍微复杂一些。它分为四个部分：再次执行测试、打印代码、递归调用和下一步表达式。再次执行测试是一个 @code{when} 表达式，用于确定 @code{numbers-list} 是否包含任何剩余元素；如果包含，则该函数使用打印代码打印图的一列，并再次调用自身。函数再次调用自身的依据是下一步表达式产生的值，该值导致调用作用在 @code{numbers-list} 的较短版本上。
 
 @smallexample
 @group
 (defun recursive-graph-body-print-internal
   (numbers-list height symbol-width)
-  "Print a bar graph.
-Used within recursive-graph-body-print function."
+  "打印条形图，在 recursive-graph-body-print 函数中使用。"
 @end group
 
 @group
@@ -11462,21 +11447,21 @@ Used within recursive-graph-body-print function."
 @group
         (goto-char from-position)
         (forward-char symbol-width)
-        (sit-for 0)     ; @r{Draw graph column by column.}
+        (sit-for 0)     ; @r{逐列绘制图形。}
         (recursive-graph-body-print-internal
          (cdr numbers-list) height symbol-width)))
 @end group
 @end smallexample
 
 @need 1250
-After installation, this expression can be tested; here is a sample:
+安装完成后，可以测试此表达式；以下是一个示例：
 
 @smallexample
 (recursive-graph-body-print '(3 2 5 6 7 5 3 4 6 4 3 2 1))
 @end smallexample
 
 @need 800
-Here is what @code{recursive-graph-body-print} produces:
+这是 @code{recursive-graph-body-print} 生成的结果：
 
 @smallexample
 @group
@@ -11490,8 +11475,7 @@ Here is what @code{recursive-graph-body-print} produces:
 @end group
 @end smallexample
 
-Either of these two functions, @code{graph-body-print} or
-@code{recursive-graph-body-print}, create the body of a graph.
+这两个函数之一，@code{graph-body-print} 或 @code{recursive-graph-body-print}，都可以创建图形的主体。
 
 @node Printed Axes
 @section Need for Printed Axes
