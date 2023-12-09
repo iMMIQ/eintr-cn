@@ -11558,37 +11558,21 @@ GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式
 @file{loaddefs.el} 文件包含了许多关于要放入你自己的 @file{.emacs} 文件或站点范围初始化文件的建议。
 
 @node defcustom
-@section Specifying Variables using @code{defcustom}
+@section 使用 @code{defcustom} 指定变量
 @findex defcustom
 
-You can specify variables using @code{defcustom} so that you and
-others can then use Emacs's @code{customize} feature to set their
-values.  (You cannot use @code{customize} to write function
-definitions; but you can write @code{defuns} in your @file{.emacs}
-file.  Indeed, you can write any Lisp expression in your @file{.emacs}
-file.)
+您可以使用 @code{defcustom} 指定变量，以便您和其他人可以使用 Emacs 的 @code{customize} 功能来设置它们的值。 （您不能使用 @code{customize} 来编写函数定义；但是您可以在您的 @file{.emacs} 文件中编写 @code{defuns}。实际上，您可以在您的 @file{.emacs} 文件中写任何 Lisp 表达式。）
 
-The @code{customize} feature depends on the @code{defcustom} macro.
-Although you can use @code{defvar} or @code{setq} for variables that
-users set, the @code{defcustom} macro is designed for the job.
+@code{customize} 功能依赖于 @code{defcustom} 宏。虽然您可以使用 @code{defvar} 或 @code{setq} 来定义用户设置的变量，但是 @code{defcustom} 宏是专门设计用于此任务的。
 
-You can use your knowledge of @code{defvar} for writing the
-first three arguments for @code{defcustom}.  The first argument to
-@code{defcustom} is the name of the variable.  The second argument is
-the variable's initial value, if any; and this value is set only if
-the value has not already been set.  The third argument is the
-documentation.
+您可以使用对 @code{defvar} 的了解来编写 @code{defcustom} 的前三个参数。@code{defcustom} 的第一个参数是变量的名称。第二个参数是变量的初始值，如果有的话；并且仅当值尚未设置时才设置。第三个参数是文档。
 
-The fourth and subsequent arguments to @code{defcustom} specify types
-and options; these are not featured in @code{defvar}.  (These
-arguments are optional.)
+@code{defcustom} 的第四个及以后的参数指定类型和选项；这在 @code{defvar} 中没有。 （这些参数是可选的。）
 
-Each of these arguments consists of a keyword followed by a value.
-Each keyword starts with the colon character @samp{:}.
+每个参数都由一个关键字和一个值组成。每个关键字以冒号字符 @samp{:} 开头。
 
 @need 1250
-For example, the customizable user option variable
-@code{text-mode-hook} looks like this:
+例如，可定制的用户选项变量 @code{text-mode-hook} 如下所示：
 
 @smallexample
 @group
@@ -11601,53 +11585,34 @@ For example, the customizable user option variable
 @end smallexample
 
 @noindent
-The name of the variable is @code{text-mode-hook}; it has no default
-value; and its documentation string tells you what it does.
+变量的名称是 @code{text-mode-hook}；它没有默认值；其文档字符串告诉您其功能。
 
-The @code{:type} keyword tells Emacs the kind of data to which
-@code{text-mode-hook} should be set and how to display the value in a
-Customization buffer.
+@code{:type} 关键字告诉 Emacs 应该将 @code{text-mode-hook} 设置为哪种数据类型，并且如何在自定义缓冲区中显示值。
 
-The @code{:options} keyword specifies a suggested list of values for
-the variable.  Usually, @code{:options} applies to a hook.
-The list is only a suggestion; it is not exclusive; a person who sets
-the variable may set it to other values; the list shown following the
-@code{:options} keyword is intended to offer convenient choices to a
-user.
+@code{:options} 关键字指定变量的建议值列表。通常，@code{:options} 适用于钩子。列表只是一个建议；它不是排他的；设置变量的人可以将其设置为其他值；@code{:options} 关键字后面显示的列表旨在为用户提供方便的选择。
 
-Finally, the @code{:group} keyword tells the Emacs Customization
-command in which group the variable is located.  This tells where to
-find it.
+最后，@code{:group} 关键字告诉 Emacs 自定义命令该变量位于哪个组中。这告诉它在哪里找到它。
 
-The @code{defcustom} macro recognizes more than a dozen keywords.
-For more information, see @ref{Customization, , Writing Customization
-Definitions, elisp, The GNU Emacs Lisp Reference Manual}.
+@code{defcustom} 宏识别超过十几个关键字。有关更多信息，请参见 @ref{Customization, , Writing Customization Definitions, elisp, The GNU Emacs Lisp Reference Manual}。
 
-Consider @code{text-mode-hook} as an example.
+以 @code{text-mode-hook} 为例。
 
-There are two ways to customize this variable.  You can use the
-customization command or write the appropriate expressions yourself.
+有两种方法可以定制此变量。您可以使用定制命令，输入：
 
 @need 800
-Using the customization command,  you can type:
-
 @smallexample
 M-x customize
 @end smallexample
 
 @noindent
-and find that the group for editing files of text is called ``Text''.
-Enter that group.  Text Mode Hook is the first member.  You can click
-on its various options, such as @code{turn-on-auto-fill}, to set the
-values.  After you click on the button to
+然后找到文本文件编辑组的名称为“Text”。进入该组。 Text Mode Hook 是第一个成员。您可以单击其各种选项，如 @code{turn-on-auto-fill}，以设置值。单击按钮
 
 @smallexample
 Save for Future Sessions
 @end smallexample
 
 @noindent
-Emacs will write an expression into your @file{.emacs} file.
-It will look like this:
+Emacs 将在您的 @file{.emacs} 文件中写入一个表达式。它看起来像这样：
 
 @smallexample
 @group
@@ -11661,65 +11626,38 @@ It will look like this:
 @end smallexample
 
 @noindent
-(The @code{text-mode-hook-identify} function tells
-@code{toggle-text-mode-auto-fill} which buffers are in Text mode.
-It comes on automatically.)
+（@code{text-mode-hook-identify} 函数告诉 @code{toggle-text-mode-auto-fill} 哪些缓冲区处于文本模式。它会自动启动。）
 
-The @code{custom-set-variables} function works somewhat differently
-than a @code{setq}.  While I have never learned the differences, I
-modify the @code{custom-set-variables} expressions in my @file{.emacs}
-file by hand:  I make the changes in what appears to me to be a
-reasonable manner and have not had any problems.  Others prefer to use
-the Customization command and let Emacs do the work for them.
+与 @code{setq} 不同，@code{custom-set-variables} 函数的工作方式有些不同。虽然我从未学习过其中的区别，但我手动修改 @file{.emacs} 文件中的 @code{custom-set-variables} 表达式：我以我认为合理的方式进行更改，并且没有遇到任何问题。其他人喜欢使用定制命令，让 Emacs 为他们完成工作。
 
-Another @code{custom-set-@dots{}} function is @code{custom-set-faces}.
-This function sets the various font faces.  Over time, I have set a
-considerable number of faces.  Some of the time, I re-set them using
-@code{customize}; other times, I simply edit the
-@code{custom-set-faces} expression in my @file{.emacs} file itself.
+另一个 @code{custom-set-@dots{}} 函数是 @code{custom-set-faces}。该函数设置各种字体样式。随着时间的推移，我已经设置了相当多的样式。有时候，我使用 @code{customize} 重新设置它们；其他时候，我只是编辑 @file{.emacs} 文件中的 @code{custom-set-faces} 表达式本身。
 
-The second way to customize your @code{text-mode-hook} is to set it
-yourself in your @file{.emacs} file using code that has nothing to do
-with the @code{custom-set-@dots{}} functions.
+第二种自定义 @code{text-mode-hook} 的方法是在 @file{.emacs} 文件中使用与 @code{custom-set-@dots{}} 函数无关的代码自己设置它。
 
 @need 800
-When you do this, and later use @code{customize}, you will see a
-message that says
+当您这样做，并稍后使用 @code{customize} 时，您会看到一个消息，上面写着
 
 @smallexample
-CHANGED outside Customize; operating on it here may be unreliable.
+在 Customize 之外更改；在这里操作可能不可靠。
 @end smallexample
 
 @need 800
-This message is only a warning.  If you click on the button to
+这只是一个警告。如果您单击按钮
 
 @smallexample
 Save for Future Sessions
 @end smallexample
 
 @noindent
-Emacs will write a @code{custom-set-@dots{}} expression near the end
-of your @file{.emacs} file that will be evaluated after your
-hand-written expression.  It will, therefore, overrule your
-hand-written expression.  No harm will be done.  When you do this,
-however, be careful to remember which expression is active; if you
-forget, you may confuse yourself.
+Emacs 将在您的 @file{.emacs} 文件末尾附近写入一个 @code{custom-set-@dots{}} 表达式，该表达式将在您手写的表达式之后进行评估。因此，它将覆盖您手写的表达式。不会有任何问题。但是，请务必记住哪个表达式是活动的；如果您忘记了，可能会使自己困惑。
 
-So long as you remember where the values are set, you will have no
-trouble.  In any event, the values are always set in your
-initialization file, which is usually called @file{.emacs}.
+只要记得值是在哪里设置的，就不会有问题。无论如何，这些值总是在您的初始化文件中设置的，通常称为 @file{.emacs}。
 
-I myself use @code{customize} for hardly anything.  Mostly, I write
-expressions myself.
+我个人几乎不使用 @code{customize}。大多数情况下，我自己编写表达式。
 
 @findex defsubst
 @findex defconst
-Incidentally, to be more complete concerning defines:  @code{defsubst}
-defines an inline function.  The syntax is just like that of
-@code{defun}.  @code{defconst} defines a symbol as a constant.  The
-intent is that neither programs nor users should ever change a value
-set by @code{defconst}.  (You can change it; the value set is a
-variable; but please do not.)
+顺便说一下，为了更完整地了解定义：@code{defsubst} 定义内联函数。语法与 @code{defun} 相同。@code{defconst} 将符号定义为常量。意图是既不应该由程序也不应该由用户更改由 @code{defconst} 设置的值。 （您可以更改它；设置的值是一个变量；但请不要这样做。）
 
 @node Beginning init File
 @section Beginning a @file{.emacs} File

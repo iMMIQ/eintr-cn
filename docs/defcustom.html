@@ -58,36 +58,20 @@ div.example {margin-left: 3.2em}
 Next: <a href="Beginning-init-File.html" accesskey="n" rel="next">Beginning a <samp class="file">.emacs</samp> File</a>, Previous: <a href="Zhan-Dian-Fan-Wei-De-Chu-Shi-Hua-.html" accesskey="p" rel="prev">站点范围初始化文件</a>, Up: <a href="Emacs-Chu-Shi-Hua-.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="Specifying-Variables-using-defcustom">16.2 Specifying Variables using <code class="code">defcustom</code></h3>
+<h3 class="section" id="Shi-Yong-defcustom-Zhi-Ding-Bian-Liang-">16.2 使用 <code class="code">defcustom</code> 指定变量</h3>
 <a class="index-entry-id" id="index-defcustom"></a>
 
-<p>You can specify variables using <code class="code">defcustom</code> so that you and
-others can then use Emacs&rsquo;s <code class="code">customize</code> feature to set their
-values.  (You cannot use <code class="code">customize</code> to write function
-definitions; but you can write <code class="code">defuns</code> in your <samp class="file">.emacs</samp>
-file.  Indeed, you can write any Lisp expression in your <samp class="file">.emacs</samp>
-file.)
+<p>您可以使用 <code class="code">defcustom</code> 指定变量，以便您和其他人可以使用 Emacs 的 <code class="code">customize</code> 功能来设置它们的值。 （您不能使用 <code class="code">customize</code> 来编写函数定义；但是您可以在您的 <samp class="file">.emacs</samp> 文件中编写 <code class="code">defuns</code>。实际上，您可以在您的 <samp class="file">.emacs</samp> 文件中写任何 Lisp 表达式。）
 </p>
-<p>The <code class="code">customize</code> feature depends on the <code class="code">defcustom</code> macro.
-Although you can use <code class="code">defvar</code> or <code class="code">setq</code> for variables that
-users set, the <code class="code">defcustom</code> macro is designed for the job.
+<p><code class="code">customize</code> 功能依赖于 <code class="code">defcustom</code> 宏。虽然您可以使用 <code class="code">defvar</code> 或 <code class="code">setq</code> 来定义用户设置的变量，但是 <code class="code">defcustom</code> 宏是专门设计用于此任务的。
 </p>
-<p>You can use your knowledge of <code class="code">defvar</code> for writing the
-first three arguments for <code class="code">defcustom</code>.  The first argument to
-<code class="code">defcustom</code> is the name of the variable.  The second argument is
-the variable&rsquo;s initial value, if any; and this value is set only if
-the value has not already been set.  The third argument is the
-documentation.
+<p>您可以使用对 <code class="code">defvar</code> 的了解来编写 <code class="code">defcustom</code> 的前三个参数。<code class="code">defcustom</code> 的第一个参数是变量的名称。第二个参数是变量的初始值，如果有的话；并且仅当值尚未设置时才设置。第三个参数是文档。
 </p>
-<p>The fourth and subsequent arguments to <code class="code">defcustom</code> specify types
-and options; these are not featured in <code class="code">defvar</code>.  (These
-arguments are optional.)
+<p><code class="code">defcustom</code> 的第四个及以后的参数指定类型和选项；这在 <code class="code">defvar</code> 中没有。 （这些参数是可选的。）
 </p>
-<p>Each of these arguments consists of a keyword followed by a value.
-Each keyword starts with the colon character &lsquo;<samp class="samp">:</samp>&rsquo;.
+<p>每个参数都由一个关键字和一个值组成。每个关键字以冒号字符 &lsquo;<samp class="samp">:</samp>&rsquo; 开头。
 </p>
-<p>For example, the customizable user option variable
-<code class="code">text-mode-hook</code> looks like this:
+<p>例如，可定制的用户选项变量 <code class="code">text-mode-hook</code> 如下所示：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defcustom text-mode-hook nil
@@ -97,50 +81,31 @@ Each keyword starts with the colon character &lsquo;<samp class="samp">:</samp>&
   :group 'wp)
 </pre></div></div>
 
-<p>The name of the variable is <code class="code">text-mode-hook</code>; it has no default
-value; and its documentation string tells you what it does.
+<p>变量的名称是 <code class="code">text-mode-hook</code>；它没有默认值；其文档字符串告诉您其功能。
 </p>
-<p>The <code class="code">:type</code> keyword tells Emacs the kind of data to which
-<code class="code">text-mode-hook</code> should be set and how to display the value in a
-Customization buffer.
+<p><code class="code">:type</code> 关键字告诉 Emacs 应该将 <code class="code">text-mode-hook</code> 设置为哪种数据类型，并且如何在自定义缓冲区中显示值。
 </p>
-<p>The <code class="code">:options</code> keyword specifies a suggested list of values for
-the variable.  Usually, <code class="code">:options</code> applies to a hook.
-The list is only a suggestion; it is not exclusive; a person who sets
-the variable may set it to other values; the list shown following the
-<code class="code">:options</code> keyword is intended to offer convenient choices to a
-user.
+<p><code class="code">:options</code> 关键字指定变量的建议值列表。通常，<code class="code">:options</code> 适用于钩子。列表只是一个建议；它不是排他的；设置变量的人可以将其设置为其他值；<code class="code">:options</code> 关键字后面显示的列表旨在为用户提供方便的选择。
 </p>
-<p>Finally, the <code class="code">:group</code> keyword tells the Emacs Customization
-command in which group the variable is located.  This tells where to
-find it.
+<p>最后，<code class="code">:group</code> 关键字告诉 Emacs 自定义命令该变量位于哪个组中。这告诉它在哪里找到它。
 </p>
-<p>The <code class="code">defcustom</code> macro recognizes more than a dozen keywords.
-For more information, see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Customization.html#Customization">Writing Customization
-Definitions</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>.
+<p><code class="code">defcustom</code> 宏识别超过十几个关键字。有关更多信息，请参见 <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Customization.html#Customization">Writing Customization Definitions</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。
 </p>
-<p>Consider <code class="code">text-mode-hook</code> as an example.
+<p>以 <code class="code">text-mode-hook</code> 为例。
 </p>
-<p>There are two ways to customize this variable.  You can use the
-customization command or write the appropriate expressions yourself.
-</p>
-<p>Using the customization command,  you can type:
+<p>有两种方法可以定制此变量。您可以使用定制命令，输入：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">M-x customize
 </pre></div>
 
-<p>and find that the group for editing files of text is called &ldquo;Text&rdquo;.
-Enter that group.  Text Mode Hook is the first member.  You can click
-on its various options, such as <code class="code">turn-on-auto-fill</code>, to set the
-values.  After you click on the button to
+<p>然后找到文本文件编辑组的名称为“Text”。进入该组。 Text Mode Hook 是第一个成员。您可以单击其各种选项，如 <code class="code">turn-on-auto-fill</code>，以设置值。单击按钮
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">Save for Future Sessions
 </pre></div>
 
-<p>Emacs will write an expression into your <samp class="file">.emacs</samp> file.
-It will look like this:
+<p>Emacs 将在您的 <samp class="file">.emacs</samp> 文件中写入一个表达式。它看起来像这样：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(custom-set-variables
@@ -151,62 +116,35 @@ It will look like this:
  '(text-mode-hook '(turn-on-auto-fill text-mode-hook-identify)))
 </pre></div></div>
 
-<p>(The <code class="code">text-mode-hook-identify</code> function tells
-<code class="code">toggle-text-mode-auto-fill</code> which buffers are in Text mode.
-It comes on automatically.)
+<p>（<code class="code">text-mode-hook-identify</code> 函数告诉 <code class="code">toggle-text-mode-auto-fill</code> 哪些缓冲区处于文本模式。它会自动启动。）
 </p>
-<p>The <code class="code">custom-set-variables</code> function works somewhat differently
-than a <code class="code">setq</code>.  While I have never learned the differences, I
-modify the <code class="code">custom-set-variables</code> expressions in my <samp class="file">.emacs</samp>
-file by hand:  I make the changes in what appears to me to be a
-reasonable manner and have not had any problems.  Others prefer to use
-the Customization command and let Emacs do the work for them.
+<p>与 <code class="code">setq</code> 不同，<code class="code">custom-set-variables</code> 函数的工作方式有些不同。虽然我从未学习过其中的区别，但我手动修改 <samp class="file">.emacs</samp> 文件中的 <code class="code">custom-set-variables</code> 表达式：我以我认为合理的方式进行更改，并且没有遇到任何问题。其他人喜欢使用定制命令，让 Emacs 为他们完成工作。
 </p>
-<p>Another <code class="code">custom-set-&hellip;</code> function is <code class="code">custom-set-faces</code>.
-This function sets the various font faces.  Over time, I have set a
-considerable number of faces.  Some of the time, I re-set them using
-<code class="code">customize</code>; other times, I simply edit the
-<code class="code">custom-set-faces</code> expression in my <samp class="file">.emacs</samp> file itself.
+<p>另一个 <code class="code">custom-set-&hellip;</code> 函数是 <code class="code">custom-set-faces</code>。该函数设置各种字体样式。随着时间的推移，我已经设置了相当多的样式。有时候，我使用 <code class="code">customize</code> 重新设置它们；其他时候，我只是编辑 <samp class="file">.emacs</samp> 文件中的 <code class="code">custom-set-faces</code> 表达式本身。
 </p>
-<p>The second way to customize your <code class="code">text-mode-hook</code> is to set it
-yourself in your <samp class="file">.emacs</samp> file using code that has nothing to do
-with the <code class="code">custom-set-&hellip;</code> functions.
+<p>第二种自定义 <code class="code">text-mode-hook</code> 的方法是在 <samp class="file">.emacs</samp> 文件中使用与 <code class="code">custom-set-&hellip;</code> 函数无关的代码自己设置它。
 </p>
-<p>When you do this, and later use <code class="code">customize</code>, you will see a
-message that says
+<p>当您这样做，并稍后使用 <code class="code">customize</code> 时，您会看到一个消息，上面写着
 </p>
 <div class="example smallexample">
-<pre class="example-preformatted">CHANGED outside Customize; operating on it here may be unreliable.
+<pre class="example-preformatted">在 Customize 之外更改；在这里操作可能不可靠。
 </pre></div>
 
-<p>This message is only a warning.  If you click on the button to
+<p>这只是一个警告。如果您单击按钮
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">Save for Future Sessions
 </pre></div>
 
-<p>Emacs will write a <code class="code">custom-set-&hellip;</code> expression near the end
-of your <samp class="file">.emacs</samp> file that will be evaluated after your
-hand-written expression.  It will, therefore, overrule your
-hand-written expression.  No harm will be done.  When you do this,
-however, be careful to remember which expression is active; if you
-forget, you may confuse yourself.
+<p>Emacs 将在您的 <samp class="file">.emacs</samp> 文件末尾附近写入一个 <code class="code">custom-set-&hellip;</code> 表达式，该表达式将在您手写的表达式之后进行评估。因此，它将覆盖您手写的表达式。不会有任何问题。但是，请务必记住哪个表达式是活动的；如果您忘记了，可能会使自己困惑。
 </p>
-<p>So long as you remember where the values are set, you will have no
-trouble.  In any event, the values are always set in your
-initialization file, which is usually called <samp class="file">.emacs</samp>.
+<p>只要记得值是在哪里设置的，就不会有问题。无论如何，这些值总是在您的初始化文件中设置的，通常称为 <samp class="file">.emacs</samp>。
 </p>
-<p>I myself use <code class="code">customize</code> for hardly anything.  Mostly, I write
-expressions myself.
+<p>我个人几乎不使用 <code class="code">customize</code>。大多数情况下，我自己编写表达式。
 </p>
 <a class="index-entry-id" id="index-defsubst"></a>
 <a class="index-entry-id" id="index-defconst"></a>
-<p>Incidentally, to be more complete concerning defines:  <code class="code">defsubst</code>
-defines an inline function.  The syntax is just like that of
-<code class="code">defun</code>.  <code class="code">defconst</code> defines a symbol as a constant.  The
-intent is that neither programs nor users should ever change a value
-set by <code class="code">defconst</code>.  (You can change it; the value set is a
-variable; but please do not.)
+<p>顺便说一下，为了更完整地了解定义：<code class="code">defsubst</code> 定义内联函数。语法与 <code class="code">defun</code> 相同。<code class="code">defconst</code> 将符号定义为常量。意图是既不应该由程序也不应该由用户更改由 <code class="code">defconst</code> 设置的值。 （您可以更改它；设置的值是一个变量；但请不要这样做。）
 </p>
 </div>
 <hr>
