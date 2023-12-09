@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>自动加载 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="自动加载 (Programming in Emacs Lisp)">
+<meta name="keywords" content="自动加载 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Emacs-Chu-Shi-Hua-.html" rel="up" title="Emacs 初始化">
+<link href="Simple-Extension.html" rel="next" title="Simple Extension">
+<link href="Zai-Ru-WenJian-.html" rel="prev" title="载入文件">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="g_t_81ea_52a8_52a0_8f7d">
+<div class="nav-panel">
+<p>
+Next: <a href="Simple-Extension.html" accesskey="n" rel="next">A Simple Extension: <code class="code">line-to-top-of-window</code></a>, Previous: <a href="Zai-Ru-WenJian-.html" accesskey="p" rel="prev">载入文件</a>, Up: <a href="Emacs-Chu-Shi-Hua-.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Zi-Dong-Jia-Zai-">16.10 自动加载</h3>
+<a class="index-entry-id" id="index-Zi-Dong-Jia-Zai-"></a>
+
+<p>与通过加载包含函数的文件或评估函数定义来安装函数不同，您可以使函数可用，但实际上只有在首次调用时才安装它。这称为<em class="dfn">自动加载</em>。
+</p>
+<p>当执行一个自动加载的函数时，Emacs会自动评估包含定义的文件，然后调用该函数。
+</p>
+<p>Emacs使用自动加载的函数启动更快，因为它们的库不会立即加载；但是当您首次使用这样的函数时，需要等待片刻，因为其包含文件正在评估中。
+</p>
+<p>很少使用的函数经常被自动加载。<samp class="file">loaddefs.el</samp>库包含数千个自动加载的函数，从<code class="code">5x5</code>到<code class="code">zone</code>。当然，您可能会经常使用一个罕见的函数。当您这样做时，应该在<samp class="file">.emacs</samp>文件中使用<code class="code">load</code>表达式加载该函数的文件。
+</p>
+<p>在我的<samp class="file">.emacs</samp>文件中，我加载了14个包含函数的库，否则这些函数将被自动加载。（实际上，最好在我的dumped Emacs中包含这些文件，但我忘了。有关dumping的更多信息，请参阅See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Building-Emacs.html#Building-Emacs">Building Emacs</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>和<samp class="file">INSTALL</samp>文件。）
+</p>
+<p>您可能还希望在<samp class="file">.emacs</samp>文件中包含自动加载的表达式。<code class="code">autoload</code>是一个内置函数，最多接受五个参数，最后三个是可选的。第一个参数是要自动加载的函数的名称；第二个是要加载的文件的名称。第三个参数是函数的文档，第四个告诉函数是否可以通过交互调用。第五个参数告诉对象的类型——<code class="code">autoload</code>可以处理键位图或宏以及函数（默认是函数）。
+</p>
+<p>这是一个典型的例子：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(autoload 'html-helper-mode
+  &quot;html-helper-mode&quot; &quot;Edit HTML documents&quot; t)
+</pre></div></div>
+
+<p>（<code class="code">html-helper-mode</code>是<code class="code">html-mode</code>的一个较旧的替代品，它是分发的标准部分。）
+</p>
+<p>此表达式自动加载了<code class="code">html-helper-mode</code>函数。它从<samp class="file">html-helper-mode.el</samp>文件（或其字节编译版本<samp class="file">html-helper-mode.elc</samp>，如果存在的话）中获取。该文件必须位于由<code class="code">load-path</code>指定的目录中。文档说明这是一种帮助您编辑用HyperText Markup Language编写的文档的模式。您可以通过键入<kbd class="kbd">M-x html-helper-mode</kbd>以交互方式调用此模式。（需要在自动加载表达式中重复函数的常规文档，因为常规函数尚未加载，所以其文档尚不可用。）
+</p>
+<p>See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Autoload.html#Autoload">Autoload</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>，了解更多信息。
+</p>
+</div>
+
+
+
+</body>
+</html>

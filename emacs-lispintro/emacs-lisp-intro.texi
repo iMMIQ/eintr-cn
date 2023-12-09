@@ -12041,48 +12041,24 @@ GNU Emacs 社区的许多成员都编写了对 Emacs 的扩展。随着时间的
 
 另一个执行略有不同任务的交互式命令是 @code{load-file}。有关 @code{load-library} 与该命令之间区别的信息，请参阅 `Lisp Libraries, , Libraries of Lisp Code for Emacs, emacs, The GNU Emacs Manual`。
 
-@node Autoload
-@section Autoloading
-@findex autoload
+@node 自动加载
+@section 自动加载
+@findex 自动加载
 
-Instead of installing a function by loading the file that contains it,
-or by evaluating the function definition, you can make the function
-available but not actually install it until it is first called.  This
-is called @dfn{autoloading}.
+与通过加载包含函数的文件或评估函数定义来安装函数不同，您可以使函数可用，但实际上只有在首次调用时才安装它。这称为@dfn{自动加载}。
 
-When you execute an autoloaded function, Emacs automatically evaluates
-the file that contains the definition, and then calls the function.
+当执行一个自动加载的函数时，Emacs会自动评估包含定义的文件，然后调用该函数。
 
-Emacs starts quicker with autoloaded functions, since their libraries
-are not loaded right away; but you need to wait a moment when you
-first use such a function, while its containing file is evaluated.
+Emacs使用自动加载的函数启动更快，因为它们的库不会立即加载；但是当您首次使用这样的函数时，需要等待片刻，因为其包含文件正在评估中。
 
-Rarely used functions are frequently autoloaded.  The
-@file{loaddefs.el} library contains thousands of autoloaded functions,
-from @code{5x5} to @code{zone}.  Of course, you may
-come to use a rare function frequently.  When you do, you should
-load that function's file with a @code{load} expression in your
-@file{.emacs} file.
+很少使用的函数经常被自动加载。@file{loaddefs.el}库包含数千个自动加载的函数，从@code{5x5}到@code{zone}。当然，您可能会经常使用一个罕见的函数。当您这样做时，应该在@file{.emacs}文件中使用@code{load}表达式加载该函数的文件。
 
-In my @file{.emacs} file, I load 14 libraries that contain functions
-that would otherwise be autoloaded.  (Actually, it would have been
-better to include these files in my dumped Emacs, but I forgot.
-@xref{Building Emacs, , Building Emacs, elisp, The GNU Emacs Lisp
-Reference Manual}, and the @file{INSTALL} file for more about
-dumping.)
+在我的@file{.emacs}文件中，我加载了14个包含函数的库，否则这些函数将被自动加载。（实际上，最好在我的dumped Emacs中包含这些文件，但我忘了。有关dumping的更多信息，请参阅@xref{Building Emacs, , Building Emacs, elisp, The GNU Emacs Lisp Reference Manual}和@file{INSTALL}文件。）
 
-You may also want to include autoloaded expressions in your @file{.emacs}
-file.  @code{autoload} is a built-in function that takes up to five
-arguments, the final three of which are optional.  The first argument
-is the name of the function to be autoloaded; the second is the name
-of the file to be loaded.  The third argument is documentation for the
-function, and the fourth tells whether the function can be called
-interactively.  The fifth argument tells what type of
-object---@code{autoload} can handle a keymap or macro as well as a
-function (the default is a function).
+您可能还希望在@file{.emacs}文件中包含自动加载的表达式。@code{autoload}是一个内置函数，最多接受五个参数，最后三个是可选的。第一个参数是要自动加载的函数的名称；第二个是要加载的文件的名称。第三个参数是函数的文档，第四个告诉函数是否可以通过交互调用。第五个参数告诉对象的类型——@code{autoload}可以处理键位图或宏以及函数（默认是函数）。
 
 @need 800
-Here is a typical example:
+这是一个典型的例子：
 
 @smallexample
 @group
@@ -12092,23 +12068,12 @@ Here is a typical example:
 @end smallexample
 
 @noindent
-(@code{html-helper-mode} is an older alternative to @code{html-mode},
-which is a standard part of the distribution.)
+（@code{html-helper-mode}是@code{html-mode}的一个较旧的替代品，它是分发的标准部分。）
 
 @noindent
-This expression autoloads the @code{html-helper-mode} function.  It
-takes it from the @file{html-helper-mode.el} file (or from the byte
-compiled version @file{html-helper-mode.elc}, if that exists.)  The
-file must be located in a directory specified by @code{load-path}.
-The documentation says that this is a mode to help you edit documents
-written in the HyperText Markup Language.  You can call this mode
-interactively by typing @kbd{M-x html-helper-mode}.  (You need to
-duplicate the function's regular documentation in the autoload
-expression because the regular function is not yet loaded, so its
-documentation is not available.)
+此表达式自动加载了@code{html-helper-mode}函数。它从@file{html-helper-mode.el}文件（或其字节编译版本@file{html-helper-mode.elc}，如果存在的话）中获取。该文件必须位于由@code{load-path}指定的目录中。文档说明这是一种帮助您编辑用HyperText Markup Language编写的文档的模式。您可以通过键入@kbd{M-x html-helper-mode}以交互方式调用此模式。（需要在自动加载表达式中重复函数的常规文档，因为常规函数尚未加载，所以其文档尚不可用。）
 
-@xref{Autoload, , Autoload, elisp, The GNU Emacs Lisp Reference
-Manual}, for more information.
+@xref{Autoload, , Autoload, elisp, The GNU Emacs Lisp Reference Manual}，了解更多信息。
 
 @node Simple Extension
 @section A Simple Extension: @code{line-to-top-of-window}
