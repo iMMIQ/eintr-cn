@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Print-Whole-Graph.html" rel="up" title="Print Whole Graph">
-<link href="Another-Bug.html" rel="next" title="Another Bug">
+<link href="Da-Yin-Zheng-GeTu-Biao-.html" rel="up" title="打印整个图表">
+<link href="LingYiGeCuo-Wu-.html" rel="next" title="另一个错误">
 <link href="lambda.html" rel="prev" title="lambda">
 <style type="text/css">
 <!--
@@ -55,83 +55,61 @@ div.example {margin-left: 3.2em}
 <div class="appendixsubsec-level-extent" id="mapcar">
 <div class="nav-panel">
 <p>
-Next: <a href="Another-Bug.html" accesskey="n" rel="next">Another Bug &hellip; Most Insidious</a>, Previous: <a href="lambda.html" accesskey="p" rel="prev">A <code class="code">lambda</code> Expression: Useful Anonymity</a>, Up: <a href="Print-Whole-Graph.html" accesskey="u" rel="up">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="LingYiGeCuo-Wu-.html" accesskey="n" rel="next">另一个错误 &hellip; 最阴险的</a>, Previous: <a href="lambda.html" accesskey="p" rel="prev">A <code class="code">lambda</code> 表达式：有用的匿名性</a>, Up: <a href="Da-Yin-Zheng-GeTu-Biao-.html" accesskey="u" rel="up">打印整个图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="appendixsubsec" id="The-mapcar-Function">C.4.4 The <code class="code">mapcar</code> Function</h4>
 <a class="index-entry-id" id="index-mapcar"></a>
 
-<p><code class="code">mapcar</code> is a function that calls its first argument with each
-element of its second argument, in turn.  The second argument must be
-a sequence.
+<p><code class="code">mapcar</code>是一个函数，它依次调用它的第一个参数，并将第二个参数的每个元素传递给它的第一个参数。第二个参数必须是一个序列。
 </p>
-<p>The &lsquo;<samp class="samp">map</samp>&rsquo; part of the name comes from the mathematical phrase,
-&ldquo;mapping over a domain&rdquo;, meaning to apply a function to each of the
-elements in a domain.  The mathematical phrase is based on the
-metaphor of a surveyor walking, one step at a time, over an area he is
-mapping.  And &lsquo;<samp class="samp">car</samp>&rsquo;, of course, comes from the Lisp notion of the
-first of a list.
+<p>名称中的&lsquo;<samp class="samp">map</samp>&rsquo;部分来自数学短语，“在一个域上进行映射”，意味着对域中的每个元素应用一个函数。这个数学短语基于一个测量员逐步走过他正在绘制地图的区域的隐喻。而&lsquo;<samp class="samp">car</samp>&rsquo;当然来自Lisp中列表的第一个元素的概念。
 </p>
-<p>For example,
+<p>例如，
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(mapcar '1+ '(2 4 6))
      &rArr; (3 5 7)
 </pre></div></div>
 
-<p>The function <code class="code">1+</code> which adds one to its argument, is executed on
-<em class="emph">each</em> element of the list, and a new list is returned.
+<p>函数<code class="code">1+</code>，它将其参数加一，被执行在列表的<em class="emph">每个</em>元素上，并返回一个新的列表。
 </p>
-<p>Contrast this with <code class="code">apply</code>, which applies its first argument to
-all the remaining.
-(See <a class="xref" href="Zhun-Bei-Tu-Biao-.html">准备图表</a>, for an explanation of
-<code class="code">apply</code>.)
+<p>与之相对的是<code class="code">apply</code>，它将其第一个参数应用于其余的所有参数。
+（See <a class="xref" href="Zhun-Bei-Tu-Biao-.html">准备图表</a>，有关<code class="code">apply</code>的解释。）
 </p>
-<p>In the definition of <code class="code">one-fiftieth</code>, the first argument is the
-anonymous function:
+<p>在<code class="code">one-fiftieth</code>的定义中，第一个参数是匿名函数：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(lambda (arg) (/ arg 50))
 </pre></div>
 
-<p>and the second argument is <code class="code">full-range</code>, which will be bound to
-<code class="code">list-for-graph</code>.
+<p>而第二个参数是<code class="code">full-range</code>，它将绑定到<code class="code">list-for-graph</code>。
 </p>
-<p>The whole expression looks like this:
+<p>整个表达式看起来像这样：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(mapcar (lambda (arg) (/ arg 50)) full-range))
 </pre></div>
 
 <p>See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Mapping-Functions.html#Mapping-Functions">Mapping Functions</a> in <cite class="cite">The GNU Emacs
-Lisp Reference Manual</cite>, for more about <code class="code">mapcar</code>.
+Lisp Reference Manual</cite>，有关<code class="code">mapcar</code>的更多信息。
 </p>
-<p>Using the <code class="code">one-fiftieth</code> function, we can generate a list in
-which each element is one-fiftieth the size of the corresponding
-element in <code class="code">list-for-graph</code>.
+<p>使用<code class="code">one-fiftieth</code>函数，我们可以生成一个列表，其中每个元素都是<code class="code">list-for-graph</code>中相应元素的1/50大小。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(setq fiftieth-list-for-graph
       (one-fiftieth list-for-graph))
 </pre></div></div>
 
-<p>The resulting list looks like this:
+<p>生成的列表如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(10 20 19 15 11 9 6 5 4 3 3 2 2
 1 1 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 4)
 </pre></div></div>
 
-<p>This, we are almost ready to print!  (We also notice the loss of
-information: many of the higher ranges are 0, meaning that fewer than
-50 defuns had that many words or symbols&mdash;but not necessarily meaning
-that none had that many words or symbols.)
+<p>这样，我们几乎可以打印出来了！（我们还注意到信息的丢失：许多较高的范围为0，意味着少于50个defuns有那么多单词或符号，但不一定意味着没有那么多单词或符号。）
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Another-Bug.html">Another Bug &hellip; Most Insidious</a>, Previous: <a href="lambda.html">A <code class="code">lambda</code> Expression: Useful Anonymity</a>, Up: <a href="Print-Whole-Graph.html">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

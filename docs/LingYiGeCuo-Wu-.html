@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>Another Bug (Programming in Emacs Lisp)</title>
+<title>另一个错误 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="Another Bug (Programming in Emacs Lisp)">
-<meta name="keywords" content="Another Bug (Programming in Emacs Lisp)">
+<meta name="description" content="另一个错误 (Programming in Emacs Lisp)">
+<meta name="keywords" content="另一个错误 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Print-Whole-Graph.html" rel="up" title="Print Whole Graph">
-<link href="Final-printed-graph.html" rel="next" title="Final printed graph">
+<link href="Da-Yin-Zheng-GeTu-Biao-.html" rel="up" title="打印整个图表">
+<link href="Zui-Zhong-Da-Yin-Tu-Biao-.html" rel="next" title="最终打印图表">
 <link href="mapcar.html" rel="prev" title="mapcar">
 <style type="text/css">
 <!--
@@ -53,54 +53,39 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 </head>
 
 <body lang="en">
-<div class="appendixsubsec-level-extent" id="Another-Bug">
+<div class="appendixsubsec-level-extent" id="g_t_53e6_4e00_4e2a_9519_8bef">
 <div class="nav-panel">
 <p>
-Next: <a href="Final-printed-graph.html" accesskey="n" rel="next">The Printed Graph</a>, Previous: <a href="mapcar.html" accesskey="p" rel="prev">The <code class="code">mapcar</code> Function</a>, Up: <a href="Print-Whole-Graph.html" accesskey="u" rel="up">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Zui-Zhong-Da-Yin-Tu-Biao-.html" accesskey="n" rel="next">打印图表</a>, Previous: <a href="mapcar.html" accesskey="p" rel="prev">The <code class="code">mapcar</code> Function</a>, Up: <a href="Da-Yin-Zheng-GeTu-Biao-.html" accesskey="u" rel="up">打印整个图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="appendixsubsec" id="Another-Bug-_2026-Most-Insidious">C.4.5 Another Bug &hellip; Most Insidious</h4>
-<a class="index-entry-id" id="index-Bug_002c-most-insidious-type"></a>
-<a class="index-entry-id" id="index-Insidious-type-of-bug"></a>
+<h4 class="appendixsubsec" id="LingYiGeCuo-Wu-_2026-Zui-Yin-Xian-De-">C.4.5 另一个错误 &hellip; 最阴险的</h4>
+<a class="index-entry-id" id="index-Cuo-Wu-_002cZui-Yin-Xian-De-Lei-Xing-"></a>
+<a class="index-entry-id" id="index-Yin-Xian-Lei-Xing-De-Cuo-Wu-"></a>
 
-<p>I said &ldquo;almost ready to print&rdquo;!  Of course, there is a bug in the
-<code class="code">print-graph</code> function &hellip;  It has a <code class="code">vertical-step</code>
-option, but not a <code class="code">horizontal-step</code> option.  The
-<code class="code">top-of-range</code> scale goes from 10 to 300 by tens.  But the
-<code class="code">print-graph</code> function will print only by ones.
+<p>我说过“几乎准备好打印”！当然，在<code class="code">print-graph</code>函数中存在一个错误 &hellip; 它有一个<code class="code">vertical-step</code>选项，但没有<code class="code">horizontal-step</code>选项。<code class="code">top-of-range</code>刻度从10到300，间隔为十。但<code class="code">print-graph</code>函数只会打印每个单位。
 </p>
-<p>This is a classic example of what some consider the most insidious
-type of bug, the bug of omission.  This is not the kind of bug you can
-find by studying the code, for it is not in the code; it is an omitted
-feature.  Your best actions are to try your program early and often;
-and try to arrange, as much as you can, to write code that is easy to
-understand and easy to change.  Try to be aware, whenever you can,
-that whatever you have written, <em class="emph">will</em> be rewritten, if not soon,
-eventually.  A hard maxim to follow.
+<p>这是某些人认为最阴险类型的错误的典型例子，即遗漏错误。这不是你可以通过研究代码找到的错误，因为它不在代码中；它是一个被遗漏的特性。你最好的行动是尽早而经常地尝试你的程序；并且尽量安排，尽可能写出易于理解和修改的代码。尽量在任何时候都意识到，无论你写了什么，<em class="emph">都</em>会被重新编写，如果不是很快，那就是迟早的事。这是一个难以遵循的格言。
 </p>
-<p>It is the <code class="code">print-X-axis-numbered-line</code> function that needs the
-work; and then the <code class="code">print-X-axis</code> and the <code class="code">print-graph</code>
-functions need to be adapted.  Not much needs to be done; there is one
-nicety: the numbers ought to line up under the tic marks.  This takes
-a little thought.
+<p>需要对<code class="code">print-X-axis-numbered-line</code>函数进行修改；然后需要调整<code class="code">print-X-axis</code>和<code class="code">print-graph</code>函数。不需要做太多事情；有一个小技巧：数字应该对齐在刻度标记下方。这需要一点思考。
 </p>
-<p>Here is the corrected <code class="code">print-X-axis-numbered-line</code>:
+<p>以下是修正后的<code class="code">print-X-axis-numbered-line</code>：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun print-X-axis-numbered-line
   (number-of-X-tics X-axis-leading-spaces
    &amp;optional horizontal-step)
-  &quot;Print line of X-axis numbers&quot;
+  &quot;打印X轴数字线&quot;
   (let ((number X-axis-label-spacing)
         (horizontal-step (or horizontal-step 1)))
 </pre></div><div class="group"><pre class="example-preformatted">    (insert X-axis-leading-spaces)
-    ;; <span class="r">Delete extra leading spaces.</span>
+    ;; <span class="r">删除多余的前导空格。</span>
     (delete-char
      (- (1-
          (length (number-to-string horizontal-step)))))
     (insert (concat
              (make-string
-</pre></div><div class="group"><pre class="example-preformatted">              ;; <span class="r">Insert white space.</span>
+</pre></div><div class="group"><pre class="example-preformatted">              ;; <span class="r">插入空白。</span>
               (-  (* symbol-width
                      X-axis-label-spacing)
                   (1-
@@ -110,7 +95,7 @@ a little thought.
               ? )
              (number-to-string
               (* number horizontal-step))))
-</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert remaining numbers.</span>
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">插入剩余的数字。</span>
     (setq number (+ number X-axis-label-spacing))
     (while (&gt; number-of-X-tics 1)
       (insert (X-axis-element
@@ -119,33 +104,28 @@ a little thought.
       (setq number-of-X-tics (1- number-of-X-tics)))))
 </pre></div></div>
 
-<p>If you are reading this in Info, you can see the new versions of
-<code class="code">print-X-axis</code> <code class="code">print-graph</code> and evaluate them.  If you are
-reading this in a printed book, you can see the changed lines here
-(the full text is too much to print).
+<p>如果你在Info中阅读此内容，你可以查看<code class="code">print-X-axis</code>和<code class="code">print-graph</code>的新版本，并对其进行评估。如果你在印刷的书中阅读此内容，你可以在这里看到更改的行（完整文本太长，无法打印）。
 </p>
 
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun print-X-axis (numbers-list horizontal-step)
-  &quot;Print X axis labels to length of NUMBERS-LIST.
-Optionally, HORIZONTAL-STEP, a positive integer,
-specifies how much an X  axis label increments for
-each column.&quot;
-</pre></div><div class="group"><pre class="example-preformatted">;; Value of symbol-width and full-Y-label-width
-;; are passed by print-graph.
+  &quot;打印X轴标签，长度为NUMBERS-LIST。
+可选参数HORIZONTAL-STEP，一个正整数，
+指定每列的X轴标签增量。&quot;
+</pre></div><div class="group"><pre class="example-preformatted">;; 符号宽度和full-Y-label-width的值由print-graph传递。
   (let* ((leading-spaces
           (make-string full-Y-label-width ? ))
-       ;; symbol-width <span class="r">is provided by</span> graph-body-print
+       ;; 符号宽度由graph-body-print提供
        (tic-width (* symbol-width X-axis-label-spacing))
        (X-length (length numbers-list))
 </pre></div><div class="group"><pre class="example-preformatted">       (X-tic
         (concat
          (make-string
-          ;; <span class="r">Make a string of blanks.</span>
+          ;; 制作一串空格。
           (-  (* symbol-width X-axis-label-spacing)
               (length X-axis-tic-symbol))
           ? )
-</pre></div><div class="group"><pre class="example-preformatted">         ;; <span class="r">Concatenate blanks with tic symbol.</span>
+</pre></div><div class="group"><pre class="example-preformatted">         ;; 用空格和刻度符号连接。
          X-axis-tic-symbol))
        (tic-number
         (if (zerop (% X-length tic-width))
@@ -163,27 +143,22 @@ each column.&quot;
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun print-graph
   (numbers-list &amp;optional vertical-step horizontal-step)
-  &quot;Print labeled bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
+  &quot;打印带标签的条形图，NUMBERS-LIST的Y轴值构成。
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">Optionally, VERTICAL-STEP, a positive integer,
-specifies how much a Y axis label increments for
-each line.  For example, a step of 5 means that
-each row is five units.
+</pre><div class="group"><pre class="example-preformatted">可选参数VERTICAL-STEP，一个正整数，
+指定每行的Y轴标签增量。例如，步长为5表示每行五个单位。
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">Optionally, HORIZONTAL-STEP, a positive integer,
-specifies how much an X  axis label increments for
-each column.&quot;
+</pre><div class="group"><pre class="example-preformatted">可选参数HORIZONTAL-STEP，一个正整数，
+指定每列的X轴标签增量。&quot;
   (let* ((symbol-width (length graph-blank))
-         ;; <code class="code">height</code> <span class="r">is both the largest number</span>
-         ;; <span class="r">and the number with the most digits.</span>
+         ;; height既是最大的数字，也是具有最多数字的数字。
          (height (apply 'max numbers-list))
 </pre></div><div class="group"><pre class="example-preformatted">         (height-of-top-line
           (if (zerop (% height Y-axis-label-spacing))
               height
-            ;; <span class="r">else</span>
+            ;; 否则
             (* (1+ (/ height Y-axis-label-spacing))
                Y-axis-label-spacing)))
 </pre></div><div class="group"><pre class="example-preformatted">         (vertical-step (or vertical-step 1))
@@ -201,11 +176,6 @@ each column.&quot;
 </pre></div></div>
 
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Final-printed-graph.html">The Printed Graph</a>, Previous: <a href="mapcar.html">The <code class="code">mapcar</code> Function</a>, Up: <a href="Print-Whole-Graph.html">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

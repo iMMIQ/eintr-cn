@@ -38,9 +38,9 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Full-Graph.html" rel="up" title="Full Graph">
+<link href="Wan-Zheng-Tu-Biao-.html" rel="up" title="完整图表">
 <link href="print_002dY_002daxis.html" rel="next" title="print-Y-axis">
-<link href="Labeled-Example.html" rel="prev" title="Labeled Example">
+<link href="Dai-Biao-Qian-ShiLi.html" rel="prev" title="带标签示例">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -56,50 +56,29 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="appendixsec-level-extent" id="print_002dgraph-Varlist">
 <div class="nav-panel">
 <p>
-Next: <a href="print_002dY_002daxis.html" accesskey="n" rel="next">The <code class="code">print-Y-axis</code> Function</a>, Previous: <a href="Labeled-Example.html" accesskey="p" rel="prev">Labeled Example Graph</a>, Up: <a href="Full-Graph.html" accesskey="u" rel="up">A Graph with Labeled Axes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="print_002dY_002daxis.html" accesskey="n" rel="next"><code class="code">print-Y-axis</code> 函数</a>, Previous: <a href="Dai-Biao-Qian-ShiLi.html" accesskey="p" rel="prev">带标签示例图表</a>, Up: <a href="Wan-Zheng-Tu-Biao-.html" accesskey="u" rel="up">带有标记轴的图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="appendixsec" id="The-print_002dgraph-Varlist">C.1 The <code class="code">print-graph</code> Varlist</h3>
-<a class="index-entry-id" id="index-print_002dgraph-varlist"></a>
+<h3 class="appendixsec" id="Da-Yin-Tu-Xing-De-print_002dgraph-Varlist">C.1 打印图形的 <code class="code">print-graph</code> Varlist</h3>
+<a class="index-entry-id" id="index-print_002dgraph-Bian-Liang-Lie-Biao-"></a>
 
-<p>In writing the <code class="code">print-graph</code> function, the first task is to write
-the varlist in the <code class="code">let</code> expression.  (We will leave aside for the
-moment any thoughts about making the function interactive or about the
-contents of its documentation string.)
+<p>在编写 <code class="code">print-graph</code> 函数时，第一项任务是在 <code class="code">let</code> 表达式中写入 varlist。（我们暂时不考虑将函数设计成交互式的，也不考虑文档字符串的内容。）
 </p>
-<p>The varlist should set several values.  Clearly, the top of the label
-for the vertical axis must be at least the height of the graph, which
-means that we must obtain this information here.  Note that the
-<code class="code">print-graph-body</code> function also requires this information.  There
-is no reason to calculate the height of the graph in two different
-places, so we should change <code class="code">print-graph-body</code> from the way we
-defined it earlier to take advantage of the calculation.
+<p>Varlist 应该设置几个值。显然，垂直轴标签的顶部必须至少与图形的高度相同，这意味着我们必须在这里获取此信息。请注意，<code class="code">print-graph-body</code> 函数也需要此信息。在两个不同的地方计算图形的高度是没有必要的，因此我们应该修改 <code class="code">print-graph-body</code> 的定义，以利用这个计算。
 </p>
-<p>Similarly, both the function for printing the X axis labels and the
-<code class="code">print-graph-body</code> function need to learn the value of the width of
-each symbol.  We can perform the calculation here and change the
-definition for <code class="code">print-graph-body</code> from the way we defined it in the
-previous chapter.
+<p>同样，打印 X 轴标签的函数和 <code class="code">print-graph-body</code> 函数都需要获取每个符号的宽度值。我们可以在这里执行计算，并更改前一章中定义的 <code class="code">print-graph-body</code> 的方式。
 </p>
-<p>The length of the label for the horizontal axis must be at least as long
-as the graph.  However, this information is used only in the function
-that prints the horizontal axis, so it does not need to be calculated here.
+<p>水平轴标签的长度必须至少与图形的长度相同。然而，此信息仅在打印水平轴的函数中使用，因此不需要在这里进行计算。
 </p>
-<p>These thoughts lead us directly to the following form for the varlist
-in the <code class="code">let</code> for <code class="code">print-graph</code>:
+<p>这些思考直接引导我们到 <code class="code">print-graph</code> 的 <code class="code">let</code> 中的以下形式的 varlist：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">(let ((height (apply 'max numbers-list)) ; <span class="r">First version.</span>
+<div class="group"><pre class="example-preformatted">(let ((height (apply 'max numbers-list)) ; <span class="r">第一版。</span>
       (symbol-width (length graph-blank)))
 </pre></div></div>
 
-<p>As we shall see, this expression is not quite right.
+<p>正如我们将看到的，这个表达式并不完全正确。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="print_002dY_002daxis.html">The <code class="code">print-Y-axis</code> Function</a>, Previous: <a href="Labeled-Example.html">Labeled Example Graph</a>, Up: <a href="Full-Graph.html">A Graph with Labeled Axes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

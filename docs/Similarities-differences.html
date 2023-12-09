@@ -39,7 +39,7 @@ ISBN 1-882114-43-4
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="print_002dX_002daxis.html" rel="up" title="print-X-axis">
-<link href="X-Axis-Tic-Marks.html" rel="next" title="X Axis Tic Marks">
+<link href="XZhou-Ke-Du-Biao-Ji-.html" rel="next" title="X轴刻度标记">
 <style type="text/css">
 <!--
 -->
@@ -53,27 +53,21 @@ ISBN 1-882114-43-4
 <div class="unnumberedsubsec-level-extent" id="Similarities-differences">
 <div class="nav-panel">
 <p>
-Next: <a href="X-Axis-Tic-Marks.html" accesskey="n" rel="next">X Axis Tic Marks</a>, Up: <a href="print_002dX_002daxis.html" accesskey="u" rel="up">The <code class="code">print-X-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="XZhou-Ke-Du-Biao-Ji-.html" accesskey="n" rel="next">X轴刻度标记</a>, Up: <a href="print_002dX_002daxis.html" accesskey="u" rel="up"><code class="code">print-X-axis</code> 函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="Similarities-and-differences">Similarities and differences</h4>
+<h4 class="unnumberedsubsec" id="Xiang-Si-Xing-Yu-Chai-Yi-">相似性与差异</h4>
 
-<p>The <code class="code">print-X-axis</code> function is constructed in more or less the
-same fashion as the <code class="code">print-Y-axis</code> function except that it has
-two lines: the line of tic marks and the numbers.  We will write a
-separate function to print each line and then combine them within the
-<code class="code">print-X-axis</code> function.
+<p><code class="code">print-X-axis</code> 函数的构建方式与 <code class="code">print-Y-axis</code> 函数几乎相同，只是它有两行：刻度线和数字。我们将编写两个单独的函数分别打印这两行，然后在 <code class="code">print-X-axis</code> 函数中将它们组合起来。
 </p>
-<p>This is a three step process:
+<p>这是一个三步过程：
 </p>
 <ol class="enumerate">
-<li> Write a function to print the X axis tic marks, <code class="code">print-X-axis-tic-line</code>.
+<li> 编写一个用于打印X轴刻度标记的函数，<code class="code">print-X-axis-tic-line</code>。
 
-</li><li> Write a function to print the X numbers, <code class="code">print-X-axis-numbered-line</code>.
+</li><li> 编写一个用于打印X轴数字的函数，<code class="code">print-X-axis-numbered-line</code>。
 
-</li><li> Write a function to print both lines, the <code class="code">print-X-axis</code> function,
-using <code class="code">print-X-axis-tic-line</code> and
-<code class="code">print-X-axis-numbered-line</code>.
+</li><li> 编写一个用于同时打印两行的函数，即 <code class="code">print-X-axis</code> 函数，使用 <code class="code">print-X-axis-tic-line</code> 和 <code class="code">print-X-axis-numbered-line</code>。
 </li></ol>
 
 </div>

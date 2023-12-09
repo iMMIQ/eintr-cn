@@ -40,7 +40,7 @@ ISBN 1-882114-43-4
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="print_002dY_002daxis.html" rel="up" title="print-Y-axis">
 <link href="print_002dY_002daxis-Penultimate.html" rel="next" title="print-Y-axis Penultimate">
-<link href="Y-Axis-Element.html" rel="prev" title="Y Axis Element">
+<link href="YZhou-Yuan-Su-.html" rel="prev" title="Y轴元素">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -56,47 +56,39 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="appendixsubsec-level-extent" id="Y_002daxis_002dcolumn">
 <div class="nav-panel">
 <p>
-Next: <a href="print_002dY_002daxis-Penultimate.html" accesskey="n" rel="next">The Not Quite Final Version of <code class="code">print-Y-axis</code></a>, Previous: <a href="Y-Axis-Element.html" accesskey="p" rel="prev">Construct a Y Axis Element</a>, Up: <a href="print_002dY_002daxis.html" accesskey="u" rel="up">The <code class="code">print-Y-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="print_002dY_002daxis-Penultimate.html" accesskey="n" rel="next"><code class="code">print-Y-axis</code>的未完全最终版本</a>, Previous: <a href="YZhou-Yuan-Su-.html" accesskey="p" rel="prev">构建Y轴元素</a>, Up: <a href="print_002dY_002daxis.html" accesskey="u" rel="up"><code class="code">print-Y-axis</code> 函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="appendixsubsec" id="Create-a-Y-Axis-Column">C.2.3 Create a Y Axis Column</h4>
+<h4 class="appendixsubsec" id="Chuang-Jian-YZhou-Biao-Qian-Lie-">C.2.3 创建Y轴标签列</h4>
 
-<p>The preceding functions provide all the tools needed to construct a
-function that generates a list of numbered and blank strings to insert
-as the label for the vertical axis:
+<p>前述函数提供了构建生成垂直轴标签的编号和空字符串列表所需的所有工具：
 </p>
 <a class="index-entry-id" id="index-Y_002daxis_002dcolumn"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun Y-axis-column (height width-of-label)
-  &quot;Construct list of Y axis labels and blank strings.
-For HEIGHT of line above base and WIDTH-OF-LABEL.&quot;
+  &quot;构建Y轴标签和空字符串的列表。
+对于线以上的高度和标签的宽度WIDTH-OF-LABEL。&quot;
   (let (Y-axis)
 </pre><div class="group"></div><pre class="example-preformatted">    (while (&gt; height 1)
       (if (zerop (% height Y-axis-label-spacing))
-          ;; <span class="r">Insert label.</span>
+          ;; <span class="r">插入标签。</span>
           (setq Y-axis
                 (cons
                  (Y-axis-element height width-of-label)
                  Y-axis))
-</pre><div class="group"></div><pre class="example-preformatted">        ;; <span class="r">Else, insert blanks.</span>
+</pre><div class="group"></div><pre class="example-preformatted">        ;; <span class="r">否则，插入空白。</span>
         (setq Y-axis
               (cons
                (make-string width-of-label ? )
                Y-axis)))
       (setq height (1- height)))
-    ;; <span class="r">Insert base line.</span>
+    ;; <span class="r">插入基准线。</span>
     (setq Y-axis
           (cons (Y-axis-element 1 width-of-label) Y-axis))
     (nreverse Y-axis)))
 </pre></div></div>
 
-<p>In this function, we start with the value of <code class="code">height</code> and
-repetitively subtract one from its value.  After each subtraction, we
-test to see whether the value is an integral multiple of the
-<code class="code">Y-axis-label-spacing</code>.  If it is, we construct a numbered label
-using the <code class="code">Y-axis-element</code> function; if not, we construct a
-blank label using the <code class="code">make-string</code> function.  The base line
-consists of the number one followed by a tic mark.
+<p>在这个函数中，我们从<code class="code">height</code>的值开始，重复减去1。在每次减法之后，我们测试值是否是<code class="code">Y-axis-label-spacing</code>的整数倍。如果是，我们使用<code class="code">Y-axis-element</code>函数构造一个带有编号的标签；如果不是，我们使用<code class="code">make-string</code>函数构造一个空白标签。基准线由数字1和一个刻度标记组成。
 </p>
 </div>
 

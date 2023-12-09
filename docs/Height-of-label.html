@@ -39,7 +39,7 @@ ISBN 1-882114-43-4
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="print_002dY_002daxis.html" rel="up" title="print-Y-axis">
-<link href="Compute-a-Remainder.html" rel="next" title="Compute a Remainder">
+<link href="Ji-Suan-Yu-Shu-.html" rel="next" title="计算余数">
 <link href="print_002dY_002daxis-in-Detail.html" rel="prev" title="print-Y-axis in Detail">
 <style type="text/css">
 <!--
@@ -54,49 +54,21 @@ ISBN 1-882114-43-4
 <div class="unnumberedsubsec-level-extent" id="Height-of-label">
 <div class="nav-panel">
 <p>
-Next: <a href="Compute-a-Remainder.html" accesskey="n" rel="next">Side Trip: Compute a Remainder</a>, Previous: <a href="print_002dY_002daxis-in-Detail.html" accesskey="p" rel="prev">The <code class="code">print-Y-axis</code> Function in Detail</a>, Up: <a href="print_002dY_002daxis.html" accesskey="u" rel="up">The <code class="code">print-Y-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Ji-Suan-Yu-Shu-.html" accesskey="n" rel="next">附录：计算余数</a>, Previous: <a href="print_002dY_002daxis-in-Detail.html" accesskey="p" rel="prev"><code class="code">print-Y-axis</code> 函数详解</a>, Up: <a href="print_002dY_002daxis.html" accesskey="u" rel="up"><code class="code">print-Y-axis</code> 函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="What-height-should-the-label-be_003f">What height should the label be?</h4>
+<h4 class="unnumberedsubsec" id="Biao-Qian-De-Gao-Du-Ying-Gai-Shi-Duo-Shao-_003f">标签的高度应该是多少？</h4>
 
-<p>The next issue is what height the label should be?  Suppose the maximum
-height of tallest column of the graph is seven.  Should the highest
-label on the Y axis be &lsquo;<samp class="samp">5 -</samp>&rsquo;, and should the graph stick up above
-the label?  Or should the highest label be &lsquo;<samp class="samp">7 -</samp>&rsquo;, and mark the peak
-of the graph?  Or should the highest label be <code class="code">10 -</code>, which is a
-multiple of five, and be higher than the topmost value of the graph?
+<p>下一个问题是标签应该是多高？假设图形中最高柱的高度是七。最高的 Y 轴标签应该是 &lsquo;<samp class="samp">5 -</samp>&rsquo; 吗？图形应该突出标签吗？还是最高标签应该是 &lsquo;<samp class="samp">7 -</samp>&rsquo;，标记图形的峰值？还是最高标签应该是 <code class="code">10 -</code>，是五的倍数，并且高于图形的最高值？
 </p>
-<p>The latter form is preferred.  Most graphs are drawn within rectangles
-whose sides are an integral number of steps long&mdash;5, 10, 15, and so
-on for a step distance of five.  But as soon as we decide to use a
-step height for the vertical axis, we discover that the simple
-expression in the varlist for computing the height is wrong.  The
-expression is <code class="code">(apply 'max numbers-list)</code>.  This returns the
-precise height, not the maximum height plus whatever is necessary to
-round up to the nearest multiple of five.  A more complex expression
-is required.
+<p>我们更喜欢后一种形式。大多数图形都是在边长是整数步长的矩形内绘制的——步长为五时为5、10、15等。但一旦我们决定在垂直轴上使用步幅，我们会发现在计算高度的 varlist 中，简单的表达式是错误的。该表达式是 <code class="code">(apply 'max numbers-list)</code>。这返回精确的高度，而不是最大高度加上使其四舍五入到最近的五的倍数所需的任何值。需要更复杂的表达式。
 </p>
-<p>As usual in cases like this, a complex problem becomes simpler if it is
-divided into several smaller problems.
+<p>像这样的复杂问题，如果分成几个较小的问题，通常会变得更简单。
 </p>
-<p>First, consider the case when the highest value of the graph is an
-integral multiple of five&mdash;when it is 5, 10, 15, or some higher
-multiple of five.  We can use this value as the Y axis height.
+<p>首先，考虑最高值是五的整数倍时的情况——当它是5、10、15或更高的五的倍数时。我们可以将此值用作 Y 轴的高度。
 </p>
-<p>A fairly simply way to determine whether a number is a multiple of
-five is to divide it by five and see if the division results in a
-remainder.  If there is no remainder, the number is a multiple of
-five.  Thus, seven divided by five has a remainder of two, and seven
-is not an integral multiple of five.  Put in slightly different
-language, more reminiscent of the classroom, five goes into seven
-once, with a remainder of two.  However, five goes into ten twice,
-with no remainder: ten is an integral multiple of five.
+<p>确定一个数字是否是五的倍数的一种相当简单的方法是将其除以五，看看除法是否有余数。如果没有余数，那么该数字是五的倍数。因此，七除以五的余数是二，七不是五的整数倍。稍微用不同的措辞，更像是课堂上的表达方式，五除以七一次有余数二，但五除以十两次没有余数：十是五的整数倍。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Compute-a-Remainder.html">Side Trip: Compute a Remainder</a>, Previous: <a href="print_002dY_002daxis-in-Detail.html">The <code class="code">print-Y-axis</code> Function in Detail</a>, Up: <a href="print_002dY_002daxis.html">The <code class="code">print-Y-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -11478,7 +11478,7 @@ Emacs 将打印一个类似于以下的图形：
 
 图表需要有打印的坐标轴，这样你就能更好地定位自己在图中的位置。对于一个一次性的项目，手工使用Emacs的Picture mode绘制坐标轴可能是合理的；但是，一个图形绘制函数可能会被多次使用。
 
-因此，我已经对基本的@code{print-graph-body}函数进行了增强，使其能够自动打印水平和垂直坐标轴的标签。由于标签打印函数并不包含太多新材料，我把它们的描述放在了附录中。@xref{Full Graph, , 带有标记坐标轴的图表}。
+因此，我已经对基本的@code{print-graph-body}函数进行了增强，使其能够自动打印水平和垂直坐标轴的标签。由于标签打印函数并不包含太多新材料，我把它们的描述放在了附录中。@xref{完整图表, , 带有标记坐标轴的图表}。
 
 @node Line Graph Exercise
 @section 练习
@@ -13466,49 +13466,42 @@ kill-ring
 
 有趣的是，GNU Emacs 拥有一个名为 @file{ring.el} 的文件，它提供了我们刚刚讨论的许多功能。但诸如 @code{kill-ring-yank-pointer} 等功能并未使用该库，可能是因为它们是较早编写的。
 
-@node Full Graph
-@appendix A Graph with Labeled Axes
+@node 完整图表
+@appendix 带有标记轴的图表
 
-Printed axes help you understand a graph.  They convey scale.  In an
-earlier chapter (@pxref{准备图表, ,  准备图表}), we
-wrote the code to print the body of a graph.  Here we write the code
-for printing and labeling vertical and horizontal axes, along with the
-body itself.
+印刷的坐标轴有助于理解图表，它们传达了比例尺。在之前的章节中（@pxref{准备图表, ,准备图表}），我们编写了打印图表主体的代码。在这里，我们编写打印和标记垂直和水平轴的代码，以及图表主体本身。
 
 @menu
-* Labeled Example::
-* print-graph Varlist::         @code{let} expression in @code{print-graph}.
-* print-Y-axis::                Print a label for the vertical axis.
-* print-X-axis::                Print a horizontal label.
-* Print Whole Graph::           The function to print a complete graph.
+* 带标签示例::
+* print-graph 变量列表::         @code{let} 表达式在 @code{print-graph} 中的使用。
+* print-Y-axis::                打印垂直轴的标签。
+* print-X-axis::                打印水平标签。
+* 打印完整图表::           用于打印完整图表的函数。
 @end menu
 
 @ifnottex
-@node Labeled Example
-@unnumberedsec Labeled Example Graph
+@node 带标签示例
+@unnumberedsec 带标签示例图表
 @end ifnottex
 
-Since insertions fill a buffer to the right and below point, the new
-graph printing function should first print the Y or vertical axis,
-then the body of the graph, and finally the X or horizontal axis.
-This sequence lays out for us the contents of the function:
+由于插入会填充到点的右侧和下方的缓冲区，新的图表打印函数应该首先打印Y或垂直轴，然后是图表的主体，最后是X或水平轴。这个顺序为我们规定了函数的内容：
 
 @enumerate
 @item
-Set up code.
+设置代码。
 
 @item
-Print Y axis.
+打印Y轴。
 
 @item
-Print body of graph.
+打印图表主体。
 
 @item
-Print X axis.
+打印X轴。
 @end enumerate
 
 @need 800
-Here is an example of how a finished graph should look:
+这是一个完成的图表应该看起来的示例：
 
 @smallexample
 @group
@@ -13528,9 +13521,7 @@ Here is an example of how a finished graph should look:
 @end smallexample
 
 @noindent
-In this graph, both the vertical and the horizontal axes are labeled
-with numbers.  However, in some graphs, the horizontal axis is time
-and would be better labeled with months, like this:
+在这个图表中，垂直轴和水平轴都用数字标记。然而，在一些图表中，水平轴表示时间，最好用月份标记，就像这样：
 
 @smallexample
 @group
@@ -13540,24 +13531,19 @@ and would be better labeled with months, like this:
           ********** **
      1 - **************
          |    ^      |
-         Jan  June   Jan
+         一月  六月   一月
 @end group
 @end smallexample
 
-Indeed, with a little thought, we can easily come up with a variety of
-vertical and horizontal labeling schemes.  Our task could become
-complicated.  But complications breed confusion.  Rather than permit
-this, it is better choose a simple labeling scheme for our first
-effort, and to modify or replace it later.
+事实上，经过一点思考，我们可以轻松想出各种垂直和水平标记方案。我们的任务可能变得复杂。但是复杂性会导致混淆。与其允许这种情况发生，不如为我们的第一次尝试选择一个简单的标记方案，以后再进行修改或替换。
 
 @need 1200
-These considerations suggest the following outline for the
-@code{print-graph} function:
+这些考虑建议了@code{print-graph}函数的以下大纲：
 
 @smallexample
 @group
 (defun print-graph (numbers-list)
-  "@var{documentation}@dots{}"
+  "@var{文档}@dots{}"
   (let ((height  @dots{}
         @dots{}))
 @end group
@@ -13568,59 +13554,41 @@ These considerations suggest the following outline for the
 @end group
 @end smallexample
 
-We can work on each part of the @code{print-graph} function definition
-in turn.
+我们可以逐步处理@code{print-graph}函数定义的每个部分。
 
 @node print-graph Varlist
-@appendixsec The @code{print-graph} Varlist
-@cindex @code{print-graph} varlist
+@appendixsec 打印图形的 @code{print-graph} Varlist
+@cindex @code{print-graph} 变量列表
 
-In writing the @code{print-graph} function, the first task is to write
-the varlist in the @code{let} expression.  (We will leave aside for the
-moment any thoughts about making the function interactive or about the
-contents of its documentation string.)
+在编写 @code{print-graph} 函数时，第一项任务是在 @code{let} 表达式中写入 varlist。（我们暂时不考虑将函数设计成交互式的，也不考虑文档字符串的内容。）
 
-The varlist should set several values.  Clearly, the top of the label
-for the vertical axis must be at least the height of the graph, which
-means that we must obtain this information here.  Note that the
-@code{print-graph-body} function also requires this information.  There
-is no reason to calculate the height of the graph in two different
-places, so we should change @code{print-graph-body} from the way we
-defined it earlier to take advantage of the calculation.
+Varlist 应该设置几个值。显然，垂直轴标签的顶部必须至少与图形的高度相同，这意味着我们必须在这里获取此信息。请注意，@code{print-graph-body} 函数也需要此信息。在两个不同的地方计算图形的高度是没有必要的，因此我们应该修改 @code{print-graph-body} 的定义，以利用这个计算。
 
-Similarly, both the function for printing the X axis labels and the
-@code{print-graph-body} function need to learn the value of the width of
-each symbol.  We can perform the calculation here and change the
-definition for @code{print-graph-body} from the way we defined it in the
-previous chapter.
+同样，打印 X 轴标签的函数和 @code{print-graph-body} 函数都需要获取每个符号的宽度值。我们可以在这里执行计算，并更改前一章中定义的 @code{print-graph-body} 的方式。
 
-The length of the label for the horizontal axis must be at least as long
-as the graph.  However, this information is used only in the function
-that prints the horizontal axis, so it does not need to be calculated here.
+水平轴标签的长度必须至少与图形的长度相同。然而，此信息仅在打印水平轴的函数中使用，因此不需要在这里进行计算。
 
-These thoughts lead us directly to the following form for the varlist
-in the @code{let} for @code{print-graph}:
+这些思考直接引导我们到 @code{print-graph} 的 @code{let} 中的以下形式的 varlist：
 
 @smallexample
 @group
-(let ((height (apply 'max numbers-list)) ; @r{First version.}
+(let ((height (apply 'max numbers-list)) ; @r{第一版。}
       (symbol-width (length graph-blank)))
 @end group
 @end smallexample
 
 @noindent
-As we shall see, this expression is not quite right.
+正如我们将看到的，这个表达式并不完全正确。
 
 @need 2000
 @node print-Y-axis
-@appendixsec The @code{print-Y-axis} Function
-@cindex Axis, print vertical
-@cindex Y axis printing
-@cindex Vertical axis printing
-@cindex Print vertical axis
+@appendixsec @code{print-Y-axis} 函数
+@cindex 垂直轴打印
+@cindex Y 轴打印
+@cindex 垂直轴打印
+@cindex 打印垂直轴
 
-The job of the @code{print-Y-axis} function is to print a label for
-the vertical axis that looks like this:
+@code{print-Y-axis} 函数的任务是打印垂直轴的标签，其外观如下：
 
 @smallexample
 @group
@@ -13638,87 +13606,47 @@ the vertical axis that looks like this:
 @end smallexample
 
 @noindent
-The function should be passed the height of the graph, and then should
-construct and insert the appropriate numbers and marks.
+函数应该接收图形的高度，然后构建并插入相应的数字和标记。
 
 @menu
 * print-Y-axis in Detail::
-* Height of label::             What height for the Y axis?
-* Compute a Remainder::         How to compute the remainder of a division.
-* Y Axis Element::              Construct a line for the Y axis.
-* Y-axis-column::               Generate a list of Y axis labels.
-* print-Y-axis Penultimate::    A not quite final version.
+* Height of label::             Y 轴的高度应该是多少？
+* Compute a Remainder::         如何计算除法的余数。
+* Y Axis Element::              构建 Y 轴线。
+* Y-axis-column::               生成 Y 轴标签的列表。
+* print-Y-axis Penultimate::    不太终极的版本。
 @end menu
 
 @ifnottex
 @node print-Y-axis in Detail
-@unnumberedsubsec The @code{print-Y-axis} Function in Detail
+@unnumberedsubsec @code{print-Y-axis} 函数详解
 @end ifnottex
 
-It is easy enough to see in the figure what the Y axis label should
-look like; but to say in words, and then to write a function
-definition to do the job is another matter.  It is not quite true to
-say that we want a number and a tic every five lines: there are only
-three lines between the @samp{1} and the @samp{5} (lines 2, 3, and 4),
-but four lines between the @samp{5} and the @samp{10} (lines 6, 7, 8,
-and 9).  It is better to say that we want a number and a tic mark on
-the base line (number 1) and then that we want a number and a tic on
-the fifth line from the bottom and on every line that is a multiple of
-five.
+很容易在图中看到 Y 轴标签应该是什么样子；但用文字表达，然后编写一个函数定义来完成这项工作是另一回事。说“我们希望每五行有一个数字和一个刻度”并不完全准确：在 @samp{1} 和 @samp{5} 之间只有三条线（2、3和4行），但在 @samp{5} 和 @samp{10} 之间有四条线（6、7、8和9行）。更好的说法是，我们希望在基线上（数字 1）有一个数字和一个刻度标记，然后在距离底部第五行以及每个是五的倍数的行上都有一个数字和一个刻度。
 
 @ifnottex
 @node Height of label
-@unnumberedsubsec What height should the label be?
+@unnumberedsubsec 标签的高度应该是多少？
 @end ifnottex
 
-The next issue is what height the label should be?  Suppose the maximum
-height of tallest column of the graph is seven.  Should the highest
-label on the Y axis be @samp{5 -}, and should the graph stick up above
-the label?  Or should the highest label be @samp{7 -}, and mark the peak
-of the graph?  Or should the highest label be @code{10 -}, which is a
-multiple of five, and be higher than the topmost value of the graph?
+下一个问题是标签应该是多高？假设图形中最高柱的高度是七。最高的 Y 轴标签应该是 @samp{5 -} 吗？图形应该突出标签吗？还是最高标签应该是 @samp{7 -}，标记图形的峰值？还是最高标签应该是 @code{10 -}，是五的倍数，并且高于图形的最高值？
 
-The latter form is preferred.  Most graphs are drawn within rectangles
-whose sides are an integral number of steps long---5, 10, 15, and so
-on for a step distance of five.  But as soon as we decide to use a
-step height for the vertical axis, we discover that the simple
-expression in the varlist for computing the height is wrong.  The
-expression is @code{(apply 'max numbers-list)}.  This returns the
-precise height, not the maximum height plus whatever is necessary to
-round up to the nearest multiple of five.  A more complex expression
-is required.
+我们更喜欢后一种形式。大多数图形都是在边长是整数步长的矩形内绘制的——步长为五时为5、10、15等。但一旦我们决定在垂直轴上使用步幅，我们会发现在计算高度的 varlist 中，简单的表达式是错误的。该表达式是 @code{(apply 'max numbers-list)}。这返回精确的高度，而不是最大高度加上使其四舍五入到最近的五的倍数所需的任何值。需要更复杂的表达式。
 
-As usual in cases like this, a complex problem becomes simpler if it is
-divided into several smaller problems.
+像这样的复杂问题，如果分成几个较小的问题，通常会变得更简单。
 
-First, consider the case when the highest value of the graph is an
-integral multiple of five---when it is 5, 10, 15, or some higher
-multiple of five.  We can use this value as the Y axis height.
+首先，考虑最高值是五的整数倍时的情况——当它是5、10、15或更高的五的倍数时。我们可以将此值用作 Y 轴的高度。
 
-A fairly simply way to determine whether a number is a multiple of
-five is to divide it by five and see if the division results in a
-remainder.  If there is no remainder, the number is a multiple of
-five.  Thus, seven divided by five has a remainder of two, and seven
-is not an integral multiple of five.  Put in slightly different
-language, more reminiscent of the classroom, five goes into seven
-once, with a remainder of two.  However, five goes into ten twice,
-with no remainder: ten is an integral multiple of five.
+确定一个数字是否是五的倍数的一种相当简单的方法是将其除以五，看看除法是否有余数。如果没有余数，那么该数字是五的倍数。因此，七除以五的余数是二，七不是五的整数倍。稍微用不同的措辞，更像是课堂上的表达方式，五除以七一次有余数二，但五除以十两次没有余数：十是五的整数倍。
 
-@node Compute a Remainder
-@appendixsubsec Side Trip: Compute a Remainder
+@node 计算余数
+@appendixsubsec 附录：计算余数
 
-@findex % @r{(remainder function)}
-@cindex Remainder function, @code{%}
-In Lisp, the function for computing a remainder is @code{%}.  The
-function returns the remainder of its first argument divided by its
-second argument.  As it happens, @code{%} is a function in Emacs Lisp
-that you cannot discover using @code{apropos}: you find nothing if you
-type @kbd{M-x apropos @key{RET} remainder @key{RET}}.  The only way to
-learn of the existence of @code{%} is to read about it in a book such
-as this or in the Emacs Lisp sources.
+@findex % @r{(余数函数)}
+@cindex 余数函数，@code{%}
+在Lisp中，用于计算余数的函数是@code{%}。该函数返回其第一个参数除以第二个参数的余数。正巧，@code{%}在Emacs Lisp中是一个无法通过@code{apropos}发现的函数：如果输入@kbd{M-x apropos @key{RET} remainder @key{RET}}，你将找不到任何结果。了解@code{%}存在的唯一方式是通过阅读本书或Emacs Lisp源代码。
 
-You can try the @code{%} function by evaluating the following two
-expressions:
+你可以通过评估以下两个表达式来尝试@code{%}函数：
 
 @smallexample
 @group
@@ -13729,11 +13657,9 @@ expressions:
 @end smallexample
 
 @noindent
-The first expression returns 2 and the second expression returns 0.
+第一个表达式返回2，第二个表达式返回0。
 
-To test whether the returned value is zero or some other number, we
-can use the @code{zerop} function.  This function returns @code{t} if
-its argument, which must be a number, is zero.
+为了测试返回值是否为零或其他数字，我们可以使用@code{zerop}函数。该函数在其参数（必须是数字）为零时返回@code{t}。
 
 @smallexample
 @group
@@ -13745,74 +13671,54 @@ its argument, which must be a number, is zero.
 @end group
 @end smallexample
 
-Thus, the following expression will return @code{t} if the height
-of the graph is evenly divisible by five:
+因此，以下表达式将在图的高度能够被五整除时返回@code{t}：
 
 @smallexample
 (zerop (% height 5))
 @end smallexample
 
 @noindent
-(The value of @code{height}, of course, can be found from @code{(apply
-'max numbers-list)}.)
+（当然，@code{height}的值可以通过@code{(apply 'max numbers-list)}获得。）
 
-On the other hand, if the value of @code{height} is not a multiple of
-five, we want to reset the value to the next higher multiple of five.
-This is straightforward arithmetic using functions with which we are
-already familiar.  First, we divide the value of @code{height} by five
-to determine how many times five goes into the number.  Thus, five
-goes into twelve twice.  If we add one to this quotient and multiply by
-five, we will obtain the value of the next multiple of five that is
-larger than the height.  Five goes into twelve twice.  Add one to two,
-and multiply by five; the result is fifteen, which is the next multiple
-of five that is higher than twelve.  The Lisp expression for this is:
+另一方面，如果@code{height}的值不是五的倍数，我们希望将其重置为下一个更高的五的倍数。这是使用我们已经熟悉的函数进行的简单算术。首先，我们将@code{height}的值除以五，以确定五可以整除该数多少次。因此，五可以整除十二两次。如果我们将这个商加一并乘以五，就会得到大于该高度的下一个五的倍数的值。五可以整除十二两次。将二加一，并乘以五；结果是十五，这是大于十二的下一个五的倍数。这个Lisp表达式是：
 
 @smallexample
 (* (1+ (/ height 5)) 5)
 @end smallexample
 
 @noindent
-For example, if you evaluate the following, the result is 15:
+例如，如果你评估以下表达式，结果将是15：
 
 @smallexample
 (* (1+ (/ 12 5)) 5)
 @end smallexample
 
-All through this discussion, we have been using 5 as the value
-for spacing labels on the Y axis; but we may want to use some other
-value.  For generality, we should replace 5 with a variable to
-which we can assign a value.  The best name I can think of for this
-variable is @code{Y-axis-label-spacing}.
+在整个讨论中，我们一直使用5作为Y轴标签间隔的值；但我们可能想要使用其他值。为了通用性，我们应该用一个变量替换5，以便我们可以为其赋值。我能想到的这个变量的最佳名称是@code{Y-axis-label-spacing}。
 
 @need 1250
-Using this term, and an @code{if} expression, we produce the
-following:
+使用这个术语和一个@code{if}表达式，我们可以得到以下结果：
 
 @smallexample
 @group
 (if (zerop (% height Y-axis-label-spacing))
     height
-  ;; @r{else}
+  ;; @r{否则}
   (* (1+ (/ height Y-axis-label-spacing))
      Y-axis-label-spacing))
 @end group
 @end smallexample
 
 @noindent
-This expression returns the value of @code{height} itself if the height
-is an even multiple of the value of the @code{Y-axis-label-spacing} or
-else it computes and returns a value of @code{height} that is equal to
-the next higher multiple of the value of the @code{Y-axis-label-spacing}.
+如果高度是@code{Y-axis-label-spacing}的偶数倍，此表达式将返回@code{height}本身，否则它计算并返回一个等于@code{Y-axis-label-spacing}的下一个更高倍数的@code{height}值。
 
-We can now include this expression in the @code{let} expression of the
-@code{print-graph} function (after first setting the value of
-@code{Y-axis-label-spacing}):
+现在，我们可以将此表达式包含在@code{print-graph}函数的@code{let}表达式中（首先设置@code{Y-axis-label-spacing}的值）：
+
 @vindex Y-axis-label-spacing
 
 @smallexample
 @group
 (defvar Y-axis-label-spacing 5
-  "Number of lines from one Y axis label to next.")
+  "从一个Y轴标签到下一个的行数。")
 @end group
 
 @group
@@ -13823,7 +13729,7 @@ We can now include this expression in the @code{let} expression of the
             height
 @end group
 @group
-          ;; @r{else}
+          ;; @r{否则}
           (* (1+ (/ height Y-axis-label-spacing))
              Y-axis-label-spacing)))
        (symbol-width (length graph-blank))))
@@ -13832,28 +13738,19 @@ We can now include this expression in the @code{let} expression of the
 @end smallexample
 
 @noindent
-(Note use of the  @code{let*} function: the initial value of height is
-computed once by the @code{(apply 'max numbers-list)} expression and
-then the resulting value of  @code{height} is used to compute its
-final value.  @xref{fwd-para let, , The @code{let*} expression}, for
-more about @code{let*}.)
+（注意使用@code{let*}函数：通过@code{(apply 'max numbers-list)}表达式计算一次@code{height}的初始值，然后使用@code{height}的结果值计算其最终值。有关@code{let*}的更多信息，请参阅@xref{fwd-para let, , The @code{let*} expression}。）
 
-@node Y Axis Element
-@appendixsubsec Construct a Y Axis Element
+@node Y轴元素
+@appendixsubsec 构建Y轴元素
 
-When we print the vertical axis, we want to insert strings such as
-@w{@samp{5 -}} and @w{@samp{10 - }} every five lines.
-Moreover, we want the numbers and dashes to line up, so shorter
-numbers must be padded with leading spaces.  If some of the strings
-use two digit numbers, the strings with single digit numbers must
-include a leading blank space before the number.
+当我们打印垂直轴时，我们希望在每五行插入诸如 @w{@samp{5 -}} 和 @w{@samp{10 - }} 等字符串。
+此外，我们希望数字和破折号对齐，因此较短的数字必须填充前导空格。
+如果一些字符串使用两位数字，则具有单个数字的字符串必须在数字前包含前导空格。
 
 @findex number-to-string
-To figure out the length of the number, the @code{length} function is
-used.  But the @code{length} function works only with a string, not with
-a number.  So the number has to be converted from being a number to
-being a string.  This is done with the @code{number-to-string} function.
-For example,
+为了确定数字的长度，使用了 @code{length} 函数。
+但是 @code{length} 函数只能处理字符串，而不能处理数字。因此，数字必须转换为字符串。
+这是通过 @code{number-to-string} 函数完成的。例如，
 
 @smallexample
 @group
@@ -13865,48 +13762,36 @@ For example,
 @end group
 @end smallexample
 
-@noindent
-(@code{number-to-string} is also called @code{int-to-string}; you will
-see this alternative name in various sources.)
+(@code{number-to-string} 也被称为 @code{int-to-string}；在各种来源中，您会看到这个替代名称。)
 
-In addition, in each label, each number is followed by a string such
-as @w{@samp{ - }}, which we will call the @code{Y-axis-tic} marker.
-This variable is defined with @code{defvar}:
+此外，在每个标签中，每个数字后面都跟着一个字符串，例如 @w{@samp{ - }}，我们将其称为 @code{Y-axis-tic} 标记。
+该变量使用 @code{defvar} 定义：
 
 @vindex Y-axis-tic
 @smallexample
 @group
 (defvar Y-axis-tic " - "
-   "String that follows number in a Y axis label.")
+   "Y轴标签中数字后面跟随的字符串。")
 @end group
 @end smallexample
 
-The length of the Y label is the sum of the length of the Y axis tic
-mark and the length of the number of the top of the graph.
+Y标签的长度是Y轴标记的长度和图表顶部的数字的长度之和。
 
 @smallexample
 (length (concat (number-to-string height) Y-axis-tic)))
 @end smallexample
 
-This value will be calculated by the @code{print-graph} function in
-its varlist as @code{full-Y-label-width} and passed on.  (Note that we
-did not think to include this in the varlist when we first proposed it.)
+此值将由 @code{print-graph} 函数在其 varlist 中作为 @code{full-Y-label-width} 计算，并传递给下一个函数。（请注意，在我们首次提出 varlist 时，我们没有考虑包含这个。）
 
-To make a complete vertical axis label, a tic mark is concatenated
-with a number; and the two together may be preceded by one or more
-spaces depending on how long the number is.  The label consists of
-three parts: the (optional) leading spaces, the number, and the tic
-mark.  The function is passed the value of the number for the specific
-row, and the value of the width of the top line, which is calculated
-(just once) by @code{print-graph}.
+为了创建完整的垂直轴标签，一个刻度标记与一个数字连接在一起；两者一起可能在数字前包含一个或多个空格，这取决于数字有多长。
+标签由三部分组成：（可选的）前导空格、数字和刻度标记。
+该函数接收特定行的数字值和由 @code{print-graph} 计算的顶部线的宽度的值，该值仅计算一次。
 
 @smallexample
 @group
 (defun Y-axis-element (number full-Y-label-width)
-  "Construct a NUMBERed label element.
-A numbered element looks like this `  5 - ',
-and is padded as needed so all line up with
-the element for the largest number."
+  "构建一个带有数字的标签元素。
+数字元素的外观如下 `  5 - '，并根据最大数字的元素进行必要的填充，以使所有元素对齐。")
 @end group
 @group
   (let* ((leading-spaces
@@ -13923,111 +13808,86 @@ the element for the largest number."
 @end group
 @end smallexample
 
-The @code{Y-axis-element} function concatenates together the leading
-spaces, if any; the number, as a string; and the tic mark.
+@code{Y-axis-element} 函数将前导空格（如果有的话）、作为字符串的数字和刻度标记连接在一起。
 
-To figure out how many leading spaces the label will need, the
-function subtracts the actual length of the label---the length of the
-number plus the length of the tic mark---from the desired label width.
+为了确定标签需要多少前导空格，该函数从实际标签的长度（数字长度加刻度标记长度）中减去所需的标签宽度。
 
 @findex make-string
-Blank spaces are inserted using the @code{make-string} function.  This
-function takes two arguments: the first tells it how long the string
-will be and the second is a symbol for the character to insert, in a
-special format.  The format is a question mark followed by a blank
-space, like this, @samp{? }.  @xref{Character Type, , Character Type,
-elisp, The GNU Emacs Lisp Reference Manual}, for a description of the
-syntax for characters.  (Of course, you might want to replace the
-blank space by some other character @dots{}  You know what to do.)
+使用 @code{make-string} 函数插入空格。该函数接受两个参数：第一个参数告诉它字符串的长度，第二个是要插入的字符的符号，以特殊的格式。格式是一个问号后跟一个空格，如此，@samp{? }。参见@xref{Character Type, , Character Type, elisp, The GNU Emacs Lisp Reference Manual}，以获取有关字符语法的描述。（当然，您可能希望将空格替换为其他字符@dots{} 您知道该怎么做。）
 
-The @code{number-to-string} function is used in the concatenation
-expression, to convert the number to a string that is concatenated
-with the leading spaces and the tic mark.
+在连接表达式中使用 @code{number-to-string} 函数，将数字转换为与前导空格和刻度标记连接的字符串。
 
 @node Y-axis-column
-@appendixsubsec Create a Y Axis Column
+@appendixsubsec 创建Y轴标签列
 
-The preceding functions provide all the tools needed to construct a
-function that generates a list of numbered and blank strings to insert
-as the label for the vertical axis:
+前述函数提供了构建生成垂直轴标签的编号和空字符串列表所需的所有工具：
 
 @findex Y-axis-column
 @smallexample
 @group
 (defun Y-axis-column (height width-of-label)
-  "Construct list of Y axis labels and blank strings.
-For HEIGHT of line above base and WIDTH-OF-LABEL."
+  "构建Y轴标签和空字符串的列表。
+对于线以上的高度和标签的宽度WIDTH-OF-LABEL。"
   (let (Y-axis)
 @group
 @end group
     (while (> height 1)
       (if (zerop (% height Y-axis-label-spacing))
-          ;; @r{Insert label.}
+          ;; @r{插入标签。}
           (setq Y-axis
                 (cons
                  (Y-axis-element height width-of-label)
                  Y-axis))
 @group
 @end group
-        ;; @r{Else, insert blanks.}
+        ;; @r{否则，插入空白。}
         (setq Y-axis
               (cons
                (make-string width-of-label ? )
                Y-axis)))
       (setq height (1- height)))
-    ;; @r{Insert base line.}
+    ;; @r{插入基准线。}
     (setq Y-axis
           (cons (Y-axis-element 1 width-of-label) Y-axis))
     (nreverse Y-axis)))
 @end group
 @end smallexample
 
-In this function, we start with the value of @code{height} and
-repetitively subtract one from its value.  After each subtraction, we
-test to see whether the value is an integral multiple of the
-@code{Y-axis-label-spacing}.  If it is, we construct a numbered label
-using the @code{Y-axis-element} function; if not, we construct a
-blank label using the @code{make-string} function.  The base line
-consists of the number one followed by a tic mark.
+在这个函数中，我们从@code{height}的值开始，重复减去1。在每次减法之后，我们测试值是否是@code{Y-axis-label-spacing}的整数倍。如果是，我们使用@code{Y-axis-element}函数构造一个带有编号的标签；如果不是，我们使用@code{make-string}函数构造一个空白标签。基准线由数字1和一个刻度标记组成。
 
 @need 2000
 @node print-Y-axis Penultimate
-@appendixsubsec The Not Quite Final Version of @code{print-Y-axis}
+@appendixsubsec @code{print-Y-axis}的未完全最终版本
 
-The list constructed by the @code{Y-axis-column} function is passed to
-the @code{print-Y-axis} function, which inserts the list as a column.
+由@code{Y-axis-column}函数构建的列表被传递给@code{print-Y-axis}函数，该函数将列表作为列插入。
 
 @findex print-Y-axis
 @smallexample
 @group
 (defun print-Y-axis (height full-Y-label-width)
-  "Insert Y axis using HEIGHT and FULL-Y-LABEL-WIDTH.
-Height must be the maximum height of the graph.
-Full width is the width of the highest label element."
-;; Value of height and full-Y-label-width
-;; are passed by print-graph.
+  "使用HEIGHT和FULL-Y-LABEL-WIDTH插入Y轴。
+Height必须是图形的最大高度。
+全宽度是最高标签元素的宽度。"
+;; Height和full-Y-label-width的值由print-graph传递。
 @end group
 @group
   (let ((start (point)))
     (insert-rectangle
      (Y-axis-column height full-Y-label-width))
-    ;; @r{Place point ready for inserting graph.}
+    ;; @r{将点置于插入图形的正确位置。}
     (goto-char start)
-    ;; @r{Move point forward by value of} full-Y-label-width
+    ;; @r{将点向前移动FULL-Y-LABEL-WIDTH的值}
     (forward-char full-Y-label-width)))
 @end group
 @end smallexample
 
-The @code{print-Y-axis} uses the @code{insert-rectangle} function to
-insert the Y axis labels created by the @code{Y-axis-column} function.
-In addition, it places point at the correct position for printing the body of
-the graph.
+@code{print-Y-axis}使用@code{insert-rectangle}函数插入由@code{Y-axis-column}函数创建的Y轴标签。此外，它将点放置在正确的位置以打印图形的主体。
 
-You can test @code{print-Y-axis}:
+您可以测试@code{print-Y-axis}：
 
 @enumerate
 @item
-Install
+安装
 
 @smallexample
 @group
@@ -14040,42 +13900,37 @@ print-Y-axis
 @end smallexample
 
 @item
-Copy the following expression:
+复制以下表达式：
 
 @smallexample
 (print-Y-axis 12 5)
 @end smallexample
 
 @item
-Switch to the @file{*scratch*} buffer and place the cursor where you
-want the axis labels to start.
+切换到@file{*scratch*}缓冲区，并将光标放在希望开始轴标签的位置。
 
 @item
-Type @kbd{M-:} (@code{eval-expression}).
+键入@kbd{M-:}（@code{eval-expression}）。
 
 @item
-Yank the @code{graph-body-print} expression into the minibuffer
-with @kbd{C-y} (@code{yank)}.
+使用@kbd{C-y}（@code{yank}）将@code{graph-body-print}表达式粘贴到迷你缓冲区中。
 
 @item
-Press @key{RET} to evaluate the expression.
+按下@key{RET}以评估表达式。
 @end enumerate
 
-Emacs will print labels vertically, the top one being @w{@samp{10 -@w{
-}}}.  (The @code{print-graph} function will pass the value of
-@code{height-of-top-line}, which in this case will end up as 15,
-thereby getting rid of what might appear as a bug.)
+Emacs将垂直打印标签，顶部的标签为@w{@samp{10 -@w{
+}}}.（在这种情况下，@code{print-graph}函数将传递@code{height-of-top-line}的值，这将最终变为15，从而消除可能出现的错误。）
 
 @need 2000
 @node print-X-axis
-@appendixsec The @code{print-X-axis} Function
-@cindex Axis, print horizontal
-@cindex X axis printing
-@cindex Print horizontal axis
-@cindex Horizontal axis printing
+@appendixsec @code{print-X-axis} 函数
+@cindex 坐标轴，水平打印
+@cindex X轴打印
+@cindex 打印水平轴
+@cindex 水平轴打印
 
-X axis labels are much like Y axis labels, except that the ticks are on a
-line above the numbers.  Labels should look like this:
+X轴标签与Y轴标签类似，不同之处在于刻度位于数字上方的一条线上。标签应该如下所示：
 
 @smallexample
 @group
@@ -14084,101 +13939,78 @@ line above the numbers.  Labels should look like this:
 @end group
 @end smallexample
 
-The first tic is under the first column of the graph and is preceded by
-several blank spaces.  These spaces provide room in rows above for the Y
-axis labels.  The second, third, fourth, and subsequent ticks are all
-spaced equally, according to the value of @code{X-axis-label-spacing}.
+第一个刻度位于图表的第一列下方，并且前面有几个空格。这些空格在上面的行中为Y轴标签提供了空间。第二、第三、第四和随后的刻度都是等距的，根据 @code{X-axis-label-spacing} 的值确定。
 
-The second row of the X axis consists of numbers, preceded by several
-blank spaces and also separated according to the value of the variable
-@code{X-axis-label-spacing}.
+X轴的第二行包含数字，前面有几个空格，并且也根据变量 @code{X-axis-label-spacing} 的值分隔。
 
-The value of the variable @code{X-axis-label-spacing} should itself be
-measured in units of @code{symbol-width}, since you may want to change
-the width of the symbols that you are using to print the body of the
-graph without changing the ways the graph is labeled.
+变量 @code{X-axis-label-spacing} 的值本身应该以 @code{symbol-width} 的单位来衡量，因为您可能希望更改用于打印图表主体的符号的宽度，而不改变图表的标签方式。
 
 @menu
-* Similarities differences::    Much like @code{print-Y-axis}, but not exactly.
-* X Axis Tic Marks::            Create tic marks for the horizontal axis.
+* Similarities differences::    与 @code{print-Y-axis} 类似，但不完全相同。
+* X Axis Tic Marks::            为水平轴创建刻度标记。
 @end menu
 
 @ifnottex
 @node Similarities differences
-@unnumberedsubsec Similarities and differences
+@unnumberedsubsec 相似性与差异
 @end ifnottex
 
-The @code{print-X-axis} function is constructed in more or less the
-same fashion as the @code{print-Y-axis} function except that it has
-two lines: the line of tic marks and the numbers.  We will write a
-separate function to print each line and then combine them within the
-@code{print-X-axis} function.
+@code{print-X-axis} 函数的构建方式与 @code{print-Y-axis} 函数几乎相同，只是它有两行：刻度线和数字。我们将编写两个单独的函数分别打印这两行，然后在 @code{print-X-axis} 函数中将它们组合起来。
 
-This is a three step process:
+这是一个三步过程：
 
 @enumerate
 @item
-Write a function to print the X axis tic marks, @code{print-X-axis-tic-line}.
+编写一个用于打印X轴刻度标记的函数，@code{print-X-axis-tic-line}。
 
 @item
-Write a function to print the X numbers, @code{print-X-axis-numbered-line}.
+编写一个用于打印X轴数字的函数，@code{print-X-axis-numbered-line}。
 
 @item
-Write a function to print both lines, the @code{print-X-axis} function,
-using @code{print-X-axis-tic-line} and
-@code{print-X-axis-numbered-line}.
+编写一个用于同时打印两行的函数，即 @code{print-X-axis} 函数，使用 @code{print-X-axis-tic-line} 和 @code{print-X-axis-numbered-line}。
 @end enumerate
 
-@node X Axis Tic Marks
-@appendixsubsec X Axis Tic Marks
+@node X轴刻度标记
+@appendixsubsec X轴刻度标记
 
-The first function should print the X axis tic marks.  We must specify
-the tic marks themselves and their spacing:
+第一个函数应该打印X轴的刻度标记。我们需要指定刻度标记本身及其间距：
 
 @smallexample
 @group
 (defvar X-axis-label-spacing
   (if (boundp 'graph-blank)
       (* 5 (length graph-blank)) 5)
-  "Number of units from one X axis label to next.")
+  "相邻X轴标签之间的单位数。")
 @end group
 @end smallexample
 
 @noindent
-(Note that the value of @code{graph-blank} is set by another
-@code{defvar}.  The @code{boundp} predicate checks whether it has
-already been set; @code{boundp} returns @code{nil} if it has not.  If
-@code{graph-blank} were unbound and we did not use this conditional
-construction, we would enter the debugger and see an error message
-saying @samp{@w{Debugger entered--Lisp error:}
-@w{(void-variable graph-blank)}}.)
+（注意，@code{graph-blank}的值由另一个@code{defvar}设置。@code{boundp}谓词检查它是否已经被设置；如果尚未设置@code{graph-blank}，并且我们没有使用此条件构造，将进入调试器，并显示错误消息，其中包含 @samp{@w{Debugger entered--Lisp error:}
+@w{(void-variable graph-blank)}}。）
 
 @need 1200
-Here is the @code{defvar} for @code{X-axis-tic-symbol}:
+这是@code{X-axis-tic-symbol}的@code{defvar}：
 
 @smallexample
 @group
 (defvar X-axis-tic-symbol "|"
-  "String to insert to point to a column in X axis.")
+  "插入到X轴列的字符串。")
 @end group
 @end smallexample
 
 @need 1250
-The goal is to make a line that looks like this:
+目标是生成如下一行：
 
 @smallexample
        |   |    |    |
 @end smallexample
 
-The first tic is indented so that it is under the first column, which is
-indented to provide space for the Y axis labels.
+第一个刻度标记缩进，使其位于第一列下方，该列缩进以提供给Y轴标签留出空间。
 
-A tic element consists of the blank spaces that stretch from one tic to
-the next plus a tic symbol.  The number of blanks is determined by the
-width of the tic symbol and the @code{X-axis-label-spacing}.
+刻度元素包括从一个刻度到下一个刻度的空格以及一个刻度符号。空格的数量由刻度符号的宽度和@code{X-axis-label-spacing}确定。
 
 @need 1250
-The code looks like this:
+代码如下：
 
 @smallexample
 @group
@@ -14186,23 +14018,20 @@ The code looks like this:
 @dots{}
 (concat
  (make-string
-  ;; @r{Make a string of blanks.}
+  ;; @r{生成空格字符串。}
   (-  (* symbol-width X-axis-label-spacing)
       (length X-axis-tic-symbol))
   ? )
- ;; @r{Concatenate blanks with tic symbol.}
+ ;; @r{将空格与刻度符号连接起来。}
  X-axis-tic-symbol)
 @dots{}
 @end group
 @end smallexample
 
-Next, we determine how many blanks are needed to indent the first tic
-mark to the first column of the graph.  This uses the value of
-@code{full-Y-label-width} passed it by the @code{print-graph} function.
+接下来，我们确定需要多少空格来缩进第一个刻度标记以对齐图表的第一列。这使用由@code{print-graph}函数传递的@code{full-Y-label-width}的值。
 
 @need 1250
-The code to make @code{X-axis-leading-spaces}
-looks like this:
+生成@code{X-axis-leading-spaces}的代码如下：
 
 @smallexample
 @group
@@ -14213,9 +14042,7 @@ looks like this:
 @end group
 @end smallexample
 
-We also need to determine the length of the horizontal axis, which is
-the length of the numbers list, and the number of ticks in the horizontal
-axis:
+我们还需要确定水平轴的长度，即数字列表的长度，以及水平轴上的刻度数：
 
 @smallexample
 @group
@@ -14239,45 +14066,45 @@ axis:
 @end smallexample
 
 @need 1250
-All this leads us directly to the function for printing the X axis tic line:
+所有这些直接导致打印X轴刻度线的函数：
 
 @findex print-X-axis-tic-line
 @smallexample
 @group
 (defun print-X-axis-tic-line
   (number-of-X-tics X-axis-leading-spaces X-axis-tic-element)
-  "Print ticks for X axis."
+  "打印X轴的刻度标记。"
     (insert X-axis-leading-spaces)
-    (insert X-axis-tic-symbol)  ; @r{Under first column.}
+    (insert X-axis-tic-symbol)  ; @r{在第一列下方插入刻度符号。}
 @end group
 @group
-    ;; @r{Insert second tic in the right spot.}
+    ;; @r{在正确的位置插入第二个刻度。}
     (insert (concat
              (make-string
               (-  (* symbol-width X-axis-label-spacing)
-                  ;; @r{Insert white space up to second tic symbol.}
+                  ;; @r{插入到第二个刻度符号的空格。}
                   (* 2 (length X-axis-tic-symbol)))
               ? )
              X-axis-tic-symbol))
 @end group
 @group
-    ;; @r{Insert remaining ticks.}
+    ;; @r{插入剩余的刻度标记。}
     (while (> number-of-X-tics 1)
       (insert X-axis-tic-element)
       (setq number-of-X-tics (1- number-of-X-tics))))
 @end group
 @end smallexample
 
-The line of numbers is equally straightforward:
+数字行同样简单：
 
 @need 1250
-First, we create a numbered element with blank spaces before each number:
+首先，我们使用空格在每个数字之前创建一个带编号的元素：
 
 @findex X-axis-element
 @smallexample
 @group
 (defun X-axis-element (number)
-  "Construct a numbered X axis element."
+  "构造带编号的X轴元素。"
   (let ((leading-spaces
          (-  (* symbol-width X-axis-label-spacing)
              (length (number-to-string number)))))
@@ -14286,15 +14113,14 @@ First, we create a numbered element with blank spaces before each number:
 @end group
 @end smallexample
 
-Next, we create the function to print the numbered line, starting with
-the number 1 under the first column:
+接下来，我们创建打印带编号行的函数，从数字1开始，位于第一列下方：
 
 @findex print-X-axis-numbered-line
 @smallexample
 @group
 (defun print-X-axis-numbered-line
   (number-of-X-tics X-axis-leading-spaces)
-  "Print line of X-axis numbers"
+  "打印X轴数字行"
   (let ((number X-axis-label-spacing))
     (insert X-axis-leading-spaces)
     (insert "1")
@@ -14302,13 +14128,13 @@ the number 1 under the first column:
 @group
     (insert (concat
              (make-string
-              ;; @r{Insert white space up to next number.}
+              ;; @r{插入到下一个数字的空格。}
               (-  (* symbol-width X-axis-label-spacing) 2)
               ? )
              (number-to-string number)))
 @end group
 @group
-    ;; @r{Insert remaining numbers.}
+    ;; @r{插入剩余的数字。}
     (setq number (+ number X-axis-label-spacing))
     (while (> number-of-X-tics 1)
       (insert (X-axis-element number))
@@ -14317,28 +14143,22 @@ the number 1 under the first column:
 @end group
 @end smallexample
 
-Finally, we need to write the @code{print-X-axis} that uses
-@code{print-X-axis-tic-line} and
-@code{print-X-axis-numbered-line}.
+最后，我们需要编写@code{print-X-axis}函数，该函数使用@code{print-X-axis-tic-line}和@code{print-X-axis-numbered-line}。
 
-The function must determine the local values of the variables used by both
-@code{print-X-axis-tic-line} and @code{print-X-axis-numbered-line}, and
-then it must call them.  Also, it must print the carriage return that
-separates the two lines.
+该函数必须确定两个函数都使用的变量的局部值，然后调用它们。此外，它必须打印分隔两行的换行符。
 
-The function consists of a varlist that specifies five local variables,
-and calls to each of the two line printing functions:
+该函数包含一个varlist，指定了五个局部变量，并调用了两个打印行的函数：
 
 @findex print-X-axis
 @smallexample
 @group
 (defun print-X-axis (numbers-list)
-  "Print X axis labels to length of NUMBERS-LIST."
+  "打印X轴标签到NUMBERS-LIST的长度。"
   (let* ((leading-spaces
           (make-string full-Y-label-width ? ))
 @end group
 @group
-       ;; symbol-width @r{is provided by} graph-body-print
+       ;; symbol-width @r{由} graph-body-print @r{提供}
        (tic-width (* symbol-width X-axis-label-spacing))
        (X-length (length numbers-list))
 @end group
@@ -14348,13 +14168,13 @@ and calls to each of the two line printing functions:
          (make-string
 @end group
 @group
-          ;; @r{Make a string of blanks.}
+          ;; @r{生成空格字符串。}
           (-  (* symbol-width X-axis-label-spacing)
               (length X-axis-tic-symbol))
           ? )
 @end group
 @group
-         ;; @r{Concatenate blanks with tic symbol.}
+         ;; @r{将空格与刻度符号连接起来。}
          X-axis-tic-symbol))
 @end group
 @group
@@ -14371,16 +14191,14 @@ and calls to each of the two line printing functions:
 @end smallexample
 
 @need 1250
-You can test @code{print-X-axis}:
+您可以测试@code{print-X-axis}：
 
 @enumerate
 @item
-Install @code{X-axis-tic-symbol}, @code{X-axis-label-spacing},
-@code{print-X-axis-tic-line}, as well as @code{X-axis-element},
-@code{print-X-axis-numbered-line}, and @code{print-X-axis}.
+安装@code{X-axis-tic-symbol}，@code{X-axis-label-spacing}，@code{print-X-axis-tic-line}以及@code{X-axis-element}，@code{print-X-axis-numbered-line}和@code{print-X-axis}。
 
 @item
-Copy the following expression:
+复制以下表达式：
 
 @smallexample
 @group
@@ -14393,22 +14211,20 @@ Copy the following expression:
 @end smallexample
 
 @item
-Switch to the @file{*scratch*} buffer and place the cursor where you
-want the axis labels to start.
+切换到@file{*scratch*}缓冲区，并将光标放到希望开始轴标签的位置。
 
 @item
-Type @kbd{M-:} (@code{eval-expression}).
+输入@kbd{M-:}（@code{eval-expression}）。
 
 @item
-Yank the test expression into the minibuffer
-with @kbd{C-y} (@code{yank)}.
+使用@kbd{C-y}（@code{yank}）将测试表达式粘贴到迷你缓冲区中。
 
 @item
-Press @key{RET} to evaluate the expression.
+按下@key{RET}以评估表达式。
 @end enumerate
 
 @need 1250
-Emacs will print the horizontal axis like this:
+Emacs将打印出水平轴，如下所示：
 @sp 1
 
 @smallexample
@@ -14418,20 +14234,18 @@ Emacs will print the horizontal axis like this:
 @end group
 @end smallexample
 
-@node Print Whole Graph
-@appendixsec Printing the Whole Graph
-@cindex Printing the whole graph
-@cindex Whole graph printing
-@cindex Graph, printing all
+@node 打印整个图表
+@appendixsec 打印整个图表
+@cindex 打印整个图表
+@cindex 整个图表打印
+@cindex 图表，全部打印
 
-Now we are nearly ready to print the whole graph.
+现在我们几乎准备好打印整个图表了。
 
-The function to print the graph with the proper labels follows the
-outline we created earlier (@pxref{Full Graph, , A Graph with Labeled
-Axes}), but with additions.
+打印带有适当标签的图表的函数遵循我们之前创建的大纲（@pxref{完整图表, , 带标签的图表}），但是有一些增加。
 
 @need 1250
-Here is the outline:
+以下是大纲：
 
 @smallexample
 @group
@@ -14448,44 +14262,38 @@ Here is the outline:
 @end smallexample
 
 @menu
-* The final version::           A few changes.
-* Test print-graph::            Run a short test.
-* Graphing words in defuns::    Executing the final code.
-* lambda::                      How to write an anonymous function.
-* mapcar::                      Apply a function to elements of a list.
-* Another Bug::                 Yet another bug @dots{} most insidious.
-* Final printed graph::         The graph itself!
+* 最终版本::                   几处更改。
+* 测试 print-graph::            运行简短测试。
+* 在 defuns 中绘制图表::        执行最终代码。
+* lambda::                      如何编写匿名函数。
+* mapcar::                      对列表元素应用函数。
+* 另一个错误::                 又一个错误 @dots{} 最隐匿。
+* 最终打印的图表::             图表本身！
 @end menu
 
 @ifnottex
-@node The final version
-@unnumberedsubsec Changes for the Final Version
+@node 最终版本
+@unnumberedsubsec 最终版本的更改
 @end ifnottex
 
-The final version is different from what we planned in two ways:
-first, it contains additional values calculated once in the varlist;
-second, it carries an option to specify the labels' increment per row.
-This latter feature turns out to be essential; otherwise, a graph may
-have more rows than fit on a display or on a sheet of paper.
+最终版本与我们计划的不同，有两点不同：首先，它包含了一次在变量列表中计算的附加值；其次，它带有一个选项，用于指定标签每行的增量。
+后者的功能证明是必要的；否则，图表可能具有超过显示屏或纸张上能容纳的行数。
 
 @need 1500
-This new feature requires a change to the @code{Y-axis-column}
-function, to add @code{vertical-step} to it.  The function looks like
-this:
+这个新功能需要对 @code{Y-axis-column} 函数进行更改，以添加 @code{vertical-step}。该函数如下：
 
-@findex Y-axis-column @r{Final version.}
+@findex Y-axis-column @r{最终版本。}
 @smallexample
 @group
-;;; @r{Final version.}
+;;; @r{最终版本。}
 (defun Y-axis-column
   (height width-of-label &optional vertical-step)
-  "Construct list of labels for Y axis.
-HEIGHT is maximum height of graph.
-WIDTH-OF-LABEL is maximum width of label.
-VERTICAL-STEP, an option, is a positive integer
-that specifies how much a Y axis label increments
-for each line.  For example, a step of 5 means
-that each line is five units of the graph."
+  "构建Y轴标签列表。
+HEIGHT 是图表的最大高度。
+WIDTH-OF-LABEL 是标签的最大宽度。
+VERTICAL-STEP，一个可选项，是一个正整数，
+用于指定每行的Y轴标签增量。
+例如，步长为5表示每行是图表的五个单位。"
 @end group
 @group
   (let (Y-axis
@@ -14494,7 +14302,7 @@ that each line is five units of the graph."
       (if (zerop (% height Y-axis-label-spacing))
 @end group
 @group
-          ;; @r{Insert label.}
+          ;; @r{插入标签。}
           (setq Y-axis
                 (cons
                  (Y-axis-element
@@ -14503,7 +14311,7 @@ that each line is five units of the graph."
                  Y-axis))
 @end group
 @group
-        ;; @r{Else, insert blanks.}
+        ;; @r{否则，插入空白。}
         (setq Y-axis
               (cons
                (make-string width-of-label ? )
@@ -14511,7 +14319,7 @@ that each line is five units of the graph."
       (setq height (1- height)))
 @end group
 @group
-    ;; @r{Insert base line.}
+    ;; @r{插入基准线。}
     (setq Y-axis (cons (Y-axis-element
                         (or vertical-step 1)
                         width-of-label)
@@ -14520,19 +14328,17 @@ that each line is five units of the graph."
 @end group
 @end smallexample
 
-The values for the maximum height of graph and the width of a symbol
-are computed by @code{print-graph} in its @code{let} expression; so
-@code{graph-body-print} must be changed to accept them.
+图表的最大高度和符号宽度的值由 @code{print-graph} 在其 @code{let} 表达式中计算；因此，@code{graph-body-print} 必须更改以接受它们。
 
-@findex graph-body-print @r{Final version.}
+@findex graph-body-print @r{最终版本。}
 @smallexample
 @group
-;;; @r{Final version.}
+;;; @r{最终版本。}
 (defun graph-body-print (numbers-list height symbol-width)
-  "Print a bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
-HEIGHT is maximum height of graph.
-SYMBOL-WIDTH is number of each column."
+  "打印NUMBERS-LIST的条形图。
+numbers-list 包含Y轴值。
+HEIGHT 是图表的最大高度。
+SYMBOL-WIDTH 是每列的数字。"
 @end group
 @group
   (let (from-position)
@@ -14544,45 +14350,44 @@ SYMBOL-WIDTH is number of each column."
       (forward-char symbol-width)
 @end group
 @group
-      ;; @r{Draw graph column by column.}
+      ;; @r{逐列绘制图表。}
       (sit-for 0)
       (setq numbers-list (cdr numbers-list)))
-    ;; @r{Place point for X axis labels.}
+    ;; @r{放置X轴标签的点。}
     (forward-line height)
     (insert "\n")))
 @end group
 @end smallexample
 
 @need 1250
-Finally, the code for the @code{print-graph} function:
+最后，@code{print-graph} 函数的代码：
 
-@findex print-graph @r{Final version.}
+@findex print-graph @r{最终版本。}
 @smallexample
 @group
-;;; @r{Final version.}
+;;; @r{最终版本。}
 (defun print-graph
   (numbers-list &optional vertical-step)
-  "Print labeled bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
+  "打印带有标签的条形图 NUMBERS-LIST。
+numbers-list 包含Y轴值。
 @end group
 
 @group
-Optionally, VERTICAL-STEP, a positive integer,
-specifies how much a Y axis label increments for
-each line.  For example, a step of 5 means that
-each row is five units."
+可选的，VERTICAL-STEP，一个正整数，
+指定每行的Y轴标签增量。
+例如，步长为5表示每行是图表的五个单位。"
 @end group
 @group
   (let* ((symbol-width (length graph-blank))
-         ;; @code{height} @r{is both the largest number}
-         ;; @r{and the number with the most digits.}
+         ;; @code{height} @r{既是最大的数字}
+         ;; @r{也是数字位数最多的数字。}
          (height (apply 'max numbers-list))
 @end group
 @group
          (height-of-top-line
           (if (zerop (% height Y-axis-label-spacing))
               height
-            ;; @r{else}
+            ;; @r{否则}
             (* (1+ (/ height Y-axis-label-spacing))
                Y-axis-label-spacing)))
 @end group
@@ -14609,42 +14414,38 @@ each row is five units."
 @end group
 @end smallexample
 
-@node Test print-graph
-@appendixsubsec Testing @code{print-graph}
+@node 测试 打印图表
+@appendixsubsec 测试 @code{print-graph}
 
 @need 1250
-We can test the @code{print-graph} function with a short list of numbers:
+我们可以使用一个短数字列表来测试 @code{print-graph} 函数：
 
 @enumerate
 @item
-Install the final versions of @code{Y-axis-column},
-@code{graph-body-print}, and @code{print-graph} (in addition to the
-rest of the code.)
+安装 @code{Y-axis-column}、@code{graph-body-print} 和 @code{print-graph} 的最终版本（以及其余的代码）。
 
 @item
-Copy the following expression:
+复制以下表达式：
 
 @smallexample
 (print-graph '(3 2 5 6 7 5 3 4 6 4 3 2 1))
 @end smallexample
 
 @item
-Switch to the @file{*scratch*} buffer and place the cursor where you
-want the axis labels to start.
+切换到 @file{*scratch*} 缓冲区，并将光标放在你希望轴标签开始的位置。
 
 @item
-Type @kbd{M-:} (@code{eval-expression}).
+键入 @kbd{M-:}（@code{eval-expression}）。
 
 @item
-Yank the test expression into the minibuffer
-with @kbd{C-y} (@code{yank)}.
+使用 @kbd{C-y}（@code{yank}）将测试表达式粘贴到迷你缓冲区中。
 
 @item
-Press @key{RET} to evaluate the expression.
+按下 @key{RET} 键来评估表达式。
 @end enumerate
 
 @need 1250
-Emacs will print a graph that looks like this:
+Emacs 将打印一个看起来像这样的图表：
 
 @smallexample
 @group
@@ -14665,8 +14466,7 @@ Emacs will print a graph that looks like this:
 @end smallexample
 
 @need 1200
-On the other hand, if you pass @code{print-graph} a
-@code{vertical-step} value of 2, by evaluating this expression:
+另一方面，如果你将 @code{print-graph} 的 @code{vertical-step} 值设为 2，通过评估以下表达式：
 
 @smallexample
 (print-graph '(3 2 5 6 7 5 3 4 6 4 3 2 1) 2)
@@ -14674,7 +14474,7 @@ On the other hand, if you pass @code{print-graph} a
 
 @need 1250
 @noindent
-The graph looks like this:
+图表看起来像这样：
 
 @smallexample
 @group
@@ -14695,25 +14495,17 @@ The graph looks like this:
 @end smallexample
 
 @noindent
-(A question: is the @samp{2} on the bottom of the vertical axis a bug or a
-feature?  If you think it is a bug, and should be a @samp{1} instead, (or
-even a @samp{0}), you can modify the sources.)
+（一个问题：垂直轴底部的 @samp{2} 是一个错误还是一个特性？如果你认为这是一个错误，应该是 @samp{1} 而不是 @samp{2}（甚至是 @samp{0}），你可以修改源代码。）
 
-@node Graphing words in defuns
-@appendixsubsec Graphing Numbers of Words and Symbols
+@node 绘制 defuns 中的单词图表
+@appendixsubsec 绘制单词和符号数量的函数图表
 
-Now for the graph for which all this code was written: a graph that
-shows how many function definitions contain fewer than 10 words and
-symbols, how many contain between 10 and 19 words and symbols, how
-many contain between 20 and 29 words and symbols, and so on.
+现在是为了这段代码而编写的图表：显示包含少于 10 个单词和符号的函数定义的数量，包含 10 到 19 个单词和符号的函数定义的数量，包含 20 到 29 个单词和符号的函数定义的数量，依此类推。
 
-This is a multi-step process.  First make sure you have loaded all the
-requisite code.
+这是一个多步骤的过程。首先确保你已经加载了所有必要的代码。
 
 @need 1500
-It is a good idea to reset the value of @code{top-of-ranges} in case
-you have set it to some different value.  You can evaluate the
-following:
+最好重置 @code{top-of-ranges} 的值，以防你将其设置为不同的值。你可以评估以下内容：
 
 @smallexample
 @group
@@ -14728,11 +14520,11 @@ following:
 @end smallexample
 
 @noindent
-Next create a list of the number of words and symbols in each range.
+接下来创建一个包含每个范围中单词和符号数量的列表。
 
 @need 1500
 @noindent
-Evaluate the following:
+评估以下内容：
 
 @smallexample
 @group
@@ -14748,9 +14540,7 @@ Evaluate the following:
 @end smallexample
 
 @noindent
-On my old machine, this took about an hour.  It looked though 303 Lisp
-files in my copy of Emacs version 19.23.  After all that computing,
-the @code{list-for-graph} had this value:
+在我的旧机器上，这大约花费了一个小时。它遍历了我在 Emacs 版本 19.23 中的 303 个 Lisp 文件。在所有这些计算之后，@code{list-for-graph} 的值如下：
 
 @smallexample
 @group
@@ -14760,70 +14550,56 @@ the @code{list-for-graph} had this value:
 @end smallexample
 
 @noindent
-This means that my copy of Emacs had 537 function definitions with
-fewer than 10 words or symbols in them, 1,027 function definitions
-with 10 to 19 words or symbols in them, 955 function definitions with
-20 to 29 words or symbols in them, and so on.
+这意味着我的 Emacs 副本中有 537 个包含少于 10 个单词或符号的函数定义，1,027 个包含 10 到 19 个单词或符号的函数定义，955 个包含 20 到 29 个单词或符号的函数定义，依此类推。
 
-Clearly, just by looking at this list we can see that most function
-definitions contain ten to thirty words and symbols.
+显然，仅通过查看这个列表，我们就可以看到大多数函数定义包含十到三十个单词和符号。
 
-Now for printing.  We do @emph{not} want to print a graph that is
-1,030 lines high @dots{}  Instead, we should print a graph that is
-fewer than twenty-five lines high.  A graph that height can be
-displayed on almost any monitor, and easily printed on a sheet of paper.
+现在是打印的时候。我们 @emph{不}希望打印一个高达 1,030 行的图表 @dots{} 相反，我们应该打印一个不到二十五行高的图表。这样高度的图表可以显示在几乎任何显示器上，并且可以轻松地打印在一张纸上。
 
-This means that each value in @code{list-for-graph} must be reduced to
-one-fiftieth its present value.
+这意味着 @code{list-for-graph} 中的每个值必须减少到其当前值的五十分之一。
 
-Here is a short function to do just that, using two functions we have
-not yet seen, @code{mapcar} and @code{lambda}.
+这里是一个用两个我们还没有看到的函数，@code{mapcar} 和 @code{lambda}，来做到这一点的简短函数。
 
 @smallexample
 @group
 (defun one-fiftieth (full-range)
-  "Return list, each number one-fiftieth of previous."
+  "返回一个列表，其中每个数字是先前值的五十分之一。"
  (mapcar (lambda (arg) (/ arg 50)) full-range))
 @end group
 @end smallexample
 
 @node lambda
-@appendixsubsec A @code{lambda} Expression: Useful Anonymity
-@cindex Anonymous function
+@appendixsubsec A @code{lambda} 表达式：有用的匿名性
+@cindex 匿名函数
 @findex lambda
 
-@code{lambda} is the symbol for an anonymous function, a function
-without a name.  Every time you use an anonymous function, you need to
-include its whole body.
+@code{lambda} 是匿名函数的符号，即没有名字的函数。每次使用匿名函数时，都需要包含它的整个体。
 
 @need 1250
 @noindent
-Thus,
+因此，
 
 @smallexample
 (lambda (arg) (/ arg 50))
 @end smallexample
 
 @noindent
-is a function that returns the value resulting from
-dividing whatever is passed to it as @code{arg} by 50.
+是一个函数，返回将传递给它的@code{arg}除以50的结果。
 
 @need 1200
-Earlier, for example, we had a function @code{multiply-by-seven}; it
-multiplied its argument by 7.  This function is similar, except it
-divides its argument by 50; and, it has no name.  The anonymous
-equivalent of @code{multiply-by-seven} is:
+@noindent
+早些时候，例如，我们有一个函数@code{multiply-by-seven}；它将其参数乘以7。这个函数类似，只是它将其参数除以50；而且，它没有名字。@code{multiply-by-seven}的匿名等价物是：
 
 @smallexample
 (lambda (number) (* 7 number))
 @end smallexample
 
 @noindent
-(@xref{defun, ,  The @code{defun} Macro}.)
+（@xref{defun, ,  @code{defun} 宏}。）
 
 @need 1250
 @noindent
-If we want to multiply 3 by 7, we can write:
+如果我们想将3乘以7，我们可以写：
 
 @c clear print-postscript-figures
 @c lambda example diagram #1
@@ -14858,11 +14634,11 @@ If we want to multiply 3 by 7, we can write:
 @end ifclear
 
 @noindent
-This expression returns 21.
+这个表达式返回21。
 
 @need 1250
 @noindent
-Similarly, we can write:
+同样，我们可以写：
 
 @c lambda example diagram #2
 @ifnottex
@@ -14897,7 +14673,7 @@ Similarly, we can write:
 
 @need 1250
 @noindent
-If we want to divide 100 by 50, we can write:
+如果我们想将100除以50，我们可以写：
 
 @c lambda example diagram #3
 @ifnottex
@@ -14931,31 +14707,21 @@ If we want to divide 100 by 50, we can write:
 @end ifclear
 
 @noindent
-This expression returns 2.  The 100 is passed to the function, which
-divides that number by 50.
+这个表达式返回2。将100传递给函数，该函数将该数字除以50。
 
-@xref{Lambda Expressions, , Lambda Expressions, elisp, The GNU Emacs
-Lisp Reference Manual}, for more about @code{lambda}.  Lisp and lambda
-expressions derive from the Lambda Calculus.
+@xref{Lambda Expressions, , Lambda 表达式, elisp, GNU Emacs Lisp 参考手册}，了解有关@code{lambda}的更多信息。Lisp 和 lambda 表达式源于 Lambda 演算。
 
 @node mapcar
 @appendixsubsec The @code{mapcar} Function
 @findex mapcar
 
-@code{mapcar} is a function that calls its first argument with each
-element of its second argument, in turn.  The second argument must be
-a sequence.
+@code{mapcar}是一个函数，它依次调用它的第一个参数，并将第二个参数的每个元素传递给它的第一个参数。第二个参数必须是一个序列。
 
-The @samp{map} part of the name comes from the mathematical phrase,
-``mapping over a domain'', meaning to apply a function to each of the
-elements in a domain.  The mathematical phrase is based on the
-metaphor of a surveyor walking, one step at a time, over an area he is
-mapping.  And @samp{car}, of course, comes from the Lisp notion of the
-first of a list.
+名称中的@samp{map}部分来自数学短语，“在一个域上进行映射”，意味着对域中的每个元素应用一个函数。这个数学短语基于一个测量员逐步走过他正在绘制地图的区域的隐喻。而@samp{car}当然来自Lisp中列表的第一个元素的概念。
 
 @need 1250
 @noindent
-For example,
+例如，
 
 @smallexample
 @group
@@ -14965,39 +14731,32 @@ For example,
 @end smallexample
 
 @noindent
-The function @code{1+} which adds one to its argument, is executed on
-@emph{each} element of the list, and a new list is returned.
+函数@code{1+}，它将其参数加一，被执行在列表的@emph{每个}元素上，并返回一个新的列表。
 
-Contrast this with @code{apply}, which applies its first argument to
-all the remaining.
-(@xref{准备图表, , 准备图表}, for an explanation of
-@code{apply}.)
+与之相对的是@code{apply}，它将其第一个参数应用于其余的所有参数。
+（@xref{准备图表, , 准备图表}，有关@code{apply}的解释。）
 
 @need 1250
-In the definition of @code{one-fiftieth}, the first argument is the
-anonymous function:
+在@code{one-fiftieth}的定义中，第一个参数是匿名函数：
 
 @smallexample
 (lambda (arg) (/ arg 50))
 @end smallexample
 
 @noindent
-and the second argument is @code{full-range}, which will be bound to
-@code{list-for-graph}.
+而第二个参数是@code{full-range}，它将绑定到@code{list-for-graph}。
 
 @need 1250
-The whole expression looks like this:
+整个表达式看起来像这样：
 
 @smallexample
 (mapcar (lambda (arg) (/ arg 50)) full-range))
 @end smallexample
 
 @xref{Mapping Functions, , Mapping Functions, elisp, The GNU Emacs
-Lisp Reference Manual}, for more about @code{mapcar}.
+Lisp Reference Manual}，有关@code{mapcar}的更多信息。
 
-Using the @code{one-fiftieth} function, we can generate a list in
-which each element is one-fiftieth the size of the corresponding
-element in @code{list-for-graph}.
+使用@code{one-fiftieth}函数，我们可以生成一个列表，其中每个元素都是@code{list-for-graph}中相应元素的1/50大小。
 
 @smallexample
 @group
@@ -15007,7 +14766,7 @@ element in @code{list-for-graph}.
 @end smallexample
 
 @need 1250
-The resulting list looks like this:
+生成的列表如下：
 
 @smallexample
 @group
@@ -15017,52 +14776,34 @@ The resulting list looks like this:
 @end smallexample
 
 @noindent
-This, we are almost ready to print!  (We also notice the loss of
-information: many of the higher ranges are 0, meaning that fewer than
-50 defuns had that many words or symbols---but not necessarily meaning
-that none had that many words or symbols.)
+这样，我们几乎可以打印出来了！（我们还注意到信息的丢失：许多较高的范围为0，意味着少于50个defuns有那么多单词或符号，但不一定意味着没有那么多单词或符号。）
 
-@node Another Bug
-@appendixsubsec Another Bug @dots{} Most Insidious
-@cindex Bug, most insidious type
-@cindex Insidious type of bug
+@node 另一个错误
+@appendixsubsec 另一个错误 @dots{} 最阴险的
+@cindex 错误，最阴险的类型
+@cindex 阴险类型的错误
 
-I said ``almost ready to print''!  Of course, there is a bug in the
-@code{print-graph} function @dots{}  It has a @code{vertical-step}
-option, but not a @code{horizontal-step} option.  The
-@code{top-of-range} scale goes from 10 to 300 by tens.  But the
-@code{print-graph} function will print only by ones.
+我说过“几乎准备好打印”！当然，在@code{print-graph}函数中存在一个错误 @dots{} 它有一个@code{vertical-step}选项，但没有@code{horizontal-step}选项。@code{top-of-range}刻度从10到300，间隔为十。但@code{print-graph}函数只会打印每个单位。
 
-This is a classic example of what some consider the most insidious
-type of bug, the bug of omission.  This is not the kind of bug you can
-find by studying the code, for it is not in the code; it is an omitted
-feature.  Your best actions are to try your program early and often;
-and try to arrange, as much as you can, to write code that is easy to
-understand and easy to change.  Try to be aware, whenever you can,
-that whatever you have written, @emph{will} be rewritten, if not soon,
-eventually.  A hard maxim to follow.
+这是某些人认为最阴险类型的错误的典型例子，即遗漏错误。这不是你可以通过研究代码找到的错误，因为它不在代码中；它是一个被遗漏的特性。你最好的行动是尽早而经常地尝试你的程序；并且尽量安排，尽可能写出易于理解和修改的代码。尽量在任何时候都意识到，无论你写了什么，@emph{都}会被重新编写，如果不是很快，那就是迟早的事。这是一个难以遵循的格言。
 
-It is the @code{print-X-axis-numbered-line} function that needs the
-work; and then the @code{print-X-axis} and the @code{print-graph}
-functions need to be adapted.  Not much needs to be done; there is one
-nicety: the numbers ought to line up under the tic marks.  This takes
-a little thought.
+需要对@code{print-X-axis-numbered-line}函数进行修改；然后需要调整@code{print-X-axis}和@code{print-graph}函数。不需要做太多事情；有一个小技巧：数字应该对齐在刻度标记下方。这需要一点思考。
 
 @need 1250
-Here is the corrected @code{print-X-axis-numbered-line}:
+以下是修正后的@code{print-X-axis-numbered-line}：
 
 @smallexample
 @group
 (defun print-X-axis-numbered-line
   (number-of-X-tics X-axis-leading-spaces
    &optional horizontal-step)
-  "Print line of X-axis numbers"
+  "打印X轴数字线"
   (let ((number X-axis-label-spacing)
         (horizontal-step (or horizontal-step 1)))
 @end group
 @group
     (insert X-axis-leading-spaces)
-    ;; @r{Delete extra leading spaces.}
+    ;; @r{删除多余的前导空格。}
     (delete-char
      (- (1-
          (length (number-to-string horizontal-step)))))
@@ -15070,7 +14811,7 @@ Here is the corrected @code{print-X-axis-numbered-line}:
              (make-string
 @end group
 @group
-              ;; @r{Insert white space.}
+              ;; @r{插入空白。}
               (-  (* symbol-width
                      X-axis-label-spacing)
                   (1-
@@ -15082,7 +14823,7 @@ Here is the corrected @code{print-X-axis-numbered-line}:
               (* number horizontal-step))))
 @end group
 @group
-    ;; @r{Insert remaining numbers.}
+    ;; @r{插入剩余的数字。}
     (setq number (+ number X-axis-label-spacing))
     (while (> number-of-X-tics 1)
       (insert (X-axis-element
@@ -15093,10 +14834,7 @@ Here is the corrected @code{print-X-axis-numbered-line}:
 @end smallexample
 
 @need 1500
-If you are reading this in Info, you can see the new versions of
-@code{print-X-axis} @code{print-graph} and evaluate them.  If you are
-reading this in a printed book, you can see the changed lines here
-(the full text is too much to print).
+如果你在Info中阅读此内容，你可以查看@code{print-X-axis}和@code{print-graph}的新版本，并对其进行评估。如果你在印刷的书中阅读此内容，你可以在这里看到更改的行（完整文本太长，无法打印）。
 
 @iftex
 @smallexample
@@ -15123,17 +14861,15 @@ reading this in a printed book, you can see the changed lines here
 @smallexample
 @group
 (defun print-X-axis (numbers-list horizontal-step)
-  "Print X axis labels to length of NUMBERS-LIST.
-Optionally, HORIZONTAL-STEP, a positive integer,
-specifies how much an X  axis label increments for
-each column."
+  "打印X轴标签，长度为NUMBERS-LIST。
+可选参数HORIZONTAL-STEP，一个正整数，
+指定每列的X轴标签增量。"
 @end group
 @group
-;; Value of symbol-width and full-Y-label-width
-;; are passed by print-graph.
+;; 符号宽度和full-Y-label-width的值由print-graph传递。
   (let* ((leading-spaces
           (make-string full-Y-label-width ? ))
-       ;; symbol-width @r{is provided by} graph-body-print
+       ;; 符号宽度由graph-body-print提供
        (tic-width (* symbol-width X-axis-label-spacing))
        (X-length (length numbers-list))
 @end group
@@ -15141,13 +14877,13 @@ each column."
        (X-tic
         (concat
          (make-string
-          ;; @r{Make a string of blanks.}
+          ;; 制作一串空格。
           (-  (* symbol-width X-axis-label-spacing)
               (length X-axis-tic-symbol))
           ? )
 @end group
 @group
-         ;; @r{Concatenate blanks with tic symbol.}
+         ;; 用空格和刻度符号连接。
          X-axis-tic-symbol))
        (tic-number
         (if (zerop (% X-length tic-width))
@@ -15168,31 +14904,26 @@ each column."
 @group
 (defun print-graph
   (numbers-list &optional vertical-step horizontal-step)
-  "Print labeled bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
+  "打印带标签的条形图，NUMBERS-LIST的Y轴值构成。
 @end group
 
 @group
-Optionally, VERTICAL-STEP, a positive integer,
-specifies how much a Y axis label increments for
-each line.  For example, a step of 5 means that
-each row is five units.
+可选参数VERTICAL-STEP，一个正整数，
+指定每行的Y轴标签增量。例如，步长为5表示每行五个单位。
 @end group
 
 @group
-Optionally, HORIZONTAL-STEP, a positive integer,
-specifies how much an X  axis label increments for
-each column."
+可选参数HORIZONTAL-STEP，一个正整数，
+指定每列的X轴标签增量。"
   (let* ((symbol-width (length graph-blank))
-         ;; @code{height} @r{is both the largest number}
-         ;; @r{and the number with the most digits.}
+         ;; height既是最大的数字，也是具有最多数字的数字。
          (height (apply 'max numbers-list))
 @end group
 @group
          (height-of-top-line
           (if (zerop (% height Y-axis-label-spacing))
               height
-            ;; @r{else}
+            ;; 否则
             (* (1+ (/ height Y-axis-label-spacing))
                Y-axis-label-spacing)))
 @end group
@@ -15217,10 +14948,10 @@ each column."
 
 @c qqq
 @ignore
-Graphing Definitions Re-listed
+图表定义重新列出
 
 @need 1250
-Here are all the graphing definitions in their final form:
+以下是所有图表定义的最终形式：
 
 @smallexample
 @group
@@ -15230,48 +14961,47 @@ Here are all the graphing definitions in their final form:
   110 120 130 140 150
   160 170 180 190 200
   210 220 230 240 250)
- "List specifying ranges for `defuns-per-range'.")
+ "指定`defuns-per-range'范围的列表。")
 @end group
 
 @group
 (defvar graph-symbol "*"
-  "String used as symbol in graph, usually an asterisk.")
+  "图表中使用的字符串，通常是星号。")
 @end group
 
 @group
 (defvar graph-blank " "
-  "String used as blank in graph, usually a blank space.
-graph-blank must be the same number of columns wide
-as graph-symbol.")
+  "图表中使用的空白字符串，通常是一个空格。
+graph-blank的列数必须与graph-symbol相同。")
 @end group
 
 @group
 (defvar Y-axis-tic " - "
-   "String that follows number in a Y axis label.")
+   "Y轴标签中数字后跟的字符串。")
 @end group
 
 @group
 (defvar Y-axis-label-spacing 5
-  "Number of lines from one Y axis label to next.")
+  "从一个Y轴标签到下一个的行数。")
 @end group
 
 @group
 (defvar X-axis-tic-symbol "|"
-  "String to insert to point to a column in X axis.")
+  "插入到X轴中指向列的字符串。")
 @end group
 
 @group
 (defvar X-axis-label-spacing
   (if (boundp 'graph-blank)
       (* 5 (length graph-blank)) 5)
-  "Number of units from one X axis label to next.")
+  "从一个X轴标签到下一个的单位数。")
 @end group
 @end smallexample
 
 @smallexample
 @group
 (defun count-words-in-defun ()
-  "Return the number of words and symbols in a defun."
+  "返回defun中的单词和符号数。"
   (beginning-of-defun)
   (let ((count 0)
         (end (save-excursion (end-of-defun) (point))))
@@ -15291,14 +15021,13 @@ as graph-symbol.")
 @smallexample
 @group
 (defun lengths-list-file (filename)
-  "Return list of definitions' lengths within FILE.
-The returned list is a list of numbers.
-Each number is the number of words or
-symbols in one function definition."
+  "返回文件中定义的长度列表。
+返回的列表是一个数字列表。
+每个数字是一个函数定义中的单词或符号数。"
 @end group
 
 @group
-  (message "Working on `%s' ... " filename)
+  (message "正在处理 `%s' ... " filename)
   (save-excursion
     (let ((buffer (find-file-noselect filename))
           (lengths-list))
@@ -15320,21 +15049,21 @@ symbols in one function definition."
 @smallexample
 @group
 (defun lengths-list-many-files (list-of-files)
-  "Return list of lengths of defuns in LIST-OF-FILES."
+  "返回LIST-OF-FILES中defun的长度列表。"
   (let (lengths-list)
-;;; @r{true-or-false-test}
+;;; 真或假测试
     (while list-of-files
       (setq lengths-list
             (append
              lengths-list
 @end group
 @group
-;;; @r{Generate a lengths' list.}
+;;; 生成长度列表。
              (lengths-list-file
               (expand-file-name (car list-of-files)))))
-;;; @r{Make files' list shorter.}
+;;; 缩短文件列表。
       (setq list-of-files (cdr list-of-files)))
-;;; @r{Return final value of lengths' list.}
+;;; 返回最终的长度列表值。
     lengths-list))
 @end group
 @end smallexample
@@ -15342,50 +15071,48 @@ symbols in one function definition."
 @smallexample
 @group
 (defun defuns-per-range (sorted-lengths top-of-ranges)
-  "SORTED-LENGTHS defuns in each TOP-OF-RANGES range."
+  "在每个TOP-OF-RANGES范围内对SORTED-LENGTHS中的defun进行计数。"
   (let ((top-of-range (car top-of-ranges))
         (number-within-range 0)
         defuns-per-range-list)
 @end group
 
 @group
-    ;; @r{Outer loop.}
+    ;; 外部循环。
     (while top-of-ranges
 
-      ;; @r{Inner loop.}
+      ;; 内部循环。
       (while (and
-              ;; @r{Need number for numeric test.}
+              ;; 需要数字进行数值测试。
               (car sorted-lengths)
               (< (car sorted-lengths) top-of-range))
 
-        ;; @r{Count number of definitions within current range.}
+        ;; 计算当前范围内的定义数量。
         (setq number-within-range (1+ number-within-range))
         (setq sorted-lengths (cdr sorted-lengths)))
 @end group
 
 @group
-      ;; @r{Exit inner loop but remain within outer loop.}
+      ;; 退出内部循环但保持在外部循环中。
 
       (setq defuns-per-range-list
             (cons number-within-range defuns-per-range-list))
-      (setq number-within-range 0)      ; @r{Reset count to zero.}
+      (setq number-within-range 0)      ; 重置计数为零。
 
-      ;; @r{Move to next range.}
+      ;; 移动到下一个范围。
       (setq top-of-ranges (cdr top-of-ranges))
-      ;; @r{Specify next top of range value.}
+      ;; 指定下一个范围的值。
       (setq top-of-range (car top-of-ranges)))
 @end group
 
 @group
-    ;; @r{Exit outer loop and count the number of defuns larger than}
-    ;; @r{  the largest top-of-range value.}
+    ;; 退出外部循环并计算大于最大TOP-OF-RANGES值的defun数量。
     (setq defuns-per-range-list
           (cons
            (length sorted-lengths)
            defuns-per-range-list))
 
-    ;; @r{Return a list of the number of definitions within each range,}
-    ;; @r{  smallest to largest.}
+    ;; 返回每个范围内定义数量的列表，从小到大。
     (nreverse defuns-per-range-list)))
 @end group
 @end smallexample
@@ -15393,12 +15120,11 @@ symbols in one function definition."
 @smallexample
 @group
 (defun column-of-graph (max-graph-height actual-height)
-  "Return list of MAX-GRAPH-HEIGHT strings;
-ACTUAL-HEIGHT are graph-symbols.
-The graph-symbols are contiguous entries at the end
-of the list.
-The list will be inserted as one column of a graph.
-The strings are either graph-blank or graph-symbol."
+  "返回一个包含 MAX-GRAPH-HEIGHT 个字符串的列表；
+ACTUAL-HEIGHT 是图表符号的数量。
+图表符号是列表末尾的连续项。
+该列表将作为图表的一列插入。
+字符串要么是图表空白，要么是图表符号。"
 @end group
 
 @group
@@ -15406,20 +15132,20 @@ The strings are either graph-blank or graph-symbol."
         (number-of-top-blanks
          (- max-graph-height actual-height)))
 
-    ;; @r{Fill in @code{graph-symbols}.}
+    ;; @r{填充 @code{graph-symbols}。}
     (while (> actual-height 0)
       (setq insert-list (cons graph-symbol insert-list))
       (setq actual-height (1- actual-height)))
 @end group
 
 @group
-    ;; @r{Fill in @code{graph-blanks}.}
+    ;; @r{填充 @code{graph-blanks}。}
     (while (> number-of-top-blanks 0)
       (setq insert-list (cons graph-blank insert-list))
       (setq number-of-top-blanks
             (1- number-of-top-blanks)))
 
-    ;; @r{Return whole list.}
+    ;; @r{返回整个列表。}
     insert-list))
 @end group
 @end smallexample
@@ -15427,10 +15153,9 @@ The strings are either graph-blank or graph-symbol."
 @smallexample
 @group
 (defun Y-axis-element (number full-Y-label-width)
-  "Construct a NUMBERed label element.
-A numbered element looks like this `  5 - ',
-and is padded as needed so all line up with
-the element for the largest number."
+  "构造一个带编号的标签元素。
+带编号的元素看起来像这样 `  5 - '，
+并根据需要进行填充，以便与最大编号的元素对齐。"
 @end group
 @group
   (let* ((leading-spaces
@@ -15451,22 +15176,21 @@ the element for the largest number."
 @group
 (defun print-Y-axis
   (height full-Y-label-width &optional vertical-step)
-  "Insert Y axis by HEIGHT and FULL-Y-LABEL-WIDTH.
-Height must be the  maximum height of the graph.
-Full width is the width of the highest label element.
-Optionally, print according to VERTICAL-STEP."
+  "通过 HEIGHT 和 FULL-Y-LABEL-WIDTH 插入 Y 轴。
+Height 必须是图表的最大高度。
+Full width 是最高标签元素的宽度。
+可选地，根据 VERTICAL-STEP 打印。"
 @end group
 @group
-;; Value of height and full-Y-label-width
-;; are passed by 'print-graph'.
+;; height 和 full-Y-label-width 的值由 'print-graph' 传递。
   (let ((start (point)))
     (insert-rectangle
      (Y-axis-column height full-Y-label-width vertical-step))
 @end group
 @group
-    ;; @r{Place point ready for inserting graph.}
+    ;; @r{放置点以准备插入图表。}
     (goto-char start)
-    ;; @r{Move point forward by value of} full-Y-label-width
+    ;; @r{将点前进 full-Y-label-width 的值。}
     (forward-char full-Y-label-width)))
 @end group
 @end smallexample
@@ -15475,22 +15199,22 @@ Optionally, print according to VERTICAL-STEP."
 @group
 (defun print-X-axis-tic-line
   (number-of-X-tics X-axis-leading-spaces X-axis-tic-element)
-  "Print ticks for X axis."
+  "打印 X 轴的刻度线。"
     (insert X-axis-leading-spaces)
-    (insert X-axis-tic-symbol)  ; @r{Under first column.}
+    (insert X-axis-tic-symbol)  ; @r{在第一列下。}
 @end group
 @group
-    ;; @r{Insert second tic in the right spot.}
+    ;; @r{在正确的位置插入第二个刻度线。}
     (insert (concat
              (make-string
               (-  (* symbol-width X-axis-label-spacing)
-                  ;; @r{Insert white space up to second tic symbol.}
+                  ;; @r{插入空白，直到第二个刻度线符号。}
                   (* 2 (length X-axis-tic-symbol)))
               ? )
              X-axis-tic-symbol))
 @end group
 @group
-    ;; @r{Insert remaining ticks.}
+    ;; @r{插入剩余的刻度线。}
     (while (> number-of-X-tics 1)
       (insert X-axis-tic-element)
       (setq number-of-X-tics (1- number-of-X-tics))))
@@ -15500,7 +15224,7 @@ Optionally, print according to VERTICAL-STEP."
 @smallexample
 @group
 (defun X-axis-element (number)
-  "Construct a numbered X axis element."
+  "构造一个编号的 X 轴元素。"
   (let ((leading-spaces
          (-  (* symbol-width X-axis-label-spacing)
              (length (number-to-string number)))))
@@ -15512,10 +15236,10 @@ Optionally, print according to VERTICAL-STEP."
 @smallexample
 @group
 (defun graph-body-print (numbers-list height symbol-width)
-  "Print a bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
-HEIGHT is maximum height of graph.
-SYMBOL-WIDTH is number of each column."
+  "打印 NUMBERS-LIST 的柱状图。
+numbers-list 包含 Y 轴值。
+HEIGHT 是图表的最大高度。
+SYMBOL-WIDTH 是每列的数字。"
 @end group
 @group
   (let (from-position)
@@ -15527,10 +15251,10 @@ SYMBOL-WIDTH is number of each column."
       (forward-char symbol-width)
 @end group
 @group
-      ;; @r{Draw graph column by column.}
+      ;; @r{逐列绘制图表。}
       (sit-for 0)
       (setq numbers-list (cdr numbers-list)))
-    ;; @r{Place point for X axis labels.}
+    ;; @r{放置点以插入 X 轴标签。}
     (forward-line height)
     (insert "\n")))
 @end group
@@ -15540,22 +15264,21 @@ SYMBOL-WIDTH is number of each column."
 @group
 (defun Y-axis-column
   (height width-of-label &optional vertical-step)
-  "Construct list of labels for Y axis.
-HEIGHT is maximum height of graph.
-WIDTH-OF-LABEL is maximum width of label.
+  "构造 Y 轴标签的列表。
+HEIGHT 是图表的最大高度。
+WIDTH-OF-LABEL 是标签的最大宽度。
 @end group
 @group
-VERTICAL-STEP, an option, is a positive integer
-that specifies how much a Y axis label increments
-for each line.  For example, a step of 5 means
-that each line is five units of the graph."
+VERTICAL-STEP 是一个可选项，是正整数，
+指定每行的 Y 轴标签递增多少。
+例如，步长为 5 意味着每行是五个图表单位。"
   (let (Y-axis
         (number-per-line (or vertical-step 1)))
 @end group
 @group
     (while (> height 1)
       (if (zerop (% height Y-axis-label-spacing))
-          ;; @r{Insert label.}
+          ;; @r{插入标签。}
           (setq Y-axis
                 (cons
                  (Y-axis-element
@@ -15564,7 +15287,7 @@ that each line is five units of the graph."
                  Y-axis))
 @end group
 @group
-        ;; @r{Else, insert blanks.}
+        ;; @r{否则，插入空白。}
         (setq Y-axis
               (cons
                (make-string width-of-label ? )
@@ -15572,7 +15295,7 @@ that each line is five units of the graph."
       (setq height (1- height)))
 @end group
 @group
-    ;; @r{Insert base line.}
+    ;; @r{插入基线。}
     (setq Y-axis (cons (Y-axis-element
                         (or vertical-step 1)
                         width-of-label)
@@ -15586,17 +15309,17 @@ that each line is five units of the graph."
 (defun print-X-axis-numbered-line
   (number-of-X-tics X-axis-leading-spaces
    &optional horizontal-step)
-  "Print line of X-axis numbers"
+  "打印 X 轴数字的行"
   (let ((number X-axis-label-spacing)
         (horizontal-step (or horizontal-step 1)))
 @end group
 @group
     (insert X-axis-leading-spaces)
-    ;; line up number
+    ;; 对齐数字
     (delete-char (- (1- (length (number-to-string horizontal-step)))))
     (insert (concat
              (make-string
-              ;; @r{Insert white space up to next number.}
+              ;; @r{插入空白，直到下一个数字。}
               (-  (* symbol-width X-axis-label-spacing)
                   (1- (length (number-to-string horizontal-step)))
                   2)
@@ -15604,7 +15327,7 @@ that each line is five units of the graph."
              (number-to-string (* number horizontal-step))))
 @end group
 @group
-    ;; @r{Insert remaining numbers.}
+    ;; @r{插入剩余的数字。}
     (setq number (+ number X-axis-label-spacing))
     (while (> number-of-X-tics 1)
       (insert (X-axis-element (* number horizontal-step)))
@@ -15616,17 +15339,15 @@ that each line is five units of the graph."
 @smallexample
 @group
 (defun print-X-axis (numbers-list horizontal-step)
-  "Print X axis labels to length of NUMBERS-LIST.
-Optionally, HORIZONTAL-STEP, a positive integer,
-specifies how much an X  axis label increments for
-each column."
+  "根据 NUMBERS-LIST 的长度打印 X 轴标签。
+可选地，HORIZONTAL-STEP 是正整数，
+指定每列的 X 轴标签递增多少。"
 @end group
 @group
-;; Value of symbol-width and full-Y-label-width
-;; are passed by 'print-graph'.
+;; 符号宽度和 full-Y-label-width 的值由 'print-graph' 传递。
   (let* ((leading-spaces
           (make-string full-Y-label-width ? ))
-       ;; symbol-width @r{is provided by} graph-body-print
+       ;; symbol-width @r{由} graph-body-print @r{提供}
        (tic-width (* symbol-width X-axis-label-spacing))
        (X-length (length numbers-list))
 @end group
@@ -15634,13 +15355,13 @@ each column."
        (X-tic
         (concat
          (make-string
-          ;; @r{Make a string of blanks.}
+          ;; @r{制作一个空白字符串。}
           (-  (* symbol-width X-axis-label-spacing)
               (length X-axis-tic-symbol))
           ? )
 @end group
 @group
-         ;; @r{Concatenate blanks with tic symbol.}
+         ;; @r{将空白与刻度线符号连接起来。}
          X-axis-tic-symbol))
        (tic-number
         (if (zerop (% X-length tic-width))
@@ -15660,7 +15381,7 @@ each column."
 @smallexample
 @group
 (defun one-fiftieth (full-range)
-  "Return list, each number of which is 1/50th previous."
+  "返回一个列表，其中每个数字都是前一个数字的 1/50。"
  (mapcar (lambda (arg) (/ arg 50)) full-range))
 @end group
 @end smallexample
@@ -15669,31 +15390,29 @@ each column."
 @group
 (defun print-graph
   (numbers-list &optional vertical-step horizontal-step)
-  "Print labeled bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
+  "打印带标签的 NUMBERS-LIST 的柱状图。
+numbers-list 包含 Y 轴值。
 @end group
 
 @group
-Optionally, VERTICAL-STEP, a positive integer,
-specifies how much a Y axis label increments for
-each line.  For example, a step of 5 means that
-each row is five units.
+可选地，VERTICAL-STEP 是正整数，
+指定每行的 Y 轴标签递增多少。
+例如，步长为 5 意味着每行是五个单位。
 @end group
 
 @group
-Optionally, HORIZONTAL-STEP, a positive integer,
-specifies how much an X  axis label increments for
-each column."
+可选地，HORIZONTAL-STEP 是正整数，
+指定每列的 X 轴标签递增多少。"
   (let* ((symbol-width (length graph-blank))
-         ;; @code{height} @r{is both the largest number}
-         ;; @r{and the number with the most digits.}
+         ;; @code{height} @r{既是最大的数字}
+         ;; @r{也是数字位数最多的数字。}
          (height (apply 'max numbers-list))
 @end group
 @group
          (height-of-top-line
           (if (zerop (% height Y-axis-label-spacing))
               height
-            ;; @r{else}
+            ;; @r{否则}
             (* (1+ (/ height Y-axis-label-spacing))
                Y-axis-label-spacing)))
 @end group
@@ -15719,11 +15438,10 @@ each column."
 @end ignore
 
 @page
-@node Final printed graph
-@appendixsubsec The Printed Graph
+@node 最终打印图表
+@appendixsubsec 打印图表
 
-When made and installed, you can call the @code{print-graph} command
-like this:
+当制作并安装完成后，您可以像这样调用 @code{print-graph} 命令：
 @sp 1
 
 @smallexample
@@ -15734,7 +15452,7 @@ like this:
 @sp 1
 
 @noindent
-Here is the graph:
+这是图表：
 @sp 2
 
 @smallexample
@@ -15767,7 +15485,7 @@ Here is the graph:
 @sp 2
 
 @noindent
-The largest group of functions contain 10--19 words and symbols each.
+最大的函数组包含每个函数 10--19 个字和符号。
 
 @node 自由软件和自由手册
 @appendix 自由软件和自由手册

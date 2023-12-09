@@ -58,40 +58,35 @@ span.w-nolinebreak-text {white-space: nowrap}
 <div class="appendixsubsec-level-extent" id="print_002dY_002daxis-Penultimate">
 <div class="nav-panel">
 <p>
-Previous: <a href="Y_002daxis_002dcolumn.html" accesskey="p" rel="prev">Create a Y Axis Column</a>, Up: <a href="print_002dY_002daxis.html" accesskey="u" rel="up">The <code class="code">print-Y-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Y_002daxis_002dcolumn.html" accesskey="p" rel="prev">创建Y轴标签列</a>, Up: <a href="print_002dY_002daxis.html" accesskey="u" rel="up"><code class="code">print-Y-axis</code> 函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="appendixsubsec" id="The-Not-Quite-Final-Version-of-print_002dY_002daxis">C.2.4 The Not Quite Final Version of <code class="code">print-Y-axis</code></h4>
+<h4 class="appendixsubsec" id="print_002dY_002daxisDe-Wei-Wan-Quan-Zui-Zhong-Ban-Ben-">C.2.4 <code class="code">print-Y-axis</code>的未完全最终版本</h4>
 
-<p>The list constructed by the <code class="code">Y-axis-column</code> function is passed to
-the <code class="code">print-Y-axis</code> function, which inserts the list as a column.
+<p>由<code class="code">Y-axis-column</code>函数构建的列表被传递给<code class="code">print-Y-axis</code>函数，该函数将列表作为列插入。
 </p>
 <a class="index-entry-id" id="index-print_002dY_002daxis"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun print-Y-axis (height full-Y-label-width)
-  &quot;Insert Y axis using HEIGHT and FULL-Y-LABEL-WIDTH.
-Height must be the maximum height of the graph.
-Full width is the width of the highest label element.&quot;
-;; Value of height and full-Y-label-width
-;; are passed by print-graph.
+  &quot;使用HEIGHT和FULL-Y-LABEL-WIDTH插入Y轴。
+Height必须是图形的最大高度。
+全宽度是最高标签元素的宽度。&quot;
+;; Height和full-Y-label-width的值由print-graph传递。
 </pre></div><div class="group"><pre class="example-preformatted">  (let ((start (point)))
     (insert-rectangle
      (Y-axis-column height full-Y-label-width))
-    ;; <span class="r">Place point ready for inserting graph.</span>
+    ;; <span class="r">将点置于插入图形的正确位置。</span>
     (goto-char start)
-    ;; <span class="r">Move point forward by value of</span> full-Y-label-width
+    ;; <span class="r">将点向前移动FULL-Y-LABEL-WIDTH的值</span>
     (forward-char full-Y-label-width)))
 </pre></div></div>
 
-<p>The <code class="code">print-Y-axis</code> uses the <code class="code">insert-rectangle</code> function to
-insert the Y axis labels created by the <code class="code">Y-axis-column</code> function.
-In addition, it places point at the correct position for printing the body of
-the graph.
+<p><code class="code">print-Y-axis</code>使用<code class="code">insert-rectangle</code>函数插入由<code class="code">Y-axis-column</code>函数创建的Y轴标签。此外，它将点放置在正确的位置以打印图形的主体。
 </p>
-<p>You can test <code class="code">print-Y-axis</code>:
+<p>您可以测试<code class="code">print-Y-axis</code>：
 </p>
 <ol class="enumerate">
-<li> Install
+<li> 安装
 
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">Y-axis-label-spacing
@@ -101,32 +96,23 @@ Y-axis-column
 print-Y-axis
 </pre></div></div>
 
-</li><li> Copy the following expression:
+</li><li> 复制以下表达式：
 
 <div class="example smallexample">
 <pre class="example-preformatted">(print-Y-axis 12 5)
 </pre></div>
 
-</li><li> Switch to the <samp class="file">*scratch*</samp> buffer and place the cursor where you
-want the axis labels to start.
+</li><li> 切换到<samp class="file">*scratch*</samp>缓冲区，并将光标放在希望开始轴标签的位置。
 
-</li><li> Type <kbd class="kbd">M-:</kbd> (<code class="code">eval-expression</code>).
+</li><li> 键入<kbd class="kbd">M-:</kbd>（<code class="code">eval-expression</code>）。
 
-</li><li> Yank the <code class="code">graph-body-print</code> expression into the minibuffer
-with <kbd class="kbd">C-y</kbd> (<code class="code">yank)</code>.
+</li><li> 使用<kbd class="kbd">C-y</kbd>（<code class="code">yank</code>）将<code class="code">graph-body-print</code>表达式粘贴到迷你缓冲区中。
 
-</li><li> Press <kbd class="key">RET</kbd> to evaluate the expression.
+</li><li> 按下<kbd class="key">RET</kbd>以评估表达式。
 </li></ol>
 
-<p>Emacs will print labels vertically, the top one being &lsquo;<samp class="samp">10&nbsp;<span class="w-nolinebreak-text">-</span>&nbsp;<!-- /@w --></samp>&rsquo;<!-- /@w -->.  (The <code class="code">print-graph</code> function will pass the value of
-<code class="code">height-of-top-line</code>, which in this case will end up as 15,
-thereby getting rid of what might appear as a bug.)
+<p>Emacs将垂直打印标签，顶部的标签为&lsquo;<samp class="samp">10&nbsp;<span class="w-nolinebreak-text">-</span>&nbsp;<!-- /@w --></samp>&rsquo;<!-- /@w -->.（在这种情况下，<code class="code">print-graph</code>函数将传递<code class="code">height-of-top-line</code>的值，这将最终变为15，从而消除可能出现的错误。）
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Previous: <a href="Y_002daxis_002dcolumn.html">Create a Y Axis Column</a>, Up: <a href="print_002dY_002daxis.html">The <code class="code">print-Y-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>X Axis Tic Marks (Programming in Emacs Lisp)</title>
+<title>X轴刻度标记 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="X Axis Tic Marks (Programming in Emacs Lisp)">
-<meta name="keywords" content="X Axis Tic Marks (Programming in Emacs Lisp)">
+<meta name="description" content="X轴刻度标记 (Programming in Emacs Lisp)">
+<meta name="keywords" content="X轴刻度标记 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -55,74 +55,62 @@ span.w-nolinebreak-text {white-space: nowrap}
 </head>
 
 <body lang="en">
-<div class="appendixsubsec-level-extent" id="X-Axis-Tic-Marks">
+<div class="appendixsubsec-level-extent" id="X_8f74_523b_5ea6_6807_8bb0">
 <div class="nav-panel">
 <p>
-Previous: <a href="Similarities-differences.html" accesskey="p" rel="prev">Similarities and differences</a>, Up: <a href="print_002dX_002daxis.html" accesskey="u" rel="up">The <code class="code">print-X-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Similarities-differences.html" accesskey="p" rel="prev">相似性与差异</a>, Up: <a href="print_002dX_002daxis.html" accesskey="u" rel="up"><code class="code">print-X-axis</code> 函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="appendixsubsec" id="X-Axis-Tic-Marks-1">C.3.1 X Axis Tic Marks</h4>
+<h4 class="appendixsubsec" id="XZhou-Ke-Du-Biao-Ji-">C.3.1 X轴刻度标记</h4>
 
-<p>The first function should print the X axis tic marks.  We must specify
-the tic marks themselves and their spacing:
+<p>第一个函数应该打印X轴的刻度标记。我们需要指定刻度标记本身及其间距：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defvar X-axis-label-spacing
   (if (boundp 'graph-blank)
       (* 5 (length graph-blank)) 5)
-  &quot;Number of units from one X axis label to next.&quot;)
+  &quot;相邻X轴标签之间的单位数。&quot;)
 </pre></div></div>
 
-<p>(Note that the value of <code class="code">graph-blank</code> is set by another
-<code class="code">defvar</code>.  The <code class="code">boundp</code> predicate checks whether it has
-already been set; <code class="code">boundp</code> returns <code class="code">nil</code> if it has not.  If
-<code class="code">graph-blank</code> were unbound and we did not use this conditional
-construction, we would enter the debugger and see an error message
-saying &lsquo;<samp class="samp">Debugger&nbsp;<span class="w-nolinebreak-text">entered--Lisp</span>&nbsp;error:<!-- /@w -->
-<span class="w-nolinebreak-text">(void-variable</span>&nbsp;<span class="w-nolinebreak-text">graph-blank)</span><!-- /@w --></samp>&rsquo;.)
+<p>（注意，<code class="code">graph-blank</code>的值由另一个<code class="code">defvar</code>设置。<code class="code">boundp</code>谓词检查它是否已经被设置；如果尚未设置<code class="code">graph-blank</code>，并且我们没有使用此条件构造，将进入调试器，并显示错误消息，其中包含 &lsquo;<samp class="samp">Debugger&nbsp;<span class="w-nolinebreak-text">entered--Lisp</span>&nbsp;error:<!-- /@w -->
+<span class="w-nolinebreak-text">(void-variable</span>&nbsp;<span class="w-nolinebreak-text">graph-blank)</span><!-- /@w --></samp>&rsquo;。）
 </p>
-<p>Here is the <code class="code">defvar</code> for <code class="code">X-axis-tic-symbol</code>:
+<p>这是<code class="code">X-axis-tic-symbol</code>的<code class="code">defvar</code>：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defvar X-axis-tic-symbol &quot;|&quot;
-  &quot;String to insert to point to a column in X axis.&quot;)
+  &quot;插入到X轴列的字符串。&quot;)
 </pre></div></div>
 
-<p>The goal is to make a line that looks like this:
+<p>目标是生成如下一行：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">       |   |    |    |
 </pre></div>
 
-<p>The first tic is indented so that it is under the first column, which is
-indented to provide space for the Y axis labels.
+<p>第一个刻度标记缩进，使其位于第一列下方，该列缩进以提供给Y轴标签留出空间。
 </p>
-<p>A tic element consists of the blank spaces that stretch from one tic to
-the next plus a tic symbol.  The number of blanks is determined by the
-width of the tic symbol and the <code class="code">X-axis-label-spacing</code>.
+<p>刻度元素包括从一个刻度到下一个刻度的空格以及一个刻度符号。空格的数量由刻度符号的宽度和<code class="code">X-axis-label-spacing</code>确定。
 </p>
-<p>The code looks like this:
+<p>代码如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">;;; X-axis-tic-element
 &hellip;
 (concat
  (make-string
-  ;; <span class="r">Make a string of blanks.</span>
+  ;; <span class="r">生成空格字符串。</span>
   (-  (* symbol-width X-axis-label-spacing)
       (length X-axis-tic-symbol))
   ? )
- ;; <span class="r">Concatenate blanks with tic symbol.</span>
+ ;; <span class="r">将空格与刻度符号连接起来。</span>
  X-axis-tic-symbol)
 &hellip;
 </pre></div></div>
 
-<p>Next, we determine how many blanks are needed to indent the first tic
-mark to the first column of the graph.  This uses the value of
-<code class="code">full-Y-label-width</code> passed it by the <code class="code">print-graph</code> function.
+<p>接下来，我们确定需要多少空格来缩进第一个刻度标记以对齐图表的第一列。这使用由<code class="code">print-graph</code>函数传递的<code class="code">full-Y-label-width</code>的值。
 </p>
-<p>The code to make <code class="code">X-axis-leading-spaces</code>
-looks like this:
+<p>生成<code class="code">X-axis-leading-spaces</code>的代码如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">;; X-axis-leading-spaces
@@ -131,9 +119,7 @@ looks like this:
 &hellip;
 </pre></div></div>
 
-<p>We also need to determine the length of the horizontal axis, which is
-the length of the numbers list, and the number of ticks in the horizontal
-axis:
+<p>我们还需要确定水平轴的长度，即数字列表的长度，以及水平轴上的刻度数：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">;; X-length
@@ -152,37 +138,37 @@ axis:
   (1+ (/ (X-length tic-width))))
 </pre></div></div>
 
-<p>All this leads us directly to the function for printing the X axis tic line:
+<p>所有这些直接导致打印X轴刻度线的函数：
 </p>
 <a class="index-entry-id" id="index-print_002dX_002daxis_002dtic_002dline"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun print-X-axis-tic-line
   (number-of-X-tics X-axis-leading-spaces X-axis-tic-element)
-  &quot;Print ticks for X axis.&quot;
+  &quot;打印X轴的刻度标记。&quot;
     (insert X-axis-leading-spaces)
-    (insert X-axis-tic-symbol)  ; <span class="r">Under first column.</span>
-</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert second tic in the right spot.</span>
+    (insert X-axis-tic-symbol)  ; <span class="r">在第一列下方插入刻度符号。</span>
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">在正确的位置插入第二个刻度。</span>
     (insert (concat
              (make-string
               (-  (* symbol-width X-axis-label-spacing)
-                  ;; <span class="r">Insert white space up to second tic symbol.</span>
+                  ;; <span class="r">插入到第二个刻度符号的空格。</span>
                   (* 2 (length X-axis-tic-symbol)))
               ? )
              X-axis-tic-symbol))
-</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert remaining ticks.</span>
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">插入剩余的刻度标记。</span>
     (while (&gt; number-of-X-tics 1)
       (insert X-axis-tic-element)
       (setq number-of-X-tics (1- number-of-X-tics))))
 </pre></div></div>
 
-<p>The line of numbers is equally straightforward:
+<p>数字行同样简单：
 </p>
-<p>First, we create a numbered element with blank spaces before each number:
+<p>首先，我们使用空格在每个数字之前创建一个带编号的元素：
 </p>
 <a class="index-entry-id" id="index-X_002daxis_002delement"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun X-axis-element (number)
-  &quot;Construct a numbered X axis element.&quot;
+  &quot;构造带编号的X轴元素。&quot;
   (let ((leading-spaces
          (-  (* symbol-width X-axis-label-spacing)
              (length (number-to-string number)))))
@@ -190,24 +176,23 @@ axis:
             (number-to-string number))))
 </pre></div></div>
 
-<p>Next, we create the function to print the numbered line, starting with
-the number 1 under the first column:
+<p>接下来，我们创建打印带编号行的函数，从数字1开始，位于第一列下方：
 </p>
 <a class="index-entry-id" id="index-print_002dX_002daxis_002dnumbered_002dline"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun print-X-axis-numbered-line
   (number-of-X-tics X-axis-leading-spaces)
-  &quot;Print line of X-axis numbers&quot;
+  &quot;打印X轴数字行&quot;
   (let ((number X-axis-label-spacing))
     (insert X-axis-leading-spaces)
     (insert &quot;1&quot;)
 </pre></div><div class="group"><pre class="example-preformatted">    (insert (concat
              (make-string
-              ;; <span class="r">Insert white space up to next number.</span>
+              ;; <span class="r">插入到下一个数字的空格。</span>
               (-  (* symbol-width X-axis-label-spacing) 2)
               ? )
              (number-to-string number)))
-</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert remaining numbers.</span>
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">插入剩余的数字。</span>
     (setq number (+ number X-axis-label-spacing))
     (while (&gt; number-of-X-tics 1)
       (insert (X-axis-element number))
@@ -215,35 +200,29 @@ the number 1 under the first column:
       (setq number-of-X-tics (1- number-of-X-tics)))))
 </pre></div></div>
 
-<p>Finally, we need to write the <code class="code">print-X-axis</code> that uses
-<code class="code">print-X-axis-tic-line</code> and
-<code class="code">print-X-axis-numbered-line</code>.
+<p>最后，我们需要编写<code class="code">print-X-axis</code>函数，该函数使用<code class="code">print-X-axis-tic-line</code>和<code class="code">print-X-axis-numbered-line</code>。
 </p>
-<p>The function must determine the local values of the variables used by both
-<code class="code">print-X-axis-tic-line</code> and <code class="code">print-X-axis-numbered-line</code>, and
-then it must call them.  Also, it must print the carriage return that
-separates the two lines.
+<p>该函数必须确定两个函数都使用的变量的局部值，然后调用它们。此外，它必须打印分隔两行的换行符。
 </p>
-<p>The function consists of a varlist that specifies five local variables,
-and calls to each of the two line printing functions:
+<p>该函数包含一个varlist，指定了五个局部变量，并调用了两个打印行的函数：
 </p>
 <a class="index-entry-id" id="index-print_002dX_002daxis"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun print-X-axis (numbers-list)
-  &quot;Print X axis labels to length of NUMBERS-LIST.&quot;
+  &quot;打印X轴标签到NUMBERS-LIST的长度。&quot;
   (let* ((leading-spaces
           (make-string full-Y-label-width ? ))
-</pre></div><div class="group"><pre class="example-preformatted">       ;; symbol-width <span class="r">is provided by</span> graph-body-print
+</pre></div><div class="group"><pre class="example-preformatted">       ;; symbol-width <span class="r">由</span> graph-body-print <span class="r">提供</span>
        (tic-width (* symbol-width X-axis-label-spacing))
        (X-length (length numbers-list))
 </pre></div><div class="group"><pre class="example-preformatted">       (X-tic
         (concat
          (make-string
-</pre></div><div class="group"><pre class="example-preformatted">          ;; <span class="r">Make a string of blanks.</span>
+</pre></div><div class="group"><pre class="example-preformatted">          ;; <span class="r">生成空格字符串。</span>
           (-  (* symbol-width X-axis-label-spacing)
               (length X-axis-tic-symbol))
           ? )
-</pre></div><div class="group"><pre class="example-preformatted">         ;; <span class="r">Concatenate blanks with tic symbol.</span>
+</pre></div><div class="group"><pre class="example-preformatted">         ;; <span class="r">将空格与刻度符号连接起来。</span>
          X-axis-tic-symbol))
 </pre></div><div class="group"><pre class="example-preformatted">       (tic-number
         (if (zerop (% X-length tic-width))
@@ -254,14 +233,12 @@ and calls to each of the two line printing functions:
     (print-X-axis-numbered-line tic-number leading-spaces)))
 </pre></div></div>
 
-<p>You can test <code class="code">print-X-axis</code>:
+<p>您可以测试<code class="code">print-X-axis</code>：
 </p>
 <ol class="enumerate">
-<li> Install <code class="code">X-axis-tic-symbol</code>, <code class="code">X-axis-label-spacing</code>,
-<code class="code">print-X-axis-tic-line</code>, as well as <code class="code">X-axis-element</code>,
-<code class="code">print-X-axis-numbered-line</code>, and <code class="code">print-X-axis</code>.
+<li> 安装<code class="code">X-axis-tic-symbol</code>，<code class="code">X-axis-label-spacing</code>，<code class="code">print-X-axis-tic-line</code>以及<code class="code">X-axis-element</code>，<code class="code">print-X-axis-numbered-line</code>和<code class="code">print-X-axis</code>。
 
-</li><li> Copy the following expression:
+</li><li> 复制以下表达式：
 
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(progn
@@ -271,18 +248,16 @@ and calls to each of the two line printing functions:
     '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16))))
 </pre></div></div>
 
-</li><li> Switch to the <samp class="file">*scratch*</samp> buffer and place the cursor where you
-want the axis labels to start.
+</li><li> 切换到<samp class="file">*scratch*</samp>缓冲区，并将光标放到希望开始轴标签的位置。
 
-</li><li> Type <kbd class="kbd">M-:</kbd> (<code class="code">eval-expression</code>).
+</li><li> 输入<kbd class="kbd">M-:</kbd>（<code class="code">eval-expression</code>）。
 
-</li><li> Yank the test expression into the minibuffer
-with <kbd class="kbd">C-y</kbd> (<code class="code">yank)</code>.
+</li><li> 使用<kbd class="kbd">C-y</kbd>（<code class="code">yank</code>）将测试表达式粘贴到迷你缓冲区中。
 
-</li><li> Press <kbd class="key">RET</kbd> to evaluate the expression.
+</li><li> 按下<kbd class="key">RET</kbd>以评估表达式。
 </li></ol>
 
-<p>Emacs will print the horizontal axis like this:
+<p>Emacs将打印出水平轴，如下所示：
 </p><br>
 
 <div class="example smallexample">
@@ -294,7 +269,7 @@ with <kbd class="kbd">C-y</kbd> (<code class="code">yank)</code>.
 <hr>
 <div class="nav-panel">
 <p>
-Previous: <a href="Similarities-differences.html">Similarities and differences</a>, Up: <a href="print_002dX_002daxis.html">The <code class="code">print-X-axis</code> Function</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Similarities-differences.html">相似性与差异</a>, Up: <a href="print_002dX_002daxis.html"><code class="code">print-X-axis</code> 函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

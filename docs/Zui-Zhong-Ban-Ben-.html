@@ -26,10 +26,10 @@ ISBN 1-882114-43-4
 允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
 
 (a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
-<title>The final version (Programming in Emacs Lisp)</title>
+<title>最终版本 (Programming in Emacs Lisp)</title>
 
-<meta name="description" content="The final version (Programming in Emacs Lisp)">
-<meta name="keywords" content="The final version (Programming in Emacs Lisp)">
+<meta name="description" content="最终版本 (Programming in Emacs Lisp)">
+<meta name="keywords" content="最终版本 (Programming in Emacs Lisp)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Print-Whole-Graph.html" rel="up" title="Print Whole Graph">
-<link href="Test-print_002dgraph.html" rel="next" title="Test print-graph">
+<link href="Da-Yin-Zheng-GeTu-Biao-.html" rel="up" title="打印整个图表">
+<link href="Ce-Shi-Da-Yin-Tu-Biao-.html" rel="next" title="测试 打印图表">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -52,54 +52,48 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 </head>
 
 <body lang="en">
-<div class="unnumberedsubsec-level-extent" id="The-final-version">
+<div class="unnumberedsubsec-level-extent" id="g_t_6700_7ec8_7248_672c">
 <div class="nav-panel">
 <p>
-Next: <a href="Test-print_002dgraph.html" accesskey="n" rel="next">Testing <code class="code">print-graph</code></a>, Up: <a href="Print-Whole-Graph.html" accesskey="u" rel="up">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Ce-Shi-Da-Yin-Tu-Biao-.html" accesskey="n" rel="next">测试 <code class="code">print-graph</code></a>, Up: <a href="Da-Yin-Zheng-GeTu-Biao-.html" accesskey="u" rel="up">打印整个图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="unnumberedsubsec" id="Changes-for-the-Final-Version">Changes for the Final Version</h4>
+<h4 class="unnumberedsubsec" id="Zui-Zhong-Ban-Ben-De-Geng-Gai-">最终版本的更改</h4>
 
-<p>The final version is different from what we planned in two ways:
-first, it contains additional values calculated once in the varlist;
-second, it carries an option to specify the labels&rsquo; increment per row.
-This latter feature turns out to be essential; otherwise, a graph may
-have more rows than fit on a display or on a sheet of paper.
+<p>最终版本与我们计划的不同，有两点不同：首先，它包含了一次在变量列表中计算的附加值；其次，它带有一个选项，用于指定标签每行的增量。
+后者的功能证明是必要的；否则，图表可能具有超过显示屏或纸张上能容纳的行数。
 </p>
-<p>This new feature requires a change to the <code class="code">Y-axis-column</code>
-function, to add <code class="code">vertical-step</code> to it.  The function looks like
-this:
+<p>这个新功能需要对 <code class="code">Y-axis-column</code> 函数进行更改，以添加 <code class="code">vertical-step</code>。该函数如下：
 </p>
-<a class="index-entry-id" id="index-Y_002daxis_002dcolumn-Final-version_002e"></a>
+<a class="index-entry-id" id="index-Y_002daxis_002dcolumn-Zui-Zhong-Ban-Ben-_002e-"></a>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; <span class="r">Final version.</span>
+<div class="group"><pre class="example-preformatted">;;; <span class="r">最终版本。</span>
 (defun Y-axis-column
   (height width-of-label &amp;optional vertical-step)
-  &quot;Construct list of labels for Y axis.
-HEIGHT is maximum height of graph.
-WIDTH-OF-LABEL is maximum width of label.
-VERTICAL-STEP, an option, is a positive integer
-that specifies how much a Y axis label increments
-for each line.  For example, a step of 5 means
-that each line is five units of the graph.&quot;
+  &quot;构建Y轴标签列表。
+HEIGHT 是图表的最大高度。
+WIDTH-OF-LABEL 是标签的最大宽度。
+VERTICAL-STEP，一个可选项，是一个正整数，
+用于指定每行的Y轴标签增量。
+例如，步长为5表示每行是图表的五个单位。&quot;
 </pre></div><div class="group"><pre class="example-preformatted">  (let (Y-axis
         (number-per-line (or vertical-step 1)))
     (while (&gt; height 1)
       (if (zerop (% height Y-axis-label-spacing))
-</pre></div><div class="group"><pre class="example-preformatted">          ;; <span class="r">Insert label.</span>
+</pre></div><div class="group"><pre class="example-preformatted">          ;; <span class="r">插入标签。</span>
           (setq Y-axis
                 (cons
                  (Y-axis-element
                   (* height number-per-line)
                   width-of-label)
                  Y-axis))
-</pre></div><div class="group"><pre class="example-preformatted">        ;; <span class="r">Else, insert blanks.</span>
+</pre></div><div class="group"><pre class="example-preformatted">        ;; <span class="r">否则，插入空白。</span>
         (setq Y-axis
               (cons
                (make-string width-of-label ? )
                Y-axis)))
       (setq height (1- height)))
-</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">Insert base line.</span>
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">插入基准线。</span>
     (setq Y-axis (cons (Y-axis-element
                         (or vertical-step 1)
                         width-of-label)
@@ -107,18 +101,16 @@ that each line is five units of the graph.&quot;
     (nreverse Y-axis)))
 </pre></div></div>
 
-<p>The values for the maximum height of graph and the width of a symbol
-are computed by <code class="code">print-graph</code> in its <code class="code">let</code> expression; so
-<code class="code">graph-body-print</code> must be changed to accept them.
+<p>图表的最大高度和符号宽度的值由 <code class="code">print-graph</code> 在其 <code class="code">let</code> 表达式中计算；因此，<code class="code">graph-body-print</code> 必须更改以接受它们。
 </p>
-<a class="index-entry-id" id="index-graph_002dbody_002dprint-Final-version_002e"></a>
+<a class="index-entry-id" id="index-graph_002dbody_002dprint-Zui-Zhong-Ban-Ben-_002e-"></a>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; <span class="r">Final version.</span>
+<div class="group"><pre class="example-preformatted">;;; <span class="r">最终版本。</span>
 (defun graph-body-print (numbers-list height symbol-width)
-  &quot;Print a bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
-HEIGHT is maximum height of graph.
-SYMBOL-WIDTH is number of each column.&quot;
+  &quot;打印NUMBERS-LIST的条形图。
+numbers-list 包含Y轴值。
+HEIGHT 是图表的最大高度。
+SYMBOL-WIDTH 是每列的数字。&quot;
 </pre></div><div class="group"><pre class="example-preformatted">  (let (from-position)
     (while numbers-list
       (setq from-position (point))
@@ -126,37 +118,36 @@ SYMBOL-WIDTH is number of each column.&quot;
        (column-of-graph height (car numbers-list)))
       (goto-char from-position)
       (forward-char symbol-width)
-</pre></div><div class="group"><pre class="example-preformatted">      ;; <span class="r">Draw graph column by column.</span>
+</pre></div><div class="group"><pre class="example-preformatted">      ;; <span class="r">逐列绘制图表。</span>
       (sit-for 0)
       (setq numbers-list (cdr numbers-list)))
-    ;; <span class="r">Place point for X axis labels.</span>
+    ;; <span class="r">放置X轴标签的点。</span>
     (forward-line height)
     (insert &quot;\n&quot;)))
 </pre></div></div>
 
-<p>Finally, the code for the <code class="code">print-graph</code> function:
+<p>最后，<code class="code">print-graph</code> 函数的代码：
 </p>
-<a class="index-entry-id" id="index-print_002dgraph-Final-version_002e"></a>
+<a class="index-entry-id" id="index-print_002dgraph-Zui-Zhong-Ban-Ben-_002e-"></a>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; <span class="r">Final version.</span>
+<div class="group"><pre class="example-preformatted">;;; <span class="r">最终版本。</span>
 (defun print-graph
   (numbers-list &amp;optional vertical-step)
-  &quot;Print labeled bar graph of the NUMBERS-LIST.
-The numbers-list consists of the Y-axis values.
+  &quot;打印带有标签的条形图 NUMBERS-LIST。
+numbers-list 包含Y轴值。
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">Optionally, VERTICAL-STEP, a positive integer,
-specifies how much a Y axis label increments for
-each line.  For example, a step of 5 means that
-each row is five units.&quot;
+</pre><div class="group"><pre class="example-preformatted">可选的，VERTICAL-STEP，一个正整数，
+指定每行的Y轴标签增量。
+例如，步长为5表示每行是图表的五个单位。&quot;
 </pre></div><div class="group"><pre class="example-preformatted">  (let* ((symbol-width (length graph-blank))
-         ;; <code class="code">height</code> <span class="r">is both the largest number</span>
-         ;; <span class="r">and the number with the most digits.</span>
+         ;; <code class="code">height</code> <span class="r">既是最大的数字</span>
+         ;; <span class="r">也是数字位数最多的数字。</span>
          (height (apply 'max numbers-list))
 </pre></div><div class="group"><pre class="example-preformatted">         (height-of-top-line
           (if (zerop (% height Y-axis-label-spacing))
               height
-            ;; <span class="r">else</span>
+            ;; <span class="r">否则</span>
             (* (1+ (/ height Y-axis-label-spacing))
                Y-axis-label-spacing)))
 </pre></div><div class="group"><pre class="example-preformatted">         (vertical-step (or vertical-step 1))
@@ -175,11 +166,6 @@ each row is five units.&quot;
     (print-X-axis numbers-list)))
 </pre></div></div>
 
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="Test-print_002dgraph.html">Testing <code class="code">print-graph</code></a>, Up: <a href="Print-Whole-Graph.html">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

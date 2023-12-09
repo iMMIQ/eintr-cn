@@ -38,9 +38,9 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Print-Whole-Graph.html" rel="up" title="Print Whole Graph">
+<link href="Da-Yin-Zheng-GeTu-Biao-.html" rel="up" title="打印整个图表">
 <link href="mapcar.html" rel="next" title="mapcar">
-<link href="Graphing-words-in-defuns.html" rel="prev" title="Graphing words in defuns">
+<link href="Hui-Zhi-defuns-ZhongDe-Dan-Ci-Tu-Biao-.html" rel="prev" title="绘制 defuns 中的单词图表">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -55,38 +55,32 @@ div.example {margin-left: 3.2em}
 <div class="appendixsubsec-level-extent" id="lambda">
 <div class="nav-panel">
 <p>
-Next: <a href="mapcar.html" accesskey="n" rel="next">The <code class="code">mapcar</code> Function</a>, Previous: <a href="Graphing-words-in-defuns.html" accesskey="p" rel="prev">Graphing Numbers of Words and Symbols</a>, Up: <a href="Print-Whole-Graph.html" accesskey="u" rel="up">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="mapcar.html" accesskey="n" rel="next">The <code class="code">mapcar</code> Function</a>, Previous: <a href="Hui-Zhi-defuns-ZhongDe-Dan-Ci-Tu-Biao-.html" accesskey="p" rel="prev">绘制单词和符号数量的函数图表</a>, Up: <a href="Da-Yin-Zheng-GeTu-Biao-.html" accesskey="u" rel="up">打印整个图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h4 class="appendixsubsec" id="A-lambda-Expression_003a-Useful-Anonymity">C.4.3 A <code class="code">lambda</code> Expression: Useful Anonymity</h4>
-<a class="index-entry-id" id="index-Anonymous-function"></a>
+<h4 class="appendixsubsec" id="A-lambda-Biao-Da-Shi-_003aYou-Yong-De-Ni-Ming-Xing-">C.4.3 A <code class="code">lambda</code> 表达式：有用的匿名性</h4>
+<a class="index-entry-id" id="index-Ni-Ming-Han-Shu-"></a>
 <a class="index-entry-id" id="index-lambda"></a>
 
-<p><code class="code">lambda</code> is the symbol for an anonymous function, a function
-without a name.  Every time you use an anonymous function, you need to
-include its whole body.
+<p><code class="code">lambda</code> 是匿名函数的符号，即没有名字的函数。每次使用匿名函数时，都需要包含它的整个体。
 </p>
-<p>Thus,
+<p>因此，
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(lambda (arg) (/ arg 50))
 </pre></div>
 
-<p>is a function that returns the value resulting from
-dividing whatever is passed to it as <code class="code">arg</code> by 50.
+<p>是一个函数，返回将传递给它的<code class="code">arg</code>除以50的结果。
 </p>
-<p>Earlier, for example, we had a function <code class="code">multiply-by-seven</code>; it
-multiplied its argument by 7.  This function is similar, except it
-divides its argument by 50; and, it has no name.  The anonymous
-equivalent of <code class="code">multiply-by-seven</code> is:
+<p>早些时候，例如，我们有一个函数<code class="code">multiply-by-seven</code>；它将其参数乘以7。这个函数类似，只是它将其参数除以50；而且，它没有名字。<code class="code">multiply-by-seven</code>的匿名等价物是：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(lambda (number) (* 7 number))
 </pre></div>
 
-<p>(See <a class="xref" href="defun.html">The <code class="code">defun</code> Macro</a>.)
+<p>（See <a class="xref" href="defun.html"><code class="code">defun</code> 宏</a>。）
 </p>
-<p>If we want to multiply 3 by 7, we can write:
+<p>如果我们想将3乘以7，我们可以写：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(multiply-by-seven 3)
@@ -97,9 +91,9 @@ equivalent of <code class="code">multiply-by-seven</code> is:
 <br>
 <br>
 
-<p>This expression returns 21.
+<p>这个表达式返回21。
 </p>
-<p>Similarly, we can write:
+<p>同样，我们可以写：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">((lambda (number) (* 7 number)) 3)
@@ -110,7 +104,7 @@ equivalent of <code class="code">multiply-by-seven</code> is:
 <br>
 <br>
 
-<p>If we want to divide 100 by 50, we can write:
+<p>如果我们想将100除以50，我们可以写：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">((lambda (arg) (/ arg 50)) 100)
@@ -121,18 +115,10 @@ equivalent of <code class="code">multiply-by-seven</code> is:
 <br>
 <br>
 
-<p>This expression returns 2.  The 100 is passed to the function, which
-divides that number by 50.
+<p>这个表达式返回2。将100传递给函数，该函数将该数字除以50。
 </p>
-<p>See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Lambda-Expressions.html#Lambda-Expressions">Lambda Expressions</a> in <cite class="cite">The GNU Emacs
-Lisp Reference Manual</cite>, for more about <code class="code">lambda</code>.  Lisp and lambda
-expressions derive from the Lambda Calculus.
+<p>See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Lambda-Expressions.html#Lambda-Expressions">Lambda 表达式</a> in <cite class="cite">GNU Emacs Lisp 参考手册</cite>，了解有关<code class="code">lambda</code>的更多信息。Lisp 和 lambda 表达式源于 Lambda 演算。
 </p>
-</div>
-<hr>
-<div class="nav-panel">
-<p>
-Next: <a href="mapcar.html">The <code class="code">mapcar</code> Function</a>, Previous: <a href="Graphing-words-in-defuns.html">Graphing Numbers of Words and Symbols</a>, Up: <a href="Print-Whole-Graph.html">Printing the Whole Graph</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
