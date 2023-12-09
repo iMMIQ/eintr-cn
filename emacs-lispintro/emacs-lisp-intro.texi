@@ -10001,30 +10001,17 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 @end smallexample
 
 @node count-words-in-defun
-@section The @code{count-words-in-defun} Function
-@cindex Counting words in a @code{defun}
+@section @code{count-words-in-defun} 函数
+@cindex 在 @code{defun} 中计算单词数
 
-We have seen that there are several ways to write a
-@code{count-words-region} function.  To write a
-@code{count-words-in-defun}, we need merely adapt one of these
-versions.
+我们已经看到有几种编写 @code{count-words-region} 函数的方法。为了编写 @code{count-words-in-defun}，我们只需调整其中一种版本即可。
 
-The version that uses a @code{while} loop is easy to understand, so I
-am going to adapt that.  Because @code{count-words-in-defun} will be
-part of a more complex program, it need not be interactive and it need
-not display a message but just return the count.  These considerations
-simplify the definition a little.
+使用 @code{while} 循环的版本很容易理解，因此我将对其进行调整。由于 @code{count-words-in-defun} 将成为一个更复杂的程序的一部分，它不需要是交互式的，也不需要显示消息，只需返回计数即可。这些考虑稍微简化了定义。
 
-On the other hand, @code{count-words-in-defun} will be used within a
-buffer that contains function definitions.  Consequently, it is
-reasonable to ask that the function determine whether it is called
-when point is within a function definition, and if it is, to return
-the count for that definition.  This adds complexity to the
-definition, but saves us from needing to pass arguments to the
-function.
+另一方面，@code{count-words-in-defun} 将在包含函数定义的缓冲区中使用。因此，合理的要求是，该函数确定在调用时点是否位于函数定义内，并且如果是，则返回该定义的计数。这增加了定义的复杂性，但省去了需要将参数传递给函数的需要。
 
 @need 1250
-These considerations lead us to prepare the following template:
+这些考虑引导我们准备以下模板：
 
 @smallexample
 @group
@@ -10037,42 +10024,22 @@ These considerations lead us to prepare the following template:
 @end smallexample
 
 @noindent
-As usual, our job is to fill in the slots.
+像往常一样，我们的任务是填写这些槽。
 
-First, the set up.
+首先，设置。
 
-We are presuming that this function will be called within a buffer
-containing function definitions.  Point will either be within a
-function definition or not.  For @code{count-words-in-defun} to work,
-point must move to the beginning of the definition, a counter must
-start at zero, and the counting loop must stop when point reaches the
-end of the definition.
+我们假设该函数将在包含函数定义的缓冲区中调用。点要么在函数定义内，要么不在。为了使 @code{count-words-in-defun} 起作用，点必须移动到定义的开头，一个计数器必须从零开始，而计数循环必须在点达到定义的末尾时停止。
 
-The @code{beginning-of-defun} function searches backwards for an
-opening delimiter such as a @samp{(} at the beginning of a line, and
-moves point to that position, or else to the limit of the search.  In
-practice, this means that @code{beginning-of-defun} moves point to the
-beginning of an enclosing or preceding function definition, or else to
-the beginning of the buffer.  We can use @code{beginning-of-defun} to
-place point where we wish to start.
+@code{beginning-of-defun} 函数向后搜索开头为 @samp{(}（例如在行首）的分隔符，并将点移动到该位置，否则移到搜索的限制位置。在实践中，这意味着 @code{beginning-of-defun} 将点移到封闭或前置函数定义的开头，或者移到缓冲区的开头。我们可以使用 @code{beginning-of-defun} 将点放置在我们想要开始的位置。
 
-The @code{while} loop requires a counter to keep track of the words or
-symbols being counted.  A @code{let} expression can be used to create
-a local variable for this purpose, and bind it to an initial value of zero.
+@code{while} 循环需要一个计数器来跟踪要计数的单词或符号。可以使用 @code{let} 表达式创建一个用于此目的的局部变量，并将其绑定到零的初始值。
 
-The @code{end-of-defun} function works like @code{beginning-of-defun}
-except that it moves point to the end of the definition.
-@code{end-of-defun} can be used as part of an expression that
-determines the position of the end of the definition.
+@code{end-of-defun} 函数与 @code{beginning-of-defun} 类似，除了它将点移动到定义的末尾。@code{end-of-defun} 可以作为确定定义末尾位置的表达式的一部分使用。
 
-The set up for @code{count-words-in-defun} takes shape rapidly: first
-we move point to the beginning of the definition, then we create a
-local variable to hold the count, and finally, we record the position
-of the end of the definition so the @code{while} loop will know when to stop
-looping.
+@code{count-words-in-defun} 的设置迅速形成：首先将点移动到定义的开头，然后创建一个本地变量以保存计数，最后记录定义的末尾位置，以便 @code{while} 循环知道何时停止循环。
 
 @need 1250
-The code looks like this:
+代码如下：
 
 @smallexample
 @group
@@ -10083,21 +10050,11 @@ The code looks like this:
 @end smallexample
 
 @noindent
-The code is simple.  The only slight complication is likely to concern
-@code{end}: it is bound to the position of the end of the definition
-by a @code{save-excursion} expression that returns the value of point
-after @code{end-of-defun} temporarily moves it to the end of the
-definition.
+代码很简单。唯一的小复杂性可能涉及到 @code{end}：它被绑定到通过 @code{save-excursion} 表达式返回的点的位置，该表达式在 @code{end-of-defun} 暂时将其移动到定义的末尾后返回其值。
 
-The second part of the @code{count-words-in-defun}, after the set up,
-is the @code{while} loop.
+@code{count-words-in-defun} 的第二部分，在设置之后，是 @code{while} 循环。
 
-The loop must contain an expression that jumps point forward word by
-word and symbol by symbol, and another expression that counts the
-jumps.  The true-or-false-test for the @code{while} loop should test
-true so long as point should jump forward, and false when point is at
-the end of the definition.  We have already redefined the regular
-expression for this, so the loop is straightforward:
+该循环必须包含一个表达式，该表达式按单词和符号前进并且另一个表达式用于计数跳跃。@code{while} 循环的真假测试应该在点应该前进时为真，而在点位于定义末尾时为假。我们已经重新定义了这个正则表达式，所以循环很简单：
 
 @smallexample
 @group
@@ -10108,19 +10065,16 @@ expression for this, so the loop is straightforward:
 @end group
 @end smallexample
 
-The third part of the function definition returns the count of words
-and symbols.  This part is the last expression within the body of the
-@code{let} expression, and can be, very simply, the local variable
-@code{count}, which when evaluated returns the count.
+该函数定义的第三部分返回单词和符号的计数。这一部分是 @code{let} 表达式体内的最后一个表达式，可以非常简单地是局部变量 @code{count}，在评估时返回计数。
 
 @need 1250
-Put together, the @code{count-words-in-defun} definition looks like this:
+将这些部分组合起来，@code{count-words-in-defun} 的定义如下：
 
 @findex count-words-in-defun
 @smallexample
 @group
 (defun count-words-in-defun ()
-  "Return the number of words and symbols in a defun."
+  "返回 defun 中的单词和符号数。"
   (beginning-of-defun)
   (let ((count 0)
         (end (save-excursion (end-of-defun) (point))))
@@ -10136,65 +10090,57 @@ Put together, the @code{count-words-in-defun} definition looks like this:
 @end group
 @end smallexample
 
-How to test this?  The function is not interactive, but it is easy to
-put a wrapper around the function to make it interactive; we can use
-almost the same code as for the recursive version of
-@code{@value{COUNT-WORDS}}:
+如何测试这个函数？虽然函数不是交互式的，但很容易在其周围添加包装器使其变为交互式；我们可以使用几乎与递归版本的 @code{@value{COUNT-WORDS}} 相同的代码：
 
 @smallexample
 @group
-;;; @r{Interactive version.}
+;;; @r{交互版本。}
 (defun count-words-defun ()
-  "Number of words and symbols in a function definition."
+  "函数定义中的单词和符号数。"
   (interactive)
   (message
-   "Counting words and symbols in function definition ... ")
+   "正在计算函数定义中的单词和符号数... ")
 @end group
 @group
   (let ((count (count-words-in-defun)))
     (cond
      ((zerop count)
       (message
-       "The definition does NOT have any words or symbols."))
+       "该定义没有任何单词或符号。"))
 @end group
 @group
      ((= 1 count)
       (message
-       "The definition has 1 word or symbol."))
+       "该定义有 1 个单词或符号。"))
      (t
       (message
-       "The definition has %d words or symbols." count)))))
+       "该定义有 %d 个单词或符号。" count)))))
 @end group
 @end smallexample
 
 @need 800
 @noindent
-Let's re-use @kbd{C-c =} as a convenient key binding:
+让我们重新使用 @kbd{C-c =} 作为一个方便的键绑定：
 
 @smallexample
 (global-set-key "\C-c=" 'count-words-defun)
 @end smallexample
 
-Now we can try out @code{count-words-defun}: install both
-@code{count-words-in-defun} and @code{count-words-defun}, and set the
-key binding.  Then copy the following to an Emacs Lisp buffer (like,
-for instance, @file{*scratch*}), place the cursor within the
-definition, and use the @kbd{C-c =} command.
+现在我们可以尝试 @code{count-words-defun}：安装 @code{count-words-in-defun} 和 @code{count-words-defun}，并设置键绑定。然后将以下内容复制到 Emacs Lisp 缓冲区（例如，@file{*scratch*}），将光标放在定义内，并使用 @kbd{C-c =} 命令。
 
 @smallexample
 @group
 (defun multiply-by-seven (number)
-  "Multiply NUMBER by seven."
+  "将 NUMBER 乘以七。"
   (* 7 number))
      @result{} 10
 @end group
 @end smallexample
 
 @noindent
-Success!  The definition has 10 words and symbols.
+成功！该定义有 10 个单词和符号。
 
-The next problem is to count the numbers of words and symbols in
-several definitions within a single file.
+下一个问题是计算单个文件中多个定义中的单词和符号数。
 
 @node Several defuns
 @section Count Several @code{defuns} Within a File

@@ -60,29 +60,16 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 Next: <a href="Several-defuns.html" accesskey="n" rel="next">Count Several <code class="code">defuns</code> Within a File</a>, Previous: <a href="Yu-Fa-.html" accesskey="p" rel="prev">何为单词或符号的组成部分？</a>, Up: <a href="Zai-defun-ZhongJi-Suan-Dan-Ci-Shu-.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h3 class="section" id="The-count_002dwords_002din_002ddefun-Function">14.3 The <code class="code">count-words-in-defun</code> Function</h3>
-<a class="index-entry-id" id="index-Counting-words-in-a-defun"></a>
+<h3 class="section" id="count_002dwords_002din_002ddefun-Han-Shu-">14.3 <code class="code">count-words-in-defun</code> 函数</h3>
+<a class="index-entry-id" id="index-Zai-defun-ZhongJi-Suan-Dan-Ci-Shu--1"></a>
 
-<p>We have seen that there are several ways to write a
-<code class="code">count-words-region</code> function.  To write a
-<code class="code">count-words-in-defun</code>, we need merely adapt one of these
-versions.
+<p>我们已经看到有几种编写 <code class="code">count-words-region</code> 函数的方法。为了编写 <code class="code">count-words-in-defun</code>，我们只需调整其中一种版本即可。
 </p>
-<p>The version that uses a <code class="code">while</code> loop is easy to understand, so I
-am going to adapt that.  Because <code class="code">count-words-in-defun</code> will be
-part of a more complex program, it need not be interactive and it need
-not display a message but just return the count.  These considerations
-simplify the definition a little.
+<p>使用 <code class="code">while</code> 循环的版本很容易理解，因此我将对其进行调整。由于 <code class="code">count-words-in-defun</code> 将成为一个更复杂的程序的一部分，它不需要是交互式的，也不需要显示消息，只需返回计数即可。这些考虑稍微简化了定义。
 </p>
-<p>On the other hand, <code class="code">count-words-in-defun</code> will be used within a
-buffer that contains function definitions.  Consequently, it is
-reasonable to ask that the function determine whether it is called
-when point is within a function definition, and if it is, to return
-the count for that definition.  This adds complexity to the
-definition, but saves us from needing to pass arguments to the
-function.
+<p>另一方面，<code class="code">count-words-in-defun</code> 将在包含函数定义的缓冲区中使用。因此，合理的要求是，该函数确定在调用时点是否位于函数定义内，并且如果是，则返回该定义的计数。这增加了定义的复杂性，但省去了需要将参数传递给函数的需要。
 </p>
-<p>These considerations lead us to prepare the following template:
+<p>这些考虑引导我们准备以下模板：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun count-words-in-defun ()
@@ -92,41 +79,21 @@ function.
    <var class="var">return count</var>)
 </pre></div></div>
 
-<p>As usual, our job is to fill in the slots.
+<p>像往常一样，我们的任务是填写这些槽。
 </p>
-<p>First, the set up.
+<p>首先，设置。
 </p>
-<p>We are presuming that this function will be called within a buffer
-containing function definitions.  Point will either be within a
-function definition or not.  For <code class="code">count-words-in-defun</code> to work,
-point must move to the beginning of the definition, a counter must
-start at zero, and the counting loop must stop when point reaches the
-end of the definition.
+<p>我们假设该函数将在包含函数定义的缓冲区中调用。点要么在函数定义内，要么不在。为了使 <code class="code">count-words-in-defun</code> 起作用，点必须移动到定义的开头，一个计数器必须从零开始，而计数循环必须在点达到定义的末尾时停止。
 </p>
-<p>The <code class="code">beginning-of-defun</code> function searches backwards for an
-opening delimiter such as a &lsquo;<samp class="samp">(</samp>&rsquo; at the beginning of a line, and
-moves point to that position, or else to the limit of the search.  In
-practice, this means that <code class="code">beginning-of-defun</code> moves point to the
-beginning of an enclosing or preceding function definition, or else to
-the beginning of the buffer.  We can use <code class="code">beginning-of-defun</code> to
-place point where we wish to start.
+<p><code class="code">beginning-of-defun</code> 函数向后搜索开头为 &lsquo;<samp class="samp">(</samp>&rsquo;（例如在行首）的分隔符，并将点移动到该位置，否则移到搜索的限制位置。在实践中，这意味着 <code class="code">beginning-of-defun</code> 将点移到封闭或前置函数定义的开头，或者移到缓冲区的开头。我们可以使用 <code class="code">beginning-of-defun</code> 将点放置在我们想要开始的位置。
 </p>
-<p>The <code class="code">while</code> loop requires a counter to keep track of the words or
-symbols being counted.  A <code class="code">let</code> expression can be used to create
-a local variable for this purpose, and bind it to an initial value of zero.
+<p><code class="code">while</code> 循环需要一个计数器来跟踪要计数的单词或符号。可以使用 <code class="code">let</code> 表达式创建一个用于此目的的局部变量，并将其绑定到零的初始值。
 </p>
-<p>The <code class="code">end-of-defun</code> function works like <code class="code">beginning-of-defun</code>
-except that it moves point to the end of the definition.
-<code class="code">end-of-defun</code> can be used as part of an expression that
-determines the position of the end of the definition.
+<p><code class="code">end-of-defun</code> 函数与 <code class="code">beginning-of-defun</code> 类似，除了它将点移动到定义的末尾。<code class="code">end-of-defun</code> 可以作为确定定义末尾位置的表达式的一部分使用。
 </p>
-<p>The set up for <code class="code">count-words-in-defun</code> takes shape rapidly: first
-we move point to the beginning of the definition, then we create a
-local variable to hold the count, and finally, we record the position
-of the end of the definition so the <code class="code">while</code> loop will know when to stop
-looping.
+<p><code class="code">count-words-in-defun</code> 的设置迅速形成：首先将点移动到定义的开头，然后创建一个本地变量以保存计数，最后记录定义的末尾位置，以便 <code class="code">while</code> 循环知道何时停止循环。
 </p>
-<p>The code looks like this:
+<p>代码如下：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(beginning-of-defun)
@@ -134,21 +101,11 @@ looping.
       (end (save-excursion (end-of-defun) (point))))
 </pre></div></div>
 
-<p>The code is simple.  The only slight complication is likely to concern
-<code class="code">end</code>: it is bound to the position of the end of the definition
-by a <code class="code">save-excursion</code> expression that returns the value of point
-after <code class="code">end-of-defun</code> temporarily moves it to the end of the
-definition.
+<p>代码很简单。唯一的小复杂性可能涉及到 <code class="code">end</code>：它被绑定到通过 <code class="code">save-excursion</code> 表达式返回的点的位置，该表达式在 <code class="code">end-of-defun</code> 暂时将其移动到定义的末尾后返回其值。
 </p>
-<p>The second part of the <code class="code">count-words-in-defun</code>, after the set up,
-is the <code class="code">while</code> loop.
+<p><code class="code">count-words-in-defun</code> 的第二部分，在设置之后，是 <code class="code">while</code> 循环。
 </p>
-<p>The loop must contain an expression that jumps point forward word by
-word and symbol by symbol, and another expression that counts the
-jumps.  The true-or-false-test for the <code class="code">while</code> loop should test
-true so long as point should jump forward, and false when point is at
-the end of the definition.  We have already redefined the regular
-expression for this, so the loop is straightforward:
+<p>该循环必须包含一个表达式，该表达式按单词和符号前进并且另一个表达式用于计数跳跃。<code class="code">while</code> 循环的真假测试应该在点应该前进时为真，而在点位于定义末尾时为假。我们已经重新定义了这个正则表达式，所以循环很简单：
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(while (and (&lt; (point) end)
@@ -157,17 +114,14 @@ expression for this, so the loop is straightforward:
   (setq count (1+ count)))
 </pre></div></div>
 
-<p>The third part of the function definition returns the count of words
-and symbols.  This part is the last expression within the body of the
-<code class="code">let</code> expression, and can be, very simply, the local variable
-<code class="code">count</code>, which when evaluated returns the count.
+<p>该函数定义的第三部分返回单词和符号的计数。这一部分是 <code class="code">let</code> 表达式体内的最后一个表达式，可以非常简单地是局部变量 <code class="code">count</code>，在评估时返回计数。
 </p>
-<p>Put together, the <code class="code">count-words-in-defun</code> definition looks like this:
+<p>将这些部分组合起来，<code class="code">count-words-in-defun</code> 的定义如下：
 </p>
 <a class="index-entry-id" id="index-count_002dwords_002din_002ddefun"></a>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun count-words-in-defun ()
-  &quot;Return the number of words and symbols in a defun.&quot;
+  &quot;返回 defun 中的单词和符号数。&quot;
   (beginning-of-defun)
   (let ((count 0)
         (end (save-excursion (end-of-defun) (point))))
@@ -180,54 +134,46 @@ and symbols.  This part is the last expression within the body of the
     count))
 </pre></div></div>
 
-<p>How to test this?  The function is not interactive, but it is easy to
-put a wrapper around the function to make it interactive; we can use
-almost the same code as for the recursive version of
-<code class="code">count-words-example</code>:
+<p>如何测试这个函数？虽然函数不是交互式的，但很容易在其周围添加包装器使其变为交互式；我们可以使用几乎与递归版本的 <code class="code">count-words-example</code> 相同的代码：
 </p>
 <div class="example smallexample">
-<div class="group"><pre class="example-preformatted">;;; <span class="r">Interactive version.</span>
+<div class="group"><pre class="example-preformatted">;;; <span class="r">交互版本。</span>
 (defun count-words-defun ()
-  &quot;Number of words and symbols in a function definition.&quot;
+  &quot;函数定义中的单词和符号数。&quot;
   (interactive)
   (message
-   &quot;Counting words and symbols in function definition ... &quot;)
+   &quot;正在计算函数定义中的单词和符号数... &quot;)
 </pre></div><div class="group"><pre class="example-preformatted">  (let ((count (count-words-in-defun)))
     (cond
      ((zerop count)
       (message
-       &quot;The definition does NOT have any words or symbols.&quot;))
+       &quot;该定义没有任何单词或符号。&quot;))
 </pre></div><div class="group"><pre class="example-preformatted">     ((= 1 count)
       (message
-       &quot;The definition has 1 word or symbol.&quot;))
+       &quot;该定义有 1 个单词或符号。&quot;))
      (t
       (message
-       &quot;The definition has %d words or symbols.&quot; count)))))
+       &quot;该定义有 %d 个单词或符号。&quot; count)))))
 </pre></div></div>
 
-<p>Let&rsquo;s re-use <kbd class="kbd">C-c =</kbd> as a convenient key binding:
+<p>让我们重新使用 <kbd class="kbd">C-c =</kbd> 作为一个方便的键绑定：
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">(global-set-key &quot;\C-c=&quot; 'count-words-defun)
 </pre></div>
 
-<p>Now we can try out <code class="code">count-words-defun</code>: install both
-<code class="code">count-words-in-defun</code> and <code class="code">count-words-defun</code>, and set the
-key binding.  Then copy the following to an Emacs Lisp buffer (like,
-for instance, <samp class="file">*scratch*</samp>), place the cursor within the
-definition, and use the <kbd class="kbd">C-c =</kbd> command.
+<p>现在我们可以尝试 <code class="code">count-words-defun</code>：安装 <code class="code">count-words-in-defun</code> 和 <code class="code">count-words-defun</code>，并设置键绑定。然后将以下内容复制到 Emacs Lisp 缓冲区（例如，<samp class="file">*scratch*</samp>），将光标放在定义内，并使用 <kbd class="kbd">C-c =</kbd> 命令。
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun multiply-by-seven (number)
-  &quot;Multiply NUMBER by seven.&quot;
+  &quot;将 NUMBER 乘以七。&quot;
   (* 7 number))
      &rArr; 10
 </pre></div></div>
 
-<p>Success!  The definition has 10 words and symbols.
+<p>成功！该定义有 10 个单词和符号。
 </p>
-<p>The next problem is to count the numbers of words and symbols in
-several definitions within a single file.
+<p>下一个问题是计算单个文件中多个定义中的单词和符号数。
 </p>
 </div>
 <hr>
