@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Sample let Expression (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Sample let Expression (Programming in Emacs Lisp)">
+<meta name="keywords" content="Sample let Expression (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="let.html" rel="up" title="let">
+<link href="Uninitialized-let-Variables.html" rel="next" title="Uninitialized let Variables">
+<link href="Parts-of-let-Expression.html" rel="prev" title="Parts of let Expression">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Sample-let-Expression">
+<div class="nav-panel">
+<p>
+Next: <a href="Uninitialized-let-Variables.html" accesskey="n" rel="next"><code class="code">let</code> 语句中的未初始化变量</a>, Previous: <a href="Parts-of-let-Expression.html" accesskey="p" rel="prev"><code class="code">let</code> 表达式的组成部分</a>, Up: <a href="let.html" accesskey="u" rel="up"><code class="code">let</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="ShiLi-let-Biao-Da-Shi-">3.6.2 示例 <code class="code">let</code> 表达式</h4>
+<a class="index-entry-id" id="index-ShiLi-let-Biao-Da-Shi-"></a>
+<a class="index-entry-id" id="index-let-Biao-Da-Shi-ShiLi"></a>
+
+<p>以下表达式创建并为两个变量 <code class="code">zebra</code> 和 <code class="code">tiger</code> 赋予初始值。<code class="code">let</code> 表达式的主体是一个调用 <code class="code">message</code> 函数的列表。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(let ((zebra &quot;条纹&quot;)
+      (tiger &quot;凶猛&quot;))
+  (message &quot;一种动物有 %s，另一种是 %s。&quot;
+           zebra tiger))
+</pre></div></div>
+
+<p>在这里，varlist 是 <code class="code">((zebra &quot;条纹&quot;) (tiger &quot;凶猛&quot;))</code>。
+</p>
+<p>这两个变量是 <code class="code">zebra</code> 和 <code class="code">tiger</code>。每个变量都是两元素列表的第一个元素，每个值都是其两元素列表的第二个元素。在 varlist 中，Emacs 将变量 <code class="code">zebra</code> 绑定到值 <code class="code">&quot;条纹&quot;</code><a class="footnote" id="DOCF9" href="#FOOT9"><sup>9</sup></a>，并将变量 <code class="code">tiger</code> 绑定到值 <code class="code">&quot;凶猛&quot;</code>。在这个例子中，两个值都是字符串。这些值同样可以是另一个列表或符号。<code class="code">let</code> 的主体紧随包含变量的列表之后。在这个例子中，主体是一个列表，使用 <code class="code">message</code> 函数在回显区域打印一个字符串。
+</p>
+<p>您可以按照通常的方式评估这个示例，将光标放在最后一个括号后，然后键入 <kbd class="kbd">C-x C-e</kbd>。这样做时，回显区域将显示以下内容：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">&quot;一种动物有条纹，另一种是凶猛。&quot;
+</pre></div>
+
+<p>正如我们之前看到的，<code class="code">message</code> 函数打印其第一个参数，除了 &lsquo;<samp class="samp">%s</samp>&rsquo;。在这个例子中，变量 <code class="code">zebra</code> 的值将打印在第一个 &lsquo;<samp class="samp">%s</samp>&rsquo; 的位置，而变量 <code class="code">tiger</code> 的值将打印在第二个 &lsquo;<samp class="samp">%s</samp>&rsquo; 的位置。
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT9" href="#DOCF9">(9)</a></h5>
+<p>根据Jared Diamond在 <cite class="cite">枪炮、病菌与钢铁</cite> 中的说法，“&hellip; 斑马在变老时变得异常危险”，但这里的说法是它们不会像老虎一样变得凶猛。(1997, W. W. Norton 和 Co., ISBN 0-393-03894-2, 第171页)</p>
+</div>
+
+
+
+</body>
+</html>

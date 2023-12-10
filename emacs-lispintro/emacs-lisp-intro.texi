@@ -839,9 +839,9 @@ GNU Emacs Lisp在很大程度上受到Maclisp的启发，Maclisp是在20世纪60
 
 即使您不了解GNU Emacs，您仍然可以从本文中有所收获。但是，我建议您学习Emacs，即使只是为了学会在计算机屏幕上移动。您可以使用内置教程来自学如何使用Emacs。要使用它，输入@kbd{C-h t}。（这意味着您同时按下和释放@key{CTRL}键和@kbd{h}键，然后按下和释放@kbd{t}键。）
 
-此外，我经常通过列出用于调用标准Emacs命令的按键，然后在括号中给出命令的名称，来引用Emacs的标准命令之一，就像这样：@kbd{M-C-\}（@code{indent-region}）。这意味着@code{indent-region}命令通常是通过键入@kbd{M-C-\}来调用的。（如果您愿意，您可以更改用于调用命令的按键；这被称为@dfn{rebinding, 重新绑定}。@xref{键位映射, , 键位映射}。）@kbd{M-C-\}的缩写意味着你需要同时按下@key{META}键、@key{CTRL}键和@kbd{\}键。在许多现代键盘上，@key{META}键帽上标着@key{ALT}。像这样的组合被称为组合键(keychord)。如果你的键盘没有@key{META}键，单击@key{ESC}键来代替它。在这种情况下，@kbd{M-C-\}意味着您按下并释放@key{ESC}键，然后同时按下@key{CTRL}键和@kbd{\}键。但通常@kbd{M-C-\}意味着同时按下标有@key{ALT}的键和@key{CTRL}键，同时再按@kbd{\}键。
+此外，我经常通过列出用于调用标准Emacs命令的按键，然后在括号中给出命令的名称，来引用Emacs的标准命令之一，就像这样：@kbd{M-C-\}（@code{indent-region}）。这意味着@code{indent-region}命令通常是通过键入@kbd{M-C-\}来调用的。（如果您愿意，您可以更改用于调用命令的按键；这被称为@dfn{rebinding, 重新绑定}。@xref{Keymaps, , 键位映射}.）@kbd{M-C-\}的缩写意味着你需要同时按下@key{META}键、@key{CTRL}键和@kbd{\}键。在许多现代键盘上，@key{META}键帽上标着@key{ALT}。像这样的组合被称为组合键(keychord)。如果你的键盘没有@key{META}键，单击@key{ESC}键来代替它。在这种情况下，@kbd{M-C-\}意味着您按下并释放@key{ESC}键，然后同时按下@key{CTRL}键和@kbd{\}键。但通常@kbd{M-C-\}意味着同时按下标有@key{ALT}的键和@key{CTRL}键，同时再按@kbd{\}键。
 
-除了长按单个组合键外，您还可以在你输入的内容前加上@kbd{C-u}，这被称为@dfn{通用参数}。@kbd{C-u}组合键会将参数传递给后续的命令。因此，要以6空格缩进一段纯文本的区域，首先标记该区域，然后输入@w{@kbd{C-u 6 M-C-\}}。（如果您不指定一个数字，Emacs将默认数字为4，或者以不同于其他情况的方式运行该命令。）@xref{Arguments, , Numeric Arguments, emacs, The GNU Emacs Manual}。
+除了长按单个组合键外，您还可以在你输入的内容前加上@kbd{C-u}，这被称为@dfn{通用参数}。@kbd{C-u}组合键会将参数传递给后续的命令。因此，要以6空格缩进一段纯文本的区域，首先标记该区域，然后输入@w{@kbd{C-u 6 M-C-\}}。（如果您不指定一个数字，Emacs将默认数字为4，或者以不同于其他情况的方式运行该命令。）@xref{Arguments, , Numeric Arguments, emacs, The GNU Emacs Manual}.
 
 如果您是在GNU Emacs中使用Info模式阅读这篇文章，您可以通过按下空格键@key{SPC}来浏览整个文档。（要了解Info，请输入@kbd{C-h i}，然后选择Info。）
 
@@ -1045,7 +1045,7 @@ about special forms now.
 
 在GNU Emacs中，当您在Lisp交互模式或Lisp模式下输入Lisp表达式时，可以使用一些命令来格式化Lisp表达式，以提高代码的可读性。例如，按下@key{TAB}键会自动合理缩进当前行。通常，用于正确缩进区域中的代码的快捷键绑定为@kbd{M-C-\}。代码缩进可以让您清楚地看出哪些元素属于某个列表---子列表的元素缩进会比包含它的列表更深。
 
-此外，当您键入右括号时，Emacs会短暂地将光标跳回到对应的左括号，这样您可以看到右括号与哪个左括号匹配。这非常有用，因为在Lisp中，您写的每个列表都必须有对应的右括号和左括号。（有关Emacs模式的更多信息，@xref{Major Modes, , Major Modes, emacs, The GNU Emacs Manual}）
+此外，当您键入右括号时，Emacs会短暂地将光标跳回到对应的左括号，这样您可以看到右括号与哪个左括号匹配。这非常有用，因为在Lisp中，您写的每个列表都必须有对应的右括号和左括号。（有关Emacs模式的更多信息，@xref{Major Modes, , Major Modes, emacs, The GNU Emacs Manual}.）
 
 @node Run a Program
 @section 运行程序
@@ -1182,7 +1182,7 @@ blink.  This is just a device to get your attention.)
 
 在 Lisp 中，一组指令可以被关联到多个名字上。例如，加法运算的计算机指令可以关联到符号 @code{plus}，也可以关联到符号 @code{+}上（在某些 Lisp 方言中是这样的）。对于人名，我可以被称为 @samp{Robert}，也可以被称为 @samp{Bob}，以及其他词汇。
 
-但是，一个符号一次只能有一个函数定义与之关联。否则，计算机就会困惑应该使用哪个定义。如果这种情况发生在人类身上，世界上也只能有一个人被命名为 @samp{Bob}。然而，符号所代表的函数定义可以很容易地被更改。(@xref{安装, , 安装函数定义}.)
+但是，一个符号一次只能有一个函数定义与之关联。否则，计算机就会困惑应该使用哪个定义。如果这种情况发生在人类身上，世界上也只能有一个人被命名为 @samp{Bob}。然而，符号所代表的函数定义可以很容易地被更改。(@xref{Install, , 安装函数定义}.)
 
 由于 Emacs Lisp 非常庞大，通常会以能够指明函数属于Emacs的哪个部分的方式来命名符号。因此，所有涉及 Texinfo 处理的函数名都以 @samp{texinfo-} 开头，而处理邮件读取的函数则以 @samp{rmail-} 开头。
 
@@ -1226,7 +1226,7 @@ Lisp解释器可以处理两种实体：人类可读的代码，这会是我们�
 
 您可以通过运行像 @code{byte-compile-file} 这样的编译命令，将人类可读的代码转换为字节编译的代码。字节编译后的代码通常保存在以 @file{.elc} 为扩展名的文件中，而不是 @file{.el}。在 @file{emacs/lisp} 目录下您会看到这两种类型的文件；需要阅读的是那些 @file{.el} 扩展名的文件。
 
-实际上，对于大多数自定义和扩展Emacs的需要，您不一定要进行字节编译；我在这里也不会详细讨论这个话题。要获取字节编译的完整描述，@xref{Byte Compilation, , Byte Compilation, elisp, The GNU Emacs Lisp Reference Manual}。
+实际上，对于大多数自定义和扩展Emacs的需要，您不一定要进行字节编译；我在这里也不会详细讨论这个话题。要获取字节编译的完整描述，@xref{Byte Compilation, , Byte Compilation, elisp, The GNU Emacs Lisp Reference Manual}.
 
 @node Evaluation
 @section 评估
@@ -1326,7 +1326,7 @@ fill-column
 
 一个符号可以附有任何值，或者用行话说，我们可以将变量@dfn{绑定}到一个值上：可以是一个数字，比如 72；可以是一个字符串，比如 @code{"如此"}；可以是一个列表，比如 @code{(云杉 松树 橡树)}；我们甚至可以将变量绑定到一个函数定义上。
 
-一个符号可以以多种方式绑定到一个值。有关如何执行此操作的信息，请参阅@xref{set & setq, , Setting the Value of a Variable}。
+一个符号可以以多种方式绑定到一个值。有关如何执行此操作的信息，请参阅@xref{set & setq, , Setting the Value of a Variable}.
 
 @node Void Function
 @subsection 没有函数的符号的错误消息
@@ -1401,7 +1401,7 @@ Debugger entered--Lisp error: (void-variable +)
 
 由于@code{+}没有绑定到任何值，只有函数定义，错误消息报告该符号作为变量的值为空。
 
-@node 参数
+@node Arguments
 @section 参数
 @cindex 参数
 @cindex 将信息传递给函数
@@ -1420,14 +1420,14 @@ Debugger entered--Lisp error: (void-variable +)
 “参数”这个词来自数学中的用法，不是指两个人之间的辩论；而是指提供给函数的信息，在这种情况下，是提供给@code{+}的信息。在Lisp中，函数的参数是跟随函数的原子或列表。通过评估这些原子或列表的结果值传递给函数。不同的函数需要不同数量的参数；有些函数根本不需要参数。@footnote{追踪“参数”这个词如何在数学中和日常英语中拥有两个不同的含义是很有趣的。根据《牛津英语词典》的说法，这个词源于拉丁语，意思是“澄清，证明”；因此，它通过一条推导线的方式，来表示“作为证据提供的信息”，也就是说，“提供的信息”，这导致了它在Lisp中的含义。但在另一条推导线上，它的意思变成了“以一种其他人可以提出反对主张的方式断言”，这解释了这个词作为争论的含义。(注意这里英语单词同时拥有两个不同的定义。相比之下，在Emacs Lisp中，一个符号在同一时间不能拥有两个不同的函数定义。)}
 
 @menu
-* 数据类型::                  传递给函数的数据类型。
-* 将参数作为变量或列表::    参数可以是变量或列表的值。
-* 可变数量的参数::  一些函数可能接受可变数量的参数。
-* 错误类型的参数::      将错误类型的参数传递给函数。
+* Data types::                  传递给函数的数据类型。
+* Args as Variable or List::    参数可以是变量或列表的值。
+* Variable Number of Arguments::  一些函数可能接受可变数量的参数。
+* Wrong Type of Argument::      将错误类型的参数传递给函数。
 * message::                     用于发送消息的有用函数。
 @end menu
 
-@node 数据类型
+@node Data types
 @subsection 参数的数据类型
 @cindex 数据类型
 @cindex 数据的类型
@@ -1461,7 +1461,7 @@ Debugger entered--Lisp error: (void-variable +)
 
 请注意，传递给@code{substring}的字符串是一个单一的原子，即使它由多个用空格分隔的单词组成。Lisp将引号之间的所有内容都计为字符串的一部分，包括空格。你可以将@code{substring}函数看作是一种原子粒子解体器，因为它从一个否则不可分割的原子中提取了一部分。但是，@code{substring}只能从参数是字符串的原子中提取子字符串，而不能从其他类型的原子（如数字或符号）中提取。
 
-@node 将参数作为变量或列表
+@node Args as Variable or List
 @subsection 参数作为变量或列表的值
 
 参数可以是一个符号，在评估时返回一个值。例如，当单独评估符号@code{fill-column}时，它会返回一个数字。这个数字可以在加法中使用。
@@ -1485,7 +1485,7 @@ Debugger entered--Lisp error: (void-variable +)
 @noindent
 如果你评估这个表达式——如果像我的Emacs一样，@code{fill-column}评估为72——@code{"The 74 red foxes."}将出现在回显区。 (注意，你必须在单词@samp{The}后面和单词@samp{red}前面加上空格，这样它们才会出现在最终的字符串中。函数@code{number-to-string}将加法函数返回的整数转换为字符串。@code{number-to-string}也被称为@code{int-to-string}。)
 
-@node 可变数量的参数
+@node Variable Number of Arguments
 @subsection 可变数量的参数
 @cindex 可变数量的参数
 @cindex 参数，可变数量的
@@ -1525,7 +1525,7 @@ Debugger entered--Lisp error: (void-variable +)
 @end group
 @end smallexample
 
-@node 错误类型的参数
+@node Wrong Type of Argument
 @subsection 使用错误类型的对象作为参数
 @cindex 错误类型的参数
 @cindex 参数，错误类型的
@@ -1585,7 +1585,7 @@ Debugger entered--Lisp error:
 @end smallexample
 
 双引号之间的整个字符串是一个单一的参数，并被整体打印出来。（请注意，在这个例子中，消息本身将在回显区中用双引号括起来；这是因为您看到了@code{message}函数返回的值。在您编写的程序中，@code{message}的大多数用法将作为副作用将文本在回显区中打印出来，而不带引号。@xref{multiply-by-seven in detail, , @code{multiply-by-seven} in
-detail}，了解其中的一个示例。）
+detail}, 了解其中的一个示例。）
 
 然而，如果在带引号的字符字符串中有一个@samp{%s}，@code{message}函数不会像这样打印@samp{%s}，而是查看跟随字符串的参数。它评估第二个参数，并在字符串中@samp{%s}的位置打印该值。
 
@@ -1653,12 +1653,12 @@ detail}，了解其中的一个示例。）
 以下章节不仅描述了@code{set}和@code{setq}的工作方式，还说明了如何传递参数。
 
 @menu
-* 使用 set::                  设置值。
-* 使用 setq::                 设置引用值。
-* 计数::                      使用@code{setq}进行计数。
+* Using set::                  设置值。
+* Using setq::                 设置引用值。
+* Counting::                      使用@code{setq}进行计数。
 @end menu
 
-@node 使用 set
+@node Using set
 @subsection 使用 @code{set}
 @findex set
 
@@ -1688,7 +1688,7 @@ flowers
 
 还要注意，当你使用 @code{set} 时，需要引用 @code{set} 的两个参数，除非你想要它们被评估。因为我们不想让任何一个参数被评估，所以变量 @code{flowers} 和列表 @code{(rose violet daisy buttercup)} 都被引用。（当你使用 @code{set} 而不引用其第一个参数时，第一个参数在执行任何其他操作之前被评估。如果你这样做而且 @code{flowers} 没有一个已经存在的值，你会得到一个错误消息，指明 @samp{Symbol's value as variable is void}；另一方面，如果在评估后 @code{flowers} 返回了一个值，@code{set} 将尝试设置返回的值。有些情况下这是函数正确的行为，但这样的情况很少见。）
 
-@node 使用 setq
+@node Using setq
 @subsection 使用 @code{setq}
 @findex setq
 
@@ -1724,7 +1724,7 @@ flowers
 
 尽管我一直在使用术语“分配”，但还有一种理解@code{set}和@code{setq}运作方式的方式；即@code{set}和@code{setq}使符号@emph{指向}列表。这种思考方式非常常见，在接下来的章节中，我们将至少遇到一个其名称中包含“指针”的符号。之所以选择这个名称，是因为符号有一个值，具体来说是一个列表，与之相关联；或者，换句话说，该符号被设置为指向该列表。
 
-@node 计数
+@node Counting
 @subsection 计数
 @cindex 计数
 
@@ -1741,13 +1741,13 @@ counter                         ; @r{这是计数器。}
 @end smallexample
 
 @noindent
-（在@samp{;}之后的文本是注释。@xref{修改 defun, , 修改函数定义}。）
+（在@samp{;}之后的文本是注释。@xref{Change a defun, , 修改函数定义}.）
 
 如果您评估这些表达式中的第一个，即初始化器@code{(setq counter 0)}，然后评估第三个表达式@code{counter}，数字@code{0}将显示在回显区域中。然后，如果您评估第二个表达式，即递增器@code{(setq counter (+ counter 1))}，计数器将获得值1。因此，如果您再次评估@code{counter}，数字@code{1}将显示在回显区域中。每次评估第二个表达式时，计数器的值将递增。
 
 当您评估递增器@code{(setq counter (+ counter 1))}时，Lisp解释器首先评估最内层的列表；这是加法。为了评估此列表，它必须评估变量@code{counter}和数字@code{1}。当它评估变量@code{counter}时，它会得到它的当前值。它将这个值和数字@code{1}传递给@code{+}，将它们相加。然后，总和作为内部列表的值返回，并传递给@code{setq}，将变量@code{counter}设置为这个新值。因此，变量@code{counter}的值被更改。
 
-@node 总结
+@node Summary
 @section 总结
 
 学习 Lisp 就像攀登一座山，其中的第一部分是最陡峭的。你现在已经攀登过最困难的部分；随着你继续前进，剩下的部分会变得更容易。
@@ -1788,7 +1788,7 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 函数在求值时总是返回一个值（除非出现错误）；此外，它还可能执行一些是副作用的动作。在许多情况下，函数的主要目的是创建副作用。
 @end itemize
 
-@node 错误消息练习
+@node Error Message Exercises
 @section 练习
 
 一些简单的练习：
@@ -1807,7 +1807,7 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 编写一个在评估时在回显区域打印消息的表达式。
 @end itemize
 
-@node 练习评估
+@node Practicing Evaluation
 @chapter 练习评估
 @cindex 练习评估
 @cindex 评估练习
@@ -1815,16 +1815,16 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 在学习如何在Emacs Lisp中编写函数定义之前，花一点时间评估已经编写的各种表达式是很有用的。这些表达式将是具有函数作为它们的第一个（通常是唯一的）元素的列表。由于与缓冲区相关的一些函数既简单又有趣，我们将从这些函数开始。在本节中，我们将评估其中的一些。在另一节中，我们将研究其他几个与缓冲区相关的函数的代码，以了解它们是如何编写的。
 
 @menu
-* 如何进行评估::            键入编辑命令或 @kbd{C-x C-e} 会导致评估。
-* 缓冲区名称::               缓冲区和文件是不同的。
-* 获取缓冲区::               获取缓冲区本身，而不仅仅是它的名称。
-* 切换缓冲区::               如何切换到另一个缓冲区。
-* 缓冲区大小与位置::         point 的位置以及缓冲区的大小。
-* 评估练习::
+* How to Evaluate::            键入编辑命令或 @kbd{C-x C-e} 会导致评估。
+* Buffer Names::               缓冲区和文件是不同的。
+* Getting Buffers::               获取缓冲区本身，而不仅仅是它的名称。
+* Switching Buffers::               如何切换到另一个缓冲区。
+* Buffer Size & Locations::         point 的位置以及缓冲区的大小。
+* Evaluation Exercise::
 @end menu
 
 @ifnottex
-@node 如何进行评估
+@node How to Evaluate
 @unnumberedsec 如何进行评估
 @end ifnottex
 
@@ -1832,13 +1832,13 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 
 @cindex @samp{交互函数}定义
 @cindex @samp{命令}定义
-当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是@code{self-insert-command}，它简单地插入你键入的字符。通过键入按键而评估的函数称为@dfn{交互}函数或@dfn{命令}；如何使函数具有交互性将在编写函数定义的章节中说明。@xref{交互操作, , 使函数具有交互性}。
+当你键入键位时，你会导致Lisp解释器评估一个表达式，这就是你获得结果的方式。甚至键入纯文本也涉及评估一个Emacs Lisp函数，这种情况下，使用的是@code{self-insert-command}，它简单地插入你键入的字符。通过键入按键而评估的函数称为@dfn{交互}函数或@dfn{命令}；如何使函数具有交互性将在编写函数定义的章节中说明。@xref{Interactive, , 使函数具有交互性}。
 
 除了键入键盘命令，我们已经看到第二种评估表达式的方法：将光标定位在列表后面，然后键入@kbd{C-x C-e}。这是本节其余部分将要做的事情。还有其他评估表达式的方式；当我们遇到它们时会进行描述。
 
 除了用于练习评估之外，下面几节中显示的函数在其自身方面也是重要的。研究这些函数清晰地展示了缓冲区和文件之间的区别，如何切换到一个缓冲区以及如何确定其中的位置。
 
-@node 缓冲区名称
+@node Buffer Names
 @section 缓冲区名称
 @findex buffer-name
 @findex buffer-file-name
@@ -1890,7 +1890,7 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 @noindent
 在 Info 中你不能这样做，因为 Info 是只读的，它不允许你更改缓冲区的内容。但是在任何你可以编辑的缓冲区中，你都可以这样做；当你编写代码或文档（比如这本书）时，这个功能非常有用。
 
-@node 获取缓冲区
+@node Getting Buffers
 @section 获取缓冲区
 @findex current-buffer
 @findex other-buffer
@@ -1926,7 +1926,7 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 @noindent
 你应该在回显区看到@file{#<buffer *scratch*>}出现，或者是你最近切换回来的任何其他缓冲区的名称@footnote{实际上，默认情况下，如果你刚刚从中切换的缓冲区在另一个窗口中可见，@code{other-buffer}将选择你无法看到的最近的缓冲区；这是我经常忘记的一个细微之处。}。
 
-@node 切换缓冲区
+@node Switching Buffers
 @section 切换缓冲区
 @findex switch-to-buffer
 @findex set-buffer
@@ -1959,7 +1959,7 @@ Lisp 程序由表达式组成，这些表达式可以是列表或单个原子。
 @cindex @samp{call} 定义
 此外，我们刚刚介绍了另一个行话术语，即词语 @dfn{call}。当您评估一个列表，其中第一个符号是一个函数时，您正在调用该函数。该术语的使用来自于将函数视为如果您调用它可以为您做一些事情的实体的概念，就像水管工是一个实体，如果您呼叫他或她，他或她可以修理漏水一样。
 
-@node 缓冲区大小与位置
+@node Buffer Size & Locations
 @section 缓冲区大小和点的位置
 @cindex 缓冲区大小
 @cindex 缓冲区大小
@@ -2001,15 +2001,15 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 对我而言，在这个位置，point的值是66043，这意味着两个表达式之间有319个字符（包括空格）。 （毫无疑问，由于我首次评估point后进行了编辑，你可能会看到不同的数字。）
 
 @cindex @samp{narrowing}定义
-函数@code{point-min}与@code{point}有些相似，但它返回当前缓冲区中point的最小允许值。这个值是1，除非启用了@dfn{narrowing}。（Narrowing是一种机制，通过它，您可以将自己或程序限制在仅对缓冲区的一部分进行操作。@xref{缩窄与扩大, , 窄化和扩展}。）同样，函数@code{point-max}返回当前缓冲区中point的最大允许值。
+函数@code{point-min}与@code{point}有些相似，但它返回当前缓冲区中point的最小允许值。这个值是1，除非启用了@dfn{narrowing}。（Narrowing是一种机制，通过它，您可以将自己或程序限制在仅对缓冲区的一部分进行操作。@xref{Narrowing & Widening, , 窄化和扩展}.）同样，函数@code{point-max}返回当前缓冲区中point的最大允许值。
 
-@node 评估练习
+@node Evaluation Exercise
 @section 练习
 
 找到您正在使用的文件，并移动到其中间。
 找到其缓冲区名称、文件名称、长度以及您在文件中的位置。
 
-@node 编写 Defuns
+@node Writing Defuns
 @chapter 如何编写函数定义
 @cindex 定义编写
 @cindex 函数定义编写
@@ -2018,23 +2018,23 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 当Lisp解释器评估一个列表时，它会查看列表上的第一个符号是否附有一个函数定义；或者换句话说，该符号是否指向一个函数定义。如果是的话，计算机将执行定义中的指令。一个具有函数定义的符号被简单地称为函数（尽管严格来说，定义是函数，符号是它的引用）。
 
 @menu
-* 原始函数::
+* Primitive Functions::
 * defun::                        @code{defun} 宏。
-* 安装::                          安装函数定义。
-* 交互操作::                        使函数具有交互性。
-* 交互选项::                    @code{interactive} 的不同选项。
-* 永久安装::                      永久安装代码。
+* Install::                          安装函数定义。
+* Interactive::                        使函数具有交互性。
+* Interactive Options::                    @code{interactive} 的不同选项。
+* Permanent Installation::                      永久安装代码。
 * let::                          创建并初始化局部变量。
 * if::                           如果是这样怎么办？
 * else::                         If--then--else 表达式。
-* 真与假::                       Lisp认为的真和假。
+* Truth & Falsehood::                       Lisp认为的真和假。
 * save-excursion::               跟踪点和缓冲区。
-* 回顾::
-* defun 练习::
+* Review::
+* defun Exercises::
 @end menu
 
 @ifnottex
-@node 原始函数
+@node Primitive Functions
 @unnumberedsec 关于原始函数的一些说明
 @end ifnottex
 @cindex 原始函数
@@ -2086,7 +2086,7 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 @end group
 @end smallexample
 
-以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅@xref{交互操作,,使函数具有交互性}。）
+以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅@xref{Interactive,,使函数具有交互性}。）
 
 @smallexample
 @group
@@ -2125,7 +2125,7 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 
 如果你评估这个示例，很可能会收到错误消息。（试试看吧！）这是因为我们已经写了函数定义，但还没有告诉计算机有关定义——我们还没有在Emacs中加载函数定义。安装函数是告诉Lisp解释器函数定义的过程。安装过程在下一部分中描述。
 
-@node 安装
+@node Install
 @section 安装函数定义
 @cindex 安装函数定义
 @cindex 定义安装
@@ -2142,15 +2142,15 @@ point的值当然取决于它在缓冲区内的位置。如果在这个位置评
 @end smallexample
 
 @noindent
-通过评估这个 @code{defun}，你刚刚在 Emacs 中安装了 @code{multiply-by-seven}。该函数现在与 Emacs 中的其他编辑函数（如 @code{forward-word}）一样成为 Emacs 的一部分。（@code{multiply-by-seven} 将一直保持安装状态，直到你退出 Emacs。要在每次启动 Emacs 时自动重新加载代码，请参阅 @ref{永久安装, , 永久安装代码}。）
+通过评估这个 @code{defun}，你刚刚在 Emacs 中安装了 @code{multiply-by-seven}。该函数现在与 Emacs 中的其他编辑函数（如 @code{forward-word}）一样成为 Emacs 的一部分。（@code{multiply-by-seven} 将一直保持安装状态，直到你退出 Emacs。要在每次启动 Emacs 时自动重新加载代码，请参阅 @ref{Permanent Installation, , 永久安装代码}。）
 
 @menu
-* 安装的效果::
-* 更改 defun::              如何更改函数定义。
+* Effect of installation::
+* Change a defun::              如何更改函数定义。
 @end menu
 
 @ifnottex
-@node 安装效果
+@node Effect of installation
 @unnumberedsubsec 安装的效果
 @end ifnottex
 
@@ -2174,12 +2174,8 @@ multiply-by-seven 是一个 Lisp 函数。
 
 @noindent
 （要返回到屏幕上的单个窗口，请键入 @kbd{C-x 1}。）
-@menu
-* 安装效果::
-* 更改 defun::              如何更改函数定义。
-@end menu
 
-@node 修改 defun
+@node Change a defun
 @subsection 修改函数定义
 @cindex 修改函数定义
 @cindex 函数定义，如何修改
@@ -2200,13 +2196,13 @@ multiply-by-seven 是一个 Lisp 函数。
 @cindex Lisp 代码中的注释
 注释以分号 @samp{;} 开头。在Lisp中，分号后面的一行上的所有内容都是注释。行的结尾是注释的结尾。要将注释延伸到两行或更多行，请在每一行开头加上分号。
 
-@xref{初始化文件的开始, , 开始一个 @file{.emacs} 文件}，和 @ref{Comments, , 注释, elisp, GNU Emacs Lisp 参考手册}，了解更多关于注释的信息。
+@xref{Beginning init File, , 开始一个 @file{.emacs} 文件}，和 @ref{Comments, , 注释, elisp, GNU Emacs Lisp 参考手册}, 了解更多关于注释的信息。
 
 你可以通过以与第一个函数相同的方式评估它来安装 @code{multiply-by-seven} 函数的这个版本：将光标放在最后一个括号后，然后输入 @kbd{C-x C-e}。
 
 总之，这就是在Emacs Lisp中编写代码的方式：编写函数；安装它；测试它；然后进行修复或增强，并再次安装它。
 
-@node 交互操作
+@node Interactive
 @section 使函数具有交互性
 @cindex 交互式函数
 @findex interactive
@@ -2216,12 +2212,12 @@ multiply-by-seven 是一个 Lisp 函数。
 有趣的是，当你以交互方式调用交互式函数时，返回的值不会自动显示在回显区。这是因为通常你调用交互式函数是为了其副作用，比如按单词或行前进，而不是为了返回的值。如果每次键入一个键时都在回显区显示返回的值，会非常分散注意力。
 
 @menu
-* 交互式multiply-by-seven::  概述。
+* Interactive multiply-by-seven::  概述。
 * multiply-by-seven in detail::  交互式版本。
 @end menu
 
 @ifnottex
-@node 交互式multiply-by-seven
+@node Interactive multiply-by-seven
 @unnumberedsubsec 交互式 @code{multiply-by-seven}，概述
 @end ifnottex
 
@@ -2255,7 +2251,7 @@ multiply-by-seven 是一个 Lisp 函数。
 @noindent
 刚才提到的两个示例均以相同的方式工作，将光标向前移动三个句子。 (由于 @code{multiply-by-seven} 未绑定到键，它无法用作绑定键的示例。)
 
-(@xref{按键绑定, , 一些按键绑定}, 了解如何将命令绑定到键。)
+(@xref{Key Bindings, , 一些按键绑定}, 了解如何将命令绑定到键。)
 
 通过键入数字键后跟一个数字，例如 @kbd{M-3 M-e}，或者通过键入 @kbd{C-u} 然后是一个数字，例如 @kbd{C-u 3 M-e}，将一个 @dfn{前缀参数} 传递给交互式函数（如果键入 @kbd{C-u} 而没有数字，则默认为 4）。
 
@@ -2299,7 +2295,7 @@ multiply-by-seven 是一个 Lisp 函数。
 
 （请注意，当调用函数 @code{multiply-by-seven} 时，消息会以无引号形式打印，但调用 @code{message} 时，文本将以双引号形式打印。这是因为 @code{message} 返回的值是在评估其第一个元素为 @code{message} 的表达式时出现在回显区域中的内容；但在嵌入函数中时，@code{message} 以副作用的方式打印文本，没有引号。）
 
-@node 交互选项
+@node Interactive Options
 @section @code{interactive} 的不同选项
 @cindex @code{interactive} 的选项
 @cindex 交互选项
@@ -2342,7 +2338,7 @@ multiply-by-seven 是一个 Lisp 函数。
 
 @xref{append-to-buffer, , 函数 @code{append-to-buffer} 的定义}，提供一个例子。@xref{Using Interactive, , 使用 @code{Interactive}, elisp, GNU Emacs Lisp 参考手册}，提供有关这一技术的更完整解释。
 
-@node 永久安装
+@node Permanent Installation
 @section 永久安装代码
 @cindex 永久安装代码
 @cindex 永久性代码安装
@@ -2354,10 +2350,10 @@ multiply-by-seven 是一个 Lisp 函数。
 
 @itemize @bullet
 @item
-如果您的代码只是针对您个人的，您可以将函数定义的代码放入您的 @file{.emacs} 初始化文件中。当您启动 Emacs 时，您的 @file{.emacs} 文件会自动评估，并安装其中的所有函数定义。@xref{Emacs 初始化, , 您的 @file{.emacs} 文件}。
+如果您的代码只是针对您个人的，您可以将函数定义的代码放入您的 @file{.emacs} 初始化文件中。当您启动 Emacs 时，您的 @file{.emacs} 文件会自动评估，并安装其中的所有函数定义。@xref{Emacs Initialization, , 您的 @file{.emacs} 文件}。
 
 @item
-或者，您可以将要安装的函数定义放入一个或多个单独的文件中，并使用 @code{load} 函数使 Emacs 评估并安装这些文件中的每个函数。@xref{载入文件, , 加载文件}。
+或者，您可以将要安装的函数定义放入一个或多个单独的文件中，并使用 @code{load} 函数使 Emacs 评估并安装这些文件中的每个函数。@xref{Loading Files, , 加载文件}。
 
 @item
 第三，如果您有整个站点都会使用的代码，通常将其放入一个名为 @file{site-init.el} 的文件中，在构建 Emacs 时加载该文件。这使得代码对使用您的计算机的每个人都可用。（请参阅 Emacs 发行版的 @file{INSTALL} 文件。）
@@ -2378,14 +2374,14 @@ multiply-by-seven 是一个 Lisp 函数。
 如果你的朋友正在指他的房子，而你认为他正在指你的房子，那么可能会产生一些混乱。在Lisp中，如果在一个函数内部使用的变量与另一个函数内部使用的同名变量相同，并且两者意图不是引用相同的值，则可能发生类似的情况。@code{let}特殊形式防止了这种混淆。
 
 @menu
-* 避免混淆::
-* let 表达式的组成部分::
-* 示例 let 表达式::
-* 未初始化的let语句变量::
+* Prevent confusion::
+* Parts of let Expression::
+* Sample let Expression::
+* Uninitialized let Variables::
 @end menu
 
 @ifnottex
-@node 避免混淆
+@node Prevent confusion
 @unnumberedsubsec @code{let} 避免混淆
 @end ifnottex
 
@@ -2399,7 +2395,7 @@ multiply-by-seven 是一个 Lisp 函数。
 
 @code{let} 可以一次创建多个变量。此外，@code{let} 为它创建的每个变量都提供一个初始值，可以是你指定的值，也可以是 @code{nil}。（在术语中，这是将变量绑定到值。）在 @code{let} 创建并绑定了变量之后，它会执行 @code{let} 主体中的代码，并返回主体中最后一个表达式的值，作为整个 @code{let} 表达式的值。（“执行”是一个术语，指的是评估列表；它源自“实施”一词的使用，意味着“实际生效”（@cite{Oxford English Dictionary}）。由于你评估一个表达式来执行一个动作，“执行”已经演变为“评估”的同义词。）
 
-@node let 表达式的组成部分
+@node Parts of let Expression
 @subsection @code{let} 表达式的组成部分
 @cindex @code{let} 表达式，组成部分
 @cindex @code{let} 表达式的组成
@@ -2432,7 +2428,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @end group
 @end smallexample
 
-@node 示例 let 表达式
+@node Sample let Expression
 @subsection 示例 @code{let} 表达式
 @cindex 示例 @code{let} 表达式
 @cindex @code{let} 表达式示例
@@ -2461,7 +2457,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 正如我们之前看到的，@code{message} 函数打印其第一个参数，除了 @samp{%s}。在这个例子中，变量 @code{zebra} 的值将打印在第一个 @samp{%s} 的位置，而变量 @code{tiger} 的值将打印在第二个 @samp{%s} 的位置。
 
-@node 未初始化的let语句变量
+@node Uninitialized let Variables
 @subsection @code{let} 语句中的未初始化变量
 @cindex 未初始化的 @code{let} 变量
 @cindex @code{let} 变量未初始化
@@ -2505,12 +2501,12 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @code{if} 的基本思想是，@emph{如果}测试为真，@emph{那么}就会评估一个表达式。如果测试不为真，则不会评估该表达式。例如，您可能会做出这样的决定：“如果天气暖和而且阳光明媚，那么就去海滩！”
 
 @menu
-* if 详细说明::
-* type-of-animal 详细说明::    一个 @code{if} 表达式的示例。
+* if in more detail::
+* type-of-animal in detail::    一个 @code{if} 表达式的示例。
 @end menu
 
 @ifnottex
-@node if 详细说明
+@node if in more detail
 @unnumberedsubsec @code{if}详细说明
 @end ifnottex
 
@@ -2575,7 +2571,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @noindent
 当您评估 @code{(type-of-animal "fierce")} 时，您将在回显区看到打印的以下消息：@code{"It is a tiger!"}；当您评估 @code{(type-of-animal "striped")} 时，您将在回显区看到打印的 @code{nil}。
 
-@node type-of-animal 详细说明
+@node type-of-animal in detail
 @subsection 详细介绍 @code{type-of-animal} 函数
 
 让我们详细看一下 @code{type-of-animal} 函数。
@@ -2702,7 +2698,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 （当然，如果 @var{characteristic} 是 @code{"ferocious"}，则将打印消息 @code{"它不凶猛！"}；这可能会产生误导！在编写代码时，你需要考虑到 @code{if} 可能会测试到这样的参数，并相应地编写你的程序。）
 
-@node 真值与假值
+@node Truth & Falsehood
 @section Emacs Lisp 中的真值和假值
 @cindex Emacs Lisp 中的真值和假值
 @cindex Emacs Lisp 中的假值和真值
@@ -2717,7 +2713,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @end menu
 
 @ifnottex
-@node nil解释
+@node nil explained
 @unnumberedsubsec @code{nil}的解释
 @end ifnottex
 
@@ -2779,7 +2775,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @end menu
 
 @ifnottex
-@node 光标位置和标记
+@node Point and mark
 @unnumberedsubsec 光标位置和标记
 @end ifnottex
 
@@ -2797,7 +2793,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 除了记录点的值，@code{save-excursion} 还跟踪当前缓冲区，并在需要时进行恢复。这意味着你可以编写改变缓冲区的代码，并通过 @code{save-excursion} 切换回原始缓冲区。这就是 @code{save-excursion} 在 @code{append-to-buffer} 中的使用方式。(@xref{append-to-buffer, , @code{append-to-buffer} 的定义}.) 
 
-@node save-excursion 表达式模板
+@node Template for save-excursion
 @subsection @code{save-excursion} 表达式的模板
 
 @need 800
@@ -3005,7 +3001,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @end table
 
 @need 1500
-@node defun 练习
+@node defun Exercises
 @section 练习
 
 @itemize @bullet
@@ -3022,17 +3018,17 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 在这一章中，我们详细研究了GNU Emacs中使用的几个函数。这被称为“步进演示”。这些函数被用作Lisp代码的示例，但它们并不是虚构的例子；除了第一个简化的函数定义之外，这些函数展示了GNU Emacs中实际使用的代码。你可以从这些定义中学到很多东西。这里描述的函数都与缓冲区有关。稍后，我们将研究其他函数。
 
 @menu
-* 查找更多信息::                  如何查找更多信息。
+* Finding More::                  如何查找更多信息。
 * simplified-beginning-of-buffer::  展示了 @code{goto-char}、
                                   @code{point-min} 和 @code{push-mark}。
 * mark-whole-buffer::             几乎与 @code{beginning-of-buffer} 相同。
 * append-to-buffer::              使用 @code{save-excursion} 和
                                   @code{insert-buffer-substring}。
-* 缓冲区相关回顾::                  回顾。
-* 缓冲区练习::
+* Buffer Related Review::                  回顾。
+* Buffer Exercises::
 @end menu
 
-@node 查找更多
+@node Finding More
 @section 查找更多信息
 
 @findex describe-function@r{, introduced}
@@ -3053,7 +3049,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 更一般地说，如果你想在原始源文件中查看函数，你可以使用@code{xref-find-definitions}函数跳转到它。@code{xref-find-definitions}适用于各种语言，不仅限于Lisp和C，它还适用于非编程文本。例如，@code{xref-find-definitions}将跳转到本文档的Texinfo源文件的各个节点（前提是你已经运行@command{etags}实用程序记录了Emacs附带手册中的所有节点；@pxref{Create Tags Table,,, emacs, The GNU Emacs Manual}）。
 
-要使用@code{xref-find-definitions}命令，输入@kbd{M-.}（即，按住@key{META}键的同时按下句点键，或者按@key{ESC}键，然后输入句点键），然后在提示符处输入你想要查看源代码的函数的名称，比如@code{mark-whole-buffer}，然后输入@key{RET}。 （如果命令没有提示，带一个参数调用它：@kbd{C-u M-.}；@pxref{交互选项}。）Emacs将切换缓冲区并在屏幕上显示函数的源代码@footnote{
+要使用@code{xref-find-definitions}命令，输入@kbd{M-.}（即，按住@key{META}键的同时按下句点键，或者按@key{ESC}键，然后输入句点键），然后在提示符处输入你想要查看源代码的函数的名称，比如@code{mark-whole-buffer}，然后输入@key{RET}。 （如果命令没有提示，带一个参数调用它：@kbd{C-u M-.}；@pxref{Interactive Options}。）Emacs将切换缓冲区并在屏幕上显示函数的源代码@footnote{
 如果Emacs不是显示Lisp函数的源代码，而是询问你要访问哪个标签表，请在其主要模式为Emacs Lisp或Lisp Interaction的缓冲区中调用@kbd{M-.}。
 }。要切换回当前缓冲区，输入@kbd{M-,}或@kbd{C-x b @key{RET}}。（在某些键盘上，@key{META}键标记为@key{ALT}。）
 
@@ -3119,7 +3115,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 这些行中的第一行是表达式 @code{(push-mark)}。当Lisp解释器评估此表达式时，它在光标当前位置设置一个标记，无论光标在哪里。该标记的位置保存在标记环中。
 
-接下来的一行是 @code{(goto-char (point-min))}。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。@xref{缩窄与扩大, , 缩小和扩大}.)
+接下来的一行是 @code{(goto-char (point-min))}。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。@xref{Narrowing & Widening, , 缩小和扩大}.)
 
 @code{push-mark} 命令在光标被 @code{(goto-char (point-min))} 表达式移动到缓冲区开头之前的位置设置一个标记。因此，如果愿意，可以通过键入 @kbd{C-x C-x} 返回到最初的位置。
 
@@ -3152,12 +3148,12 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @code{mark-whole-buffer} 函数并不像 @code{beginning-of-buffer} 函数那样常用，但仍然很有用：它通过将点放在开头并在缓冲区末尾放置标记来标记整个缓冲区作为一个区域。通常绑定到 @kbd{C-x h}。
 
 @menu
-* mark-whole-buffer 概述::
-* mark-whole-buffer 函数体::   只有三行代码。
+* mark-whole-buffer overview::
+* Body of mark-whole-buffer::   只有三行代码。
 @end menu
 
 @ifnottex
-@node mark-whole-buffer 概述
+@node mark-whole-buffer overview
 @unnumberedsubsec @code{mark-whole-buffer} 概述
 @end ifnottex
 
@@ -3194,7 +3190,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 下一行是一个 @code{(interactive)} 表达式，告诉Emacs该函数将以交互方式使用。这些细节类似于前一节中描述的 @code{simplified-beginning-of-buffer} 函数。
 
 @need 1250
-@node mark-whole-buffer 函数体
+@node Body of mark-whole-buffer
 @subsection @code{mark-whole-buffer} 函数体
 
 @code{mark-whole-buffer} 函数的主体由三行代码组成：
@@ -3214,7 +3210,7 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 
 我不知道为什么 @code{mark-whole-buffer} 中的表达式写为 @code{(push-mark (point))}，而在 @code{beginning-of-buffer} 中的表达式写为 @code{(push-mark)}。也许编写代码的人不知道 @code{push-mark} 的参数是可选的，如果 @code{push-mark} 没有传递参数，该函数默认会在点的位置自动设置标记。或者也许该表达式是为了与下一行的结构相呼应而写的。无论如何，这行使Emacs确定点的位置并在那里设置一个标记。
 
-在GNU Emacs的早期版本中，@code{mark-whole-buffer} 的下一行是 @code{(push-mark (point-max))}。此表达式在缓冲区中具有最大编号的地方设置一个标记。这将是缓冲区的末尾（或者，如果缓冲区被缩小，缓冲区的可访问部分的末尾。有关缩小的更多信息，请参见 @xref{缩窄与扩大, , Narrowing and Widening}）。设置了此标记后，前一个标记（在点处设置的标记）不再设置，但Emacs记住了其位置，就像始终记住所有其他最近的标记一样。这意味着您可以通过键入 @kbd{C-u C-@key{SPC}} 两次返回到该位置，如果您愿意的话。
+在GNU Emacs的早期版本中，@code{mark-whole-buffer} 的下一行是 @code{(push-mark (point-max))}。此表达式在缓冲区中具有最大编号的地方设置一个标记。这将是缓冲区的末尾（或者，如果缓冲区被缩小，缓冲区的可访问部分的末尾。有关缩小的更多信息，请参见 @xref{Narrowing & Widening, , Narrowing and Widening}）。设置了此标记后，前一个标记（在点处设置的标记）不再设置，但Emacs记住了其位置，就像始终记住所有其他最近的标记一样。这意味着您可以通过键入 @kbd{C-u C-@key{SPC}} 两次返回到该位置，如果您愿意的话。
 
 @need 1250
 在GNU Emacs 22中，@code{(point-max)} 稍微复杂一些。该行读取
@@ -3235,14 +3231,14 @@ varlist 中的符号是由 @code{let} 特殊形式给予初始值的变量。单
 @code{append-to-buffer}命令比@code{mark-whole-buffer}命令更复杂。其功能是将当前缓冲区中点和标记之间的区域复制到指定的缓冲区。
 
 @menu
-* append-to-buffer概述::
-* append交互::          由两部分交互式表达式组成。
-* append-to-buffer主体::       包含@code{let}表达式。
-* append保存位置::       @code{save-excursion}的工作原理。
+* append-to-buffer overview::
+* append interactive::          由两部分交互式表达式组成。
+* append-to-buffer body::       包含@code{let}表达式。
+* append save-excursion::       @code{save-excursion}的工作原理。
 @end menu
 
 @ifnottex
-@node append-to-buffer概述
+@node append-to-buffer overview
 @unnumberedsubsec @code{append-to-buffer}的概述
 @end ifnottex
 
@@ -3309,7 +3305,7 @@ START和END指定要复制的当前缓冲区的部分。"
 @node append interactive
 @subsection @code{append-to-buffer} 交互式表达式
 
-由于 @code{append-to-buffer} 函数将被交互使用，该函数必须具有一个 @code{interactive} 表达式。 (有关 @code{interactive} 的详细信息，请参阅 @ref{交互操作, , 使函数具有交互性}。)
+由于 @code{append-to-buffer} 函数将被交互使用，该函数必须具有一个 @code{interactive} 表达式。 (有关 @code{interactive} 的详细信息，请参阅 @ref{Interactive, , 使函数具有交互性}。)
 
 表达式如下：
 
@@ -3532,7 +3528,7 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 
 通过查看 @code{append-to-buffer}，你已经探索了一个相当复杂的函数。它展示了如何使用 @code{let}、@code{save-excursion} 以及如何在不同缓冲区之间切换和返回的方法。许多函数定义都以这种方式使用 @code{let}、@code{save-excursion} 和 @code{set-buffer}。
 
-@node 缓冲区相关复习
+@node Buffer Related Review
 @section 复习
 
 这里是本章讨论的各种函数的简要总结。
@@ -3572,7 +3568,7 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 @end table
 
 @need 1500
-@node 缓冲区练习
+@node Buffer Exercises
 @section 练习
 
 @itemize @bullet
@@ -3586,7 +3582,7 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 使用 @code{xref-find-definitions} 查找 @code{copy-to-buffer} 函数的源代码。
 @end itemize
 
-@node 复杂一些
+@node More Complex
 @chapter 几个更复杂的函数
 
 在这一章中，我们在前几章学到的基础上，深入研究更复杂的函数。@code{copy-to-buffer} 函数演示了在一个定义中使用两个 @code{save-excursion} 表达式，而 @code{insert-buffer} 函数则演示了在 @code{interactive} 表达式中使用星号、使用 @code{or}，以及名称和名称引用的对象之间的重要区别。
@@ -3595,8 +3591,8 @@ varlist 的元素或元素组被一对括号括起，以便 Lisp 解释器能够
 * copy-to-buffer::              使用 @code{set-buffer}、@code{get-buffer-create}。
 * insert-buffer::               只读，并带有 @code{or}。
 * beginning-of-buffer::         展示了 @code{goto-char}、@code{point-min} 和 @code{push-mark}。
-* 第二缓冲区相关回顾::
-* 可选练习::
+* Second Buffer Related Review::
+* optional Exercise::
 @end menu
 
 @node copy-to-buffer
@@ -3729,11 +3725,11 @@ BUFFER 可以是缓冲区或缓冲区名称。"
 在 @code{insert-buffer} 中，@code{interactive} 声明的参数有两部分，一个星号 @samp{*} 和 @samp{bInsert buffer:@: }。
 
 @menu
-* 只读缓冲区::            当缓冲区无法修改时。
-* b 用于交互::             存在的缓冲区或其名称。
+* Read-only buffer::            当缓冲区无法修改时。
+* b for interactive::             存在的缓冲区或其名称。
 @end menu
 
-@node 只读缓冲区
+@node Read-only buffer
 @unnumberedsubsubsec 只读缓冲区
 @cindex 只读缓冲区
 @cindex 用于只读缓冲区的星号
@@ -3741,7 +3737,7 @@ BUFFER 可以是缓冲区或缓冲区名称。"
 
 星号用于当前缓冲区为只读缓冲区的情况---无法修改的缓冲区。如果在当前缓冲区为只读时调用 @code{insert-buffer}，将在回显区打印相应的消息，并且终端可能会发出哔声或闪烁；您将无法将任何内容插入当前缓冲区。星号后无需加换行符以将其与下一个参数分隔开。
 
-@node b 用于交互
+@node b for interactive
 @unnumberedsubsubsec 交互表达式中的 @samp{b}
 
 交互表达式中的下一个参数以小写 @samp{b} 开头。 （这与 @code{append-to-buffer} 的代码不同，后者使用大写 @samp{B}。@xref{append-to-buffer, , @code{append-to-buffer} 的定义}。）小写 @samp{b} 表示 Lisp 解释器应该将 @code{insert-buffer} 的参数绑定到一个现有缓冲区，否则应该绑定到其名称。Emacs 将提示您输入缓冲区的名称，并提供默认缓冲区，并启用名称补全。如果缓冲区不存在，您将收到消息“没有匹配”；终端也可能会哔哔作响。
@@ -3806,7 +3802,7 @@ BUFFER 可以是缓冲区或缓冲区名称。"
 @noindent
 这里，@code{if} 表达式的真假测试是 @w{@code{(not (bufferp buffer))}}；然后部分是表达式 @w{@code{(setq buffer (get-buffer buffer))}}。
 
-在测试中，函数 @code{bufferp} 如果其参数是一个缓冲区，则返回 true——但如果其参数是缓冲区的名称，则返回 false。 （函数名 @code{bufferp} 的最后一个字符是字符 @samp{p}；正如我们前面看到的，@samp{p} 的这种用法是一个约定，表示该函数是一个谓词，这是一个术语，表示该函数将确定某个属性是真还是假。@xref{错误类型的参数, , 使用错误类型的对象作为参数}.)
+在测试中，函数 @code{bufferp} 如果其参数是一个缓冲区，则返回 true——但如果其参数是缓冲区的名称，则返回 false。 （函数名 @code{bufferp} 的最后一个字符是字符 @samp{p}；正如我们前面看到的，@samp{p} 的这种用法是一个约定，表示该函数是一个谓词，这是一个术语，表示该函数将确定某个属性是真还是假。@xref{Wrong Type of Argument, , 使用错误类型的对象作为参数}.)
 
 @need 1200
 函数 @code{not} 位于表达式 @code{(bufferp buffer)} 之前，因此真假测试看起来像这样：
@@ -3997,7 +3993,7 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 
 该函数类似于 @code{simplified-beginning-of-buffer} 函数，只是 @code{interactive} 表达式的参数是 @code{"P"}，并且 @code{goto-char} 函数后面跟着一个 if-then-else 表达式，用于确定如果有一个不是 cons cell 的参数，光标应该放在哪里。
 
-（由于我在很多章节里都没有解释 cons cell，请考虑忽略函数 @code{consp}。@xref{列表实现, , 如何实现列表}，以及 @ref{Cons Cell Type, , Cons Cell and List Types, elisp, The GNU Emacs Lisp Reference Manual}。）
+（由于我在很多章节里都没有解释 cons cell，请考虑忽略函数 @code{consp}。@xref{List Implementation, , 如何实现列表}，以及 @ref{Cons Cell Type, , Cons Cell and List Types, elisp, The GNU Emacs Lisp Reference Manual}。）
 
 @code{interactive} 表达式中的 @code{"P"} 告诉 Emacs 将前缀参数（如果有的话）以原始形式传递给函数。前缀参数是通过按 @key{META} 键后面跟一个数字，或者按 @kbd{C-u} 然后是一个数字来生成的。（如果不输入数字，@kbd{C-u} 默认为带有 4 的 cons cell。在 @code{interactive} 表达式中的小写 @code{"p"} 会导致函数将前缀参数转换为数字。）
 
@@ -4106,7 +4102,7 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 
 这把光标放在我们想要的位置。
 
-@node 小缓冲区情况
+@node Small buffer case
 @unnumberedsubsubsec 小缓冲区中的情况
 
 如果缓冲区包含的字符少于10,000个，将执行略有不同的计算。你可能认为这是不必要的，因为第一种计算方法可以完成工作。然而，在小缓冲区中，第一种方法可能无法将光标精确放置在所需的行上；而第二种方法效果更好。
@@ -4247,7 +4243,7 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 @noindent
 如果使用@kbd{C-u}指定命令，但没有数字，也就是说，原始前缀参数只是一个cons单元，该命令将光标放在第二行的开头。
 
-@node 第二缓冲区相关复习
+@node Second Buffer Related Review
 @section 复习
 
 这里是对本章涵盖的一些主题的简要总结。
@@ -4280,7 +4276,7 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 
 编写一个交互式函数，该函数带有一个可选参数，用于测试其参数（一个数字）是否大于或等于 @code{fill-column} 的值，否则，小于该值，并通过消息告诉您结果。然而，如果您没有向函数传递参数，则使用默认值56。
 
-@node 缩窄与扩大
+@node Narrowing & Widening
 @chapter 缩窄与扩大
 @cindex 焦点集中（缩窄）
 @cindex 缩窄
@@ -4289,14 +4285,14 @@ GNU Emacs 22 版本中的主体比原始版本更令人困惑。
 缩窄是Emacs的一个功能，使您能够专注于缓冲区的特定部分，并且在不小心更改其他部分的情况下工作。通常情况下，缩窄是禁用的，因为它可能使初学者感到困惑。
 
 @menu
-* 缩窄的优势::              缩窄的优势
+* Narrowing advantages::              缩窄的优势
 * save-restriction::        @code{save-restriction} 特殊形式。
 * what-line::               光标所在行的行号。
-* 缩窄练习::
+* narrow Exercise::
 @end menu
 
 @ifnottex
-@node 缩小的优势
+@node Narrowing advantages
 @unnumberedsec 缩小的优势
 @end ifnottex
 
@@ -4405,7 +4401,7 @@ and the greater of them is not at the start of a line."
         (- (buffer-size) (forward-line (buffer-size)))))))
 @end ignore
 
-@node 行号
+@node what-line
 @section @code{what-line}
 @findex what-line
 @cindex 扩展，示例
@@ -4564,7 +4560,7 @@ IBM 704 在历史上留下了痕迹，但这些名字现在已经成为 Lisp 珍
 
 在处理列表时，使用 @code{first} 和 @code{rest} 这样的名称可能比 @code{car} 和 @code{cdr} 更有意义。事实上，一些程序员会将 @code{first} 和 @code{rest} 定义为 @code{car} 和 @code{cdr} 的别名，然后在代码中使用 @code{first} 和 @code{rest}。
 
-然而，在Lisp中，列表是使用称为“cons单元”（@pxref{列表实现}）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 @sc{car} 和 @sc{cdr} 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 @code{car} 和 @code{cdr} 实际上是对称的。
+然而，在Lisp中，列表是使用称为“cons单元”（@pxref{List Implementation}）的较低级结构构建的，在其中“第一个”或“剩余”这样的概念是不存在的，而 @sc{car} 和 @sc{cdr} 是对称的。Lisp 不会隐藏 cons 单元的存在，程序也会将它们用于除列表之外的其他事物。因此，这些名称有助于提醒程序员，尽管在列表中它们是不对称使用的，但 @code{car} 和 @code{cdr} 实际上是对称的。
 
 @ignore
 很显然，对于 @code{cdr} 来说，一个更合理的名字应该是 @code{rest}。
@@ -4633,12 +4629,12 @@ IBM 704 在历史上留下了痕迹，但这些名字现在已经成为 Lisp 珍
 与@code{car}和@code{cdr}一样，@code{cons}是非破坏性的。
 
 @menu
-* 构建列表::
-* 长度::                      如何找到列表的长度。
+* Build a list::
+* length::                      如何找到列表的长度。
 @end menu
 
 @ifnottex
-@node 构建列表
+@node Build a list
 @unnumberedsubsec 构建列表
 @end ifnottex
 
@@ -4671,7 +4667,7 @@ IBM 704 在历史上留下了痕迹，但这些名字现在已经成为 Lisp 珍
 
 在第二个例子中，@code{(cons 'daisy '(buttercup))}通过将@code{daisy}放在@code{buttercup}前面构建了一个新的两元素列表；第三个例子通过将@code{violet}放在@code{daisy}和@code{buttercup}前面构建了一个三元素列表。
 
-@node 长度
+@node length
 @subsection 查找列表的长度：@code{length}
 @findex length
 
@@ -4933,7 +4929,7 @@ animals
 
 @code{setcdr}函数类似于@code{setcar}函数，不同之处在于该函数替换列表的第二个及其后的元素，而不是第一个元素。
 
-(要了解如何更改列表的最后一个元素，请查看@ref{kill-new 函数, , @code{kill-new} 函数}，该函数使用@code{nthcdr}和@code{setcdr}函数。)
+(要了解如何更改列表的最后一个元素，请查看@ref{kill-new function, , @code{kill-new} 函数}，该函数使用@code{nthcdr}和@code{setcdr}函数。)
 
 @need 1200
 为了了解它是如何工作的，请通过评估以下表达式将变量的值设置为一组驯养的动物：
@@ -4973,12 +4969,12 @@ domesticated-animals
 @noindent
 确实，列表从@code{(horse cow sheep goat)}更改为@code{(horse cat dog)}。列表的@sc{cdr}从@code{(cow sheep goat)}更改为@code{(cat dog)}。
 
-@node cons 练习
+@node cons Exercise
 @section 练习
 
 通过评估多个表达式使用@code{cons}构建一个包含四只鸟的列表。了解当你使用@code{cons}将一个列表连接到自身时会发生什么。将四只鸟的列表的第一个元素替换为一条鱼。用其他鱼的列表替换该列表的其余部分。
 
-@node 剪切与存储文本
+@node Cutting & Storing Text
 @chapter 剪切与存储文本
 @cindex 剪切与存储文本
 @cindex 存储与剪切文本
@@ -4992,18 +4988,18 @@ domesticated-animals
 （在Emacs中使用“kill”一词来表示那些特别@emph{不}破坏实体值的过程是一个不幸的历史偶然。一个更合适的词语应该是“剪切”，因为kill命令的作用是剪切文本并将其放入存储中，从中可以重新调用。我经常被诱惑着全局替换Emacs源代码中所有“kill”出现的地方为“clip”，并将所有“killed”的出现地方替换为“clipped”）。
 
 @menu
-* 存储文本::                   文本被存储在一个列表中。
+* Storing Text::                   文本被存储在一个列表中。
 * zap-to-char::               剪切文本直到某个字符。
 * kill-region::               从区域中剪切文本。
 * copy-region-as-kill::       复制文本的定义。
-* 进入C的插曲::               C编程语言宏的小注记。
+* Digression into C::               C编程语言宏的小注记。
 * defvar::                    如何给变量一个初始值。
-* cons & search-fwd 回顾::
-* 搜索练习::
+* cons & search-fwd Review::
+* search Exercises::
 @end menu
 
 @ifnottex
-@node 存储文本
+@node Storing Text
 @unnumberedsec 将文本存储在列表中
 @end ifnottex
 
@@ -5047,7 +5043,7 @@ domesticated-animals
 
 保存文本片段的列表称为@dfn{kill环}。本章首先描述了kill环，以及首先追踪@code{zap-to-char}函数的工作方式。此函数调用一个调用函数，该函数操纵kill环。因此，在到达山脚之前，我们要先爬过丘陵。
 
-后续章节描述了从缓冲区剪切的文本如何被检索。@xref{插入文本, , 检索文本}。
+后续章节描述了从缓冲区剪切的文本如何被检索。@xref{Yanking, , 检索文本}。
 
 @node zap-to-char
 @section @code{zap-to-char}
@@ -5303,7 +5299,7 @@ GNU Emacs 22:
 @end menu
 
 @ifnottex
-@node 完整的 kill-region
+@node Complete kill-region
 @unnumberedsubsec 完整的 @code{kill-region} 定义
 @end ifnottex
 
@@ -5655,8 +5651,8 @@ Emacs Lisp Reference Manual}。C编程语言也提供宏。它们是不同的，
 
 @menu
 * last-command & this-command::
-* kill-append函数::
-* kill-new函数::
+* kill-append function::
+* kill-new function::
 @end menu
 
 @ifnottex
@@ -5690,7 +5686,7 @@ Emacs Lisp Reference Manual}。C编程语言也提供宏。它们是不同的，
 
 如果先前的命令是@code{kill-region}，则Emacs Lisp解释器调用@code{kill-append}函数。
 
-@node kill-append 函数
+@node kill-append function
 @unnumberedsubsubsec @code{kill-append} 函数
 @findex kill-append
 
@@ -5784,7 +5780,7 @@ Emacs Lisp Reference Manual}。C编程语言也提供宏。它们是不同的，
 
 现在我们可以理解 @code{kill-append}：它修改了kill环的内容。kill环是一个列表，其中每个元素都是保存的文本。@code{kill-append} 函数使用 @code{kill-new} 函数，后者又使用 @code{setcar} 函数。
 
-@node kill-new 函数
+@node kill-new function
 @unnumberedsubsubsec @code{kill-new} 函数
 @findex kill-new
 
@@ -5797,9 +5793,7 @@ Emacs Lisp Reference Manual}。C编程语言也提供宏。它们是不同的，
   "将STRING设为kill环中的最新kill。
 将`kill-ring-yank-pointer'设为指向它。
 
-如果`interprogram-cut-function'非nil，则将其应用于STRING。
-可选的第二个参数REPLACE非nil表示STRING将替换
-kill环的最前面，而不是被添加到列表中。
+如果`interprogram-cut-function'非nil，则将其应用于STRING。可选的第二个参数REPLACE非nil表示STRING将替换kill环的最前面，而不是被添加到列表中。
 @dots{}"
 @end group
 @group
@@ -5852,8 +5846,7 @@ kill环的最前面，而不是被添加到列表中。"
 
 和往常一样，我们可以将这个函数分为几个部分来看。
 
-函数定义有一个可选的@code{yank-handler}参数，
-当调用时告诉函数如何处理添加到文本中的属性，比如粗体或斜体。我们将跳过这一点。
+函数定义有一个可选的@code{yank-handler}参数，当调用时告诉函数如何处理添加到文本中的属性，比如粗体或斜体。我们将跳过这一点。
 
 @need 1200
 文档的第一行有意义：
@@ -5893,8 +5886,7 @@ kill环的最前面，而不是被添加到列表中。"
 @end group
 @end smallexample
 
-条件测试是 @w{@code{(and replace kill-ring)}}。
-当满足两个条件时，这将为真：kill环中有内容，并且@code{replace}变量为真。
+条件测试是 @w{@code{(and replace kill-ring)}}。当满足两个条件时，这将为真：kill环中有内容，并且@code{replace}变量为真。
 
 @need 1250
 当@code{kill-append}函数将@code{replace}设置为真时，且kill环中至少有一项时，将执行@code{setcar}表达式：
@@ -6050,7 +6042,7 @@ trees
 然后部分包含一个表达式，其第一个元素是@code{and}函数。
 
 @findex and
-特殊形式 @code{and} 对其每个参数进行求值，直到其中一个参数返回值为 @code{nil} 为止，此时 @code{and} 表达式返回 @code{nil}；然而，如果没有任何参数返回 @code{nil}，则返回最后一个参数的求值结果。 （由于这样的值不是 @code{nil}，在Emacs Lisp中被视为真值。）换句话说，只有当所有参数都为真时，@code{and} 表达式才返回真值。(@xref{第二缓冲区相关复习}.)
+特殊形式 @code{and} 对其每个参数进行求值，直到其中一个参数返回值为 @code{nil} 为止，此时 @code{and} 表达式返回 @code{nil}；然而，如果没有任何参数返回 @code{nil}，则返回最后一个参数的求值结果。 （由于这样的值不是 @code{nil}，在Emacs Lisp中被视为真值。）换句话说，只有当所有参数都为真时，@code{and} 表达式才返回真值。(@xref{Second Buffer Related Review}.)
 
 该表达式确定了 @code{menu-bar-update-yank-menu} 的第二个参数是否为真。
 @ignore
@@ -6102,7 +6094,7 @@ delete-and-extract-region是用C编写的。
 参见使用 @code{defvar} 初始化变量
 @end ignore
 
-@node 进入C的插曲
+@node Digression into C
 @section 进入C的插曲
 @findex delete-and-extract-region
 @cindex C，进入C的插曲
@@ -6219,12 +6211,12 @@ delete-and-extract-region是用C语言编写的。
 （@xref{defcustom, , 使用 @code{defcustom} 设置变量}。）
 
 @menu
-* 查看变量当前值::
-* defvar 和星号::
+* See variable current value::
+* defvar and asterisk::
 @end menu
 
 @ifnottex
-@node 查看变量当前值
+@node See variable current value
 @unnumberedsubsec 查看变量的当前值
 @end ifnottex
 
@@ -6258,7 +6250,7 @@ delete-and-extract-region是用C语言编写的。
 @noindent
 在此变量定义中，变量被赋予初始值 @code{nil}，这是有道理的，因为如果您没有保存任何内容，那么在执行 @code{yank} 命令时您希望得到空白。文档字符串的写法与 @code{defun} 的文档字符串相同。与 @code{defun} 的文档字符串一样，文档的第一行应该是一个完整的句子，因为一些命令（如 @code{apropos}）仅打印文档的第一行。后续行不应缩进，否则在使用 @kbd{C-h v}（@code{describe-variable}）时会显得奇怪。
 
-@node defvar 和星号
+@node defvar and asterisk
 @subsection @code{defvar} 和星号
 @findex defvar @r{用于用户可定制的变量}
 @findex defvar @r{带有星号}
@@ -6279,7 +6271,7 @@ delete-and-extract-region是用C语言编写的。
 @findex set-variable
 @noindent
 您可以（仍然可以）使用 @code{set-variable} 命令临时更改 @code{shell-command-default-error-buffer} 的值。但是，使用 @code{set-variable} 设置的选项仅在编辑会话期间设置。新值在会话之间不会保存。每次Emacs启动时，它都会读取原始值，除非您在 @file{.emacs} 文件中更改了该值，要么手动设置它，要么使用 @code{customize}。
-@xref{Emacs 初始化, , 您的 @file{.emacs} 文件}。
+@xref{Emacs Initialization, , 您的 @file{.emacs} 文件}。
 
 对我来说，@code{set-variable} 命令的主要用途是建议我可能希望在 @file{.emacs} 文件中设置的变量。现在有700多个这样的变量，太多了，记不住。幸运的是，在调用 @code{M-x set-variable} 命令后，您可以按 @key{TAB} 键查看变量的列表。
 （@xref{Examining, , 检查和设置变量, emacs, GNU Emacs手册}。）
@@ -6384,8 +6376,7 @@ triple
 记录当前缓冲区中生效的任何缩小范围，并在评估参数后恢复该缩小。
 
 @item search-forward
-搜索字符串，如果找到，移动点。使用正则表达式时，请使用类似的 @code{re-search-forward}。
-(@xref{正则表达式搜索, , 正则表达式搜索}，了解正则表达式模式和搜索的解释。)
+搜索字符串，如果找到，移动点。使用正则表达式时，请使用类似的 @code{re-search-forward}。(@xref{Regexp Search, , 正则表达式搜索}，了解正则表达式模式和搜索的解释。)
 
 @need 1250
 @noindent
@@ -6429,7 +6420,7 @@ triple
 编写一个函数，在回显区域打印剪切环的第三个元素（如果存在）；如果剪切环不包含第三个元素，则打印相应的消息。
 @end itemize
 
-@node 列表实现
+@node List Implementation
 @chapter 如何实现列表
 @cindex 计算机中的列表
 
@@ -6438,13 +6429,13 @@ triple
 指针本身就是指向所指对象的电子地址。因此，列表被保存为一系列电子地址。
 
 @menu
-* 列表示意图::
-* 符号作为箱子::       探索一个强有力的隐喻。
-* 列表练习::
+* Lists diagrammed::
+* Symbols as Chest::       探索一个强有力的隐喻。
+* List Exercise::
 @end menu
 
 @ifnottex
-@node 列表示意图
+@node Lists diagrammed
 @unnumberedsec 列表示意图
 @end ifnottex
 
@@ -6717,7 +6708,7 @@ bouquet                       flowers
 
 总之，当一个 Lisp 变量被设置为某个值时，它会被赋予指向该变量所引用的列表的地址。
 
-@node 符号作为抽屉
+@node Symbols as Chest
 @section 符号作为抽屉式储物柜
 @cindex 符号作为抽屉式储物柜
 @cindex 抽屉式储物柜，作为符号的隐喻
@@ -6795,12 +6786,12 @@ bouquet                       flowers
 @end iftex
 @end ifclear
 
-@node 列表练习
+@node List Exercise
 @section 练习
 
 将@code{flowers}设置为@code{violet}和@code{buttercup}。在这个列表上再连接两朵花，并将这个新列表设置为@code{more-flowers}。将@code{flowers}的@sc{car}设置为一条鱼。现在，@code{more-flowers}列表包含什么？
 
-@node 插入文本
+@node Yanking
 @chapter 插入文本
 @findex 插入
 @cindex 文本检索
@@ -6812,12 +6803,12 @@ bouquet                       flowers
 一个简单的@kbd{C-y}（@code{yank}）命令将kill环中的第一个条目插入到当前缓冲区中。如果@kbd{C-y}命令后面紧跟着@kbd{M-y}，那么第一个元素将被第二个元素替换。随后的@kbd{M-y}命令将第二个元素替换为第三个、第四个或第五个元素，依此类推。当达到kill环中的最后一个元素时，它将被第一个元素替换，然后循环重复。（因此，kill环被称为“环”而不仅仅是一个“列表”。然而，实际保存文本的数据结构是一个列表。@xref{Kill Ring, , 处理Kill环}，了解如何将列表作为环处理的详细信息。）
 
 @menu
-* Kill环概述::
+* Kill Ring Overview::
 * kill-ring-yank-pointer::      Kill环是一个列表。
-* yank nthcdr 练习::           @code{kill-ring-yank-pointer}变量。
+* yank nthcdr Exercises::           @code{kill-ring-yank-pointer}变量。
 @end menu
 
-@node 剪切环概述
+@node Kill Ring Overview
 @section 剪切环概述
 @cindex 剪切环概述
 
@@ -6864,7 +6855,7 @@ bouquet                       flowers
 ("另一段文本" "更多文本")
 @end smallexample
 
-如前一章节所解释的（@pxref{列表实现}），计算机并不保留被 @code{kill-ring} 和 @code{kill-ring-yank-pointer} 指向的文本的两个不同副本。"另一段文本"和"更多文本"这两个词不会被复制。相反，这两个 Lisp 变量指向相同的文本片段。以下是一个图示：
+如前一章节所解释的（@pxref{List Implementation}），计算机并不保留被 @code{kill-ring} 和 @code{kill-ring-yank-pointer} 指向的文本的两个不同副本。"另一段文本"和"更多文本"这两个词不会被复制。相反，这两个 Lisp 变量指向相同的文本片段。以下是一个图示：
 
 @c cons-cell-diagram #5
 @ifnottex
@@ -6955,7 +6946,7 @@ kill-ring     kill-ring-yank-pointer
 @end ignore
 
 @need 1500
-@node yank nthcdr 练习
+@node yank nthcdr Exercises
 @section 使用 @code{yank} 和 @code{nthcdr} 的练习
 
 @itemize @bullet
@@ -6966,7 +6957,7 @@ kill-ring     kill-ring-yank-pointer
 使用 @code{nthcdr} 和 @code{car}，构建一系列表达式，返回列表的第一、第二、第三和第四个元素。
 @end itemize
 
-@node 循环与递归
+@node Loops & Recursion
 @chapter 循环和递归
 @cindex 循环和递归
 @cindex 递归和循环
@@ -7005,16 +6996,16 @@ Emacs Lisp 有两种主要的方式来使一个表达式或一系列表达式被
 @end smallexample
 
 @menu
-* 使用 while 循环::          当测试返回 true 时重复执行。
-* 循环示例::                  使用列表的 @code{while} 循环。
+* Looping with while::          当测试返回 true 时重复执行。
+* Loop Example::                  使用列表的 @code{while} 循环。
 * print-elements-of-list::    使用 @code{while}、@code{car}、@code{cdr}。
-* 增量循环::                  带有递增计数器的循环。
-* 增量循环详解::
-* 递减循环::                  带有递减计数器的循环。
+* Incrementing Loop::                  带有递增计数器的循环。
+* Incrementing Loop Details::
+* Decrementing Loop::                  带有递减计数器的循环。
 @end menu
 
 @ifnottex
-@node 使用 while 循环
+@node Looping with while
 @unnumberedsubsec 使用 @code{while} 循环
 @end ifnottex
 
@@ -7024,7 +7015,7 @@ Emacs Lisp 有两种主要的方式来使一个表达式或一系列表达式被
 
 通过评估 @code{while} 的返回值是 true-or-false-test 的值。这样做的一个有趣的结果是，如果 @code{while} 循环评估成功且没有错误，它将始终返回 @code{nil} 或 false，无论它循环了1次还是100次，甚至一次都没有循环。成功评估的 @code{while} 表达式永远不返回真值！这意味着 @code{while} 总是被评估为其副作用，也就是评估循环体内表达式的后果。这是有道理的。人们追求的不仅仅是循环的行为，更是循环体内表达式反复评估时产生的后果。
 
-@node 循环示例
+@node Loop Example
 @subsection 使用 @code{while} 循环和列表
 
 控制 @code{while} 循环的常见方法是测试列表是否包含任何元素。如果包含元素，则循环将继续；但如果不包含元素，则循环结束。由于这是一种重要的技术，我们将创建一个简短的示例来说明它。
@@ -7141,13 +7132,13 @@ nil
 
 列表的每个元素都打印在自己的一行上（这是函数 @code{print} 的作用），然后打印函数的返回值。由于函数中的最后一个表达式是 @code{while} 循环，而且由于 @code{while} 循环总是返回 @code{nil}，因此在列表的最后一个元素后打印了一个 @code{nil}。
 
-@node 增量循环
+@node Incrementing Loop
 @subsection 具有增量计数器的循环
 
 循环如果没有在应该停止的时候停止，就毫无用处。除了使用列表控制循环外，另一种常见的停止循环的方式是将第一个参数写为一个测试，当正确的重复次数完成时返回false。这意味着循环必须有一个计数器，即一个表达式，用于计算循环重复的次数。
 
 @ifnottex
-@node 增量循环细节
+@node Incrementing Loop Details
 @unnumberedsubsec 增量循环的细节
 @end ifnottex
 
@@ -7169,12 +7160,12 @@ nil
 请注意，您需要设置 @code{count} 的初始值；通常将其设置为1。
 
 @menu
-* 增量示例::        计算三角形中的鹅卵石。
-* 增量示例部分::   函数定义的各个部分。
-* 增量示例完整::   将函数定义组合在一起。
+* Incrementing Example::        计算三角形中的鹅卵石。
+* Inc Example parts::   函数定义的各个部分。
+* Inc Example altogether::   将函数定义组合在一起。
 @end menu
 
-@node 增量示例
+@node Incrementing Example
 @unnumberedsubsubsec  具有增量计数器的示例
 
 假设您正在沙滩上玩耍，决定做一个鹅卵石三角形，第一排放一个鹅卵石，第二排放两个，第三排放三个，依此类推，如下所示：
@@ -7216,7 +7207,7 @@ nil
 
 这个过程的关键特征是每个重复的动作都很简单。在这种情况下，在每一步中，我们只添加两个数字，即排中的鹅卵石数和已找到的总数。这个添加两个数字的过程一遍又一遍地重复，直到最后一排的鹅卵石被添加到所有前排的总数中。在更复杂的循环中，重复的动作可能不那么简单，但它将比一次性做所有事情更简单。
 
-@node 函数定义的组成部分
+@node Inc Example parts
 @unnumberedsubsubsec 函数定义的各部分
 
 前面的分析为我们的函数定义提供了骨架：首先，我们需要一个变量，我们可以称之为 @code{total}，它将是函数返回的总的鹅卵石数量。这将是函数返回的值。
@@ -7350,7 +7341,7 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 @noindent
 前四个数字的总和是10，前七个数字的总和是28。
 
-@node 递减循环
+@node Decrementing Loop
 @subsection 带有递减计数器的循环
 
 另一种常见的编写 @code{while} 循环的方式是编写测试，使其确定计数器是否大于零。只要计数器大于零，循环就会重复。但当计数器等于或小于零时，循环停止。为使此方法有效，计数器必须从大于零开始，然后通过一个可重复评估的形式逐渐减小。
@@ -7369,12 +7360,12 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 @end smallexample
 
 @menu
-* 递减示例::        海滩上更多的小石子。
-* 递减示例部分::    函数定义的各个部分。
-* 整体递减示例::    将函数定义组合在一起。
+* Decrementing Example::        海滩上更多的小石子。
+* Dec Example parts::    函数定义的各个部分。
+* Dec Example altogether::    将函数定义组合在一起。
 @end menu
 
-@node 递减示例
+@node Decrementing Example
 @unnumberedsubsubsec 带有递减计数器的示例
 
 为了说明带有递减计数器的循环，我们将重写 @code{triangle} 函数，使计数器递减到零。
@@ -7385,7 +7376,7 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 
 我们知道从哪里开始有多少小石子：最后一行中的小石子数量等于行数。如果三角形有七行，最后一行中的小石子数量为 7。同样，我们知道前一行中有多少小石子：它比该行中的数量少一个。
 
-@node Dec 示例部分
+@node Dec Example parts
 @unnumberedsubsubsec 函数定义的各部分
 
 我们从三个变量开始：三角形中的总行数；每行中的小石子数；以及我们想要计算的小石子的总数。这些变量可以分别命名为 @code{number-of-rows}、@code{number-of-pebbles-in-row} 和 @code{total}。
@@ -7427,7 +7418,7 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 (while (> number-of-pebbles-in-row 0)
 @end smallexample
 
-@node Dec 示例整体
+@node Dec Example altogether
 @unnumberedsubsubsec 将函数定义组合在一起
 
 我们可以将这些表达式组合在一起以创建一个有效的函数定义。然而，在检查时，我们发现其中一个局部变量是不必要的！
@@ -7564,7 +7555,7 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 
 @noindent
 对于此示例，现有的 @code{reverse} 函数显然是最好的选择。
-@code{while} 循环就像我们的第一个示例一样(@pxref{循环示例, , 一个@code{while}循环和一个列表})。@code{while} 首先检查列表是否有元素；如果有，它通过将列表的第一个元素添加到现有列表（在循环的第一次迭代中是 @code{nil}）来构造一个新列表。由于第二个元素在第一个元素的前面添加，第三个元素在第二个元素的前面添加，因此列表被反转。
+@code{while} 循环就像我们的第一个示例一样(@pxref{Loop Example, , 一个@code{while}循环和一个列表})。@code{while} 首先检查列表是否有元素；如果有，它通过将列表的第一个元素添加到现有列表（在循环的第一次迭代中是 @code{nil}）来构造一个新列表。由于第二个元素在第一个元素的前面添加，第三个元素在第二个元素的前面添加，因此列表被反转。
 
 在使用 @code{while} 循环的表达式中，
 @w{@code{(setq list (cdr list))}}
@@ -7619,7 +7610,7 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 @end group
 @end smallexample
 
-@node 递归
+@node Recursion
 @section 递归
 @cindex 递归
 
@@ -7628,17 +7619,17 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 最终，如果程序被正确编写，稍微不同的参数将与第一个参数足够不同，以至于最终的实例将停止。
 
 @menu
-* 构建机器人::             相同的模型，不同的序列号...
-* 递归定义的部分::         走到停下来...
-* 使用列表的递归::         将列表用作判断是否递归的测试。
-* 递归三角函数::
-* 使用cond的递归::
-* 递归模式::               经常使用的模板。
-* 无推迟::                  不要存储工作...
-* 无推迟解决方案::
+* Building Robots::             相同的模型，不同的序列号...
+* Recursive Definition Parts::         走到停下来...
+* Recursion with list::         将列表用作判断是否递归的测试。
+* Recursive triangle function::
+* Recursion with cond::
+* Recursive Patterns::               经常使用的模板。
+* No Deferment::                  不要存储工作...
+* No deferment solution::
 @end menu
 
-@node 构建机器人
+@node Building Robots
 @subsection 构建机器人：扩展隐喻
 @cindex 构建机器人
 @cindex 机器人，构建
@@ -7657,7 +7648,7 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 
 参数从一个实例到下一个必须不同；否则，这个过程将永远不会停止。
 
-@node 递归定义的部分
+@node Recursive Definition Parts
 @subsection 递归定义的组成部分
 @cindex 递归定义的部分
 @cindex 递归定义的组成部分
@@ -7701,7 +7692,7 @@ Lisp提供了@code{<=}函数，如果其第一个参数的值小于或等于其�
 
 再次执行测试有时被称为@dfn{停止条件}，因为它在测试为false时停止重复。
 
-@node 递归与列表
+@node Recursion with list
 @subsection 列表递归
 
 一个用@code{while}循环打印数字列表元素的例子可以用递归的方式重写。下面是代码，包括一个表达式，将变量@code{animals}的值设置为一个列表。
@@ -7758,7 +7749,7 @@ nil
 @end smallexample
 
 @need 2000
-@node 递归三角形函数
+@node Recursive triangle function
 @subsection 使用递归替代计数器
 @findex triangle-recursively
 
@@ -7785,12 +7776,12 @@ nil
 为了理解这个函数的工作原理，让我们考虑当函数的参数值为1、2、3或4时发生的各种情况。
 
 @menu
-* 参数为1或2的递归示例::
-* 参数为3或4的递归示例::
+* Recursive Example arg of 1 or 2::
+* Recursive Example arg of 3 or 4::
 @end menu
 
 @ifnottex
-@node 参数为1或2的递归示例
+@node Recursive Example arg of 1 or 2
 @unnumberedsubsubsec 参数为1或2
 @end ifnottex
 
@@ -7831,7 +7822,7 @@ Lisp解释器创建了 @code{triangle-recursively} 的一个单独实例。这�
 加法的结果是2加1的和，返回数字3，这是正确的。一个有两行的三角形中有三颗小石子。
 @end table
 
-@node 递归示例参数为3或4的情况
+@node Recursive Example arg of 3 or 4
 @unnumberedsubsubsec 参数为3或4的情况
 
 假设调用 @code{triangle-recursively} 时参数为3。
@@ -7892,9 +7883,9 @@ Lisp解释器创建了 @code{triangle-recursively} 的一个单独实例。这�
 
 如果将 @code{triangle-recursively} 的每个实例都视为不同的机器人，第一个机器人必须等待第二个完成其工作，第二个必须等待第三个完成，依此类推。
 
-有一种绕过这种等待的方法，我们将在 @ref{不推迟的递归, , 无推迟的递归} 中讨论。
+有一种绕过这种等待的方法，我们将在 @ref{No Deferment, , 无推迟的递归} 中讨论。
 
-@node 用 cond 进行递归
+@node Recursion with cond
 @subsection 使用 @code{cond} 进行递归的例子
 @findex cond
 
@@ -7951,19 +7942,19 @@ Lisp解释器创建了 @code{triangle-recursively} 的一个单独实例。这�
 在这个例子中，如果数字小于等于 0，则 @code{cond} 返回 0；如果数字为 1，则返回 1；如果数字大于 1，则评估 @code{(+
 number (triangle-using-cond (1- number)))}。
 
-@node 递归模式
+@node Recursive Patterns
 @subsection 递归模式
 @cindex 递归模式
 
 以下是三种常见的递归模式，每一种都涉及到列表。递归不一定需要涉及列表，但Lisp是为列表设计的，这展示了其原始功能的一种感觉。
 
 @menu
-* 每个元素::
-* 累积::
-* 保留::
+* Every::
+* Accumulate::
+* Keep::
 @end menu
 
-@node 每个元素
+@node Every
 @unnumberedsubsubsec 递归模式：@emph{每个元素}
 @cindex 每个元素，递归模式类型
 @cindex 递归模式 - 每个元素
@@ -8012,7 +8003,7 @@ number (triangle-using-cond (1- number)))}。
 
 （该示例完全遵循该模式：如果数字列表为空，则返回@code{nil}。在实践中，您会编写条件语句，以便在数字列表不为空时执行操作。）
 
-@code{print-elements-recursively}函数（@pxref{递归与列表, , Recursion with a List}）是@code{every}模式的另一个示例，不同之处在于，我们不使用@code{cons}将结果组合在一起，而是逐个打印输出的每个元素。
+@code{print-elements-recursively}函数（@pxref{Recursion with list, , Recursion with a List}）是@code{every}模式的另一个示例，不同之处在于，我们不使用@code{cons}将结果组合在一起，而是逐个打印输出的每个元素。
 
 @need 1250
 @code{print-elements-recursively}函数如下：
@@ -8050,7 +8041,7 @@ number (triangle-using-cond (1- number)))}。
     @end itemize
 @end itemize
 
-@node 累积
+@node Accumulate
 @unnumberedsubsubsec 递归模式：@emph{累积}
 @cindex 累积，一种递归模式
 @cindex 递归模式 - 累积
@@ -8093,9 +8084,9 @@ number (triangle-using-cond (1- number)))}。
 @end group
 @end smallexample
 
-@xref{文件列表, , 制作文件列表}，以获取累积模式的示例。
+@xref{Files List, , 制作文件列表}，以获取累积模式的示例。
 
-@node 保留
+@node Keep
 @unnumberedsubsubsec 递归模式：@emph{保留}
 @cindex 保留，一种递归模式
 @cindex 递归模式 - 保留
@@ -8161,7 +8152,7 @@ number (triangle-using-cond (1- number)))}。
 
 毫无疑问，您无需使用@code{nil}作为停止测试的条件；当然，您可以组合这些模式。
 
-@node 不推迟的递归
+@node No Deferment
 @subsection 无推迟的递归
 @cindex 递归中的推迟
 @cindex 无推迟的递归
@@ -8225,7 +8216,7 @@ number (triangle-using-cond (1- number)))}。
 
 这个函数的设计推迟了第一步的计算，直到第二步可以完成，然后推迟到第三步可以完成，依此类推。每个推迟都意味着计算机必须记住正在等待什么。在这个例子中，当步骤很少时，这不是问题。但当步骤更多时，这可能会成为问题。
 
-@node 无推迟解决方案
+@node No deferment solution
 @subsection 无推迟解决方案
 @cindex 无推迟解决方案
 @cindex 无推迟的解决方案
@@ -8353,7 +8344,7 @@ number (triangle-using-cond (1- number)))}。
 这种模式在编写可能使用计算机中的许多资源的函数时很有帮助。
 
 @need 1500
-@node 循环练习
+@node Looping exercise
 @section 循环练习
 
 @itemize @bullet
@@ -8371,7 +8362,7 @@ number (triangle-using-cond (1- number)))}。
 为 Texinfo 模式编写一个函数，在段落开头为每个段落中的 @samp{@@dfn} 创建一个索引条目。
 （在 Texinfo 文件中，@samp{@@dfn} 标记一个定义。本书是用 Texinfo 编写的。）
 
-你将需要用到前两章中的许多函数，@ref{剪切与存储文本, , 剪切与存储文本} 和 @ref{插入文本, , Yanking Text Back} 中有它们的描述。如果使用 @code{forward-paragraph} 将索引条目放在段落开头，您将需要使用 @w{@kbd{C-h f}}（@code{describe-function}）查找如何使命令向后执行。
+你将需要用到前两章中的许多函数，@ref{Cutting & Storing Text, , 剪切与存储文本} 和 @ref{Yanking, , Yanking Text Back} 中有它们的描述。如果使用 @code{forward-paragraph} 将索引条目放在段落开头，您将需要使用 @w{@kbd{C-h f}}（@code{describe-function}）查找如何使命令向后执行。
 
 更多信息，请参见
 @ifinfo
@@ -8387,7 +8378,7 @@ Documentation Format}。
 @end iftex
 @end itemize
 
-@node 正则表达式搜索
+@node Regexp Search
 @chapter 正则表达式搜索
 @cindex 搜索，演示
 @cindex 正则表达式搜索
@@ -8407,8 +8398,8 @@ Documentation Format}。
 * re-search-forward::           与@code{search-forward}非常相似。
 * forward-sentence::            正则表达式搜索的简单示例。
 * forward-paragraph::           一个相对复杂的示例。
-* 正则表达式回顾::
-* re-search 练习::
+* Regexp Review::
+* re-search Exercises::
 @end menu
 
 @node sentence-end
@@ -8683,8 +8674,7 @@ GNU Emacs 21
 @end group
 @end smallexample
 
-该@code{while}循环是递减型的。
-(@xref{递减循环, , A Loop with a Decrementing Counter}.) 它有一个真假测试，只要计数器（在这种情况下是变量@code{arg}）大于零，测试就为真；并且有一个递减器，每次循环重复时从计数器的值中减去1。
+该@code{while}循环是递减型的。(@xref{Decrementing Loop, , A Loop with a Decrementing Counter}.) 它有一个真假测试，只要计数器（在这种情况下是变量@code{arg}）大于零，测试就为真；并且有一个递减器，每次循环重复时从计数器的值中减去1。
 
 如果没有给@code{forward-sentence}提供前缀参数，这是该命令最常用的方式，那么这个@code{while}循环将运行一次，因为@code{arg}的值将为1。
 
@@ -8968,7 +8958,7 @@ GNU Emacs 21
 @noindent
 这是一个表达式，其第一个元素是 @code{and} 特殊形式。
 
-正如我们之前学到的(@pxref{kill-new 函数, , @code{kill-new} 函数})，@code{and} 特殊形式评估其每个参数，直到其中一个参数返回 @code{nil} 的值，此时 @code{and} 表达式返回 @code{nil}；然而，如果没有任何参数返回 @code{nil} 的值，则评估最后一个参数产生的值将被返回。 (由于这样的值不是 @code{nil}，在 Lisp 中被视为真值。) 换句话说，只有当 @code{and} 表达式的所有参数都为真时，它才返回真值。
+正如我们之前学到的(@pxref{kill-new function, , @code{kill-new} 函数})，@code{and} 特殊形式评估其每个参数，直到其中一个参数返回 @code{nil} 的值，此时 @code{and} 表达式返回 @code{nil}；然而，如果没有任何参数返回 @code{nil} 的值，则评估最后一个参数产生的值将被返回。 (由于这样的值不是 @code{nil}，在 Lisp 中被视为真值。) 换句话说，只有当 @code{and} 表达式的所有参数都为真时，它才返回真值。
 
 在这种情况下，只有当以下四个表达式在评估时产生真值（即非 @code{nil} 值）时，变量 @code{fill-prefix-regexp} 才绑定到非 @code{nil} 值；否则，@code{fill-prefix-regexp} 被绑定到 @code{nil}。
 
@@ -9207,7 +9197,7 @@ GNU Emacs 21
 
 如果您在 GNU Emacs 中阅读此内容并想查看整个函数，请键入 @kbd{C-h f}（@code{describe-function}）和函数的名称。这会给您函数文档和包含函数源代码的库的名称。将点放在库的名称上，然后按 @key{RET} 键；您将直接转到源代码。（确保安装了源代码！没有源代码，您就像闭着眼睛开车的人一样！）
 
-@node 正则表达式复习
+@node Regexp Review
 @section 复习
 
 以下是一些最近引入的函数的简要概述。
@@ -9292,7 +9282,7 @@ GNU Emacs 21
 编写一个函数来搜索重复的单词，例如“the the”。有关如何编写匹配由两个相同部分组成的字符串的正则表达式（regexp）的信息，请参阅@xref{Regexps, , Syntax of Regular Expressions, emacs, The GNU Emacs Manual}。您可以设计几个正则表达式；有些比其他的好。我使用的函数在附录中有描述，以及几个正则表达式。@xref{the-the, , @code{the-the} Duplicated Words Function}。
 @end itemize
 
-@node 统计单词数
+@node Counting Words
 @chapter 通过重复和正则表达式进行统计
 @cindex 通过重复统计单词
 @cindex 通过正则表达式统计单词
@@ -9300,14 +9290,14 @@ GNU Emacs 21
 重复和正则表达式搜索是在编写Emacs Lisp代码时经常使用的强大工具。本章通过使用 @code{while} 循环和递归构建单词计数命令来说明正则表达式搜索的使用。
 
 @menu
-* 为什么统计单词::         
+* Why Count Words::
 * @value{COUNT-WORDS}::          使用正则表达式，但遇到问题。
 * recursive-count-words::       从区域中没有单词的情况开始。
-* 统计练习::
+* Counting Exercise::
 @end menu
 
 @ifnottex
-@node 为什么统计单词
+@node Why Count Words
 @unnumberedsec 统计单词
 @end ifnottex
 
@@ -9326,12 +9316,12 @@ GNU Emacs 21
 显然，计算单词是一个重复的动作：从区域的开头开始，计算第一个单词，然后是第二个单词，依此类推，直到达到区域的末尾。这意味着单词计数理想情况下适合使用递归或@code{while}循环。
 
 @menu
-* 设计 @value{COUNT-WORDS}::  使用@code{while}循环进行定义。
-* 空白符号错误::  @code{@value{COUNT-WORDS}}中的空白符号错误。
+* Design @value{COUNT-WORDS}::  使用@code{while}循环进行定义。
+* Whitespace Bug::  @code{@value{COUNT-WORDS}}中的空白符号错误。
 @end menu
 
 @ifnottex
-@node 设计 @value{COUNT-WORDS}
+@node Design @value{COUNT-WORDS}
 @unnumberedsubsec 设计 @code{@value{COUNT-WORDS}}
 @end ifnottex
 
@@ -9439,7 +9429,7 @@ GNU Emacs 21
 @noindent
 按照目前的编写方式，该函数能够工作，但在某些情况下不完全正确。
 
-@node 空白字符错误
+@node Whitespace Bug
 @subsection @code{@value{COUNT-WORDS}} 中的空白字符错误
 
 在前面的章节中描述的 @code{@value{COUNT-WORDS}} 命令有两个错误，或者更确切地说，有一个带有两个表现形式的错误。首先，如果你标记一个仅包含中间某些文本的空白区域，@code{@value{COUNT-WORDS}} 命令会告诉你该区域包含一个单词！其次，如果你标记一个仅包含位于缓冲区末尾或缩小缓冲区的可访问部分的空白字符的区域，该命令会显示一个错误消息，看起来像这样：
@@ -9723,7 +9713,7 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 @end group
 @end smallexample
 
-请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 @code{t}，如果失败，则返回 @code{nil}。(@xref{空白字符错误, , @code{@value{COUNT-WORDS}} 中的空白字符错误}，了解 @code{re-search-forward} 的工作原理的解释。)
+请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 @code{t}，如果失败，则返回 @code{nil}。(@xref{Whitespace Bug, , @code{@value{COUNT-WORDS}} 中的空白字符错误}，了解 @code{re-search-forward} 的工作原理的解释。)
 
 再次执行测试是 @code{if} 子句的真值测试。显然，如果再次执行测试成功，则 @code{if} 子句的 then-部分应该再次调用函数；但如果失败，则 else-部分应该返回零，因为要么点在区域外，要么搜索失败，因为找不到单词。
 
@@ -9873,35 +9863,35 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 @end group
 @end smallexample
 
-@node 计数练习
+@node Counting Exercise
 @section 练习：计算标点符号
 
 使用 @code{while} 循环，编写一个函数来计算区域内标点符号的数量---句号、逗号、分号、冒号、感叹号和问号。然后使用递归方式完成相同的任务。
 
-@node 在 defun 中计算单词数
+@node Words in a defun
 @chapter 在 @code{defun} 中计算单词数
 @cindex 在 @code{defun} 中计算单词数
 @cindex 在 @code{defun} 中的单词计数
 
-我们下一个项目是计算函数定义中的单词数。显然，这可以通过一些 @code{@value{COUNT-WORDS}} 的变体来完成。参见 @xref{统计单词数, ,通过重复和正则表达式计数}。如果我们只想计算一个定义中的单词数，那么可以使用 @kbd{C-M-h} (@code{mark-defun}) 命令标记定义，然后调用 @code{@value{COUNT-WORDS}}。
+我们下一个项目是计算函数定义中的单词数。显然，这可以通过一些 @code{@value{COUNT-WORDS}} 的变体来完成。参见 @xref{Counting Words, ,通过重复和正则表达式计数}。如果我们只想计算一个定义中的单词数，那么可以使用 @kbd{C-M-h} (@code{mark-defun}) 命令标记定义，然后调用 @code{@value{COUNT-WORDS}}。
 
 然而，我更有雄心壮志：我想要计算 Emacs 源代码中每个定义中的单词和符号的数量，然后打印一个图表，显示每个长度的函数有多少个：包含 40 到 49 个单词或符号的有多少个函数，包含 50 到 59 个单词或符号的有多少个，依此类推。我常常好奇一个典型函数有多长，这将给出答案。
 
 @menu
-* 分而治之::
-* 单词和符号::           应该计数什么？
-* 语法::                  什么构成一个单词或符号？
+* Divide and Conquer::
+* Words and Symbols::           应该计数什么？
+* Syntax::                  什么构成一个单词或符号？
 * count-words-in-defun:: 与 @code{@value{COUNT-WORDS}} 非常相似。
-* 多个 defuns::           计算文件中的多个定义。
-* 查找文件::              想要查看一个文件吗？
+* Several defuns::           计算文件中的多个定义。
+* Find a File::              想要查看一个文件吗？
 * lengths-list-file::     许多定义长度的列表。
-* 多个文件::              在不同文件中计数定义。
-* 递归计数多个文件::      递归在不同文件中计数。
-* 准备数据::              为在图表中显示准备数据。
+* Several files::              在不同文件中计数定义。
+* Several files recursively::      递归在不同文件中计数。
+* Prepare the data::              为在图表中显示准备数据。
 @end menu
 
 @ifnottex
-@node 分而治之
+@node Divide and Conquer
 @unnumberedsec 分而治之
 @end ifnottex
 
@@ -9926,7 +9916,7 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 
 这是一个相当庞大的项目！但是，如果我们慢慢来，它并不难。
 
-@node 单词和符号
+@node Words and Symbols
 @section 如何计数？
 @cindex defun 中的单词和符号
 
@@ -9954,7 +9944,7 @@ Emacs 将告诉你，该区域有三个单词，这是正确的。
 @noindent
 该正则表达式是一个模式，定义了一个或多个单词构成字符，后面可能跟着一个或多个不是单词构成字符的字符。关于“单词构成字符”是什么，这就引出了语法问题，值得单独讨论一节。
 
-@node 语法
+@node Syntax
 @section 何为单词或符号的组成部分？
 @cindex 语法类别和表
 
@@ -10138,7 +10128,7 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 
 下一个问题是计算单个文件中多个定义中的单词和符号数。
 
-@node 多个 defuns
+@node Several defuns
 @section 统计文件中的多个 @code{defun}
 
 一个文件，比如 @file{simple.el}，可能包含一百个或更多的函数定义。我们的长期目标是收集许多文件的统计信息，但作为第一步，我们的即时目标是在一个文件中收集统计信息。
@@ -10169,7 +10159,7 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 
 找到文件是我们尚未讨论的一个新过程。
 
-@node 查找文件
+@node Find a File
 @section 查找文件
 @cindex 查找文件
 
@@ -10212,7 +10202,7 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 
 根据@kbd{C-h f}（@code{describe-function}命令）显示的文档，@code{find-file-noselect}函数将指定的文件读入缓冲区并返回该缓冲区。（其最新版本还包括一个可选的@var{wildcards}参数，以及另一个以文本方式读取文件和另一个以抑制警告消息的参数。这些可选参数与问题无关。）
 
-然而，@code{find-file-noselect}函数不会选择放置文件的缓冲区。Emacs不会切换其注意力（或者如果您正在使用@code{find-file-noselect}，那么是您的注意力）到选定的缓冲区。这就是@code{switch-to-buffer}的作用：它切换Emacs关注的缓冲区；并且将窗口中显示的缓冲区切换到新的缓冲区。我们已经在其他地方讨论了缓冲区切换。 （@xref{切换缓冲区}。）
+然而，@code{find-file-noselect}函数不会选择放置文件的缓冲区。Emacs不会切换其注意力（或者如果您正在使用@code{find-file-noselect}，那么是您的注意力）到选定的缓冲区。这就是@code{switch-to-buffer}的作用：它切换Emacs关注的缓冲区；并且将窗口中显示的缓冲区切换到新的缓冲区。我们已经在其他地方讨论了缓冲区切换。 （@xref{Switching Buffers}。）
 
 在这个直方图项目中，我们不需要在屏幕上显示每个文件，因为程序确定其中每个定义的长度。我们可以使用@code{set-buffer}而不是@code{switch-to-buffer}，后者会将屏幕上的缓冲区重新显示。因此，我们不必调用@code{find-file}来执行这项任务，而是必须编写我们自己的表达式。
 
@@ -10311,7 +10301,7 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 新版本的 @file{debug.el} 包含比早期版本更多的 defuns；而我的新机器比旧机器要快得多。)
 请注意，文件中的最后一个定义的长度在列表中是最先的。
 
-@node 多个文件
+@node Several files
 @section 统计不同文件中 @code{defuns} 的词数
 
 在前一节中，我们创建了一个函数，该函数返回文件中每个定义的长度的列表。现在，我们想要定义一个函数，返回一个包含多个文件中定义长度的主列表。
@@ -10328,7 +10318,7 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 @unnumberedsubsec 确定 @code{defuns} 的长度
 @end ifnottex
 
-使用 @code{while} 循环的设计是常规的。传递给函数的参数是一个文件列表。正如我们之前看到的 (@pxref{循环示例})，可以编写一个 @code{while} 循环，使得在列表包含元素的情况下计算循环体，但在列表为空时退出循环。为了使此设计工作，循环体必须包含一个表达式，该表达式在每次计算循环体时缩短列表，以便最终列表为空。通常的技术是在每次计算循环体时将列表的值设置为列表的 @sc{cdr} 的值。
+使用 @code{while} 循环的设计是常规的。传递给函数的参数是一个文件列表。正如我们之前看到的 (@pxref{Loop Example})，可以编写一个 @code{while} 循环，使得在列表包含元素的情况下计算循环体，但在列表为空时退出循环。为了使此设计工作，循环体必须包含一个表达式，该表达式在每次计算循环体时缩短列表，以便最终列表为空。通常的技术是在每次计算循环体时将列表的值设置为列表的 @sc{cdr} 的值。
 
 @need 800
 模板如下：
@@ -10341,7 +10331,7 @@ Emacs将不同的字符视为属于不同的@dfn{语法类别}。例如，正则
 @end group
 @end smallexample
 
-此外，我们要记住，@code{while} 循环返回 @code{nil}（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 @code{while} 循环封装在一个 @code{let} 表达式内，并安排 @code{let} 表达式的最后一个元素包含长度列表的值。(@xref{增量示例, , 带有增量计数器的循环示例}。)
+此外，我们要记住，@code{while} 循环返回 @code{nil}（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 @code{while} 循环封装在一个 @code{let} 表达式内，并安排 @code{let} 表达式的最后一个元素包含长度列表的值。(@xref{Incrementing Example, , 带有增量计数器的循环示例}。)
 
 @findex lengths-list-many-files
 @need 1250
@@ -10429,7 +10419,7 @@ debug.el
 ((1 2 3 4) 5 6 7 8)
 @end smallexample
 
-@node 递归计算多个文件的单词数
+@node Several files recursively
 @section 递归计算不同文件中的单词数
 
 除了使用 @code{while} 循环外，你还可以通过递归来处理文件列表中的每个文件。一个递归版本的 @code{lengths-list-many-files} 很短而简单。
@@ -10491,7 +10481,7 @@ debug.el
 
 下一步是准备列表中的数据以在图表中显示。
 
-@node 准备数据
+@node Prepare the data
 @section 为在图表中显示准备数据
 
 函数 @code{recursive-lengths-list-many-files} 返回一个数字列表。每个数字记录一个函数定义的长度。我们现在需要将这些数据转换为适合生成图表的数字列表。新列表将显示有多少个函数定义包含少于10个单词和符号，有多少个包含10到19个单词和符号，有多少个包含20到29个单词和符号，以此类推。
@@ -10499,14 +10489,14 @@ debug.el
 简而言之，我们需要遍历由 @code{recursive-lengths-list-many-files} 函数生成的长度列表，并统计每个长度范围内的 defuns 的数量，并生成一个包含这些数字的列表。
 
 @menu
-* 详细显示的数据::
-* 排序::                     列表排序。
-* 文件列表::                  制作文件列表。
-* 计算函数定义的数量::
+* Data for Display in Detail::
+* Sorting::                     列表排序。
+* Files List::                  制作文件列表。
+* Counting function definitions::
 @end menu
 
 @ifnottex
-@node 详细显示的数据
+@node Data for Display in Detail
 @unnumberedsubsec 详细显示的数据
 @end ifnottex
 
@@ -10514,13 +10504,13 @@ debug.el
 
 然而，在开始编写这样一个函数之前，我们应该考虑先对长度列表进行排序的优势，以便数字按从小到大的顺序排列。首先，排序将使在每个范围内计数数字变得更容易，因为两个相邻的数字要么在相同的长度范围内，要么在相邻的范围内。其次，通过检查已排序的列表，我们可以发现最高和最低的数字，从而确定我们将需要的最大和最小长度范围。
 
-@node 排序
+@node Sorting
 @subsection 列表排序
 @findex sort
 
 Emacs 包含一个用于排序列表的函数，称为（你可能猜到的）@code{sort}。@code{sort} 函数接受两个参数，要排序的列表和一个断言，该断言确定两个列表元素中的第一个是否小于第二个。
 
-正如我们之前所见（@pxref{错误类型的参数, , 使用错误类型的对象作为参数}），断言是确定某个属性是真还是假的函数。@code{sort} 函数将根据断言使用的任何属性重新排序列表；这意味着 @code{sort} 可以根据非数值标准对非数值列表进行排序---例如，它可以对列表进行字母排序。
+正如我们之前所见（@pxref{Wrong Type of Argument, , 使用错误类型的对象作为参数}），断言是确定某个属性是真还是假的函数。@code{sort} 函数将根据断言使用的任何属性重新排序列表；这意味着 @code{sort} 可以根据非数值标准对非数值列表进行排序---例如，它可以对列表进行字母排序。
 
 @need 1250
 在对数值列表进行排序时，使用函数 @code{<}。例如，
@@ -10564,7 +10554,7 @@ Emacs 包含一个用于排序列表的函数，称为（你可能猜到的）@c
 @noindent
 （请注意，在此示例中，@code{sort} 的第一个参数未引用，因为必须评估表达式以产生传递给 @code{sort} 的列表。）
 
-@node 文件列表
+@node Files List
 @subsection 创建文件列表
 
 函数 @code{recursive-lengths-list-many-files} 需要一个文件列表作为其参数。在我们的测试示例中，我们手工构建了这样一个列表；但是 Emacs Lisp 源代码目录太大，我们无法手动创建。相反，我们将编写一个函数来为我们完成这个任务。在这个函数中，我们将同时使用 @code{while} 循环和递归调用。
@@ -10654,7 +10644,7 @@ t
 @end itemize
 @end itemize
 
-让我们编写一个函数定义来执行这些任务。我们将使用一个 @code{while} 循环来在目录中从一个文件名移动到另一个文件名，检查需要执行的操作；我们将使用递归调用来在每个子目录上重复这些操作。递归模式是 Accumulate（@pxref{累积}），使用 @code{append} 作为组合器。
+让我们编写一个函数定义来执行这些任务。我们将使用一个 @code{while} 循环来在目录中从一个文件名移动到另一个文件名，检查需要执行的操作；我们将使用递归调用来在每个子目录上重复这些操作。递归模式是 Accumulate（@pxref{Accumulate}），使用 @code{append} 作为组合器。
 
 @ignore
 (directory-files "/usr/local/src/emacs/lisp/" t "\\.el$")
@@ -10763,7 +10753,7 @@ t
   (insert (current-time-string)))
 @end ignore
 
-@node 统计函数定义数量
+@node Counting function definitions
 @subsection 统计函数定义数量
 
 我们的即时目标是生成一个列表，告诉我们有多少个函数定义包含少于10个字和符号，有多少包含10到19个字和符号，有多少包含20到29个字和符号，依此类推。
@@ -10796,7 +10786,7 @@ t
 @need 1250
 @code{sorted-lengths} 列表的每个条目都会计数多次，这意味着@code{sorted-lengths}列表的循环将在@code{top-of-ranges}列表的循环内部，就像小齿轮在大齿轮内部一样。
 
-内部循环计算范围内的定义数量。它是我们之前见过的简单计数循环的类型。(@xref{增量循环, , 具有增量计数器的循环}.) 循环的真假测试测试@code{sorted-lengths} 列表中的值是否小于范围顶部的当前值。如果是，则函数增加计数器并测试@code{sorted-lengths}列表的下一个值。
+内部循环计算范围内的定义数量。它是我们之前见过的简单计数循环的类型。(@xref{Incrementing Loop, , 具有增量计数器的循环}.) 循环的真假测试测试@code{sorted-lengths} 列表中的值是否小于范围顶部的当前值。如果是，则函数增加计数器并测试@code{sorted-lengths}列表的下一个值。
 
 @need 1250
 内部循环如下：
@@ -10958,7 +10948,7 @@ t
 @ifinfo
 @noindent
 (有关@code{and}的信息，请参阅@code{kill-new}函数
-@xref{kill-new function, , @code{kill-new}函数}。)
+@xref{kill-new function, , @code{kill-new}函数}.)
 @end ifinfo
 
 以下是对@code{defuns-per-range}函数的简短测试。首先，评估将（缩短的）@code{top-of-ranges} 列表绑定到值列表的表达式，然后评估绑定@code{sorted-lengths} 列表的表达式，最后评估@code{defuns-per-range}函数。
@@ -10989,7 +10979,7 @@ t
 确实，@code{sorted-lengths}列表中有两个小于110的元素，两个元素介于 110 和 119 之间，两个元素介于 120 和 129 之间，依此类推。有四个值等于或大于 200 的元素。
 
 @c The next step is to turn this numbers' list into a graph.
-@node 准备图表
+@node Readying a Graph
 @chapter 准备图表
 @cindex 准备图表
 @cindex 图表原型
@@ -11007,15 +10997,15 @@ t
 在侦察完地形后，我们将更加自信，并增强该函数以自动标记坐标轴。
 
 @menu
-* 图表的列::
+* Columns of a graph::
 * graph-body-print::            如何打印图表的主体。
 * recursive-graph-body-print::
-* 打印坐标轴::
-* 折线图练习::
+* Printed Axes::
+* Line Graph Exercise::
 @end menu
 
 @ifnottex
-@node 图表的列
+@node Columns of a graph
 @unnumberedsec 打印图表的列
 @end ifnottex
 
@@ -11362,7 +11352,7 @@ numbers-list 由 Y 轴的值组成。"
 @ref{Readying a Graph, , Readying a Graph},
 @end iftex
 @ifnottex
-@ref{图表的列},
+@ref{Columns of a graph},
 @end ifnottex
 以及 @code{graph-body-print}。
 
@@ -11478,14 +11468,14 @@ Emacs 将打印一个类似于以下的图形：
 
 图表需要有打印的坐标轴，这样你就能更好地定位自己在图中的位置。对于一个一次性的项目，手工使用Emacs的Picture mode绘制坐标轴可能是合理的；但是，一个图形绘制函数可能会被多次使用。
 
-因此，我已经对基本的@code{print-graph-body}函数进行了增强，使其能够自动打印水平和垂直坐标轴的标签。由于标签打印函数并不包含太多新材料，我把它们的描述放在了附录中。@xref{完整图表, , 带有标记坐标轴的图表}。
+因此，我已经对基本的@code{print-graph-body}函数进行了增强，使其能够自动打印水平和垂直坐标轴的标签。由于标签打印函数并不包含太多新材料，我把它们的描述放在了附录中。@xref{Full Graph, , 带有标记坐标轴的图表}。
 
 @node Line Graph Exercise
 @section 练习
 
 编写一个线图版本的图形打印函数。
 
-@node Emacs 初始化
+@node Emacs Initialization
 @chapter 你的 @file{.emacs} 文件
 @cindex @file{.emacs} 文件
 @cindex 定制你的 @file{.emacs} 文件
@@ -11496,25 +11486,25 @@ Emacs 将打印一个类似于以下的图形：
 GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式，你可以改变或扩展Emacs的功能。
 
 @menu
-* 默认配置::
-* 站点级别的初始化::              你可以编写站点级别的初始化文件。
+* Default Configuration::
+* Site-wide Init::              你可以编写站点级别的初始化文件。
 * defcustom::                   Emacs会为你生成代码。
-* 编写初始化文件::         如何编写 @file{.emacs} 初始化文件。
-* 文本和自动换行::          自动换行。
-* 邮件别名::                使用电子邮件地址的缩写。
-* 缩进制表模式::            在@TeX{}中不使用制表符。
-* 键绑定::                创建一些个人的键绑定。
-* 键位图::                     更多关于键绑定的信息。
-* 加载文件::               自动加载文件（即，评估文件）。
+* Beginning init File::         如何编写 @file{.emacs} 初始化文件。
+* Text and Auto-fill::          自动换行。
+* Mail Aliases::                使用电子邮件地址的缩写。
+* Indent Tabs Mode::            在@TeX{}中不使用制表符。
+* Key Bindings::                创建一些个人的键绑定。
+* Keymaps::                     更多关于键绑定的信息。
+* Loading Files::               自动加载文件（即，评估文件）。
 * Autoload::                    使函数可用。
-* 简单扩展::            定义一个函数；将其绑定到一个键上。
-* X11颜色::                  X中的颜色。
-* 杂项::
-* 模式行::                   如何定制你的模式行。
+* Simple Extension::            定义一个函数；将其绑定到一个键上。
+* X11 Colors::                  X中的颜色。
+* Miscellaneous::
+* Mode Line::                   如何定制你的模式行。
 @end menu
 
 @ifnottex
-@node 默认配置
+@node Default Configuration
 @unnumberedsec Emacs的默认配置
 @end ifnottex
 
@@ -11532,7 +11522,7 @@ GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式
 
 本章的大部分内容是关于自己编写表达式的。它描述了一个简单的 @file{.emacs} 文件；有关更多信息，请参见 @ref{Init File, , The Init File, emacs, The GNU Emacs Manual} 和 @ref{Init File, , The Init File, elisp, The GNU Emacs Lisp Reference Manual}。
 
-@node 站点范围的初始化
+@node Site-wide Init
 @section 站点范围初始化文件
 
 @cindex @file{default.el} 初始化文件
@@ -11544,7 +11534,7 @@ GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式
 
 另外，还有三个站点范围的初始化文件，每次启动 Emacs 时都会自动加载，如果它们存在的话。这些文件分别是 @file{site-start.el}，它在你的 @file{.emacs} 文件之前加载，以及 @file{default.el} 和终端类型文件，它们在你的 @file{.emacs} 文件之后加载。
 
-在你的 @file{.emacs} 文件中的设置和定义会覆盖 @file{site-start.el} 文件中的冲突设置和定义（如果存在的话）。但是，在 @file{default.el} 或终端类型文件中的设置和定义会覆盖你的 @file{.emacs} 文件中的设置和定义。（你可以通过将 @code{term-file-prefix} 设置为 @code{nil} 来阻止终端类型文件的干扰。@xref{简单扩展, , 一个简单的扩展}。）
+在你的 @file{.emacs} 文件中的设置和定义会覆盖 @file{site-start.el} 文件中的冲突设置和定义（如果存在的话）。但是，在 @file{default.el} 或终端类型文件中的设置和定义会覆盖你的 @file{.emacs} 文件中的设置和定义。（你可以通过将 @code{term-file-prefix} 设置为 @code{nil} 来阻止终端类型文件的干扰。@xref{Simple Extension, , 一个简单的扩展}。）
 
 @c 重写以避免 hbox 溢出。
 分发中附带的 @file{INSTALL} 文件包含了对 @file{site-init.el} 和 @file{site-load.el} 文件的描述。
@@ -11655,7 +11645,7 @@ Emacs 将在您的 @file{.emacs} 文件末尾附近写入一个 @code{custom-set
 @findex defconst
 顺便说一下，为了更完整地了解定义：@code{defsubst} 定义内联函数。语法与 @code{defun} 相同。@code{defconst} 将符号定义为常量。意图是既不应该由程序也不应该由用户更改由 @code{defconst} 设置的值。 （您可以更改它；设置的值是一个变量；但请不要这样做。）
 
-@node 初始化文件的开始
+@node Beginning init File
 @section 开始一个 @file{.emacs} 文件
 @cindex @file{.emacs} 文件，开始
 
@@ -11718,7 +11708,7 @@ Emacs 将在您的 @file{.emacs} 文件末尾附近写入一个 @code{custom-set
 
 当然，你不需要在你的 @file{.emacs} 文件中包含这些注释。我在我的文件中包含它们是因为我老是忘记模式帮助或注释的约定——但我能记得在这里查看以提醒自己。
 
-@node 文本和自动填充
+@node Text and Auto-fill
 @section 文本和自动填充模式
 
 现在我们来讨论打开文本模式和自动填充模式的部分。
@@ -11799,7 +11789,7 @@ Manual}.
 (setq colon-double-space t)
 @end smallexample
 
-@node 邮件别名
+@node Mail Aliases
 @section 邮件别名
 
 以下是一个启用邮件别名的 @code{setq}，以及更多的提醒。
@@ -11827,7 +11817,7 @@ alias geo george@@foobar.wiz.edu
 @noindent
 当你给George写一封邮件时，请将地址写为 @samp{geo}；邮件客户端将自动将 @samp{geo} 展开为完整的地址。
 
-@node 缩进选项
+@node Indent Tabs Mode
 @section 缩进选项
 @cindex 防止制表符
 @findex indent-tabs-mode
@@ -11857,7 +11847,7 @@ Manual}.
 @end iftex
 
 @need 1700
-@node 按键绑定
+@node Key Bindings
 @section 一些按键绑定
 
 现在来看一些个人按键绑定：
@@ -11929,7 +11919,7 @@ Manual}.
 
 默认情况下，@kbd{C-x C-b} 运行 @code{list-buffers} 命令。该命令在 @emph{另一个} 窗口中列出你的缓冲区。由于我几乎总是想在那个窗口中执行某些操作，我更喜欢 @code{buffer-menu} 命令，它不仅列出缓冲区，还将光标移到该窗口。
 
-@node 键位映射
+@node Keymaps
 @section 键位映射
 @cindex 键位映射
 @cindex 重新绑定键位
@@ -11975,7 +11965,7 @@ Emacs 使用 @dfn{键位映射} 记录哪些键调用哪些命令。当你使用
 
 @xref{键绑定, , 定制键绑定, emacs, GNU Emacs 手册}，以及 @ref{键位映射, , 键位映射, elisp, GNU Emacs Lisp 参考手册}，获取更多关于键位映射的信息。
 
-@node 载入文件
+@node Loading Files
 @section 载入文件
 @cindex 载入文件
 @c findex 载入
@@ -12041,7 +12031,7 @@ GNU Emacs 社区的许多成员都编写了对 Emacs 的扩展。随着时间的
 
 另一个执行略有不同任务的交互式命令是 @code{load-file}。有关 @code{load-library} 与该命令之间区别的信息，请参阅 `Lisp Libraries, , Libraries of Lisp Code for Emacs, emacs, The GNU Emacs Manual`。
 
-@node 自动加载
+@node Autoload
 @section 自动加载
 @findex 自动加载
 
@@ -12075,7 +12065,7 @@ Emacs使用自动加载的函数启动更快，因为它们的库不会立即加
 
 @xref{Autoload, , Autoload, elisp, The GNU Emacs Lisp Reference Manual}，了解更多信息。
 
-@node 简单扩展
+@node Simple Extension
 @section 一个简单的扩展：@code{line-to-top-of-window}
 @findex line-to-top-of-window
 @cindex 在 @file{.emacs} 文件中的简单扩展
@@ -12171,7 +12161,7 @@ emacs -Q -D
 @end group
 @end smallexample
 
-@node X11 颜色
+@node X11 Colors
 @section X11 颜色
 
 在使用 MIT X 窗口系统的 Emacs 中，您可以指定颜色。
@@ -12406,7 +12396,7 @@ xmodmap -e "keysym Alt_L = Meta_L Alt_L"
 @end smallexample
 
 @need 1700
-@node 模式行
+@node Mode Line
 @section 修改后的模式行
 @vindex mode-line-format
 @cindex 模式行格式
@@ -12519,7 +12509,7 @@ emacs -q
 @noindent
 这将启动一个不加载您的@file{~/.emacs}初始化文件的Emacs。一个纯粹的、默认的Emacs。没有更多。
 
-@node 调试
+@node Debugging
 @chapter 调试
 @cindex 调试
 
@@ -12532,15 +12522,14 @@ GNU Emacs有两个调试器，@code{debug} 和 @code{edebug}。第一个内置�
 * debug-on-entry::              在调用函数时开始调试。
 * debug-on-quit::               在按下 @kbd{C-g} 时开始调试。
 * edebug::                      如何使用Edebug，一个源代码级调试器。
-* 调试练习::
+* Debugging Exercises::
 @end menu
 
 @node debug
 @section @code{debug}
 @findex debug
 
-假设你已经编写了一个函数定义，该函数旨在返回给定数字范围内数字的总和。 (这是先前讨论的 @code{triangle} 函数。@xref{递减示例, , 具有递减计数器的示例} 进行讨论。)
-@c xref{递减循环,, 具有递减计数器的循环} 进行讨论。)
+假设你已经编写了一个函数定义，该函数旨在返回给定数字范围内数字的总和。 (这是先前讨论的 @code{triangle} 函数。@xref{Decrementing Example, , 具有递减计数器的示例} 进行讨论。)
 
 然而，你的函数定义中存在一个错误。你误将 @samp{1=} 写成了 @samp{1-}。以下是有问题的定义：
 
@@ -12790,7 +12779,7 @@ Edebug 是一个源码级调试器。Edebug 通常显示你正在调试的代码
 有关 Edebug 的详细信息，请参阅@ref{Edebug, , , elisp, GNU Emacs Lisp 参考手册}。
 
 @need 1250
-下面是一个有bug的 @code{triangle-recursively} 函数定义。参见@xref{递归三角形函数, , 替代计数的递归}进行查看。
+下面是一个有bug的 @code{triangle-recursively} 函数定义。参见@xref{Recursive triangle function, , 替代计数的递归}进行查看。
 
 @smallexample
 @group
@@ -12880,7 +12869,7 @@ Edebug 不仅仅能够与你一起逐步执行函数。你可以设置它，让�
 有关 Edebug 的详细信息，请参阅@ref{Edebug, , , elisp, GNU Emacs Lisp 参考手册}。
 
 @need 1500
-@node 调试练习
+@node Debugging Exercises
 @section 调试练习
 
 @itemize @bullet
@@ -12906,7 +12895,7 @@ Edebug 不仅仅能够与你一起逐步执行函数。你可以设置它，让�
 设置一个断点，然后在 Trace 模式下运行 Edebug，直到达到停止点。
 @end itemize
 
-@node 结论
+@node Conclusion
 @chapter 结论
 
 我们现在已经到达了这个介绍的结尾。您现在已经学到足够的关于在Emacs Lisp中编程的知识，足以设置值、为自己和朋友编写简单的@file{.emacs}文件，以及编写对Emacs进行简单定制和扩展的代码。
@@ -12980,7 +12969,7 @@ Reference Manual}，了解更多有关构建的信息。)
 @end smallexample
 
 @noindent
-这个正则表达式匹配一个或多个单词成分字符，后面跟着一个或多个空格、制表符或换行符。然而，它不能检测不同行上的重复单词，因为第一个单词的结束，即行尾，与第二个单词的结束，即空格，不同。 （有关正则表达式的更多信息，请参见 @ref{正则表达式搜索, , 正则表达式搜索}，以及 @ref{Regexps, , 正则表达式语法, emacs, GNU Emacs 手册} 和 @ref{Regular Expressions, , 正则表达式, elisp, GNU Emacs Lisp 参考手册}。）
+这个正则表达式匹配一个或多个单词成分字符，后面跟着一个或多个空格、制表符或换行符。然而，它不能检测不同行上的重复单词，因为第一个单词的结束，即行尾，与第二个单词的结束，即空格，不同。 （有关正则表达式的更多信息，请参见 @ref{Regexp Search, , 正则表达式搜索}，以及 @ref{Regexps, , 正则表达式语法, emacs, GNU Emacs 手册} 和 @ref{Regular Expressions, , 正则表达式, elisp, GNU Emacs Lisp 参考手册}。）
 
 你可能尝试仅搜索重复的单词成分字符，但这不起作用，因为该模式检测到类似 "with the" 中的 "th" 的两个重复。
 
@@ -12999,7 +12988,7 @@ Kill ring 是一个列表，通过 @code{current-kill} 函数的作用被转化�
 本附录描述了 @code{current-kill} 函数以及 @code{yank} 和 @code{yank-pop} 命令，但首先，让我们了解一下 kill ring 的工作原理。
 
 @menu
-* Kill Ring 的作用::
+* What the Kill Ring Does::
 * current-kill::
 * yank::                        粘贴剪贴板元素的副本。
 * yank-pop::                    插入指向的元素。
@@ -13007,7 +12996,7 @@ Kill ring 是一个列表，通过 @code{current-kill} 函数的作用被转化�
 @end menu
 
 @ifnottex
-@node Kill Ring 的作用
+@node What the Kill Ring Does
 @unnumberedsec Kill Ring 的作用
 @end ifnottex
 
@@ -13080,12 +13069,12 @@ kill-ring
 @code{kill-ring-save}、@code{kill-line} 和 @code{kill-region} 使用。）
 
 @menu
-* current-kill 代码::
-* 理解 current-kill::
+* Code for current-kill::
+* Understanding current-kill::
 @end menu
 
 @ifnottex
-@node current-kill 代码
+@node Code for current-kill
 @unnumberedsubsec @code{current-kill} 的代码
 @end ifnottex
 
@@ -13141,14 +13130,14 @@ kill-ring
 @code{kill-ring-save}、@code{kill-line} 和 @code{kill-region}。
 
 @need 1500
-下面是 @code{kill-new} 中的一行，详见 @ref{kill-new 函数, , @code{kill-new} 函数}。
+下面是 @code{kill-new} 中的一行，详见 @ref{kill-new function, , @code{kill-new} 函数}。
 
 @smallexample
 (setq kill-ring-yank-pointer kill-ring)
 @end smallexample
 
 @ifnottex
-@node 理解 current-kill
+@node Understanding current-kill
 @unnumberedsubsec 在大纲中理解 @code{current-kill}
 @end ifnottex
 
@@ -13167,13 +13156,13 @@ kill-ring
 此函数接受两个参数，其中一个是可选的。它有一个文档字符串。它 @emph{不}是交互式的。
 
 @menu
-* current-kill 体::
-* 有关错误的离题讨论:: 如何误导人类，但不是计算机。
-* 确定元素::
+* Body of current-kill::
+* Digression concerning error:: 如何误导人类，但不是计算机。
+* Determining the Element::
 @end menu
 
 @ifnottex
-@node current-kill 函数体
+@node Body of current-kill
 @unnumberedsubsubsec @code{current-kill} 函数体
 @end ifnottex
 
@@ -13184,7 +13173,7 @@ kill-ring
 @code{if} 表达式有两个部分，一个是如果存在 @code{interprogram-paste}，另一个是如果不存在。
 
 @need 2000
-让我们考虑 @code{current-kill} 函数的 else-部分。（then-部分使用我们已经描述的 @code{kill-new} 函数。@xref{kill-new 函数, , @code{kill-new} 函数}）。
+让我们考虑 @code{current-kill} 函数的 else-部分。（then-部分使用我们已经描述的 @code{kill-new} 函数。@xref{kill-new function, , @code{kill-new} 函数}）。
 
 @smallexample
 @group
@@ -13235,7 +13224,7 @@ kill-ring
 从人类的角度来看，探索和发现的行为不一定是错误的，因此不应该被标记为错误，即使在计算机的深处。事实上，Emacs 中的代码暗示了一个以探索环境为美德的人类正在犯错误。这是不好的。即使计算机采取与错误相同的步骤，诸如“cancel”这样的术语会有一个更清晰的内涵。
 
 @ifnottex
-@node 确定元素
+@node Determining the Element
 @unnumberedsubsubsec 确定元素
 @end ifnottex
 
@@ -13300,7 +13289,7 @@ kill-ring
 @end group
 @end smallexample
 
-我们可以猜测 @code{-} 函数的作用。它类似于 @code{+}，但是执行减法而不是加法；@code{-} 函数从其第一个参数中减去第二个参数。此外，我们已经知道 @code{length} 函数的作用 (@pxref{长度})。它返回列表的长度。
+我们可以猜测 @code{-} 函数的作用。它类似于 @code{+}，但是执行减法而不是加法；@code{-} 函数从其第一个参数中减去第二个参数。此外，我们已经知道 @code{length} 函数的作用 (@pxref{length})。它返回列表的长度。
 
 而 @code{n} 是 @code{current-kill} 函数的必需参数的名称。
 
@@ -13338,7 +13327,7 @@ kill-ring
 
 @c texi2dvi 在 section 的名称在 ifnottex 中时会失败...
 @ifnottex
-(@xref{避免混淆, , @code{let} 避免混淆}, 和
+(@xref{Prevent confusion, , @code{let} 避免混淆}, 和
 @end ifnottex
 @iftex
 (@xref{Permanent Installation, , @code{let} Prevents Confusion}, 和
@@ -13466,21 +13455,21 @@ kill-ring
 
 有趣的是，GNU Emacs 拥有一个名为 @file{ring.el} 的文件，它提供了我们刚刚讨论的许多功能。但诸如 @code{kill-ring-yank-pointer} 等功能并未使用该库，可能是因为它们是较早编写的。
 
-@node 完整图表
+@node Full Graph
 @appendix 带有标记轴的图表
 
-印刷的坐标轴有助于理解图表，它们传达了比例尺。在之前的章节中（@pxref{准备图表, ,准备图表}），我们编写了打印图表主体的代码。在这里，我们编写打印和标记垂直和水平轴的代码，以及图表主体本身。
+印刷的坐标轴有助于理解图表，它们传达了比例尺。在之前的章节中（@pxref{Readying a Graph, ,准备图表}），我们编写了打印图表主体的代码。在这里，我们编写打印和标记垂直和水平轴的代码，以及图表主体本身。
 
 @menu
-* 带标签示例::
-* print-graph 变量列表::         @code{let} 表达式在 @code{print-graph} 中的使用。
+* Labeled Example::
+* print-graph Varlist::         @code{let} 表达式在 @code{print-graph} 中的使用。
 * print-Y-axis::                打印垂直轴的标签。
 * print-X-axis::                打印水平标签。
-* 打印完整图表::           用于打印完整图表的函数。
+* Print Whole Graph::           用于打印完整图表的函数。
 @end menu
 
 @ifnottex
-@node 带标签示例
+@node Labeled Example
 @unnumberedsec 带标签示例图表
 @end ifnottex
 
@@ -13639,7 +13628,7 @@ Varlist 应该设置几个值。显然，垂直轴标签的顶部必须至少与
 
 确定一个数字是否是五的倍数的一种相当简单的方法是将其除以五，看看除法是否有余数。如果没有余数，那么该数字是五的倍数。因此，七除以五的余数是二，七不是五的整数倍。稍微用不同的措辞，更像是课堂上的表达方式，五除以七一次有余数二，但五除以十两次没有余数：十是五的整数倍。
 
-@node 计算余数
+@node Compute a Remainder
 @appendixsubsec 附录：计算余数
 
 @findex % @r{(余数函数)}
@@ -13740,7 +13729,7 @@ Varlist 应该设置几个值。显然，垂直轴标签的顶部必须至少与
 @noindent
 （注意使用@code{let*}函数：通过@code{(apply 'max numbers-list)}表达式计算一次@code{height}的初始值，然后使用@code{height}的结果值计算其最终值。有关@code{let*}的更多信息，请参阅@xref{fwd-para let, , The @code{let*} expression}。）
 
-@node Y轴元素
+@node Y Axis Element
 @appendixsubsec 构建Y轴元素
 
 当我们打印垂直轴时，我们希望在每五行插入诸如 @w{@samp{5 -}} 和 @w{@samp{10 - }} 等字符串。
@@ -13970,7 +13959,7 @@ X轴的第二行包含数字，前面有几个空格，并且也根据变量 @co
 编写一个用于同时打印两行的函数，即 @code{print-X-axis} 函数，使用 @code{print-X-axis-tic-line} 和 @code{print-X-axis-numbered-line}。
 @end enumerate
 
-@node X轴刻度标记
+@node X Axis Tic Marks
 @appendixsubsec X轴刻度标记
 
 第一个函数应该打印X轴的刻度标记。我们需要指定刻度标记本身及其间距：
@@ -14234,7 +14223,7 @@ Emacs将打印出水平轴，如下所示：
 @end group
 @end smallexample
 
-@node 打印整个图表
+@node Print Whole Graph
 @appendixsec 打印整个图表
 @cindex 打印整个图表
 @cindex 整个图表打印
@@ -14242,7 +14231,7 @@ Emacs将打印出水平轴，如下所示：
 
 现在我们几乎准备好打印整个图表了。
 
-打印带有适当标签的图表的函数遵循我们之前创建的大纲（@pxref{完整图表, , 带标签的图表}），但是有一些增加。
+打印带有适当标签的图表的函数遵循我们之前创建的大纲（@pxref{Full Graph, , 带标签的图表}），但是有一些增加。
 
 @need 1250
 以下是大纲：
@@ -14262,17 +14251,17 @@ Emacs将打印出水平轴，如下所示：
 @end smallexample
 
 @menu
-* 最终版本::                   几处更改。
-* 测试 print-graph::            运行简短测试。
-* 在 defuns 中绘制图表::        执行最终代码。
+* The final version::                   几处更改。
+* Test print-graph::            运行简短测试。
+* Graphing words in defuns::        执行最终代码。
 * lambda::                      如何编写匿名函数。
 * mapcar::                      对列表元素应用函数。
-* 另一个错误::                 又一个错误 @dots{} 最隐匿。
-* 最终打印的图表::             图表本身！
+* Another Bug::                 又一个错误 @dots{} 最隐匿。
+* Final printed graph::             图表本身！
 @end menu
 
 @ifnottex
-@node 最终版本
+@node The final version
 @unnumberedsubsec 最终版本的更改
 @end ifnottex
 
@@ -14414,7 +14403,7 @@ numbers-list 包含Y轴值。
 @end group
 @end smallexample
 
-@node 测试 打印图表
+@node Test print-graph
 @appendixsubsec 测试 @code{print-graph}
 
 @need 1250
@@ -14497,7 +14486,7 @@ Emacs 将打印一个看起来像这样的图表：
 @noindent
 （一个问题：垂直轴底部的 @samp{2} 是一个错误还是一个特性？如果你认为这是一个错误，应该是 @samp{1} 而不是 @samp{2}（甚至是 @samp{0}），你可以修改源代码。）
 
-@node 绘制 defuns 中的单词图表
+@node Graphing words in defuns
 @appendixsubsec 绘制单词和符号数量的函数图表
 
 现在是为了这段代码而编写的图表：显示包含少于 10 个单词和符号的函数定义的数量，包含 10 到 19 个单词和符号的函数定义的数量，包含 20 到 29 个单词和符号的函数定义的数量，依此类推。
@@ -14734,7 +14723,7 @@ Emacs 将打印一个看起来像这样的图表：
 函数@code{1+}，它将其参数加一，被执行在列表的@emph{每个}元素上，并返回一个新的列表。
 
 与之相对的是@code{apply}，它将其第一个参数应用于其余的所有参数。
-（@xref{准备图表, , 准备图表}，有关@code{apply}的解释。）
+（@xref{Readying a Graph, , 准备图表}，有关@code{apply}的解释。）
 
 @need 1250
 在@code{one-fiftieth}的定义中，第一个参数是匿名函数：
@@ -14778,7 +14767,7 @@ Lisp Reference Manual}，有关@code{mapcar}的更多信息。
 @noindent
 这样，我们几乎可以打印出来了！（我们还注意到信息的丢失：许多较高的范围为0，意味着少于50个defuns有那么多单词或符号，但不一定意味着没有那么多单词或符号。）
 
-@node 另一个错误
+@node Another Bug
 @appendixsubsec 另一个错误 @dots{} 最阴险的
 @cindex 错误，最阴险的类型
 @cindex 阴险类型的错误
@@ -15438,7 +15427,7 @@ numbers-list 包含 Y 轴值。
 @end ignore
 
 @page
-@node 最终打印图表
+@node Final printed graph
 @appendixsubsec 打印图表
 
 当制作并安装完成后，您可以像这样调用 @code{print-graph} 命令：
@@ -15487,7 +15476,7 @@ numbers-list 包含 Y 轴值。
 @noindent
 最大的函数组包含每个函数 10--19 个字和符号。
 
-@node 自由软件和自由手册
+@node Free Software and Free Manuals
 @appendix 自由软件和自由手册
 
 @strong{作者：理查德·斯托曼}
@@ -15577,7 +15566,7 @@ MENU ENTRY: NODE NAME.
 @end iftex
 
 @ifnottex
-@node 作者简介
+@node About the Author
 @unnumbered 作者简介
 @end ifnottex
 

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Body of current-kill (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Body of current-kill (Programming in Emacs Lisp)">
+<meta name="keywords" content="Body of current-kill (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Understanding-current_002dkill.html" rel="up" title="Understanding current-kill">
+<link href="Digression-concerning-error.html" rel="next" title="Digression concerning error">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="Body-of-current_002dkill">
+<div class="nav-panel">
+<p>
+Next: <a href="Digression-concerning-error.html" accesskey="n" rel="next">有关术语“error”的离题讨论</a>, Up: <a href="Understanding-current_002dkill.html" accesskey="u" rel="up">在大纲中理解 <code class="code">current-kill</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="current_002dkill-Han-Shu-Ti-"><code class="code">current-kill</code> 函数体</h4>
+
+<p>函数定义体是一个 <code class="code">let</code> 表达式，它本身有一个体和一个 <var class="var">varlist</var>。
+</p>
+<p><code class="code">let</code> 表达式声明了一个仅在此函数范围内可用的变量。这个变量称为 <code class="code">interprogram-paste</code>，用于复制到另一个程序，而不是在此 GNU Emacs 实例内进行复制。大多数窗口系统提供了跨程序粘贴的功能。遗憾的是，这个功能通常只提供最后一个元素。尽管 Emacs 几十年来一直提供了许多可能性的环形，但大多数窗口系统尚未采用。
+</p>
+<p><code class="code">if</code> 表达式有两个部分，一个是如果存在 <code class="code">interprogram-paste</code>，另一个是如果不存在。
+</p>
+<p>让我们考虑 <code class="code">current-kill</code> 函数的 else-部分。（then-部分使用我们已经描述的 <code class="code">kill-new</code> 函数。See <a class="xref" href="kill_002dnew-function.html"><code class="code">kill-new</code> 函数</a>）。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(or kill-ring (error &quot;Kill ring is empty&quot;))
+(let ((ARGth-kill-element
+       (nthcdr (mod (- n (length kill-ring-yank-pointer))
+                    (length kill-ring))
+               kill-ring)))
+  (or do-not-move
+      (setq kill-ring-yank-pointer ARGth-kill-element))
+  (car ARGth-kill-element))
+</pre></div></div>
+
+<p>代码首先检查 kill 环是否有内容；否则，它会发出一个错误。
+</p>
+<p>请注意，<code class="code">or</code> 表达式与使用 <code class="code">if</code> 测试长度非常相似：
+</p>
+<a class="index-entry-id" id="index-zerop"></a>
+<a class="index-entry-id" id="index-error"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(if (zerop (length kill-ring))          ; <span class="r">if-部分</span>
+    (error &quot;Kill ring is empty&quot;))       ; <span class="r">then-部分</span>
+  ;; 没有 else-部分
+</pre></div></div>
+
+<p>如果 kill 环中没有任何内容，它的长度必须为零，并向用户发送错误消息：&lsquo;<samp class="samp">Kill ring is empty</samp>&rsquo;。<code class="code">current-kill</code> 函数使用一个更简单的 <code class="code">or</code> 表达式。但是，一个 <code class="code">if</code> 表达式提醒我们发生了什么。
+</p>
+<p>此 <code class="code">if</code> 表达式使用函数 <code class="code">zerop</code>，如果它测试的值为零，则返回 true。当 <code class="code">zerop</code> 测试为 true 时，<code class="code">if</code> 的 then-部分将被评估。then-部分是以函数 <code class="code">error</code> 开头的列表，它是一种类似于 <code class="code">message</code> 函数的函数
+(see <a class="pxref" href="message.html">The <code class="code">message</code> Function</a>)，因为它在回显区域打印一行消息。然而，除了打印消息之外，<code class="code">error</code> 还会停止它嵌套在其中的函数的评估。这意味着如果 kill 环的长度为零，则函数的其余部分将不会被评估。
+</p>
+<p>然后，<code class="code">current-kill</code> 函数选择要返回的元素。选择取决于 <code class="code">current-kill</code> 旋转的位置以及 <code class="code">kill-ring-yank-pointer</code> 指向的位置。
+</p>
+<p>接下来，如果可选的 <code class="code">do-not-move</code> 参数为 true，或者当前值 <code class="code">kill-ring-yank-pointer</code> 被设置为指向列表。最后，另一个表达式返回列表的第一个元素，即使 <code class="code">do-not-move</code> 参数为 true。
+</p>
+</div>
+
+
+
+</body>
+</html>

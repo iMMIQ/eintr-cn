@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Recursive Example arg of 1 or 2 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Recursive Example arg of 1 or 2 (Programming in Emacs Lisp)">
+<meta name="keywords" content="Recursive Example arg of 1 or 2 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Recursive-triangle-function.html" rel="up" title="Recursive triangle function">
+<link href="Recursive-Example-arg-of-3-or-4.html" rel="next" title="Recursive Example arg of 3 or 4">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="Recursive-Example-arg-of-1-or-2">
+<div class="nav-panel">
+<p>
+Next: <a href="Recursive-Example-arg-of-3-or-4.html" accesskey="n" rel="next">参数为3或4的情况</a>, Up: <a href="Recursive-triangle-function.html" accesskey="u" rel="up">使用递归替代计数器</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="Can-Shu-Wei-1Huo-2">参数为1或2</h4>
+
+<p>首先，如果参数值为1会发生什么？
+</p>
+<p>在文档字符串之后，函数有一个 <code class="code">if</code> 表达式。它测试 <code class="code">number</code> 的值是否等于1；如果是，Emacs 将评估 <code class="code">if</code> 表达式的 then-部分，将1作为函数的值返回。（一个只有一行的三角形中有一个小石子。）
+</p>
+<p>然而，假设参数值为2。在这种情况下，Emacs 将评估 <code class="code">if</code> 表达式的 else-部分。
+</p>
+<p>else-部分由一个加法、对 <code class="code">triangle-recursively</code> 的递归调用和一个递减操作组成；它看起来像这样：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(+ number (triangle-recursively (1- number)))
+</pre></div>
+
+<p>当Emacs评估这个表达式时，首先评估最内层的表达式；然后按顺序评估其他部分。以下是详细的步骤：
+</p>
+<dl class="table">
+<dt><i class="i">步骤1 &nbsp;&nbsp;<!-- /@w --> 评估最内层的表达式。</i></dt>
+<dd>
+<p>最内层的表达式是 <code class="code">(1- number)</code>，因此Emacs将 <code class="code">number</code> 的值从2递减到1。
+</p>
+</dd>
+<dt><i class="i">步骤2 &nbsp;&nbsp;<!-- /@w --> 评估 <code class="code">triangle-recursively</code> 函数。</i></dt>
+<dd>
+<p>Lisp解释器创建了 <code class="code">triangle-recursively</code> 的一个单独实例。这个函数包含在它自己的内部并不重要。Emacs将步骤1的结果作为这个 <code class="code">triangle-recursively</code> 函数实例使用的参数传递。
+</p>
+<p>在这种情况下，Emacs使用参数1评估 <code class="code">triangle-recursively</code>。这意味着这次评估返回1。
+</p>
+</dd>
+<dt><i class="i">步骤3 &nbsp;&nbsp;<!-- /@w --> 评估 <code class="code">number</code> 的值。</i></dt>
+<dd>
+<p>变量 <code class="code">number</code> 是以 <code class="code">+</code> 开头的列表的第二个元素；它的值为2。
+</p>
+</dd>
+<dt><i class="i">步骤4 &nbsp;&nbsp;<!-- /@w --> 评估 <code class="code">+</code> 表达式。</i></dt>
+<dd>
+<p><code class="code">+</code> 表达式接收两个参数，第一个来自 <code class="code">number</code> 的评估（步骤3），第二个来自 <code class="code">triangle-recursively</code> 的评估（步骤2）。
+</p>
+<p>加法的结果是2加1的和，返回数字3，这是正确的。一个有两行的三角形中有三颗小石子。
+</p></dd>
+</dl>
+
+</div>
+
+
+
+</body>
+</html>

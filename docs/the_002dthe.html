@@ -40,7 +40,7 @@ ISBN 1-882114-43-4
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
 <link href="Kill-Ring.html" rel="next" title="Kill Ring">
-<link href="Jie-Lun-.html" rel="prev" title="结论">
+<link href="Conclusion.html" rel="prev" title="Conclusion">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -55,7 +55,7 @@ div.example {margin-left: 3.2em}
 <div class="appendix-level-extent" id="the_002dthe">
 <div class="nav-panel">
 <p>
-Next: <a href="Kill-Ring.html" accesskey="n" rel="next">处理 Kill Ring</a>, Previous: <a href="Jie-Lun-.html" accesskey="p" rel="prev">结论</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Kill-Ring.html" accesskey="n" rel="next">处理 Kill Ring</a>, Previous: <a href="Conclusion.html" accesskey="p" rel="prev">结论</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h2 class="appendix" id="The-the_002dthe-Han-Shu-">Appendix A The <code class="code">the-the</code> 函数</h2>
@@ -71,7 +71,7 @@ Next: <a href="Kill-Ring.html" accesskey="n" rel="next">处理 Kill Ring</a>, Pr
 <pre class="example-preformatted">\\(\\w+[ \t\n]+\\)\\1
 </pre></div>
 
-<p>这个正则表达式匹配一个或多个单词成分字符，后面跟着一个或多个空格、制表符或换行符。然而，它不能检测不同行上的重复单词，因为第一个单词的结束，即行尾，与第二个单词的结束，即空格，不同。 （有关正则表达式的更多信息，请参见 <a class="ref" href="Zheng-Ze-Biao-Da-Shi-Sou-Suo-.html">正则表达式搜索</a>，以及 <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Regexps.html#Regexps">正则表达式语法</a> in <cite class="cite">GNU Emacs 手册</cite> 和 <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Regular-Expressions.html#Regular-Expressions">正则表达式</a> in <cite class="cite">GNU Emacs Lisp 参考手册</cite>。）
+<p>这个正则表达式匹配一个或多个单词成分字符，后面跟着一个或多个空格、制表符或换行符。然而，它不能检测不同行上的重复单词，因为第一个单词的结束，即行尾，与第二个单词的结束，即空格，不同。 （有关正则表达式的更多信息，请参见 <a class="ref" href="Regexp-Search.html">正则表达式搜索</a>，以及 <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Regexps.html#Regexps">正则表达式语法</a> in <cite class="cite">GNU Emacs 手册</cite> 和 <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Regular-Expressions.html#Regular-Expressions">正则表达式</a> in <cite class="cite">GNU Emacs Lisp 参考手册</cite>。）
 </p>
 <p>你可能尝试仅搜索重复的单词成分字符，但这不起作用，因为该模式检测到类似 &quot;with the&quot; 中的 &quot;th&quot; 的两个重复。
 </p>

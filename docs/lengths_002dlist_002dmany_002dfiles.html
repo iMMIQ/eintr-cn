@@ -38,7 +38,7 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Duo-GeWenJian-.html" rel="up" title="多个文件">
+<link href="Several-files.html" rel="up" title="Several files">
 <link href="append.html" rel="next" title="append">
 <style type="text/css">
 <!--
@@ -55,12 +55,12 @@ span.r {font-family: initial; font-weight: normal; font-style: normal}
 <div class="unnumberedsubsec-level-extent" id="lengths_002dlist_002dmany_002dfiles">
 <div class="nav-panel">
 <p>
-Next: <a href="append.html" accesskey="n" rel="next"><code class="code">append</code> 函数</a>, Up: <a href="Duo-GeWenJian-.html" accesskey="u" rel="up">统计不同文件中 <code class="code">defuns</code> 的词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="append.html" accesskey="n" rel="next"><code class="code">append</code> 函数</a>, Up: <a href="Several-files.html" accesskey="u" rel="up">统计不同文件中 <code class="code">defuns</code> 的词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="unnumberedsubsec" id="Que-Ding-defuns-De-Chang-Du-">确定 <code class="code">defuns</code> 的长度</h4>
 
-<p>使用 <code class="code">while</code> 循环的设计是常规的。传递给函数的参数是一个文件列表。正如我们之前看到的 (see <a class="pxref" href="Xun-Huan-ShiLi.html">使用 <code class="code">while</code> 循环和列表</a>)，可以编写一个 <code class="code">while</code> 循环，使得在列表包含元素的情况下计算循环体，但在列表为空时退出循环。为了使此设计工作，循环体必须包含一个表达式，该表达式在每次计算循环体时缩短列表，以便最终列表为空。通常的技术是在每次计算循环体时将列表的值设置为列表的 <small class="sc">CDR</small> 的值。
+<p>使用 <code class="code">while</code> 循环的设计是常规的。传递给函数的参数是一个文件列表。正如我们之前看到的 (see <a class="pxref" href="Loop-Example.html">使用 <code class="code">while</code> 循环和列表</a>)，可以编写一个 <code class="code">while</code> 循环，使得在列表包含元素的情况下计算循环体，但在列表为空时退出循环。为了使此设计工作，循环体必须包含一个表达式，该表达式在每次计算循环体时缩短列表，以便最终列表为空。通常的技术是在每次计算循环体时将列表的值设置为列表的 <small class="sc">CDR</small> 的值。
 </p>
 <p>模板如下：
 </p>
@@ -70,7 +70,7 @@ Next: <a href="append.html" accesskey="n" rel="next"><code class="code">append</
   <var class="var">设置列表为列表的cdr</var>)
 </pre></div></div>
 
-<p>此外，我们要记住，<code class="code">while</code> 循环返回 <code class="code">nil</code>（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 <code class="code">while</code> 循环封装在一个 <code class="code">let</code> 表达式内，并安排 <code class="code">let</code> 表达式的最后一个元素包含长度列表的值。(See <a class="xref" href="Zeng-Liang-ShiLi.html">带有增量计数器的循环示例</a>。)
+<p>此外，我们要记住，<code class="code">while</code> 循环返回 <code class="code">nil</code>（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 <code class="code">while</code> 循环封装在一个 <code class="code">let</code> 表达式内，并安排 <code class="code">let</code> 表达式的最后一个元素包含长度列表的值。(See <a class="xref" href="Incrementing-Example.html">带有增量计数器的循环示例</a>。)
 </p>
 <a class="index-entry-id" id="index-lengths_002dlist_002dmany_002dfiles"></a>
 <p>这些考虑直接引导我们到函数本身：

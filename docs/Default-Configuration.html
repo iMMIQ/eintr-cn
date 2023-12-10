@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Default Configuration (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Default Configuration (Programming in Emacs Lisp)">
+<meta name="keywords" content="Default Configuration (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Emacs-Initialization.html" rel="up" title="Emacs Initialization">
+<link href="Site_002dwide-Init.html" rel="next" title="Site-wide Init">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsec-level-extent" id="Default-Configuration">
+<div class="nav-panel">
+<p>
+Next: <a href="Site_002dwide-Init.html" accesskey="n" rel="next">站点范围初始化文件</a>, Up: <a href="Emacs-Initialization.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="unnumberedsec" id="EmacsDe-Mo-Ren-Pei-Zhi-">Emacs的默认配置</h3>
+
+<p>有些人欣赏Emacs的默认配置。毕竟，当你编辑C文件时，Emacs会启动C模式，编辑Fortran文件时会启动Fortran模式，而编辑未装饰的文件时会启动Fundamental模式。如果你不知道谁将使用Emacs，这一切都是有道理的。谁知道一个人希望用未装饰的文件做什么？对于这样的文件，Fundamental模式是正确的默认选择，就像编辑C代码时C模式是正确的默认选择一样。（足够多的编程语言有语法使它们能够共享或几乎共享功能，因此C模式现在由CC模式提供，即C集合。）
+</p>
+<p>但当你知道将要使用Emacs的是谁&mdash;就是你自己&mdash;那么定制Emacs就是有意义的。
+</p>
+<p>例如，当我编辑一个除了没有区别的文件时，我很少想要Fundamental模式；我想要Text模式。这就是为什么我定制Emacs的原因：使其适合我。
+</p>
+<p>你可以通过编写或调整 <samp class="file">~/.emacs</samp> 文件来定制和扩展Emacs。这是你的个人初始化文件；其中的内容，用Emacs Lisp编写，告诉Emacs应该做什么。<a class="footnote" id="DOCF16" href="#FOOT16"><sup>16</sup></a>
+</p>
+<p>一个 <samp class="file">~/.emacs</samp> 文件包含Emacs Lisp代码。你可以自己编写这些代码；或者你可以使用Emacs的 <code class="code">customize</code> 功能为你编写代码。你可以在你的 <samp class="file">.emacs</samp> 文件中结合自己的表达式和自动生成的定制表达式。
+</p>
+<p>（我个人更喜欢编写自己的表达式，除非是那些，特别是字体之类，我发现使用 <code class="code">customize</code> 命令更容易操作。我将这两种方法结合在一起。）
+</p>
+<p>本章的大部分内容是关于自己编写表达式的。它描述了一个简单的 <samp class="file">.emacs</samp> 文件；有关更多信息，请参见 <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html#Init-File">The Init File</a> in <cite class="cite">The GNU Emacs Manual</cite> 和 <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File">The Init File</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT16" href="#DOCF16">(16)</a></h5>
+<p>你还可以将 <samp class="file">.el</samp> 添加到 <samp class="file">~/.emacs</samp> 并称之为 <samp class="file">~/.emacs.el</samp> 文件。过去，你不能输入名称 <samp class="file">~/.emacs.el</samp> 需要的额外按键，但现在你可以。新的格式符合Emacs Lisp文件命名规范；旧的格式节省了打字。</p>
+</div>
+
+
+
+</body>
+</html>

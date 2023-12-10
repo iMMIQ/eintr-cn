@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>See variable current value (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="See variable current value (Programming in Emacs Lisp)">
+<meta name="keywords" content="See variable current value (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="defvar.html" rel="up" title="defvar">
+<link href="defvar-and-asterisk.html" rel="next" title="defvar and asterisk">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="See-variable-current-value">
+<div class="nav-panel">
+<p>
+Next: <a href="defvar-and-asterisk.html" accesskey="n" rel="next"><code class="code">defvar</code> 和星号</a>, Up: <a href="defvar.html" accesskey="u" rel="up">使用 <code class="code">defvar</code> 初始化变量</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="Cha-Kan-Bian-Liang-De-Dang-Qian-Zhi-">查看变量的当前值</h4>
+
+<p>您可以使用 <code class="code">describe-variable</code> 函数查看任何变量的当前值，通常通过键入 <kbd class="kbd">C-h v</kbd> 调用。如果在提示时键入 <kbd class="kbd">C-h v</kbd> 然后键入 <code class="code">kill-ring</code>（然后按 <kbd class="key">RET</kbd>），您将看到当前剪切环中的内容，这可能很多！相反，如果在本次Emacs会话中除了阅读本文档之外什么都没有做，那么可能什么都没有。此外，您将看到 <code class="code">kill-ring</code> 的文档：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">文档：
+已删除文本序列的列表。
+由于剪切环应该与窗口系统提供的剪切和粘贴功能良好地交互，因此应使用此变量
+</pre></div><div class="group"><pre class="example-preformatted">与`interprogram-cut-function'和
+`interprogram-paste-function'良好交互。 函数`kill-new'，
+`kill-append'和`current-kill'应实现此交互；
+您可能希望使用它们而不是直接操作剪切环。
+</pre></div></div>
+
+<p>剪切环的定义如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defvar kill-ring nil
+  &quot;已删除文本序列的列表。
+&hellip;&quot;)
+</pre></div></div>
+
+<p>在此变量定义中，变量被赋予初始值 <code class="code">nil</code>，这是有道理的，因为如果您没有保存任何内容，那么在执行 <code class="code">yank</code> 命令时您希望得到空白。文档字符串的写法与 <code class="code">defun</code> 的文档字符串相同。与 <code class="code">defun</code> 的文档字符串一样，文档的第一行应该是一个完整的句子，因为一些命令（如 <code class="code">apropos</code>）仅打印文档的第一行。后续行不应缩进，否则在使用 <kbd class="kbd">C-h v</kbd>（<code class="code">describe-variable</code>）时会显得奇怪。
+</p>
+</div>
+
+
+
+</body>
+</html>

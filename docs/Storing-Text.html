@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Storing Text (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Storing Text (Programming in Emacs Lisp)">
+<meta name="keywords" content="Storing Text (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Cutting-_0026-Storing-Text.html" rel="up" title="Cutting &amp; Storing Text">
+<link href="zap_002dto_002dchar.html" rel="next" title="zap-to-char">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsec-level-extent" id="Storing-Text">
+<div class="nav-panel">
+<p>
+Next: <a href="zap_002dto_002dchar.html" accesskey="n" rel="next"><code class="code">zap-to-char</code></a>, Up: <a href="Cutting-_0026-Storing-Text.html" accesskey="u" rel="up">剪切与存储文本</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="unnumberedsec" id="Jiang-WenBen-Cun-Chu-Zai-Lie-Biao-Zhong">将文本存储在列表中</h3>
+
+<p>当文本从缓冲区中剪切出来时，它被存储在一个列表中。连续的文本片段被依次存储在列表中，因此列表可能看起来像这样：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(&quot;一段文本&quot; &quot;之前的片段&quot;)
+</pre></div>
+
+<p>函数<code class="code">cons</code>可用于从文本片段（称为“原子”）和现有列表创建一个新列表，如下所示：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(cons &quot;另一段&quot;
+      '(&quot;一段文本&quot; &quot;之前的片段&quot;))
+</pre></div></div>
+
+<p>如果您评估此表达式，一个包含三个元素的列表将显示在回显区：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(&quot;另一段&quot; &quot;一段文本&quot; &quot;之前的片段&quot;)
+</pre></div>
+
+<p>使用<code class="code">car</code>和<code class="code">nthcdr</code>函数，您可以检索您想要的任何文本片段。例如，在以下代码中，<code class="code">nthcdr 1 &hellip;</code>返回删除第一个项目的列表；而<code class="code">car</code>返回该剩余部分的第一个元素&mdash;原始列表的第二个元素：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(car (nthcdr 1 '(&quot;另一段&quot;
+                 &quot;一段文本&quot;
+                 &quot;之前的片段&quot;)))
+     &rArr; &quot;一段文本&quot;
+</pre></div></div>
+
+<p>实际的Emacs函数当然比这更复杂。剪切和检索文本的代码必须被编写，以便Emacs可以弄清楚您想要列表中的哪个元素&mdash;第一个、第二个、第三个等。此外，当到达列表的末尾时，Emacs应该给您列表的第一个元素，而不是什么都不给您。
+</p>
+<p>保存文本片段的列表称为<em class="dfn">kill环</em>。本章首先描述了kill环，以及首先追踪<code class="code">zap-to-char</code>函数的工作方式。此函数调用一个调用函数，该函数操纵kill环。因此，在到达山脚之前，我们要先爬过丘陵。
+</p>
+<p>后续章节描述了从缓冲区剪切的文本如何被检索。See <a class="xref" href="Yanking.html">检索文本</a>。
+</p>
+</div>
+
+
+
+</body>
+</html>

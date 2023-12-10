@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Several files recursively (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Several files recursively (Programming in Emacs Lisp)">
+<meta name="keywords" content="Several files recursively (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Words-in-a-defun.html" rel="up" title="Words in a defun">
+<link href="Prepare-the-data.html" rel="next" title="Prepare the data">
+<link href="Several-files.html" rel="prev" title="Several files">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Several-files-recursively">
+<div class="nav-panel">
+<p>
+Next: <a href="Prepare-the-data.html" accesskey="n" rel="next">为在图表中显示准备数据</a>, Previous: <a href="Several-files.html" accesskey="p" rel="prev">统计不同文件中 <code class="code">defuns</code> 的词数</a>, Up: <a href="Words-in-a-defun.html" accesskey="u" rel="up">在 <code class="code">defun</code> 中计算单词数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Di-Gui-Ji-Suan-Bu-Tong-WenJian-ZhongDe-Dan-Ci-Shu-">14.8 递归计算不同文件中的单词数</h3>
+
+<p>除了使用 <code class="code">while</code> 循环外，你还可以通过递归来处理文件列表中的每个文件。一个递归版本的 <code class="code">lengths-list-many-files</code> 很短而简单。
+</p>
+<p>递归函数具有通常的部分：再次执行测试、下一步表达式和递归调用。再次执行测试确定函数是否应该再次调用自身，如果 <code class="code">list-of-files</code> 包含任何剩余元素，它将调用自身；下一步表达式将 <code class="code">list-of-files</code> 重置为其自身的 <small class="sc">CDR</small>，所以最终列表将为空；递归调用在较短的列表上调用自身。整个函数比这个描述还要短！
+<a class="index-entry-id" id="index-recursive_002dlengths_002dlist_002dmany_002dfiles"></a>
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun recursive-lengths-list-many-files (list-of-files)
+  &quot;返回 LIST-OF-FILES 中每个 defun 的长度列表。&quot;
+  (if list-of-files                     ; <span class="r">再次执行测试</span>
+      (append
+       (lengths-list-file
+        (expand-file-name (car list-of-files)))
+       (recursive-lengths-list-many-files
+        (cdr list-of-files)))))
+</pre></div></div>
+
+<p>简而言之，该函数返回第一个 <code class="code">list-of-files</code> 的长度列表，附加到对其余 <code class="code">list-of-files</code> 调用自身的结果上。
+</p>
+<p>这里是对 <code class="code">recursive-lengths-list-many-files</code> 的测试，以及在每个文件上分别运行 <code class="code">lengths-list-file</code> 的结果。
+</p>
+<p>如果需要，安装 <code class="code">recursive-lengths-list-many-files</code> 和 <code class="code">lengths-list-file</code>，然后评估以下表达式。您可能需要更改文件的路径；这些路径在此 Info 文件和 Emacs 源代码位于其习惯位置时有效。要更改表达式，将其复制到 <samp class="file">*scratch*</samp> 缓冲区，编辑它们，然后评估它们。
+</p>
+<p>结果在 &lsquo;<samp class="samp">&rArr;</samp>&rsquo; 之后显示。（这些结果是针对 Emacs 版本 22.1.1 的文件；来自其他版本的 Emacs 的文件可能会产生不同的结果。）
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(cd &quot;/usr/local/share/emacs/22.1.1/&quot;)
+
+(lengths-list-file &quot;./lisp/macros.el&quot;)
+     &rArr; (283 263 480 90)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(lengths-list-file &quot;./lisp/mail/mailalias.el&quot;)
+     &rArr; (38 32 29 95 178 180 321 218 324)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(lengths-list-file &quot;./lisp/hex-util.el&quot;)
+     &rArr; (82 71)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">  (recursive-lengths-list-many-files
+   '(&quot;./lisp/macros.el&quot;
+     &quot;./lisp/mail/mailalias.el&quot;
+     &quot;./lisp/hex-util.el&quot;))
+       &rArr; (283 263 480 90 38 32 29 95 178 180 321 218 324 82 71)
+</pre></div></div>
+
+<p><code class="code">recursive-lengths-list-many-files</code> 函数产生了我们想要的输出。
+</p>
+<p>下一步是准备列表中的数据以在图表中显示。
+</p>
+</div>
+
+
+
+</body>
+</html>

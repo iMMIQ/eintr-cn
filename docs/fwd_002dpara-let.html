@@ -78,7 +78,7 @@ Next: <a href="fwd_002dpara-while.html" accesskey="n" rel="next">前进动作 <c
 
 <p>这是一个表达式，其第一个元素是 <code class="code">and</code> 特殊形式。
 </p>
-<p>正如我们之前学到的(see <a class="pxref" href="kill_002dnew-Han-Shu-.html"><code class="code">kill-new</code> 函数</a>)，<code class="code">and</code> 特殊形式评估其每个参数，直到其中一个参数返回 <code class="code">nil</code> 的值，此时 <code class="code">and</code> 表达式返回 <code class="code">nil</code>；然而，如果没有任何参数返回 <code class="code">nil</code> 的值，则评估最后一个参数产生的值将被返回。 (由于这样的值不是 <code class="code">nil</code>，在 Lisp 中被视为真值。) 换句话说，只有当 <code class="code">and</code> 表达式的所有参数都为真时，它才返回真值。
+<p>正如我们之前学到的(see <a class="pxref" href="kill_002dnew-function.html"><code class="code">kill-new</code> 函数</a>)，<code class="code">and</code> 特殊形式评估其每个参数，直到其中一个参数返回 <code class="code">nil</code> 的值，此时 <code class="code">and</code> 表达式返回 <code class="code">nil</code>；然而，如果没有任何参数返回 <code class="code">nil</code> 的值，则评估最后一个参数产生的值将被返回。 (由于这样的值不是 <code class="code">nil</code>，在 Lisp 中被视为真值。) 换句话说，只有当 <code class="code">and</code> 表达式的所有参数都为真时，它才返回真值。
 </p>
 <p>在这种情况下，只有当以下四个表达式在评估时产生真值（即非 <code class="code">nil</code> 值）时，变量 <code class="code">fill-prefix-regexp</code> 才绑定到非 <code class="code">nil</code> 值；否则，<code class="code">fill-prefix-regexp</code> 被绑定到 <code class="code">nil</code>。
 </p>

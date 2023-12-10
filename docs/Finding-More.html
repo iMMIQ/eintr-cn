@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Finding More (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Finding More (Programming in Emacs Lisp)">
+<meta name="keywords" content="Finding More (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Buffer-Walk-Through.html" rel="up" title="Buffer Walk Through">
+<link href="simplified_002dbeginning_002dof_002dbuffer.html" rel="next" title="simplified-beginning-of-buffer">
+<style type="text/css">
+<!--
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Finding-More">
+<div class="nav-panel">
+<p>
+Next: <a href="simplified_002dbeginning_002dof_002dbuffer.html" accesskey="n" rel="next">一个简化的 <code class="code">beginning-of-buffer</code> 定义</a>, Up: <a href="Buffer-Walk-Through.html" accesskey="u" rel="up">几个与缓冲区相关的函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Cha-Zhao-Geng-Duo-Xin-Xi-">4.1 查找更多信息</h3>
+
+<a class="index-entry-id" id="index-describe_002dfunction_002c-introduced"></a>
+<a class="index-entry-id" id="index-Cha-Zhao-Han-Shu-WenDang-"></a>
+<p>在这个步骤中，我将在遇到新函数时逐一描述它，有时详细介绍，有时简要说明。如果你感兴趣，你可以随时通过输入<kbd class="kbd">C-h f</kbd>，然后输入函数的名称（然后按<kbd class="key">RET</kbd>）获取任何Emacs Lisp函数的完整文档。类似地，你可以通过输入<kbd class="kbd">C-h v</kbd>，然后输入变量的名称（然后按<kbd class="key">RET</kbd>）获取变量的完整文档。
+</p>
+<a class="index-entry-id" id="index-Cha-Zhao-Han-Shu-Yuan-Ma-"></a>
+<p>此外，<code class="code">describe-function</code>还会告诉你函数定义的位置。
+</p>
+<p>将光标放在包含函数的文件名上，然后按<kbd class="key">RET</kbd>键。在这种情况下，<kbd class="key">RET</kbd>意味着<code class="code">push-button</code>，而不是“return”或“enter”。Emacs将直接跳转到函数定义处。
+</p>
+
+<p>更一般地说，如果你想在原始源文件中查看函数，你可以使用<code class="code">xref-find-definitions</code>函数跳转到它。<code class="code">xref-find-definitions</code>适用于各种语言，不仅限于Lisp和C，它还适用于非编程文本。例如，<code class="code">xref-find-definitions</code>将跳转到本文档的Texinfo源文件的各个节点（前提是你已经运行<code class="command">etags</code>实用程序记录了Emacs附带手册中的所有节点；see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Create-Tags-Table.html#Create-Tags-Table">Create Tags Table</a> in <cite class="cite">The GNU Emacs Manual</cite>）。
+</p>
+<p>要使用<code class="code">xref-find-definitions</code>命令，输入<kbd class="kbd">M-.</kbd>（即，按住<kbd class="key">META</kbd>键的同时按下句点键，或者按<kbd class="key">ESC</kbd>键，然后输入句点键），然后在提示符处输入你想要查看源代码的函数的名称，比如<code class="code">mark-whole-buffer</code>，然后输入<kbd class="key">RET</kbd>。 （如果命令没有提示，带一个参数调用它：<kbd class="kbd">C-u M-.</kbd>；see <a class="pxref" href="Interactive-Options.html"><code class="code">interactive</code> 的不同选项</a>。）Emacs将切换缓冲区并在屏幕上显示函数的源代码<a class="footnote" id="DOCF10" href="#FOOT10"><sup>10</sup></a>。要切换回当前缓冲区，输入<kbd class="kbd">M-,</kbd>或<kbd class="kbd">C-x b <kbd class="key">RET</kbd></kbd>。（在某些键盘上，<kbd class="key">META</kbd>键标记为<kbd class="key">ALT</kbd>。）
+</p>
+<a class="index-entry-id" id="index-Library_002c-Zuo-Wei-_201cWenJian-_201dYiCi-De-Yong-Fa-"></a>
+<p>顺便说一下，包含Lisp代码的文件通常被称为<em class="dfn">库</em>。这个比喻来源于专业图书馆的概念，比如法律图书馆或工程图书馆，而不是普通图书馆。每个库或文件都包含与特定主题或活动相关的函数，比如处理缩写和其他输入快捷方式的<samp class="file">abbrev.el</samp>，以及用于帮助的<samp class="file">help.el</samp>。（有时，多个库提供单个活动的代码，就像各种<samp class="file">rmail&hellip;</samp>文件提供阅读电子邮件的代码一样。）在<cite class="cite">The GNU Emacs Manual</cite>中，你会看到类似“<kbd class="kbd">C-h p</kbd>命令允许你按主题关键字搜索标准的Emacs Lisp库。”的句子。
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT10" href="#DOCF10">(10)</a></h5>
+<p>如果Emacs不是显示Lisp函数的源代码，而是询问你要访问哪个标签表，请在其主要模式为Emacs Lisp或Lisp Interaction的缓冲区中调用<kbd class="kbd">M-.</kbd>。
+</p>
+</div>
+
+
+
+</body>
+</html>

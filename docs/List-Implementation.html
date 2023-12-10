@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>List Implementation (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="List Implementation (Programming in Emacs Lisp)">
+<meta name="keywords" content="List Implementation (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Yanking.html" rel="next" title="Yanking">
+<link href="Cutting-_0026-Storing-Text.html" rel="prev" title="Cutting &amp; Storing Text">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="List-Implementation">
+<div class="nav-panel">
+<p>
+Next: <a href="Yanking.html" accesskey="n" rel="next">插入文本</a>, Previous: <a href="Cutting-_0026-Storing-Text.html" accesskey="p" rel="prev">剪切与存储文本</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Ru-He-Shi-Xian-Lie-Biao-">9 如何实现列表</h2>
+<a class="index-entry-id" id="index-Ji-Suan-Ji-ZhongDe-Lie-Biao-"></a>
+
+<p>在Lisp中，原子以一种直截了当的方式记录；如果在实践中实现不够直截了当，理论上仍然是直截了当的。例如，原子 &lsquo;<samp class="samp">rose</samp>&rsquo; 被记录为四个连续的字母 &lsquo;<samp class="samp">r</samp>&rsquo;、&lsquo;<samp class="samp">o</samp>&rsquo;、&lsquo;<samp class="samp">s</samp>&rsquo;、&lsquo;<samp class="samp">e</samp>&rsquo;。然而，列表的存储方式不同。机制同样简单，但需要一些时间来适应这个概念。列表使用一系列指针对来维护。在这个系列中，每对中的第一个指针指向一个原子或另一个列表，而每对中的第二个指针指向下一对，或者指向表示列表结束的符号 <code class="code">nil</code>。
+</p>
+<p>指针本身就是指向所指对象的电子地址。因此，列表被保存为一系列电子地址。
+</p>
+
+<ul class="mini-toc">
+<li><a href="Lists-diagrammed.html" accesskey="1">列表示意图</a></li>
+<li><a href="Symbols-as-Chest.html" accesskey="2">符号作为抽屉式储物柜</a></li>
+<li><a href="List-Exercise.html" accesskey="3">练习</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

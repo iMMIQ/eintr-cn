@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>type-of-animal in detail (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="type-of-animal in detail (Programming in Emacs Lisp)">
+<meta name="keywords" content="type-of-animal in detail (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="if.html" rel="up" title="if">
+<link href="if-in-more-detail.html" rel="prev" title="if in more detail">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="type_002dof_002danimal-in-detail">
+<div class="nav-panel">
+<p>
+Previous: <a href="if-in-more-detail.html" accesskey="p" rel="prev"><code class="code">if</code>详细说明</a>, Up: <a href="if.html" accesskey="u" rel="up">特殊形式 <code class="code">if</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Xiang-Xi-Jie-Shao-type_002dof_002danimal-Han-Shu-">3.7.1 详细介绍 <code class="code">type-of-animal</code> 函数</h4>
+
+<p>让我们详细看一下 <code class="code">type-of-animal</code> 函数。
+</p>
+<p><code class="code">type-of-animal</code> 函数的定义是通过填充两个模板而完成的，一个用于整个函数定义，另一个用于 <code class="code">if</code> 表达式。
+</p>
+<p>每个非交互式函数的模板如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun <var class="var">name-of-function</var> (<var class="var">argument-list</var>)
+  &quot;<var class="var">documentation</var>&hellip;&quot;
+  <var class="var">body</var>&hellip;)
+</pre></div></div>
+
+<p>符合此模板的函数部分如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun type-of-animal (characteristic)
+  &quot;根据 CHARACTERISTIC 在回显区域打印消息。
+如果 CHARACTERISTIC 是字符串 \&quot;fierce\&quot;，则警告可能是老虎。&quot;
+  <var class="var">body: the</var> <code class="code">if</code> <var class="var">expression</var>)
+</pre></div></div>
+
+<p>函数的名称是 <code class="code">type-of-animal</code>；它接受一个参数的值。参数列表后面是多行文档字符串。在示例中包含文档字符串是一个良好的习惯，建议为每个函数定义都编写文档字符串。函数定义的主体由 <code class="code">if</code> 表达式组成。
+</p>
+<p><code class="code">if</code> 表达式的模板如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(if <var class="var">true-or-false-test</var>
+    <var class="var">action-to-carry-out-if-the-test-returns-true</var>)
+</pre></div></div>
+
+<p>在 <code class="code">type-of-animal</code> 函数中，<code class="code">if</code> 的代码如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(if (equal characteristic &quot;fierce&quot;)
+    (message &quot;它是一只老虎！&quot;))
+</pre></div></div>
+
+<p>在这里，true-or-false-test 是表达式：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(equal characteristic &quot;fierce&quot;)
+</pre></div>
+
+<p>在 Lisp 中，<code class="code">equal</code> 是一个函数，它确定其第一个参数是否等于第二个参数。第二个参数是字符串 <code class="code">&quot;fierce&quot;</code>，第一个参数是符号 <code class="code">characteristic</code> 的值，换句话说，就是传递给该函数的参数。
+</p>
+<p>在 <code class="code">type-of-animal</code> 的第一个示例中，传递了参数 <code class="code">&quot;fierce&quot;</code>。由于 <code class="code">&quot;fierce&quot;</code> 等于 <code class="code">&quot;fierce&quot;</code>，表达式 <code class="code">(equal characteristic &quot;fierce&quot;)</code> 返回 true。当发生这种情况时，<code class="code">if</code> 会评估 <code class="code">if</code> 的第二个参数或 true 部分：<code class="code">(message &quot;它是一只老虎！&quot;)</code>。
+</p>
+<p>另一方面，在 <code class="code">type-of-animal</code> 的第二个示例中，传递了参数 <code class="code">&quot;striped&quot;</code>。<code class="code">&quot;striped&quot;</code> 不等于 <code class="code">&quot;fierce&quot;</code>，因此 true 部分不会被评估，<code class="code">if</code> 表达式返回 <code class="code">nil</code>。
+</p>
+</div>
+
+
+
+</body>
+</html>

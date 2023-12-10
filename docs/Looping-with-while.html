@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Looping with while (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Looping with while (Programming in Emacs Lisp)">
+<meta name="keywords" content="Looping with while (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="while.html" rel="up" title="while">
+<link href="Loop-Example.html" rel="next" title="Loop Example">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="Looping-with-while">
+<div class="nav-panel">
+<p>
+Next: <a href="Loop-Example.html" accesskey="n" rel="next">使用 <code class="code">while</code> 循环和列表</a>, Up: <a href="while.html" accesskey="u" rel="up"><code class="code">while</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="Shi-Yong-while-Xun-Huan-">使用 <code class="code">while</code> 循环</h4>
+
+<p>只要 <code class="code">while</code> 表达式的 true-or-false-test 在评估时返回真值，就会重复评估主体。这个过程称为循环，因为Lisp解释器一遍又一遍地重复相同的操作，就像一架飞机做环形飞行一样。当评估 true-or-false-test 的结果为假时，Lisp解释器将不再评估 <code class="code">while</code> 的其余部分并退出循环。
+</p>
+<p>显然，如果通过评估 <code class="code">while</code> 的第一个参数返回的值始终为真，那么接下来的主体将一遍又一遍地被评估……而且永远都是如此。相反，如果返回的值从不为真，主体中的表达式将永远不会被评估。编写 <code class="code">while</code> 循环的技巧在于选择一种机制，使得 true-or-false-test 仅在您希望后续表达式被评估的次数返回真，然后使测试返回假。
+</p>
+<p>通过评估 <code class="code">while</code> 的返回值是 true-or-false-test 的值。这样做的一个有趣的结果是，如果 <code class="code">while</code> 循环评估成功且没有错误，它将始终返回 <code class="code">nil</code> 或 false，无论它循环了1次还是100次，甚至一次都没有循环。成功评估的 <code class="code">while</code> 表达式永远不返回真值！这意味着 <code class="code">while</code> 总是被评估为其副作用，也就是评估循环体内表达式的后果。这是有道理的。人们追求的不仅仅是循环的行为，更是循环体内表达式反复评估时产生的后果。
+</p>
+</div>
+
+
+
+</body>
+</html>

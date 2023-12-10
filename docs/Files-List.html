@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Files List (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Files List (Programming in Emacs Lisp)">
+<meta name="keywords" content="Files List (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Prepare-the-data.html" rel="up" title="Prepare the data">
+<link href="Counting-function-definitions.html" rel="next" title="Counting function definitions">
+<link href="Sorting.html" rel="prev" title="Sorting">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+ul.mark-bullet {list-style-type: disc}
+ul.mark-minus {list-style-type: "\2212"}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Files-List">
+<div class="nav-panel">
+<p>
+Next: <a href="Counting-function-definitions.html" accesskey="n" rel="next">统计函数定义数量</a>, Previous: <a href="Sorting.html" accesskey="p" rel="prev">列表排序</a>, Up: <a href="Prepare-the-data.html" accesskey="u" rel="up">为在图表中显示准备数据</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Chuang-Jian-WenJian-Lie-Biao-">14.9.2 创建文件列表</h4>
+
+<p>函数 <code class="code">recursive-lengths-list-many-files</code> 需要一个文件列表作为其参数。在我们的测试示例中，我们手工构建了这样一个列表；但是 Emacs Lisp 源代码目录太大，我们无法手动创建。相反，我们将编写一个函数来为我们完成这个任务。在这个函数中，我们将同时使用 <code class="code">while</code> 循环和递归调用。
+</p>
+<a class="index-entry-id" id="index-directory_002dfiles"></a>
+<p>在旧版本的 GNU Emacs 中，我们无需编写这样的函数，因为它们将所有的 &lsquo;<samp class="samp">.el</samp>&rsquo; 文件放在一个目录中。相反，我们可以使用 <code class="code">directory-files</code> 函数，该函数列出了匹配指定模式的文件的名称，该模式在单个目录中。
+</p>
+<p>然而，最近的 Emacs 版本将 Emacs Lisp 文件放在顶层 <samp class="file">lisp</samp> 目录的子目录中。这种重新排列方便了导航。例如，所有与邮件相关的文件都在名为 <samp class="file">mail</samp> 的 <samp class="file">lisp</samp> 子目录中。但与此同时，这种排列方式迫使我们创建一个能够进入子目录的文件列表函数。
+</p>
+<a class="index-entry-id" id="index-files_002din_002dbelow_002ddirectory"></a>
+<p>我们可以使用熟悉的函数，如 <code class="code">car</code>、<code class="code">nthcdr</code> 和 <code class="code">substring</code>，以及一个名为 <code class="code">directory-files-and-attributes</code> 的现有函数来创建这个函数。这个后者不仅列出目录中所有文件的名称，包括子目录的名称，还列出它们的属性。
+</p>
+<p>重新表述我们的目标：创建一个函数，使我们能够将文件名作为一个列表传递给 <code class="code">recursive-lengths-list-many-files</code>，该列表看起来像这样（但元素更多）：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(&quot;./lisp/macros.el&quot;
+ &quot;./lisp/mail/rmail.el&quot;
+ &quot;./lisp/hex-util.el&quot;)
+</pre></div></div>
+
+<p><code class="code">directory-files-and-attributes</code> 函数返回一个列表的列表。主列表中的每个列表都包含13个元素。列表的第一个元素是包含文件的名称的字符串，在 GNU/Linux 中，它可能是一个 <em class="dfn">目录文件</em>，也就是说，具有目录的特殊属性的文件。列表的第二个元素是目录的 <code class="code">t</code>，符号链接的字符串（字符串是链接到的名称），或 <code class="code">nil</code>。
+</p>
+<p>例如，<samp class="file">lisp/</samp> 目录中的第一个 &lsquo;<samp class="samp">.el</samp>&rsquo; 文件是 <samp class="file">abbrev.el</samp>。它的名称是 <samp class="file">/usr/local/share/emacs/22.1.1/lisp/abbrev.el</samp>，它既不是目录也不是符号链接。
+</p>
+<p>以下是 <code class="code">directory-files-and-attributes</code> 如何列出该文件及其属性的方式：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(&quot;abbrev.el&quot;
+nil
+1
+1000
+100
+</pre></div><div class="group"><pre class="example-preformatted">(20615 27034 579989 697000)
+(17905 55681 0 0)
+(20615 26327 734791 805000)<a class="footnote" id="DOCF15" href="#FOOT15">(15)</a>
+13188
+&quot;-rw-r--r--&quot;
+</pre></div><div class="group"><pre class="example-preformatted">t
+2971624
+773)
+</pre></div></div>
+
+<p>另一方面，<samp class="file">mail/</samp> 是 <samp class="file">lisp/</samp> 目录中的一个子目录。其列表的开头看起来像这样：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(&quot;mail&quot;
+t
+&hellip;
+)
+</pre></div></div>
+
+<p>（要了解不同属性，请查看 <code class="code">file-attributes</code> 的文档。请注意，<code class="code">file-attributes</code> 函数不会列出文件名，因此它的第一个元素是 <code class="code">directory-files-and-attributes</code> 的第二个元素。）
+</p>
+<p>我们希望我们的新函数 <code class="code">files-in-below-directory</code> 能够列出它被告知检查的目录以及该目录下的任何子目录中的 &lsquo;<samp class="samp">.el</samp>&rsquo; 文件。
+</p>
+<p>这为我们提供了构建 <code class="code">files-in-below-directory</code> 的线索：在目录内，该函数应该将 &lsquo;<samp class="samp">.el</samp>&rsquo; 文件名添加到列表中；而如果在目录内，该函数遇到子目录，它应该进入该子目录并重复其操作。
+</p>
+<p>然而，我们应该注意到每个目录都包含一个指向自身的名称，称为 <samp class="file">.</samp>（“点”），以及一个指向其父目录的名称，称为 <samp class="file">..</samp>（“点 点”）。 （在 <samp class="file">/</samp>，即根目录中，<samp class="file">..</samp> 指向它自己，因为 <samp class="file">/</samp> 没有父目录。）显然，我们不希望我们的 <code class="code">files-in-below-directory</code> 函数进入这些目录，因为它们始终直接或间接地导致当前目录。
+</p>
+<p>因此，我们的 <code class="code">files-in-below-directory</code> 函数必须执行几个任务：
+</p>
+<ul class="itemize mark-bullet">
+<li>检查是否正在查看以 &lsquo;<samp class="samp">.el</samp>&rsquo; 结尾的文件名；如果是，则将其名称添加到列表中。
+
+</li><li>检查是否正在查看是目录的名称；如果是，
+
+<ul class="itemize mark-minus">
+<li>检查是否正在查看 <samp class="file">.</samp> 或 <samp class="file">..</samp>；如果是，则跳过。
+
+</li><li>否则，进入该目录并重复过程。
+</li></ul>
+</li></ul>
+
+<p>让我们编写一个函数定义来执行这些任务。我们将使用一个 <code class="code">while</code> 循环来在目录中从一个文件名移动到另一个文件名，检查需要执行的操作；我们将使用递归调用来在每个子目录上重复这些操作。递归模式是 Accumulate（see <a class="pxref" href="Accumulate.html">递归模式：<em class="emph">累积</em></a>），使用 <code class="code">append</code> 作为组合器。
+</p>
+
+
+<p>以下是该函数：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun files-in-below-directory (directory)
+  &quot;列出 DIRECTORY 及其子目录中的 .el 文件。&quot;
+  ;; 尽管该函数将被非交互地使用，
+  ;; 但如果我们将其设置为交互式，测试将更容易。
+  ;; 目录的名称将类似于
+  ;; &quot;/usr/local/share/emacs/22.1.1/lisp/&quot;
+  (interactive &quot;DDirectory name: &quot;)
+</pre></div><div class="group"><pre class="example-preformatted">  (let (el-files-list
+        (current-directory-list
+         (directory-files-and-attributes directory t)))
+    ;; 当我们在当前目录中时
+    (while current-directory-list
+</pre></div><div class="group"><pre class="example-preformatted">      (cond
+       ;; 检查文件名是否以 '.el' 结尾
+       ;; 如果是，则将其名称添加到列表中。
+       ((equal &quot;.el&quot; (substring (car (car current-directory-list)) -3))
+        (setq el-files-list
+              (cons (car (car current-directory-list)) el-files-list)))
+</pre></div><div class="group"><pre class="example-preformatted">       ;; 检查文件名是否是目录的名称
+       ((eq t (car (cdr (car current-directory-list))))
+        ;; 决定是跳过还是递归
+        (if
+            (equal &quot;.&quot;
+                   (substring (car (car current-directory-list)) -1))
+            ;; 然后什么都不做，因为文件名是
+            ;;   当前目录或父目录的名称，&quot;.&quot; 或 &quot;..&quot;
+            ()
+</pre></div><div class="group"><pre class="example-preformatted">          ;; 否则，进入该目录并重复过程
+          (setq el-files-list
+                (append
+                 (files-in-below-directory
+                  (car (car current-directory-list)))
+                 el-files-list)))))
+      ;; 移动到列表中的下一个文件名；这也
+      ;; 缩短列表，因此 while 循环最终会结束
+      (setq current-directory-list (cdr current-directory-list)))
+    ;; 返回文件名
+    el-files-list))
+</pre></div></div>
+
+
+<p><code class="code">files-in-below-directory</code> <code class="code">directory-files</code> 函数接受一个参数，即目录的名称。
+</p>
+<p>因此，在我的系统上，
+</p>
+
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(length
+ (files-in-below-directory &quot;/usr/local/share/emacs/22.1.1/lisp/&quot;))
+</pre></div></div>
+
+<p>告诉我，在我的 Lisp 源代码目录及其子目录中有 1031 个 &lsquo;<samp class="samp">.el</samp>&rsquo; 文件。
+</p>
+<p><code class="code">files-in-below-directory</code> 以字母顺序的逆序返回一个列表。将列表按字母顺序排序的表达式如下：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(sort
+ (files-in-below-directory &quot;/usr/local/share/emacs/22.1.1/lisp/&quot;)
+ 'string-lessp)
+</pre></div></div>
+
+
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT15" href="#DOCF15">(15)</a></h5>
+<p>如果 <code class="code">current-time-list</code> 是 <code class="code">nil</code>，则三个时间戳分别为 <code class="code">(1351051674579989697 . 1000000000)</code>，<code class="code">(1173477761000000000 . 1000000000)</code> 和 <code class="code">(1351050967734791805 . 1000000000)</code>。</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Counting-function-definitions.html">统计函数定义数量</a>, Previous: <a href="Sorting.html">列表排序</a>, Up: <a href="Prepare-the-data.html">为在图表中显示准备数据</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

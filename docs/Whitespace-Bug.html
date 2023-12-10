@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Whitespace Bug (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Whitespace Bug (Programming in Emacs Lisp)">
+<meta name="keywords" content="Whitespace Bug (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="count_002dwords_002dexample.html" rel="up" title="count-words-example">
+<link href="Design-count_002dwords_002dexample.html" rel="prev" title="Design count-words-example">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Whitespace-Bug">
+<div class="nav-panel">
+<p>
+Previous: <a href="Design-count_002dwords_002dexample.html" accesskey="p" rel="prev">设计 <code class="code">count-words-example</code></a>, Up: <a href="count_002dwords_002dexample.html" accesskey="u" rel="up">函数 <code class="code">count-words-example</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="count_002dwords_002dexample-ZhongDe-Kong-Bai-Zi-Fu-Cuo-Wu-">13.1.1 <code class="code">count-words-example</code> 中的空白字符错误</h4>
+
+<p>在前面的章节中描述的 <code class="code">count-words-example</code> 命令有两个错误，或者更确切地说，有一个带有两个表现形式的错误。首先，如果你标记一个仅包含中间某些文本的空白区域，<code class="code">count-words-example</code> 命令会告诉你该区域包含一个单词！其次，如果你标记一个仅包含位于缓冲区末尾或缩小缓冲区的可访问部分的空白字符的区域，该命令会显示一个错误消息，看起来像这样：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">搜索失败：&quot;\\w+\\W*&quot;
+</pre></div>
+
+<p>如果你是在GNU Emacs的Info中阅读本文，你可以自行测试这些错误。
+</p>
+<p>首先，按照通常的方式评估该函数以安装它。
+</p>
+<p>如果愿意，也可以通过评估以下绑定来安装此键绑定：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(global-set-key &quot;\C-c=&quot; 'count-words-example)
+</pre></div>
+
+<p>进行第一个测试，将标记和点设置到以下行的开始和结束，然后键入 <kbd class="kbd">C-c =</kbd>（或如果未绑定 <kbd class="kbd">C-c =</kbd>，则为 <kbd class="kbd">M-x count-words-example</kbd>）：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">    一个  两个  三
+</pre></div>
+
+<p>Emacs 将告诉你，该区域有三个单词，这是正确的。
+</p>
+<p>重复测试，但将标记放在该行的开头，并将点放在单词 &lsquo;<samp class="samp">一个</samp>&rsquo; 之前。再次输入命令 <kbd class="kbd">C-c =</kbd>（或 <kbd class="kbd">M-x count-words-example</kbd>）。Emacs 应该告诉你该区域没有单词，因为它仅由该行开头的空白字符组成。但是，Emacs却告诉你该区域有一个单词！
+</p>
+<p>对于第三个测试，将示例行复制到 <samp class="file">*scratch*</samp> 缓冲区的末尾，然后在该行的末尾输入多个空格。将标记放在单词 &lsquo;<samp class="samp">三</samp>&rsquo; 之后，将点放在行末。 （行末将是缓冲区的末尾。）像之前一样，输入 <kbd class="kbd">C-c =</kbd>（或 <kbd class="kbd">M-x count-words-example</kbd>）。再次，Emacs 应该告诉你该区域没有单词，因为它仅由该行末尾的空白字符组成。但是，相反，Emacs 显示一个错误消息，其中显示 &lsquo;<samp class="samp">Search failed</samp>&rsquo;。
+</p>
+<p>这两个错误源于同一个问题。
+</p>
+<p>考虑错误的第一个表现形式，在该表现形式中，该命令告诉你该行开头的空白字符包含一个单词。发生的情况是：<code class="code">M-x count-words-example</code> 命令将点移动到区域的开头。<code class="code">while</code> 测试点的值是否小于 <code class="code">end</code> 的值，它是的。因此，正则表达式搜索寻找并找到第一个单词。它将点放在单词之后。 <code class="code">count</code> 设置为一。<code class="code">while</code> 循环重复; 但是这次点的值大于 <code class="code">end</code> 的值，循环退出；函数显示一条消息，其中包含区域中的单词数为一。简而言之，尽管标记区域外的单词，但正则表达式搜索却寻找并找到了该单词。
+</p>
+<p>在错误的第二个表现形式中，该区域是位于缓冲区末尾的空白字符。Emacs 显示 &lsquo;<samp class="samp">Search failed</samp>&rsquo;。发生的情况是，在 <code class="code">while</code> 循环中的真假测试中，测试为真，因此执行搜索表达式。但由于缓冲区中没有更多的单词，搜索失败。
+</p>
+<p>在错误的两个表现形式中，搜索都会扩展或尝试扩展到区域之外。
+</p>
+<p>解决方案是限制搜索到该区域，这是一个相当简单的操作，但正如你可能期望的那样，它并不像你想象的那么简单。
+</p>
+<p>正如我们所见，<code class="code">re-search-forward</code> 函数将搜索模式作为其第一个参数。但除了这第一个，强制性的参数外，它还接受三个可选参数。可选的第二个参数限制了搜索。可选的第三个参数，如果是 <code class="code">t</code>，则使函数在搜索失败时返回 <code class="code">nil</code> 而不是引发错误。可选的第四个参数是重复计数。（在Emacs中，可以通过键入 <kbd class="kbd">C-h f</kbd>，函数的名称，然后 <kbd class="key">RET</kbd> 来查看函数的文档。）
+</p>
+<p>在 <code class="code">count-words-example</code> 的定义中，区域末尾的值由传递给函数的变量 <code class="code">end</code> 持有。因此，我们可以将 <code class="code">end</code> 添加为正则表达式搜索表达式的参数：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(re-search-forward &quot;\\w+\\W*&quot; end)
+</pre></div>
+
+<p>然而，如果你只对 <code class="code">count-words-example</code> 定义进行这个更改，然后在一段空白区域上测试新版本的定义，你将收到一条错误消息，其中显示 &lsquo;<samp class="samp">Search failed</samp>&rsquo;。
+</p>
+<p>发生的情况是：搜索限制为该区域，因为在该区域中没有单词构成字符，所以搜索失败，正如你所期望的那样。由于失败，我们收到了一条错误消息。但在这种情况下，我们不希望收到错误消息；我们希望收到消息“该区域不包含任何单词”。
+</p>
+<p>解决此问题的方法是向 <code class="code">re-search-forward</code> 提供第三个参数 <code class="code">t</code>，这将导致函数在搜索失败时返回 <code class="code">nil</code> 而不是引发错误。
+</p>
+<p>然而，如果你进行此更改并尝试运行它，你将看到消息“计算区域内的单词数 ...”，等等，你将继续看到该消息...，直到你键入 <kbd class="kbd">C-g</kbd>（<code class="code">keyboard-quit</code>）。
+</p>
+<p>发生的情况是：搜索限制为该区域，与之前一样失败，因为该区域中没有单词构成字符，正如预期的那样。因此，<code class="code">re-search-forward</code> 表达式返回 <code class="code">nil</code>。它仅仅返回 <code class="code">nil</code>。特别地，如果找到了搜索目标，它不会移动点，这是它的副作用之一。在 <code class="code">re-search-forward</code> 表达式返回 <code class="code">nil</code> 后，<code class="code">while</code> 循环中的下一个表达式将被评估。该表达式递增计数。然后循环重复。由于 <code class="code">re-search-forward</code> 表达式没有移动点，所以 <code class="code">while</code> 循环的真假测试测试为真，因为点的值仍然小于 <code class="code">end</code> 的值。...循环重复...
+</p>
+<p><code class="code">count-words-example</code> 定义需要进行另一个修改，以使 <code class="code">while</code> 循环的真假测试在搜索失败时测试为假。换句话说，在增加单词计数变量之前，必须同时满足两个条件：点必须仍然在区域内，并且搜索表达式必须找到一个要计数的单词。
+</p>
+<p>由于第一个条件和第二个条件必须一起为真，所以这两个表达式，区域测试和搜索表达式，可以用 <code class="code">and</code> 特殊形式连接，并嵌入到 <code class="code">while</code> 循环中作为真假测试，如下所示：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(and (&lt; (point) end) (re-search-forward &quot;\\w+\\W*&quot; end t))
+</pre></div>
+
+
+<p><code class="code">re-search-forward</code> 表达式在搜索成功时返回 <code class="code">t</code>，并作为副作用移动点。因此，随着找到单词，点通过区域移动。当搜索表达式未能找到另一个单词，或当点达到区域的末尾时，真假测试失败，<code class="code">while</code> 循环退出，<code class="code">count-words-example</code> 函数显示其消息之一。
+</p>
+<p>在加入这些最终更改后，<code class="code">count-words-example</code> 就没有错误了（或者至少，我没有找到错误！）。以下是它的最终版本：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">最终版本：</span> <code class="code">while</code>
+(defun count-words-example (beginning end)
+  &quot;打印区域内的单词数。&quot;
+  (interactive &quot;r&quot;)
+  (message &quot;计算区域内的单词数 ... &quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">1. 设置适当的条件。</span>
+  (save-excursion
+    (let ((count 0))
+      (goto-char beginning)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">2. 运行</span> while <span class="r">循环。</span>
+      (while (and (&lt; (point) end)
+                  (re-search-forward &quot;\\w+\\W*&quot; end t))
+        (setq count (1+ count)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;;; <span class="r">3. 向用户发送消息。</span>
+      (cond ((zerop count)
+             (message
+              &quot;该区域不包含任何单词。&quot;))
+            ((= 1 count)
+             (message
+              &quot;该区域包含一个单词。&quot;))
+            (t
+             (message
+              &quot;该区域包含 %d 个单词。&quot; count))))))
+</pre></div></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Design-count_002dwords_002dexample.html">设计 <code class="code">count-words-example</code></a>, Up: <a href="count_002dwords_002dexample.html">函数 <code class="code">count-words-example</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

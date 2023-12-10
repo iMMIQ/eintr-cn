@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Emacs Initialization (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Emacs Initialization (Programming in Emacs Lisp)">
+<meta name="keywords" content="Emacs Initialization (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Debugging.html" rel="next" title="Debugging">
+<link href="Readying-a-Graph.html" rel="prev" title="Readying a Graph">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Emacs-Initialization">
+<div class="nav-panel">
+<p>
+Next: <a href="Debugging.html" accesskey="n" rel="next">调试</a>, Previous: <a href="Readying-a-Graph.html" accesskey="p" rel="prev">准备图表</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Ni-De-_002eemacs-WenJian-">16 你的 <samp class="file">.emacs</samp> 文件</h2>
+<a class="index-entry-id" id="index-_002eemacs-WenJian-"></a>
+<a class="index-entry-id" id="index-Ding-Zhi-Ni-De-_002eemacs-WenJian-"></a>
+<a class="index-entry-id" id="index-Chu-Shi-Hua-WenJian-"></a>
+
+<p>&ldquo;你不一定要喜欢Emacs才能喜欢它&rdquo;&mdash;这个看似矛盾的说法是GNU Emacs的秘密。默认的、开箱即用的Emacs是一个通用工具。大多数人使用它来进行定制，以适应自己的需求。
+</p>
+<p>GNU Emacs主要由Emacs Lisp编写；这意味着通过编写Emacs Lisp表达式，你可以改变或扩展Emacs的功能。
+</p>
+
+<ul class="mini-toc">
+<li><a href="Default-Configuration.html" accesskey="1">Emacs的默认配置</a></li>
+<li><a href="Site_002dwide-Init.html" accesskey="2">站点范围初始化文件</a></li>
+<li><a href="defcustom.html" accesskey="3">使用 <code class="code">defcustom</code> 指定变量</a></li>
+<li><a href="Beginning-init-File.html" accesskey="4">开始一个 <samp class="file">.emacs</samp> 文件</a></li>
+<li><a href="Text-and-Auto_002dfill.html" accesskey="5">文本和自动填充模式</a></li>
+<li><a href="Mail-Aliases.html" accesskey="6">邮件别名</a></li>
+<li><a href="Indent-Tabs-Mode.html" accesskey="7">缩进选项</a></li>
+<li><a href="Key-Bindings.html" accesskey="8">一些按键绑定</a></li>
+<li><a href="Keymaps.html" accesskey="9">键位映射</a></li>
+<li><a href="Loading-Files.html">载入文件</a></li>
+<li><a href="Autoload.html">自动加载</a></li>
+<li><a href="Simple-Extension.html">一个简单的扩展：<code class="code">line-to-top-of-window</code></a></li>
+<li><a href="X11-Colors.html">X11 颜色</a></li>
+<li><a href="Miscellaneous.html">Emacs <samp class="file">.emacs</samp> 文件的其他设置</a></li>
+<li><a href="Mode-Line.html">修改后的模式行</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

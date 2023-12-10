@@ -40,7 +40,7 @@ ISBN 1-882114-43-4
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Buffer-Walk-Through.html" rel="up" title="Buffer Walk Through">
 <link href="mark_002dwhole_002dbuffer.html" rel="next" title="mark-whole-buffer">
-<link href="Cha-Zhao-Geng-Duo-.html" rel="prev" title="查找更多">
+<link href="Finding-More.html" rel="prev" title="Finding More">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -57,7 +57,7 @@ kbd.key {font-style: normal}
 <div class="section-level-extent" id="simplified_002dbeginning_002dof_002dbuffer">
 <div class="nav-panel">
 <p>
-Next: <a href="mark_002dwhole_002dbuffer.html" accesskey="n" rel="next">定义 <code class="code">mark-whole-buffer</code></a>, Previous: <a href="Cha-Zhao-Geng-Duo-.html" accesskey="p" rel="prev">查找更多信息</a>, Up: <a href="Buffer-Walk-Through.html" accesskey="u" rel="up">几个与缓冲区相关的函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="mark_002dwhole_002dbuffer.html" accesskey="n" rel="next">定义 <code class="code">mark-whole-buffer</code></a>, Previous: <a href="Finding-More.html" accesskey="p" rel="prev">查找更多信息</a>, Up: <a href="Buffer-Walk-Through.html" accesskey="u" rel="up">几个与缓冲区相关的函数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h3 class="section" id="YiGeJian-Hua-De-beginning_002dof_002dbuffer-Ding-Yi-">4.2 一个简化的 <code class="code">beginning-of-buffer</code> 定义</h3>
@@ -106,7 +106,7 @@ Next: <a href="mark_002dwhole_002dbuffer.html" accesskey="n" rel="next">定义 <
 
 <p>这些行中的第一行是表达式 <code class="code">(push-mark)</code>。当Lisp解释器评估此表达式时，它在光标当前位置设置一个标记，无论光标在哪里。该标记的位置保存在标记环中。
 </p>
-<p>接下来的一行是 <code class="code">(goto-char (point-min))</code>。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。See <a class="xref" href="Suo-Zhai-Yu-Kuo-Da-.html">缩小和扩大</a>.)
+<p>接下来的一行是 <code class="code">(goto-char (point-min))</code>。此表达式将光标跳到缓冲区的最小点，即缓冲区的开头（如果缩小了，则是缓冲区的可访问部分的开头。See <a class="xref" href="Narrowing-_0026-Widening.html">缩小和扩大</a>.)
 </p>
 <p><code class="code">push-mark</code> 命令在光标被 <code class="code">(goto-char (point-min))</code> 表达式移动到缓冲区开头之前的位置设置一个标记。因此，如果愿意，可以通过键入 <kbd class="kbd">C-x C-x</kbd> 返回到最初的位置。
 </p>

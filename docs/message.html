@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Can-Shu-.html" rel="up" title="参数">
-<link href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html" rel="prev" title="错误类型的参数">
+<link href="Arguments.html" rel="up" title="Arguments">
+<link href="Wrong-Type-of-Argument.html" rel="prev" title="Wrong Type of Argument">
 <style type="text/css">
 <!--
 div.example {margin-left: 3.2em}
@@ -55,7 +55,7 @@ kbd.kbd {font-style: oblique}
 <div class="subsection-level-extent" id="message">
 <div class="nav-panel">
 <p>
-Previous: <a href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html" accesskey="p" rel="prev">使用错误类型的对象作为参数</a>, Up: <a href="Can-Shu-.html" accesskey="u" rel="up">参数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Wrong-Type-of-Argument.html" accesskey="p" rel="prev">使用错误类型的对象作为参数</a>, Up: <a href="Arguments.html" accesskey="u" rel="up">参数</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h4 class="subsection" id="message-Han-Shu-">1.8.5 <code class="code">message</code> 函数</h4>
@@ -70,7 +70,7 @@ Previous: <a href="Cuo-Wu-Lei-Xing-De-Can-Shu-.html" accesskey="p" rel="prev">�
 </pre></div>
 
 <p>双引号之间的整个字符串是一个单一的参数，并被整体打印出来。（请注意，在这个例子中，消息本身将在回显区中用双引号括起来；这是因为您看到了<code class="code">message</code>函数返回的值。在您编写的程序中，<code class="code">message</code>的大多数用法将作为副作用将文本在回显区中打印出来，而不带引号。See <a class="xref" href="multiply_002dby_002dseven-in-detail.html"><code class="code">multiply-by-seven</code> in
-detail</a>，了解其中的一个示例。）
+detail</a>, 了解其中的一个示例。）
 </p>
 <p>然而，如果在带引号的字符字符串中有一个&lsquo;<samp class="samp">%s</samp>&rsquo;，<code class="code">message</code>函数不会像这样打印&lsquo;<samp class="samp">%s</samp>&rsquo;，而是查看跟随字符串的参数。它评估第二个参数，并在字符串中&lsquo;<samp class="samp">%s</samp>&rsquo;的位置打印该值。
 </p>

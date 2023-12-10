@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Print Whole Graph (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Print Whole Graph (Programming in Emacs Lisp)">
+<meta name="keywords" content="Print Whole Graph (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Full-Graph.html" rel="up" title="Full Graph">
+<link href="print_002dX_002daxis.html" rel="prev" title="print-X-axis">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="appendixsec-level-extent" id="Print-Whole-Graph">
+<div class="nav-panel">
+<p>
+Previous: <a href="print_002dX_002daxis.html" accesskey="p" rel="prev"><code class="code">print-X-axis</code> 函数</a>, Up: <a href="Full-Graph.html" accesskey="u" rel="up">带有标记轴的图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="appendixsec" id="Da-Yin-Zheng-GeTu-Biao-">C.4 打印整个图表</h3>
+<a class="index-entry-id" id="index-Da-Yin-Zheng-GeTu-Biao-"></a>
+<a class="index-entry-id" id="index-Zheng-GeTu-Biao-Da-Yin-"></a>
+<a class="index-entry-id" id="index-Tu-Biao-_002cQuan-Bu-Da-Yin-"></a>
+
+<p>现在我们几乎准备好打印整个图表了。
+</p>
+<p>打印带有适当标签的图表的函数遵循我们之前创建的大纲（see <a class="pxref" href="Full-Graph.html">带标签的图表</a>），但是有一些增加。
+</p>
+<p>以下是大纲：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun print-graph (numbers-list)
+  &quot;<var class="var">documentation</var>&hellip;&quot;
+  (let ((height  &hellip;
+        &hellip;))
+</pre></div><div class="group"><pre class="example-preformatted">    (print-Y-axis height &hellip; )
+    (graph-body-print numbers-list)
+    (print-X-axis &hellip; )))
+</pre></div></div>
+
+
+<ul class="mini-toc">
+<li><a href="The-final-version.html" accesskey="1">最终版本的更改</a></li>
+<li><a href="Test-print_002dgraph.html" accesskey="2">测试 <code class="code">print-graph</code></a></li>
+<li><a href="Graphing-words-in-defuns.html" accesskey="3">绘制单词和符号数量的函数图表</a></li>
+<li><a href="lambda.html" accesskey="4">A <code class="code">lambda</code> 表达式：有用的匿名性</a></li>
+<li><a href="mapcar.html" accesskey="5">The <code class="code">mapcar</code> Function</a></li>
+<li><a href="Another-Bug.html" accesskey="6">另一个错误 &hellip; 最阴险的</a></li>
+<li><a href="Final-printed-graph.html" accesskey="7">打印图表</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

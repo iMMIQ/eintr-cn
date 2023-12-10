@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Kill Ring Overview (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Kill Ring Overview (Programming in Emacs Lisp)">
+<meta name="keywords" content="Kill Ring Overview (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Yanking.html" rel="up" title="Yanking">
+<link href="kill_002dring_002dyank_002dpointer.html" rel="next" title="kill-ring-yank-pointer">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Kill-Ring-Overview">
+<div class="nav-panel">
+<p>
+Next: <a href="kill_002dring_002dyank_002dpointer.html" accesskey="n" rel="next">变量 <code class="code">kill-ring-yank-pointer</code></a>, Up: <a href="Yanking.html" accesskey="u" rel="up">插入文本</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Jian-Qie-Huan-Gai-Shu-">10.1 剪切环概述</h3>
+<a class="index-entry-id" id="index-Jian-Qie-Huan-Gai-Shu-"></a>
+
+<p>剪切环是一组文本字符串的列表。它的结构如下所示：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(&quot;一些文本&quot; &quot;不同的文本片段&quot; &quot;更多文本&quot;)
+</pre></div>
+
+<p>如果这是我的剪切环的内容，并且我按下 <kbd class="kbd">C-y</kbd> 键，那么包含字符串 &lsquo;<samp class="samp">一些文本</samp>&rsquo; 的部分将被插入到我的光标所在位置。
+</p>
+<p><code class="code">yank</code> 命令还用于通过复制来复制文本。复制的文本并未从缓冲区中删除，而是将其副本放入剪切环，并通过粘贴将其插入。
+</p>
+<p>有三个函数用于从剪切环中恢复文本：<code class="code">yank</code>，通常绑定到 <kbd class="kbd">C-y</kbd>；<code class="code">yank-pop</code>，通常绑定到 <kbd class="kbd">M-y</kbd>；以及由这两个函数使用的 <code class="code">rotate-yank-pointer</code>。
+</p>
+<p>这些函数通过一个称为 <code class="code">kill-ring-yank-pointer</code> 的变量引用剪切环。实际上，<code class="code">yank</code> 和 <code class="code">yank-pop</code> 函数的插入代码为：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(insert (car kill-ring-yank-pointer))
+</pre></div>
+
+<p>（好了，不再是这样了。在 GNU Emacs 22 中，该函数已被 <code class="code">insert-for-yank</code> 替代，它会为每个 <code class="code">yank-handler</code> 段重复调用 <code class="code">insert-for-yank-1</code>。转而，<code class="code">insert-for-yank-1</code> 根据 <code class="code">yank-excluded-properties</code> 从插入的文本中去除文本属性。否则，它就像 <code class="code">insert</code> 一样。我们将继续使用纯粹的 <code class="code">insert</code>，因为它更容易理解。）
+</p>
+<p>要开始理解 <code class="code">yank</code> 和 <code class="code">yank-pop</code> 如何工作，首先需要查看 <code class="code">kill-ring-yank-pointer</code> 变量。
+</p>
+</div>
+
+
+
+</body>
+</html>

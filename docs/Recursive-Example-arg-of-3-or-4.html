@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Recursive Example arg of 3 or 4 (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Recursive Example arg of 3 or 4 (Programming in Emacs Lisp)">
+<meta name="keywords" content="Recursive Example arg of 3 or 4 (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Recursive-triangle-function.html" rel="up" title="Recursive triangle function">
+<link href="Recursive-Example-arg-of-1-or-2.html" rel="prev" title="Recursive Example arg of 1 or 2">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="Recursive-Example-arg-of-3-or-4">
+<div class="nav-panel">
+<p>
+Previous: <a href="Recursive-Example-arg-of-1-or-2.html" accesskey="p" rel="prev">参数为1或2</a>, Up: <a href="Recursive-triangle-function.html" accesskey="u" rel="up">使用递归替代计数器</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="Can-Shu-Wei-3Huo-4De-Qing-Kuang-">参数为3或4的情况</h4>
+
+<p>假设调用 <code class="code">triangle-recursively</code> 时参数为3。
+</p>
+<dl class="table">
+<dt><i class="i">步骤 1 &nbsp;&nbsp;<!-- /@w --> 评估再次执行测试。</i></dt>
+<dd>
+<p>首先评估 <code class="code">if</code> 表达式。这是再次执行测试，并返回false，因此 <code class="code">if</code> 表达式的else部分将被评估。（请注意，在此示例中，再次执行测试在测试false时导致函数调用自身，而不是在测试true时。）
+</p>
+</dd>
+<dt><i class="i">步骤 2 &nbsp;&nbsp;<!-- /@w --> 评估else部分的最内层表达式。</i></dt>
+<dd>
+<p>评估else部分的最内层表达式，将3减少到2。这是下一步表达式。
+</p>
+</dd>
+<dt><i class="i">步骤 3 &nbsp;&nbsp;<!-- /@w --> 评估 <code class="code">triangle-recursively</code> 函数。</i></dt>
+<dd>
+<p>将数字2传递给 <code class="code">triangle-recursively</code> 函数。
+</p>
+<p>我们已经知道当Emacs使用参数2评估 <code class="code">triangle-recursively</code> 时会发生什么。在经历了前面描述的一系列动作后，它将返回值3。因此，在这里也将发生这种情况。
+</p>
+</dd>
+<dt><i class="i">步骤 4 &nbsp;&nbsp;<!-- /@w --> 评估加法。</i></dt>
+<dd>
+<p>3将作为参数传递给加法，并将被添加到调用函数的数字中，该数字为3。
+</p></dd>
+</dl>
+
+<p>函数整体返回的值将为6。
+</p>
+<p>现在我们知道当 <code class="code">triangle-recursively</code> 使用参数3调用时会发生什么，那么如果使用参数4调用它会发生什么就显而易见了：
+</p>
+<blockquote class="quotation">
+<p>在递归调用中，评估
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(triangle-recursively (1- 4))
+</pre></div>
+
+<p>将返回评估的值
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(triangle-recursively 3)
+</pre></div>
+
+<p>这是6，此值将通过第三行的加法添加到4中。
+</p></blockquote>
+
+<p>函数整体返回的值将为10。
+</p>
+<p>每次评估 <code class="code">triangle-recursively</code> 时，它都会评估它自己的版本&mdash;一个具有较小参数的不同实例，直到参数足够小以使其不再评估自身。
+</p>
+<p>请注意，这种递归函数的特定设计要求推迟操作。
+</p>
+<p>在 <code class="code">(triangle-recursively 7)</code> 可以计算其答案之前，它必须调用 <code class="code">(triangle-recursively 6)</code>；在 <code class="code">(triangle-recursively 6)</code> 可以计算其答案之前，它必须调用 <code class="code">(triangle-recursively 5)</code>；依此类推。也就是说，<code class="code">(triangle-recursively 7)</code> 进行的计算必须推迟，直到 <code class="code">(triangle-recursively 6)</code> 进行其计算为止；而 <code class="code">(triangle-recursively 6)</code> 必须推迟，直到 <code class="code">(triangle-recursively 5)</code> 完成为止；依此类推。
+</p>
+<p>如果将 <code class="code">triangle-recursively</code> 的每个实例都视为不同的机器人，第一个机器人必须等待第二个完成其工作，第二个必须等待第三个完成，依此类推。
+</p>
+<p>有一种绕过这种等待的方法，我们将在 <a class="ref" href="No-Deferment.html">无推迟的递归</a> 中讨论。
+</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Dec Example parts (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Dec Example parts (Programming in Emacs Lisp)">
+<meta name="keywords" content="Dec Example parts (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Decrementing-Loop.html" rel="up" title="Decrementing Loop">
+<link href="Dec-Example-altogether.html" rel="next" title="Dec Example altogether">
+<link href="Decrementing-Example.html" rel="prev" title="Decrementing Example">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="Dec-Example-parts">
+<div class="nav-panel">
+<p>
+Next: <a href="Dec-Example-altogether.html" accesskey="n" rel="next">将函数定义组合在一起</a>, Previous: <a href="Decrementing-Example.html" accesskey="p" rel="prev">带有递减计数器的示例</a>, Up: <a href="Decrementing-Loop.html" accesskey="u" rel="up">带有递减计数器的循环</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="Han-Shu-Ding-Yi-De-Ge-Bu-Fen--1">函数定义的各部分</h4>
+
+<p>我们从三个变量开始：三角形中的总行数；每行中的小石子数；以及我们想要计算的小石子的总数。这些变量可以分别命名为 <code class="code">number-of-rows</code>、<code class="code">number-of-pebbles-in-row</code> 和 <code class="code">total</code>。
+</p>
+<p><code class="code">total</code> 和 <code class="code">number-of-pebbles-in-row</code> 都仅在函数内部使用，并使用 <code class="code">let</code> 进行声明。显然，<code class="code">total</code> 的初始值应为零。然而，<code class="code">number-of-pebbles-in-row</code> 的初始值应等于三角形中的行数，因为加法将从最长的行开始。
+</p>
+<p>这意味着 <code class="code">let</code> 表达式的开头将如下所示：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(let ((total 0)
+      (number-of-pebbles-in-row number-of-rows))
+  <var class="var">body</var>&hellip;)
+</pre></div></div>
+
+<p>小石子的总数可以通过重复将每行的小石子数加到已找到的总数中来找到，即通过反复评估以下表达式：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(setq total (+ total number-of-pebbles-in-row))
+</pre></div>
+
+<p>在将 <code class="code">number-of-pebbles-in-row</code> 添加到 <code class="code">total</code> 后，<code class="code">number-of-pebbles-in-row</code> 应减一，因为下次循环重复时将添加前一行到总数中。
+</p>
+<p>前一行中的小石子数比当前行中的小石子数少一个，因此可以使用内置的 Emacs Lisp 函数 <code class="code">1-</code> 来计算前一行中的小石子数。可以使用以下表达式完成：
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq number-of-pebbles-in-row
+      (1- number-of-pebbles-in-row))
+</pre></div></div>
+
+<p>最后，我们知道 <code class="code">while</code> 循环应在一行中没有小石子时停止重复添加。因此，<code class="code">while</code> 循环的测试简单地是：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(while (&gt; number-of-pebbles-in-row 0)
+</pre></div>
+
+</div>
+
+
+
+</body>
+</html>

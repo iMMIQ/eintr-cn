@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Switching Buffers (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Switching Buffers (Programming in Emacs Lisp)">
+<meta name="keywords" content="Switching Buffers (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Practicing-Evaluation.html" rel="up" title="Practicing Evaluation">
+<link href="Buffer-Size-_0026-Locations.html" rel="next" title="Buffer Size &amp; Locations">
+<link href="Getting-Buffers.html" rel="prev" title="Getting Buffers">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Switching-Buffers">
+<div class="nav-panel">
+<p>
+Next: <a href="Buffer-Size-_0026-Locations.html" accesskey="n" rel="next">缓冲区大小和点的位置</a>, Previous: <a href="Getting-Buffers.html" accesskey="p" rel="prev">获取缓冲区</a>, Up: <a href="Practicing-Evaluation.html" accesskey="u" rel="up">练习评估</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Qie-Huan-Huan-Chong-Qu-">2.3 切换缓冲区</h3>
+<a class="index-entry-id" id="index-switch_002dto_002dbuffer"></a>
+<a class="index-entry-id" id="index-set_002dbuffer"></a>
+<a class="index-entry-id" id="index-Qie-Huan-Dao-Huan-Chong-Qu-"></a>
+
+<p>实际上，当将<code class="code">other-buffer</code>函数用作需要缓冲区参数的函数的参数时，它实际上提供了一个缓冲区。通过使用<code class="code">other-buffer</code>和<code class="code">switch-to-buffer</code>来切换到不同的缓冲区，我们可以看到这一点。
+</p>
+<p>但首先，让我们简要介绍一下<code class="code">switch-to-buffer</code>函数。当你在Info和<samp class="file">*scratch*</samp>缓冲区之间切换以评估<code class="code">(buffer-name)</code>时，你很可能会输入<kbd class="kbd">C-x b</kbd>，然后在迷你缓冲区中输入<samp class="file">*scratch*</samp>。<a class="footnote" id="DOCF7" href="#FOOT7"><sup>7</sup></a> 用于切换到所需缓冲区的名称。按下<kbd class="kbd">C-x b</kbd>这些按键会导致Lisp解释器评估交互函数<code class="code">switch-to-buffer</code>。正如我们之前所说，这就是Emacs的工作原理：不同的按键调用或运行不同的函数。例如，<kbd class="kbd">C-f</kbd>调用<code class="code">forward-char</code>，<kbd class="kbd">M-e</kbd>调用<code class="code">forward-sentence</code>等等。
+</p>
+<p>通过在表达式中编写<code class="code">switch-to-buffer</code>，并给它一个要切换到的缓冲区，我们可以像<kbd class="kbd">C-x b</kbd>一样切换缓冲区：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(switch-to-buffer (other-buffer))
+</pre></div>
+
+<p>符号 <code class="code">switch-to-buffer</code> 是列表的第一个元素，因此Lisp解释器将其视为一个函数并执行与其关联的指令。但在执行之前，解释器会注意到 <code class="code">other-buffer</code> 在括号内，并首先处理该符号。<code class="code">other-buffer</code> 是此列表的第一个元素（在这种情况下，也是唯一的元素），因此Lisp解释器调用或运行该函数。它返回另一个缓冲区。接下来，解释器运行 <code class="code">switch-to-buffer</code>，将另一个缓冲区作为参数传递给它，这就是Emacs将要切换到的缓冲区。如果您正在Info中阅读此内容，请立即尝试。评估此表达式。（要返回，请键入 <kbd class="kbd">C-x b <kbd class="key">RET</kbd></kbd>。）<a class="footnote" id="DOCF8" href="#FOOT8"><sup>8</sup></a>
+</p>
+<p>在本文档后面的编程示例中，您将更频繁地看到函数 <code class="code">set-buffer</code> 而不是 <code class="code">switch-to-buffer</code>。这是因为计算机程序和人类之间存在一个差异：人类有眼睛，并期望在计算机终端上看到他们正在操作的缓冲区。这是如此明显，几乎不言而喻。然而，程序没有眼睛。当计算机程序在缓冲区上工作时，该缓冲区不需要在屏幕上可见。
+</p>
+<p><code class="code">switch-to-buffer</code> 是为人类设计的，它执行两个不同的操作：它切换Emacs关注的缓冲区，并将窗口显示的缓冲区切换到新的缓冲区。另一方面，<code class="code">set-buffer</code> 只执行一项任务：它将计算机程序的注意力切换到另一个缓冲区。屏幕上的缓冲区保持不变（当然，通常在命令运行完成之前不会发生任何变化）。
+</p>
+<a class="index-entry-id" id="index-call-Ding-Yi-"></a>
+<p>此外，我们刚刚介绍了另一个行话术语，即词语 <em class="dfn">call</em>。当您评估一个列表，其中第一个符号是一个函数时，您正在调用该函数。该术语的使用来自于将函数视为如果您调用它可以为您做一些事情的实体的概念，就像水管工是一个实体，如果您呼叫他或她，他或她可以修理漏水一样。
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT7" href="#DOCF7">(7)</a></h5>
+<p>或者更确切地说，为了节省输入，如果默认缓冲区是<samp class="file">*scratch*</samp>，你可能只输入<kbd class="kbd">RET</kbd>，或者如果它不同，则只输入部分名称，如<code class="code">*sc</code>，按下<kbd class="kbd">TAB</kbd>键使其扩展为完整名称，然后输入<kbd class="kbd">RET</kbd>。</p>
+<h5 class="footnote-body-heading"><a id="FOOT8" href="#DOCF8">(8)</a></h5>
+<p>请记住，此表达式将将您移动到您无法看到的最近的其他缓冲区。如果您真的想转到最近选择的缓冲区，即使您仍然可以看到它，您需要评估以下更复杂的表达式：
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(switch-to-buffer (other-buffer (current-buffer) t))
+</pre></div>
+
+<p>在这种情况下，<code class="code">other-buffer</code> 的第一个参数告诉它要跳过的缓冲区（当前的缓冲区），第二个参数告诉 <code class="code">other-buffer</code> 可以切换到可见的缓冲区。在常规用法中，<code class="code">switch-to-buffer</code>将您带到窗口中不可见的缓冲区，因为您很可能使用 <kbd class="kbd">C-x o</kbd>（<code class="code">other-window</code>）转到另一个可见的缓冲区。</p>
+</div>
+
+
+
+</body>
+</html>

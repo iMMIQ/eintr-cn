@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Beginning init File (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Beginning init File (Programming in Emacs Lisp)">
+<meta name="keywords" content="Beginning init File (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Emacs-Initialization.html" rel="up" title="Emacs Initialization">
+<link href="Text-and-Auto_002dfill.html" rel="next" title="Text and Auto-fill">
+<link href="defcustom.html" rel="prev" title="defcustom">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Beginning-init-File">
+<div class="nav-panel">
+<p>
+Next: <a href="Text-and-Auto_002dfill.html" accesskey="n" rel="next">文本和自动填充模式</a>, Previous: <a href="defcustom.html" accesskey="p" rel="prev">使用 <code class="code">defcustom</code> 指定变量</a>, Up: <a href="Emacs-Initialization.html" accesskey="u" rel="up">你的 <samp class="file">.emacs</samp> 文件</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Kai-Shi-YiGe-_002eemacs-WenJian-">16.3 开始一个 <samp class="file">.emacs</samp> 文件</h3>
+<a class="index-entry-id" id="index-_002eemacs-WenJian-_002cKai-Shi-"></a>
+
+<p>当你启动Emacs时，它会加载你的 <samp class="file">.emacs</samp> 文件，除非你在命令行上使用 &lsquo;<samp class="samp">-q</samp>&rsquo; 参数告诉它不要加载。（<code class="code">emacs -q</code> 命令会给你一个原始、未配置的Emacs。）
+</p>
+<p>一个 <samp class="file">.emacs</samp> 文件包含Lisp表达式。通常，这些仅仅是设置值的表达式；有时它们是函数定义。
+</p>
+<p>See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html#Init-File">初始化文件 <samp class="file">~/.emacs</samp></a> in <cite class="cite">GNU Emacs手册</cite>，提供了对初始化文件的简短描述。
+</p>
+<p>本章节涉及相同的主题，但是是从一个完整且长时间使用的 <samp class="file">.emacs</samp> 文件中提取的片段，这是我的文件。
+</p>
+<p>文件的第一部分包含注释：提醒给我自己的。当然，现在我记得这些事情，但当我开始时，我不记得。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;;; Bob的 .emacs 文件
+; Robert J. Chassell
+; 1985年9月26日
+</pre></div></div>
+
+<p>看那个日期！我很久以前就开始了这个文件。从那时起，我一直在添加内容。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">; 该文件中的每个部分都由以四个分号开头的一行引入；
+; 每个条目都由以三个分号开头的一行引入。
+</pre></div></div>
+
+<p>这描述了Emacs Lisp中注释的通常约定。在分号后面的行上的所有内容都是注释。两个、三个和四个分号用作子部分和部分的标记。（See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Comments.html#Comments">Comments</a> in <cite class="cite">GNU Emacs Lisp参考手册</cite>，了解更多关于注释的信息。）
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;;; 帮助键
+; 控制键-h是帮助键；
+; 在输入控制键-h后，输入一个字母表示你想要帮助的主题。
+; 要了解帮助设施的说明，
+; 连续输入两次控制键-h。
+</pre></div></div>
+
+<p>只需记住：输入 <kbd class="kbd">C-h</kbd> 两次来获取帮助。
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">; 要了解任何模式，输入控制键-h m
+; 在该模式中。例如，要了解
+; 关于邮件模式的信息，进入邮件模式然后输入
+; 控制键-h m。
+</pre></div></div>
+
+<p>我称之为&ldquo;模式帮助&rdquo;，非常有帮助。通常，它告诉你所有你需要知道的。
+</p>
+<p>当然，你不需要在你的 <samp class="file">.emacs</samp> 文件中包含这些注释。我在我的文件中包含它们是因为我老是忘记模式帮助或注释的约定——但我能记得在这里查看以提醒自己。
+</p>
+</div>
+
+
+
+</body>
+</html>

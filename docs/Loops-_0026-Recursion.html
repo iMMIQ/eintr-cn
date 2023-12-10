@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Loops &amp; Recursion (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Loops &amp; Recursion (Programming in Emacs Lisp)">
+<meta name="keywords" content="Loops &amp; Recursion (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Regexp-Search.html" rel="next" title="Regexp Search">
+<link href="Yanking.html" rel="prev" title="Yanking">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Loops-_0026-Recursion">
+<div class="nav-panel">
+<p>
+Next: <a href="Regexp-Search.html" accesskey="n" rel="next">正则表达式搜索</a>, Previous: <a href="Yanking.html" accesskey="p" rel="prev">插入文本</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Xun-Huan-He-Di-Gui-">11 循环和递归</h2>
+<a class="index-entry-id" id="index-Xun-Huan-He-Di-Gui-"></a>
+<a class="index-entry-id" id="index-Di-Gui-He-Xun-Huan-"></a>
+<a class="index-entry-id" id="index-Zhong-Fu-_0028Xun-Huan-_0029"></a>
+
+<p>Emacs Lisp 有两种主要的方式来使一个表达式或一系列表达式被重复地评估：一种使用 <code class="code">while</code> 循环，另一种使用 <em class="dfn">递归</em>。
+</p>
+<p>重复可以是非常有价值的。例如，要前进四个句子，你只需要编写一个程序，该程序将前进一句，然后重复这个过程四次。由于计算机不会感到无聊或疲劳，这种重复的动作不会像对人类可能有害的过度或错误的重复那样产生不良影响。
+</p>
+<p>大多数人使用 <code class="code">while</code> 循环及其类似物来编写 Emacs Lisp 函数；但你也可以使用递归，它提供了一种非常强大的思考和解决问题的方式<a class="footnote" id="DOCF12" href="#FOOT12"><sup>12</sup></a>。
+</p>
+
+<ul class="mini-toc">
+<li><a href="while.html" accesskey="1"><code class="code">while</code></a></li>
+<li><a href="dolist-dotimes.html" accesskey="2">节省时间：<code class="code">dolist</code> 和 <code class="code">dotimes</code></a></li>
+<li><a href="Recursion.html" accesskey="3">递归</a></li>
+<li><a href="Looping-exercise.html" accesskey="4">循环练习</a></li>
+</ul>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT12" href="#DOCF12">(12)</a></h5>
+<p>你可以编写递归函数，让其在使用心智或计算资源时既节俭又浪费；实际上，人们发现易于使用——对心智资源节俭的方法——有时会使用相当多的计算资源。Emacs 设计用于运行在我们现在认为有限的机器上，其默认设置是保守的。你可能需要增加 <code class="code">max-lisp-eval-depth</code> 的值。在我的 <samp class="file">.emacs</samp> 文件中，我将其设置为默认值的30倍。</p>
+</div>
+
+
+
+</body>
+</html>

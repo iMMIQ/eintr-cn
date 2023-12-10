@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>b for interactive (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="b for interactive (Programming in Emacs Lisp)">
+<meta name="keywords" content="b for interactive (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="insert_002dbuffer-interactive.html" rel="up" title="insert-buffer interactive">
+<link href="Read_002donly-buffer.html" rel="prev" title="Read-only buffer">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsubsec-level-extent" id="b-for-interactive">
+<div class="nav-panel">
+<p>
+Previous: <a href="Read_002donly-buffer.html" accesskey="p" rel="prev">只读缓冲区</a>, Up: <a href="insert_002dbuffer-interactive.html" accesskey="u" rel="up"><code class="code">insert-buffer</code> 函数中的交互表达式</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsubsec" id="Jiao-Hu-Biao-Da-Shi-ZhongDe-b">交互表达式中的 &lsquo;<samp class="samp">b</samp>&rsquo;</h4>
+
+<p>交互表达式中的下一个参数以小写 &lsquo;<samp class="samp">b</samp>&rsquo; 开头。 （这与 <code class="code">append-to-buffer</code> 的代码不同，后者使用大写 &lsquo;<samp class="samp">B</samp>&rsquo;。See <a class="xref" href="append_002dto_002dbuffer.html"><code class="code">append-to-buffer</code> 的定义</a>。）小写 &lsquo;<samp class="samp">b</samp>&rsquo; 表示 Lisp 解释器应该将 <code class="code">insert-buffer</code> 的参数绑定到一个现有缓冲区，否则应该绑定到其名称。Emacs 将提示您输入缓冲区的名称，并提供默认缓冲区，并启用名称补全。如果缓冲区不存在，您将收到消息“没有匹配”；终端也可能会哔哔作响。
+</p>
+<p>新的简化代码生成了 <code class="code">interactive</code> 的列表。它使用我们已经熟悉的 <code class="code">barf-if-buffer-read-only</code> 和 <code class="code">read-buffer</code> 函数以及我们尚不熟悉的 <code class="code">progn</code> 特殊形式（稍后将进行描述）。
+</p>
+</div>
+
+
+
+</body>
+</html>

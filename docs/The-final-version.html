@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>The final version (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="The final version (Programming in Emacs Lisp)">
+<meta name="keywords" content="The final version (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Print-Whole-Graph.html" rel="up" title="Print Whole Graph">
+<link href="Test-print_002dgraph.html" rel="next" title="Test print-graph">
+<style type="text/css">
+<!--
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="unnumberedsubsec-level-extent" id="The-final-version">
+<div class="nav-panel">
+<p>
+Next: <a href="Test-print_002dgraph.html" accesskey="n" rel="next">测试 <code class="code">print-graph</code></a>, Up: <a href="Print-Whole-Graph.html" accesskey="u" rel="up">打印整个图表</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="unnumberedsubsec" id="Zui-Zhong-Ban-Ben-De-Geng-Gai-">最终版本的更改</h4>
+
+<p>最终版本与我们计划的不同，有两点不同：首先，它包含了一次在变量列表中计算的附加值；其次，它带有一个选项，用于指定标签每行的增量。
+后者的功能证明是必要的；否则，图表可能具有超过显示屏或纸张上能容纳的行数。
+</p>
+<p>这个新功能需要对 <code class="code">Y-axis-column</code> 函数进行更改，以添加 <code class="code">vertical-step</code>。该函数如下：
+</p>
+<a class="index-entry-id" id="index-Y_002daxis_002dcolumn-Zui-Zhong-Ban-Ben-_002e-"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">最终版本。</span>
+(defun Y-axis-column
+  (height width-of-label &amp;optional vertical-step)
+  &quot;构建Y轴标签列表。
+HEIGHT 是图表的最大高度。
+WIDTH-OF-LABEL 是标签的最大宽度。
+VERTICAL-STEP，一个可选项，是一个正整数，
+用于指定每行的Y轴标签增量。
+例如，步长为5表示每行是图表的五个单位。&quot;
+</pre></div><div class="group"><pre class="example-preformatted">  (let (Y-axis
+        (number-per-line (or vertical-step 1)))
+    (while (&gt; height 1)
+      (if (zerop (% height Y-axis-label-spacing))
+</pre></div><div class="group"><pre class="example-preformatted">          ;; <span class="r">插入标签。</span>
+          (setq Y-axis
+                (cons
+                 (Y-axis-element
+                  (* height number-per-line)
+                  width-of-label)
+                 Y-axis))
+</pre></div><div class="group"><pre class="example-preformatted">        ;; <span class="r">否则，插入空白。</span>
+        (setq Y-axis
+              (cons
+               (make-string width-of-label ? )
+               Y-axis)))
+      (setq height (1- height)))
+</pre></div><div class="group"><pre class="example-preformatted">    ;; <span class="r">插入基准线。</span>
+    (setq Y-axis (cons (Y-axis-element
+                        (or vertical-step 1)
+                        width-of-label)
+                       Y-axis))
+    (nreverse Y-axis)))
+</pre></div></div>
+
+<p>图表的最大高度和符号宽度的值由 <code class="code">print-graph</code> 在其 <code class="code">let</code> 表达式中计算；因此，<code class="code">graph-body-print</code> 必须更改以接受它们。
+</p>
+<a class="index-entry-id" id="index-graph_002dbody_002dprint-Zui-Zhong-Ban-Ben-_002e-"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">最终版本。</span>
+(defun graph-body-print (numbers-list height symbol-width)
+  &quot;打印NUMBERS-LIST的条形图。
+numbers-list 包含Y轴值。
+HEIGHT 是图表的最大高度。
+SYMBOL-WIDTH 是每列的数字。&quot;
+</pre></div><div class="group"><pre class="example-preformatted">  (let (from-position)
+    (while numbers-list
+      (setq from-position (point))
+      (insert-rectangle
+       (column-of-graph height (car numbers-list)))
+      (goto-char from-position)
+      (forward-char symbol-width)
+</pre></div><div class="group"><pre class="example-preformatted">      ;; <span class="r">逐列绘制图表。</span>
+      (sit-for 0)
+      (setq numbers-list (cdr numbers-list)))
+    ;; <span class="r">放置X轴标签的点。</span>
+    (forward-line height)
+    (insert &quot;\n&quot;)))
+</pre></div></div>
+
+<p>最后，<code class="code">print-graph</code> 函数的代码：
+</p>
+<a class="index-entry-id" id="index-print_002dgraph-Zui-Zhong-Ban-Ben-_002e-"></a>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; <span class="r">最终版本。</span>
+(defun print-graph
+  (numbers-list &amp;optional vertical-step)
+  &quot;打印带有标签的条形图 NUMBERS-LIST。
+numbers-list 包含Y轴值。
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">可选的，VERTICAL-STEP，一个正整数，
+指定每行的Y轴标签增量。
+例如，步长为5表示每行是图表的五个单位。&quot;
+</pre></div><div class="group"><pre class="example-preformatted">  (let* ((symbol-width (length graph-blank))
+         ;; <code class="code">height</code> <span class="r">既是最大的数字</span>
+         ;; <span class="r">也是数字位数最多的数字。</span>
+         (height (apply 'max numbers-list))
+</pre></div><div class="group"><pre class="example-preformatted">         (height-of-top-line
+          (if (zerop (% height Y-axis-label-spacing))
+              height
+            ;; <span class="r">否则</span>
+            (* (1+ (/ height Y-axis-label-spacing))
+               Y-axis-label-spacing)))
+</pre></div><div class="group"><pre class="example-preformatted">         (vertical-step (or vertical-step 1))
+         (full-Y-label-width
+          (length
+</pre></div><div class="group"><pre class="example-preformatted">           (concat
+            (number-to-string
+             (* height-of-top-line vertical-step))
+            Y-axis-tic))))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">    (print-Y-axis
+     height-of-top-line full-Y-label-width vertical-step)
+</pre></div><div class="group"><pre class="example-preformatted">    (graph-body-print
+     numbers-list height-of-top-line symbol-width)
+    (print-X-axis numbers-list)))
+</pre></div></div>
+
+</div>
+
+
+
+</body>
+</html>

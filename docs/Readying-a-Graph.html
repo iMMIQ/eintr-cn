@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.3, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 这是针对非程序员的 Emacs Lisp 编程简介
+
+
+随 Emacs 版本 29.1 发行.
+
+Copyright © 1990-1995, 1997, 2001-2023 自由软件基金会.
+
+
+
+纸质版本可在 https://shop.fsf.org/ 获得。由以下机构出版：
+
+GNU Press,                        https://www.fsf.org/licensing/gnu-press/
+自由软件基金会旗下的一个分部                 电子邮件：sales@fsf.org
+Free Software Foundation, Inc.    电话：+1 (617) 542-5942
+51 Franklin Street, Fifth Floor   传真：+1 (617) 542-2652
+美国马萨诸塞州波士顿，邮编02110-1301
+
+
+ISBN 1-882114-43-4
+
+允许复制、分发和/或修改本文档，遵循 GNU 自由文档许可证 1.3 版或由自由软件基金会发布的任何以后版本的条款；本文档没有不变章节，封面文本为“GNU 手册”，反面封面文本如 (a) 所示。许可证的副本包含在名为“GNU 自由文档许可证”的章节中。
+
+(a) FSF 的背面封面文本是：“你有自由复制和修改这份 GNU 手册。从 FSF 购买副本支持其开发 GNU 并推广软件自由。” -->
+<title>Readying a Graph (Programming in Emacs Lisp)</title>
+
+<meta name="description" content="Readying a Graph (Programming in Emacs Lisp)">
+<meta name="keywords" content="Readying a Graph (Programming in Emacs Lisp)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2any">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Emacs-Initialization.html" rel="next" title="Emacs Initialization">
+<link href="Words-in-a-defun.html" rel="prev" title="Words in a defun">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/emacs/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Readying-a-Graph">
+<div class="nav-panel">
+<p>
+Next: <a href="Emacs-Initialization.html" accesskey="n" rel="next">你的 <samp class="file">.emacs</samp> 文件</a>, Previous: <a href="Words-in-a-defun.html" accesskey="p" rel="prev">在 <code class="code">defun</code> 中计算单词数</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp 编程简介</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Zhun-Bei-Tu-Biao-">15 准备图表</h2>
+<a class="index-entry-id" id="index-Zhun-Bei-Tu-Biao-"></a>
+<a class="index-entry-id" id="index-Tu-Biao-Yuan-Xing-"></a>
+<a class="index-entry-id" id="index-Yuan-Xing-Tu-Biao-"></a>
+<a class="index-entry-id" id="index-Tu-Biao-Zhu-Ti-"></a>
+
+<p>我们的目标是构建一个图表，显示Emacs Lisp源代码中各个长度的函数定义数量。
+</p>
+<p>实际上，如果你要创建一个图表，你可能会使用诸如<code class="code">gnuplot</code>等程序来完成这项工作。
+（<code class="code">gnuplot</code>已经很好地集成到GNU Emacs中。）但在这种情况下，我们将从头开始创建一个图表，
+在这个过程中，我们将重新熟悉之前学到的一些知识，并学到更多。
+</p>
+<p>在这一章中，我们将首先编写一个简单的图表打印函数。这个初步定义将是一个<em class="dfn">原型</em>，
+一个迅速编写的函数，使我们能够侦察这个未知的制图领域。我们将发现是否存在困难，或者它们只是虚构。
+在侦察完地形后，我们将更加自信，并增强该函数以自动标记坐标轴。
+</p>
+
+<ul class="mini-toc">
+<li><a href="Columns-of-a-graph.html" accesskey="1">打印图表的列</a></li>
+<li><a href="graph_002dbody_002dprint.html" accesskey="2">函数 <code class="code">graph-body-print</code></a></li>
+<li><a href="recursive_002dgraph_002dbody_002dprint.html" accesskey="3">函数 <code class="code">recursive-graph-body-print</code></a></li>
+<li><a href="Printed-Axes.html" accesskey="4">打印坐标轴的必要性</a></li>
+<li><a href="Line-Graph-Exercise.html" accesskey="5">练习</a></li>
+</ul>
+</div>
+
+
+
+</body>
+</html>

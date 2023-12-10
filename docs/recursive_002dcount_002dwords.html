@@ -38,8 +38,8 @@ ISBN 1-882114-43-4
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Tong-Ji-Dan-Ci-Shu-.html" rel="up" title="统计单词数">
-<link href="Ji-Shu-Lian-Xi-.html" rel="next" title="计数练习">
+<link href="Counting-Words.html" rel="up" title="Counting Words">
+<link href="Counting-Exercise.html" rel="next" title="Counting Exercise">
 <link href="count_002dwords_002dexample.html" rel="prev" title="count-words-example">
 <style type="text/css">
 <!--
@@ -57,7 +57,7 @@ ul.mark-bullet {list-style-type: disc}
 <div class="section-level-extent" id="recursive_002dcount_002dwords">
 <div class="nav-panel">
 <p>
-Next: <a href="Ji-Shu-Lian-Xi-.html" accesskey="n" rel="next">练习：计算标点符号</a>, Previous: <a href="count_002dwords_002dexample.html" accesskey="p" rel="prev">函数 <code class="code">count-words-example</code></a>, Up: <a href="Tong-Ji-Dan-Ci-Shu-.html" accesskey="u" rel="up">通过重复和正则表达式进行统计</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Counting-Exercise.html" accesskey="n" rel="next">练习：计算标点符号</a>, Previous: <a href="count_002dwords_002dexample.html" accesskey="p" rel="prev">函数 <code class="code">count-words-example</code></a>, Up: <a href="Counting-Words.html" accesskey="u" rel="up">通过重复和正则表达式进行统计</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <h3 class="section" id="Di-Gui-Ji-Suan-Dan-Ci-Shu-">13.2 递归计算单词数</h3>
@@ -166,7 +166,7 @@ Next: <a href="Ji-Shu-Lian-Xi-.html" accesskey="n" rel="next">练习：计算标
      (re-search-forward &quot;\\w+\\W*&quot; region-end t))
 </pre></div></div>
 
-<p>请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 <code class="code">t</code>，如果失败，则返回 <code class="code">nil</code>。(See <a class="xref" href="Kong-Bai-Zi-Fu-Cuo-Wu-.html"><code class="code">count-words-example</code> 中的空白字符错误</a>，了解 <code class="code">re-search-forward</code> 的工作原理的解释。)
+<p>请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 <code class="code">t</code>，如果失败，则返回 <code class="code">nil</code>。(See <a class="xref" href="Whitespace-Bug.html"><code class="code">count-words-example</code> 中的空白字符错误</a>，了解 <code class="code">re-search-forward</code> 的工作原理的解释。)
 </p>
 <p>再次执行测试是 <code class="code">if</code> 子句的真值测试。显然，如果再次执行测试成功，则 <code class="code">if</code> 子句的 then-部分应该再次调用函数；但如果失败，则 else-部分应该返回零，因为要么点在区域外，要么搜索失败，因为找不到单词。
 </p>
@@ -288,7 +288,7 @@ Next: <a href="Ji-Shu-Lian-Xi-.html" accesskey="n" rel="next">练习：计算标
 <hr>
 <div class="nav-panel">
 <p>
-Next: <a href="Ji-Shu-Lian-Xi-.html">练习：计算标点符号</a>, Previous: <a href="count_002dwords_002dexample.html">函数 <code class="code">count-words-example</code></a>, Up: <a href="Tong-Ji-Dan-Ci-Shu-.html">通过重复和正则表达式进行统计</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Counting-Exercise.html">练习：计算标点符号</a>, Previous: <a href="count_002dwords_002dexample.html">函数 <code class="code">count-words-example</code></a>, Up: <a href="Counting-Words.html">通过重复和正则表达式进行统计</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
