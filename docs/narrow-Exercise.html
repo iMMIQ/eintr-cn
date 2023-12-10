@@ -61,7 +61,7 @@ Previous: <a href="what_002dline.html" accesskey="p" rel="prev"><code class="cod
 <p>编写一个函数，即使将缓冲区缩小到其后半部分以至于第一行不可访问，也能显示当前缓冲区的前60个字符。需要使用一系列函数，包括 <code class="code">save-restriction</code>、<code class="code">widen</code>、<code class="code">goto-char</code>、<code class="code">point-min</code>、<code class="code">message</code> 和 <code class="code">buffer-substring</code>。
 </p>
 <a class="index-entry-id" id="index-Shu-Xing-Ti-Ji-buffer_002dsubstring_002dno_002dproperties"></a>
-<p>（<code class="code">buffer-substring</code> 是一个先前未提及的函数，您需要自行查阅；或者您可能需要使用 <code class="code">buffer-substring-no-properties</code> 或 <code class="code">filter-buffer-substring</code> &hellip;，还有其他函数。文本属性是本文未讨论的另一个功能。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/_6587_672c_5c5e_6027.html#g_t_6587_672c_5c5e_6027">文本属性</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
+<p>（<code class="code">buffer-substring</code> 是一个先前未提及的函数，您需要自行查阅；或者您可能需要使用 <code class="code">buffer-substring-no-properties</code> 或 <code class="code">filter-buffer-substring</code> &hellip;，还有其他函数。文本属性是本文未讨论的另一个功能。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/_6587_672c_5c5e_6027.html#g_t_6587_672c_5c5e_6027">文本属性</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>.）
 </p>
 <p>另外，是否真的需要 <code class="code">goto-char</code> 或 <code class="code">point-min</code>？或者您能否在不使用它们的情况下编写该函数？
 </p>

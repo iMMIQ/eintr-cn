@@ -64,11 +64,11 @@ Next: <a href="defcustom.html" accesskey="n" rel="next">使用 <code class="code
 <a class="index-entry-id" id="index-site_002dload_002eel-Chu-Shi-Hua-WenJian-"></a>
 <p>除了个人初始化文件外，Emacs 还会自动加载各种站点范围的初始化文件，如果这些文件存在的话。这些文件与你的 <samp class="file">.emacs</samp> 文件具有相同的形式，但会被所有用户加载。
 </p>
-<p>有两个站点范围的初始化文件，<samp class="file">site-load.el</samp> 和 <samp class="file">site-init.el</samp>，它们会在 Emacs 启动时被加载，然后如果创建了 Emacs 的已转储版本，它们会被转储。（已转储的 Emacs 拥有更快的加载速度。然而，一旦文件被加载并转储，对它的更改不会导致 Emacs 的变化，除非你自己加载它或重新转储 Emacs。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Building-Emacs.html#Building-Emacs">Building Emacs</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>，以及 <samp class="file">INSTALL</samp> 文件。）
+<p>有两个站点范围的初始化文件，<samp class="file">site-load.el</samp> 和 <samp class="file">site-init.el</samp>，它们会在 Emacs 启动时被加载，然后如果创建了 Emacs 的已转储版本，它们会被转储。（已转储的 Emacs 拥有更快的加载速度。然而，一旦文件被加载并转储，对它的更改不会导致 Emacs 的变化，除非你自己加载它或重新转储 Emacs。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Building-Emacs.html#Building-Emacs">Building Emacs</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>, 以及 <samp class="file">INSTALL</samp> 文件。）
 </p>
 <p>另外，还有三个站点范围的初始化文件，每次启动 Emacs 时都会自动加载，如果它们存在的话。这些文件分别是 <samp class="file">site-start.el</samp>，它在你的 <samp class="file">.emacs</samp> 文件之前加载，以及 <samp class="file">default.el</samp> 和终端类型文件，它们在你的 <samp class="file">.emacs</samp> 文件之后加载。
 </p>
-<p>在你的 <samp class="file">.emacs</samp> 文件中的设置和定义会覆盖 <samp class="file">site-start.el</samp> 文件中的冲突设置和定义（如果存在的话）。但是，在 <samp class="file">default.el</samp> 或终端类型文件中的设置和定义会覆盖你的 <samp class="file">.emacs</samp> 文件中的设置和定义。（你可以通过将 <code class="code">term-file-prefix</code> 设置为 <code class="code">nil</code> 来阻止终端类型文件的干扰。See <a class="xref" href="Simple-Extension.html">一个简单的扩展</a>。）
+<p>在你的 <samp class="file">.emacs</samp> 文件中的设置和定义会覆盖 <samp class="file">site-start.el</samp> 文件中的冲突设置和定义（如果存在的话）。但是，在 <samp class="file">default.el</samp> 或终端类型文件中的设置和定义会覆盖你的 <samp class="file">.emacs</samp> 文件中的设置和定义。（你可以通过将 <code class="code">term-file-prefix</code> 设置为 <code class="code">nil</code> 来阻止终端类型文件的干扰。See <a class="xref" href="Simple-Extension.html">一个简单的扩展</a>.）
 </p>
 <p>分发中附带的 <samp class="file">INSTALL</samp> 文件包含了对 <samp class="file">site-init.el</samp> 和 <samp class="file">site-load.el</samp> 文件的描述。
 </p>

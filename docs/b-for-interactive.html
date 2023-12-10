@@ -58,7 +58,7 @@ Previous: <a href="Read_002donly-buffer.html" accesskey="p" rel="prev">只读缓
 <hr>
 <h4 class="unnumberedsubsubsec" id="Jiao-Hu-Biao-Da-Shi-ZhongDe-b">交互表达式中的 &lsquo;<samp class="samp">b</samp>&rsquo;</h4>
 
-<p>交互表达式中的下一个参数以小写 &lsquo;<samp class="samp">b</samp>&rsquo; 开头。 （这与 <code class="code">append-to-buffer</code> 的代码不同，后者使用大写 &lsquo;<samp class="samp">B</samp>&rsquo;。See <a class="xref" href="append_002dto_002dbuffer.html"><code class="code">append-to-buffer</code> 的定义</a>。）小写 &lsquo;<samp class="samp">b</samp>&rsquo; 表示 Lisp 解释器应该将 <code class="code">insert-buffer</code> 的参数绑定到一个现有缓冲区，否则应该绑定到其名称。Emacs 将提示您输入缓冲区的名称，并提供默认缓冲区，并启用名称补全。如果缓冲区不存在，您将收到消息“没有匹配”；终端也可能会哔哔作响。
+<p>交互表达式中的下一个参数以小写 &lsquo;<samp class="samp">b</samp>&rsquo; 开头。 （这与 <code class="code">append-to-buffer</code> 的代码不同，后者使用大写 &lsquo;<samp class="samp">B</samp>&rsquo;。See <a class="xref" href="append_002dto_002dbuffer.html"><code class="code">append-to-buffer</code> 的定义</a>.）小写 &lsquo;<samp class="samp">b</samp>&rsquo; 表示 Lisp 解释器应该将 <code class="code">insert-buffer</code> 的参数绑定到一个现有缓冲区，否则应该绑定到其名称。Emacs 将提示您输入缓冲区的名称，并提供默认缓冲区，并启用名称补全。如果缓冲区不存在，您将收到消息“没有匹配”；终端也可能会哔哔作响。
 </p>
 <p>新的简化代码生成了 <code class="code">interactive</code> 的列表。它使用我们已经熟悉的 <code class="code">barf-if-buffer-read-only</code> 和 <code class="code">read-buffer</code> 函数以及我们尚不熟悉的 <code class="code">progn</code> 特殊形式（稍后将进行描述）。
 </p>

@@ -117,7 +117,7 @@ Next: <a href="cons.html" accesskey="n" rel="next"><code class="code">cons</code
 
 <p>值得再次强调的是，<code class="code">car</code> 和 <code class="code">cdr</code> 是非破坏性的——也就是说，它们不会修改或改变应用到它们的列表。这对它们的使用非常重要。
 </p>
-<p>另外，在第一章中，关于原子的讨论中，我提到在Lisp中，某些类型的原子，例如数组，可以被分解成部分；但这个机制与拆分列表的机制不同。就Lisp而言，列表的原子是不可分割的。(See <a class="xref" href="Lisp-Atoms.html">Lisp原子</a>.) <code class="code">car</code> 和 <code class="code">cdr</code> 函数用于拆分列表，被认为是Lisp的基本功能。由于它们不能拆分或访问数组的部分，数组被认为是原子。相反，另一个基本函数 <code class="code">cons</code> 可以组合或构造列表，但不能构造数组。 （数组由数组特定的函数处理。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Arrays.html#Arrays">Arrays</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>。）
+<p>另外，在第一章中，关于原子的讨论中，我提到在Lisp中，某些类型的原子，例如数组，可以被分解成部分；但这个机制与拆分列表的机制不同。就Lisp而言，列表的原子是不可分割的。(See <a class="xref" href="Lisp-Atoms.html">Lisp原子</a>.) <code class="code">car</code> 和 <code class="code">cdr</code> 函数用于拆分列表，被认为是Lisp的基本功能。由于它们不能拆分或访问数组的部分，数组被认为是原子。相反，另一个基本函数 <code class="code">cons</code> 可以组合或构造列表，但不能构造数组。 （数组由数组特定的函数处理。See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Arrays.html#Arrays">Arrays</a> in <cite class="cite">The GNU Emacs Lisp Reference Manual</cite>.）
 </p>
 </div>
 <hr>

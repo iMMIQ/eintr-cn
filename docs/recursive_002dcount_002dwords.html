@@ -166,7 +166,7 @@ Next: <a href="Counting-Exercise.html" accesskey="n" rel="next">练习：计算�
      (re-search-forward &quot;\\w+\\W*&quot; region-end t))
 </pre></div></div>
 
-<p>请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 <code class="code">t</code>，如果失败，则返回 <code class="code">nil</code>。(See <a class="xref" href="Whitespace-Bug.html"><code class="code">count-words-example</code> 中的空白字符错误</a>，了解 <code class="code">re-search-forward</code> 的工作原理的解释。)
+<p>请注意，搜索表达式是再次执行测试的一部分——如果其搜索成功，则函数返回 <code class="code">t</code>，如果失败，则返回 <code class="code">nil</code>。(See <a class="xref" href="Whitespace-Bug.html"><code class="code">count-words-example</code> 中的空白字符错误</a>, 了解 <code class="code">re-search-forward</code> 的工作原理的解释。)
 </p>
 <p>再次执行测试是 <code class="code">if</code> 子句的真值测试。显然，如果再次执行测试成功，则 <code class="code">if</code> 子句的 then-部分应该再次调用函数；但如果失败，则 else-部分应该返回零，因为要么点在区域外，要么搜索失败，因为找不到单词。
 </p>

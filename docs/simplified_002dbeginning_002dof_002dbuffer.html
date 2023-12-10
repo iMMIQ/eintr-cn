@@ -65,7 +65,7 @@ Next: <a href="mark_002dwhole_002dbuffer.html" accesskey="n" rel="next">定义 <
 
 <p><code class="code">beginning-of-buffer</code> 命令是一个很好的起点函数，因为你可能熟悉它，并且它易于理解。作为交互式命令使用时，<code class="code">beginning-of-buffer</code> 将光标移动到缓冲区的开头，同时在先前的位置留下标记。通常绑定到 <kbd class="kbd">M-&lt;</kbd>。
 </p>
-<p>在这一节中，我们将讨论该函数的一个简化版本，展示它最常用的形式。这个简化的函数按原样工作，但不包含复杂选项的代码。在另一节中，我们将描述整个函数。(See <a class="xref" href="beginning_002dof_002dbuffer.html"><code class="code">beginning-of-buffer</code> 的完整定义</a>。)
+<p>在这一节中，我们将讨论该函数的一个简化版本，展示它最常用的形式。这个简化的函数按原样工作，但不包含复杂选项的代码。在另一节中，我们将描述整个函数。(See <a class="xref" href="beginning_002dof_002dbuffer.html"><code class="code">beginning-of-buffer</code> 的完整定义</a>.)
 </p>
 <p>在查看代码之前，让我们考虑函数定义必须包含的内容：必须包括一个使函数可交互的表达式，以便通过键入 <kbd class="kbd">M-x beginning-of-buffer</kbd> 或键入键序（如 <kbd class="kbd">M-&lt;</kbd>）来调用它；必须包括代码以在缓冲区中原始位置留下一个标记；必须包括将光标移动到缓冲区开头的代码。
 </p>

@@ -93,7 +93,7 @@ Next: <a href="Install.html" accesskey="n" rel="next">安装函数定义</a>, Pr
   <var class="var">body</var>&hellip;)
 </pre></div></div>
 
-<p>以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅See <a class="xref" href="Interactive.html">使函数具有交互性</a>。）
+<p>以一个将其参数乘以7的函数为例说明。 （此示例不是交互式的。有关此信息，请参阅See <a class="xref" href="Interactive.html">使函数具有交互性</a>.）
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">(defun multiply-by-seven (number)
@@ -108,7 +108,7 @@ Next: <a href="Install.html" accesskey="n" rel="next">安装函数定义</a>, Pr
 </p>
 <p>与选择<code class="code">number</code>作为参数名称不同，我可以选择任何其他名称。 例如，我可以选择单词<code class="code">multiplicand</code>。 我选择了单词“number”是因为它说明了此槽位所需的值的类型； 但是我完全可以选择单词“multiplicand”来指示在函数运作中放入此槽位的值所起的作用。 我可以称其为<code class="code">foogle</code>，但那是一个不好的选择，因为它不会告诉人们它的含义。 名称的选择由程序员决定，应该选择使函数的含义清晰的名称。
 </p>
-<p>确实，你可以为参数列表中的符号选择任何你喜欢的名称，甚至是在其他函数中使用的符号的名称：在参数列表中使用的名称对于该特定定义是私有的。在该定义中，该名称指的是与函数定义之外使用的同名实体不同的实体。假设在你的家庭中你有一个绰号“矮子”；当你的家庭成员提到“矮子”时，他们指的是你。但在你的家庭之外，比如在电影中，“矮子”这个名字指的是别人。因为参数列表中的名称对函数定义是私有的，你可以在函数体内改变这样一个符号的值，而不会改变它在函数外的值。这个效果类似于&lsquo;let&lsquo;表达式（See <a class="xref" href="let.html"><code class="code">let</code></a>）。
+<p>确实，你可以为参数列表中的符号选择任何你喜欢的名称，甚至是在其他函数中使用的符号的名称：在参数列表中使用的名称对于该特定定义是私有的。在该定义中，该名称指的是与函数定义之外使用的同名实体不同的实体。假设在你的家庭中你有一个绰号“矮子”；当你的家庭成员提到“矮子”时，他们指的是你。但在你的家庭之外，比如在电影中，“矮子”这个名字指的是别人。因为参数列表中的名称对函数定义是私有的，你可以在函数体内改变这样一个符号的值，而不会改变它在函数外的值。这个效果类似于&lsquo;let&lsquo;表达式（See <a class="xref" href="let.html"><code class="code">let</code></a>.）。
 </p>
 
 <p>参数列表后面是描述函数的文档字符串。这是当你键入<kbd class="kbd"><span class="w-nolinebreak-text">C-h</span>&nbsp;f</kbd><!-- /@w -->和函数的名称时所看到的内容。顺便说一句，当你编写这样的文档字符串时，应该将第一行写成完整的句子，因为有些命令（比如<code class="code">apropos</code>）只打印多行文档字符串的第一行。此外，如果有第二行文档字符串，不应该对其进行缩进，因为在使用<kbd class="kbd">C-h f</kbd>（<code class="code">describe-function</code>）时，这样看起来很奇怪。文档字符串是可选的，但它非常有用，几乎应该包含在你编写的每个函数中。

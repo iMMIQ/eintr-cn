@@ -70,7 +70,7 @@ Next: <a href="append.html" accesskey="n" rel="next"><code class="code">append</
   <var class="var">设置列表为列表的cdr</var>)
 </pre></div></div>
 
-<p>此外，我们要记住，<code class="code">while</code> 循环返回 <code class="code">nil</code>（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 <code class="code">while</code> 循环封装在一个 <code class="code">let</code> 表达式内，并安排 <code class="code">let</code> 表达式的最后一个元素包含长度列表的值。(See <a class="xref" href="Incrementing-Example.html">带有增量计数器的循环示例</a>。)
+<p>此外，我们要记住，<code class="code">while</code> 循环返回 <code class="code">nil</code>（真假测试的计算结果），而不是循环体内任何评估的结果。（循环体内的评估是为了它们的副作用。）然而，设置长度列表的表达式是循环体的一部分，这是我们希望整个函数返回的值。为了实现这一点，我们将 <code class="code">while</code> 循环封装在一个 <code class="code">let</code> 表达式内，并安排 <code class="code">let</code> 表达式的最后一个元素包含长度列表的值。(See <a class="xref" href="Incrementing-Example.html">带有增量计数器的循环示例</a>.)
 </p>
 <a class="index-entry-id" id="index-lengths_002dlist_002dmany_002dfiles"></a>
 <p>这些考虑直接引导我们到函数本身：

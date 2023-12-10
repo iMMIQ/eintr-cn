@@ -85,7 +85,7 @@ Previous: <a href="Interactive-multiply_002dby_002dseven.html" accesskey="p" rel
 
 <p>(如果你在 GNU Emacs 中阅读此文，你可以自行评估这个表达式。)首先，解释器将评估内部列表，即 <code class="code">(* 7 5)</code>。这将返回一个值为 35。接下来，它将评估外部列表，将列表的第二个和随后的元素的值传递给函数 <code class="code">message</code>。
 </p>
-<p>正如我们所见，<code class="code">message</code> 是一个专为向用户发送单行消息而设计的 Emacs Lisp 函数。（See <a class="xref" href="message.html">The <code class="code">message</code> function</a>。）总体而言，<code class="code">message</code> 函数会将其第一个参数原样打印在回显区域，但会替换&lsquo;<samp class="samp">%d</samp>&rsquo; 或 &lsquo;<samp class="samp">%s</samp>&rsquo;（以及我们未提及的其他各种 %-sequences）的出现。当它看到控制序列时，该函数会查找第二个或随后的参数，并在字符串中的控制序列位置打印参数的值。
+<p>正如我们所见，<code class="code">message</code> 是一个专为向用户发送单行消息而设计的 Emacs Lisp 函数。（See <a class="xref" href="message.html">The <code class="code">message</code> function</a>.）总体而言，<code class="code">message</code> 函数会将其第一个参数原样打印在回显区域，但会替换&lsquo;<samp class="samp">%d</samp>&rsquo; 或 &lsquo;<samp class="samp">%s</samp>&rsquo;（以及我们未提及的其他各种 %-sequences）的出现。当它看到控制序列时，该函数会查找第二个或随后的参数，并在字符串中的控制序列位置打印参数的值。
 </p>
 <p>在交互式 <code class="code">multiply-by-seven</code> 函数中，控制字符串是 &lsquo;<samp class="samp">%d</samp>&rsquo;，需要一个数字，而通过评估 <code class="code">(* 7 5)</code> 返回的值是数字 35。因此，数字 35 将在 &lsquo;<samp class="samp">%d</samp>&rsquo; 的位置打印，消息为 &lsquo;<samp class="samp">结果是 35</samp>&rsquo;。
 </p>
